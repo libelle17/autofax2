@@ -123,6 +123,7 @@ void hhcl::liescapiconf()
 		////    cuser="";
 #endif
 		for(size_t i=capc.zn.size();i>0;) {
+			--i;
 			caus<<"i: "<<i<<", zn[i]: "<<capc.zn[i]<<endl;
 		}
 		string ncuser;
