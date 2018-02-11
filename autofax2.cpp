@@ -105,9 +105,9 @@ void hhcl::liescapiconf()
 		capc.lies(cfaxconfdt,obverb);
 		////<<"azaehlerdt: "<<blau<<azaehlerdt<<schwarz<<endl;
 		capc.auswert(&zcnfC);
+		capc.Abschn_auswert(obverb);
 		caus<<"spool_dir: "<<spool_dir<<endl;
 		caus<<"fax_user_dir: "<<fax_user_dir<<endl;
-	}
 #ifdef false
 	cfcnfA.init(10,"spool_dir","fax_user_dir","send_tries","send_delays","outgoing_MSN",
 			"dial_prefix","fax_stationID","fax_headline","fax_email_from","outgoing_timeout");
@@ -121,10 +121,11 @@ void hhcl::liescapiconf()
 		//   wenn cuser leer, dann den ersten besten user nehmen
 		//   sonst cuser setzen
 		////    cuser="";
+#endif
 		string ncuser;
-		for(size_t i=cfaxcd.zn.size();i>0;) {
+		for(size_t i=capc.zn.size();i>0;) {
 			char buf[250]={0};
-			if ((sscanf(cfaxcd.zn[--i].c_str(),"[%[^]]]",buf))>0) 
+			if ((sscanf(capc.zn[--i].c_str(),"[%[^]]]",buf))>0) 
 				if (strcasecmp(buf,"global")) {
 					if (!cuser.empty()) {
 						if (cuser==buf) {
@@ -134,7 +135,7 @@ void hhcl::liescapiconf()
 					} //           if (!cuser.empty())
 					if (ncuser.empty()) ncuser=buf; // nehme den letzten besten user
 				} //         if (strcasecmp(buf,"global"))
-		} //     for(size_t i=cfaxcd.zn.size();i>0;)
+		} //     for(size_t i=capc.zn.size();i>0;)
 		if (cuser.empty()) 
 			cuser=ncuser;
 		if (cuser.empty()) {
@@ -143,6 +144,8 @@ void hhcl::liescapiconf()
 			hylazuerst=1;
 		} //     if (cuser.empty())
 	} //   if (!cfaxconfdt.empty())
+	caus<<rot<<"cuser: '"<<violett<<"'"<<endl;
+#ifdef false
 	maxcdials=cfcnfA[2].wert; // 14.10.16
 	if (cfcnfA[0].wert.empty()) {
 		spoolcapivz="/var/spool/capisuite";

@@ -22,6 +22,7 @@ class hhcl:public dhcl
     string hklingelzahl; // Zahl der Klingeltoene, bis Hylafax einen Anruf annnimmt
     string cfaxconfdt; // /etc/capisuite/fax.conf oder /usr/local/etc/capisuite/fax.conf laut Handbuch
 		string spool_dir,fax_user_dir,send_tries,send_delays,outgoing_MSN, dial_prefix,fax_stationID,fax_headline,fax_email_from,outgoing_timeout; // capisuite: fax.conf
+		string cuser; // Linux-Benutzer fuer Capisuite, Samba
 #ifdef _WIN32
     char cpt[255];
     DWORD dcpt;
