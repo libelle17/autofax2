@@ -122,6 +122,9 @@ void hhcl::liescapiconf()
 		//   sonst cuser setzen
 		////    cuser="";
 #endif
+		for(size_t i=capc.zn.size();i>0;) {
+			caus<<"i: "<<i<<", zn[i]: "<<capc.zn[i]<<endl;
+		}
 		string ncuser;
 		for(size_t i=capc.zn.size();i>0;) {
 			char buf[250]={0};
