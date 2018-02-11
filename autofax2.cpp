@@ -72,16 +72,16 @@ void hhcl::zcnfCfuell()
 {
 	static uchar neu=1;
 	if (neu) {	
-		zcnfA<<WPcl("spool_dir",&spool_dir,wstr);
-		zcnfA<<WPcl("fax_user_dir",&fax_user_dir,wstr);
-		zcnfA<<WPcl("send_tries",&send_tries,wstr);
-		zcnfA<<WPcl("send_delays",&send_delays,wstr);
-		zcnfA<<WPcl("outgoing_MSN",&outgoing_MSN,wstr);
-		zcnfA<<WPcl("dial_prefix",&dial_prefix,wstr);
-		zcnfA<<WPcl("fax_stationID",&fax_stationID,wstr);
-		zcnfA<<WPcl("fax_headline",&fax_headline,wstr);
-		zcnfA<<WPcl("fax_email_from",&fax_email_from,wstr);
-		zcnfA<<WPcl("outgoing_timeout",&outgoing_timeout,wstr);
+		zcnfC<<WPcl("spool_dir",&spool_dir,wstr);
+		zcnfC<<WPcl("fax_user_dir",&fax_user_dir,wstr);
+		zcnfC<<WPcl("send_tries",&send_tries,wstr);
+		zcnfC<<WPcl("send_delays",&send_delays,wstr);
+		zcnfC<<WPcl("outgoing_MSN",&outgoing_MSN,wstr);
+		zcnfC<<WPcl("dial_prefix",&dial_prefix,wstr);
+		zcnfC<<WPcl("fax_stationID",&fax_stationID,wstr);
+		zcnfC<<WPcl("fax_headline",&fax_headline,wstr);
+		zcnfC<<WPcl("fax_email_from",&fax_email_from,wstr);
+		zcnfC<<WPcl("outgoing_timeout",&outgoing_timeout,wstr);
 		neu=0;
 	} // 	if (neu)
 } // void hhcl::zcnfCfuell
