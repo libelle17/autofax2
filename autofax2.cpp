@@ -98,7 +98,7 @@ void hhcl::liescapiconf()
 	} else findfile(&qrueck,findv,obverb,oblog,0,wo,/*muster=*/"/fax\\.conf$");
 	if (qrueck.size()) cfaxconfdt=qrueck[0];
 	zcnfCfuell();
-
+  caus<<"cfaxconfdt: '"<<cfaxconfdt<<"'"<<endl;
 	if (!cfaxconfdt.empty()) {
 		pruefverz(dir_name(cfaxconfdt),obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/0);
 		confdcl capc;
