@@ -1,0 +1,66 @@
+'\" t -*- coding: UTF-8 -*-
+.\" manual page for ²DPROG²
+.\" write to geraldschade@gmx.de if You discover an error or a deficit in the program
+.pc
+.TH man 1 "12.02.18" "Version 0.10007" "\fB²DPROG²\fR man page"
+.SH NAME
+\fB²DPROG² \- Fax server functionality\fR: induces automatic fax transmission of files, naming of received faxes and logging of all of them in a database
+.br
+(manpage-Hilfe in deutsch verfügbar: 'man ²DPROG²' oder 'man -Lde ²DPROG²')
+.SH SYNOPSIS
+\fB²DPROG² [-<shortopt>|--<longopt> [<supplement>]] ...\fR
+.SH SHORT DESCRIPTION 
+.SH INSTALLATION
+.SH USAGE
+.SH OPTIONS 
+.SH PRECONDITIONS
+.br
+\fBlies: \fB/etc/sysconfig/language\fR
+.br
+\fBOptions which are not saved: \fR
+.br
+\fB -sqlv, --sql-verbose <zahl>\fR: screen output with SQL commands '\fB0\fR'\fB or not\fR
+.br
+\fB -v, --verbose <zahl>\fR: screen output more verbose '\fB0\fR'\fB or not\fR
+.br
+\fB -lfn, --logfilenew <zahl>\fR: delete log file afore '\fB0\fR'\fB or not\fR
+.br
+\fB -cf, --conffile <string>\fR: uses configuration file <string> instead of '\fB\fR'\fB or not\fR
+.br
+\fB -h, --help <zahl>\fR: Explanation of frequent options '\fB3\fR'\fB or not\fR
+.br
+\fB -lh, --longhelp <zahl>\fR: Explanation of all options '\fB3\fR'\fB or not\fR
+.br
+\fB -vi, --vi <zahl>\fR: edit/view configuration file \fB\fR, log file etc. (finish with ':qa') '\fB0\fR'\fB or not\fR
+.br
+\fB -vs, --vs <zahl>\fR: edit/view source files in \fB/home/schade/autofax2\fR(finish with ':qa') '\fB0\fR'\fB or not\fR
+.br
+\fB -ia, --interactive <zahl>\fR: all parameters will be prompted (some of them not shown here) '\fB0\fR'\fB or not\fR
+.br
+\fB -noia, --nointeraction <zahl>\fR: no questions, e.g. for a call from within cron '\fB0\fR'\fB or not\fR
+.br
+\fB -info, --version <zahl>\fR: shows the program version '\fB0\fR'\fB or not\fR
+.br
+\fBOptions to be saved in the configuration file: (preced. '1'=don't save, 'no'=contrary, e.g. '-noocra','-1noocri'):\fR
+.br
+\fB -host, --host <string>\fR: takes the database on host <string> instead of '\fBlocalhost\fR'
+.br
+\fB -muser, --muser <string>\fR: takes the user <string> for MySQL/MariaDB instead of '\fB\fR'
+.br
+\fB -mpwd, --mpwd <string>\fR: takes the password <string> for MySQL/MariaDB
+.br
+\fB -db, --database <string>\fR: uses the database <string> instead of '\fBfaxe\fR'
+.br
+\fB -tb, --table <string>\fR: uses the table <string> instead of '\fB\fR'
+.br
+\fB -lg, --language <string>\fR: Language/Sprache/Lingue/Lingua [\fBd\fReutsch,\fBe\fRnglisch] '\fBe\fR'
+.br
+\fB -ldr, --logdir <path>\fR: choses <path> as log directory, currently '\fB/var/log\fR'
+.br
+\fB -lf, --logfilename <string>\fR: log file <string> (in path '\fB/var/log\fR') will be used instead of '\fBautofax2.log\fR'
+.br
+\fB -l, --log <zahl>\fR: put detailed logs in file '\fB/var/log/autofax2.log\fR' (otherwise shorter) '\fB0\fR'
+.br
+\fB -cm, --cronminutes <string>\fR: every how many minutes shall \fBautofax2\fR be called in crontab (0=not at all), instead of  '\fB0\fR'
+.br
+\fB -autoupd, --autoupdate <zahl>\fR: Update program automatically '\fB1\fR'

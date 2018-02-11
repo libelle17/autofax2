@@ -1,0 +1,66 @@
+.\" t -*- coding: UTF-8 -*-
+.\" Manual-Seite für ²DPROG²
+.\" Schreiben Sie an geraldschade@gmx.de, wenn Sie Fehler oder Mängel entdeckt haben
+.pc
+.TH man 1 "12.02.18" "Version 0.10007" "Manual-Seite für ²DPROG²"
+.SH NAME
+\fB²DPROG² \- FaxServer-Funktionalität\fR: veranlasst automatischen Faxversand von Dateien, Benennung empfangener Faxe und Protokollierung aller Faxe in einer Datenbank 
+.br
+(manpage available in english: 'man ²DPROG²' or 'man -Len ²DPROG²')
+.SH SYNOPSIS
+\fB²DPROG² [-<kurzopt>|--<langopt> [<ergänzung>]] ...\fR
+.SH KURZBESCHREIBUNG
+.SH INSTALLATION
+.SH GEBRAUCH
+.SH OPTIONEN 
+.SH VORAUSSETZUNGEN
+.br
+\fBlies: \fB/etc/sysconfig/language\fR
+.br
+\fBOptionen, die nicht gespeichert werden: \fR
+.br
+\fB -sqlw, --sql-wortreich <zahl>\fR: Bildschirmausgabe mit SQL-Befehlen '\fB0\fR'\fB oder nicht\fR
+.br
+\fB -w, --wortreich <zahl>\fR: Bildschirmausgabe gespraechiger '\fB0\fR'\fB oder nicht\fR
+.br
+\fB -ldn, --logdateineu <zahl>\fR: logdatei vorher loeschen '\fB0\fR'\fB oder nicht\fR
+.br
+\fB -kd, --konfdatei <string>\fR: verwendet Konfigurationsdatei <string> anstatt '\fB\fR'\fB oder nicht\fR
+.br
+\fB -h, --hilfe <zahl>\fR: Erklaerung haeufiger Optionen '\fB3\fR'\fB oder nicht\fR
+.br
+\fB -lh, --langhilfe <zahl>\fR: Erklaerung aller Optionen '\fB3\fR'\fB oder nicht\fR
+.br
+\fB -vi, --vi <zahl>\fR: Konfigurationsdatei \fB\fR, Logdatei usw. bearbeiten/sehen (beenden mit ':qa') '\fB0\fR'\fB oder nicht\fR
+.br
+\fB -vs, --vs <zahl>\fR: Quelldateien in \fB/home/schade/autofax2\fR bearbeiten/sehen (beenden mit ':qa') '\fB0\fR'\fB oder nicht\fR
+.br
+\fB -rf, --rueckfragen <zahl>\fR: alle Parameter werden abgefragt (darunter einige hier nicht gezeigte) '\fB0\fR'\fB oder nicht\fR
+.br
+\fB -krf, --keinerueckfragen <zahl>\fR: keine Rueckfragen, z.B. f�r Aufruf aus cron '\fB0\fR'\fB oder nicht\fR
+.br
+\fB -info, --version <zahl>\fR: Zeigt die Programmversion an '\fB0\fR'\fB oder nicht\fR
+.br
+\fBOptionen z.Speich. i.Konfigur'datei (vorausg. '1'=doch nicht speichern, 'no'=Gegenteil, z.B. '-noocra','-1noocri'):\fR
+.br
+\fB -host, --host <string>\fR: verwendet die Datenbank auf Host <string> anstatt auf '\fBlocalhost\fR'
+.br
+\fB -muser, --muser <string>\fR: verwendet fuer MySQL/MariaDB den Benutzer <string> anstatt '\fB\fR'
+.br
+\fB -mpwd, --mpwd <string>\fR: verwendet fuer MySQL/MariaDB das Passwort <string>
+.br
+\fB -db, --datenbank <string>\fR: verwendet die Datenbank <string> anstatt '\fBfaxe\fR'
+.br
+\fB -tb, --tabelle <string>\fR: verwendet die Tabelle <string> anstatt '\fB\fR'
+.br
+\fB -sp, --sprache <string>\fR: Language/Sprache/Lingue/Lingua [\fBd\fReutsch,\fBe\fRnglisch] '\fBd\fR'
+.br
+\fB -lvz, --logvz <pfad>\fR: waehlt als Logverzeichnis <pfad>, derzeit '\fB/var/log\fR'
+.br
+\fB -ld, --logdname <string>\fR: logdatei <string> (im Pfad '\fB/var/log\fR') wird verwendet anstatt '\fBautofax2.log\fR'
+.br
+\fB -l, --log <zahl>\fR: protokolliert ausfuehrlich in Datei '\fB/var/log/autofax2.log\fR' (sonst knapper) '\fB0\fR'
+.br
+\fB -cm, --cronminuten <string>\fR: alle wieviel Minuten soll \fBautofax2\fR ueber crontab aufgerufen werden (0=gar nicht), anstatt  '\fB0\fR'
+.br
+\fB -autoakt, --autoaktual <zahl>\fR: Programm automatisch aktualisieren '\fB1\fR'
