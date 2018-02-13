@@ -2,7 +2,7 @@
 .\" Manual-Seite für ²DPROG²
 .\" Schreiben Sie an geraldschade@gmx.de, wenn Sie Fehler oder Mängel entdeckt haben
 .pc
-.TH man 1 "12.02.18" "Version 0.1002" "Manual-Seite für ²DPROG²"
+.TH man 1 "13.02.18" "Version 0.10087" "Manual-Seite für ²DPROG²"
 .SH NAME
 \fB²DPROG² \- FaxServer-Funktionalität\fR: veranlasst automatischen Faxversand von Dateien, Benennung empfangener Faxe und Protokollierung aller Faxe in einer Datenbank 
 .br
@@ -17,54 +17,138 @@
 .br
 \fBlies: \fB/etc/sysconfig/language\fR
 .br
-cfaxconfdt: ''
+\fBlies: \fB/etc/capisuite/fax.conf\fR
 .br
-\fBcuser: '\fB'
+\fBlies: \fB/etc/capisuite/capisuite.conf\fR
 .br
 \fBOptionen, die nicht gespeichert werden: \fR
 .br
-\fB -sqlw, --sql-wortreich <zahl>\fR: Bildschirmausgabe mit SQL-Befehlen '\fB0\fR'\fB oder nicht\fR
+\fB -loef, --loeschefax\fR: ein Fax nach Rueckfrage loeschen\fB oder nicht\fR (\fB0\fR)
 .br
-\fB -w, --wortreich <zahl>\fR: Bildschirmausgabe gespraechiger '\fB0\fR'\fB oder nicht\fR
+\fB -loew, --loeschewaise\fR: Eintraege aus `\fBspool\fR` loeschen, zu denen keine Datei im Wartevz.und kein Capi- oder Hylafax nachweisbar ist\fB oder nicht\fR (\fB0\fR)
 .br
-\fB -ldn, --logdateineu <zahl>\fR: logdatei vorher loeschen '\fB0\fR'\fB oder nicht\fR
+\fB -loea, --loescheallew\fR: alle wartenden Faxe und zugehoerige Eintraege aus `\fBspool\fR` loeschen\fB oder nicht\fR (\fB0\fR)
 .br
-\fB -kd, --konfdatei <string>\fR: verwendet Konfigurationsdatei <string> anstatt '\fB\fR'\fB oder nicht\fR
+\fB -erneut, --erneutempf\fR: empfangenes Fax erneut bereitstellen\fB oder nicht\fR (\fB0\fR)
 .br
-\fB -h, --hilfe <zahl>\fR: Erklaerung haeufiger Optionen '\fB3\fR'\fB oder nicht\fR
+\fB -uml, --umleiten\fR: ausgehendes Fax vorzeitig auf zweitem Weg schicken\fB oder nicht\fR (\fB0\fR)
 .br
-\fB -lh, --langhilfe <zahl>\fR: Erklaerung aller Optionen '\fB3\fR'\fB oder nicht\fR
+\fB -kez, --korrerfolgszeichen\fR: in der Datenbanktabelle `\fBouta\fR` wird das Erfolgszeichen korrigiert\fB oder nicht\fR (\fB0\fR)
 .br
-\fB -vi, --vi <zahl>\fR: Konfigurationsdatei \fB\fR, Logdatei usw. bearbeiten/sehen (beenden mit ':qa') '\fB0\fR'\fB oder nicht\fR
+\fB -bvz, --bereinigevz\fR: Dateien aus Wartevz.,Gescheitertenvz.u.Gefaxtvz.gegen `\fBouta\fR` pruefen und ggf. aufraeumen\fB oder nicht\fR (\fB0\fR)
 .br
-\fB -vs, --vs <zahl>\fR: Quelldateien in \fB/home/schade/autofax2\fR bearbeiten/sehen (beenden mit ':qa') '\fB0\fR'\fB oder nicht\fR
+\fB -st, --stop\fR: autofax2 anhalten\fB oder nicht\fR (\fB0\fR)
 .br
-\fB -rf, --rueckfragen <zahl>\fR: alle Parameter werden abgefragt (darunter einige hier nicht gezeigte) '\fB0\fR'\fB oder nicht\fR
+\fB -lista, --listausg\fR: listet Datensaetze aus `\fBouta\fR` mit Erfolgskennzeichen auf\fB oder nicht\fR (\fB0\fR)
 .br
-\fB -krf, --keinerueckfragen <zahl>\fR: keine Rueckfragen, z.B. f�r Aufruf aus cron '\fB0\fR'\fB oder nicht\fR
+\fB -listf, --listfehlgeschl\fR: listet Datensaetze aus `\fBouta\fR` ohne Erfolgskennzeichen auf\fB oder nicht\fR (\fB0\fR)
 .br
-\fB -info, --version <zahl>\fR: Zeigt die Programmversion an '\fB0\fR'\fB oder nicht\fR
+\fB -liste, --listeing\fR: listet Datensaetze aus `\fBinca\fR` auf\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -listw, --listwartende\fR: listet wartende Faxe auf\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -s, --suche <string>\fR: Suche in verarbeiteten Faxen nach <string>: \fB\fR ('\fB\fR')
+.br
+\fB -n, --dszahl <string>\fR: Zahl der aufzulistenden Datensaetze = <zahl> statt ('\fB30\fR')
+.br
+\fB -vc, --vc\fR: Capisuite-Konfigurationsdateien bearbeiten (beenden mit ':qa')\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -vh, --vh\fR: Hylafax-Modem-Konfigurationsdatei bearbeiten (beenden mit ':qa')\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -sqlw, --sql-wortreich\fR: Bildschirmausgabe mit SQL-Befehlen (\fB0\fR)
+.br
+\fB -w, --wortreich\fR: Bildschirmausgabe gespraechiger\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -ldn, --logdateineu\fR: logdatei vorher loeschen\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -kd, --konfdatei <string>\fR: verwendet Konfigurationsdatei <string> anstatt ('\fB\fR')
+.br
+\fB -h, --hilfe\fR: Erklaerung haeufiger Optionen\fB oder nicht\fR (\fB3\fR)
+.br
+\fB -lh, --langhilfe\fR: Erklaerung aller Optionen\fB oder nicht\fR (\fB3\fR)
+.br
+\fB -vi, --vi\fR: Konfigurationsdatei \fB\fR, Logdatei usw. bearbeiten/sehen (beenden mit ':qa')\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -vs, --vs\fR: Quelldateien in \fB/home/schade/autofax2\fR bearbeiten/sehen (beenden mit ':qa')\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -rf, --rueckfragen\fR: alle Parameter werden abgefragt (darunter einige hier nicht gezeigte)\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -krf, --keinerueckfragen\fR: keine Rueckfragen, z.B. fuer Aufruf aus cron\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -info, --version\fR: Zeigt die Programmversion an\fB oder nicht\fR (\fB0\fR)
 .br
 \fBOptionen z.Speich. i.Konfigur'datei (vorausg. '1'=doch nicht speichern, 'no'=Gegenteil, z.B. '-noocra','-1noocri'):\fR
 .br
-\fB -host, --host <string>\fR: verwendet die Datenbank auf Host <string> anstatt auf '\fBlocalhost\fR'
+\fB -zvz, --zufaxenvz <pfad>\fR: faxt die Dateien aus <pfad> anstatt aus ('\fB/var/autofax2/zufaxen\fR')
 .br
-\fB -muser, --muser <string>\fR: verwendet fuer MySQL/MariaDB den Benutzer <string> anstatt '\fB\fR'
+\fB -wvz, --wartevz <pfad>\fR: Dateien warten in <pfad> anstatt ('\fB/var/autofax2/warteauffax\fR')
+.br
+\fB -ngvz, --nichtgefaxtvz <pfad>\fR: Gescheiterte Faxe werden hier gesammelt anstatt in ('\fB/var/autofax2/nichtgefaxt\fR')
+.br
+\fB -evz, --empfvz <pfad>\fR: Empfangsverzeichnis fuer Faxempfang ('\fB/var/autofax2/empfvz\fR')
+.br
+\fB -fbox, --obfbox\fR: Fritzbox verwenden\fB oder nicht\fR (\fB1\fR)
+.br
+\fB -fbvz, --fritzboxvz <pfad>\fR: Ankunftsverzeichnis der Fritzbox (ueber CIFS) ('\fB\fR')
+.br
+\fB -capi, --obcapi\fR: Capisuite verwenden\fB oder nicht\fR (\fB1\fR)
+.br
+\fB -hyla, --obhyla\fR: Hylafax verwenden\fB oder nicht\fR (\fB1\fR)
+.br
+\fB -hz, --hylazuerst\fR: versuche faxe zuerst ueber Hylafax wegzuschicken\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -cz, --capizuerst\fR: versuche faxe zuerst ueber Capisuite wegzuschicken\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -mod, --hmodem <string>\fR: Fuer Hylafax verwendetes Modem, anstatt  ('\fB\fR')
+.br
+\fB -mc, --maxcapiv <string>\fR: nach <zahl> Versuchen Capisuite wird Hylafax versucht, anstatt nach ('\fB3\fR')
+.br
+\fB -mh, --maxhylav <string>\fR: nach <zahl> Versuchen Hylafax wird Capisuite versucht, anstatt nach ('\fB3\fR')
+.br
+\fB -cuser, --cuser <string>\fR: verwendet fuer Capisuite und/oder Samba den Linux-Benutzer <string> anstatt ('\fB\fR')
+.br
+\fB -ckzl, --cklingelzahl <string>\fR: Zahl der Klingeltoene, bis Capisuite den Anruf annimmt, anstatt ('\fB1\fR')
+.br
+\fB -hkzl, --hklingelzahl <string>\fR: Zahl der Klingeltoene, bis Hylafax den Anruf annimmt, anstatt ('\fB2\fR')
+.br
+\fB -hmw, --hmaxwahlvers <string>\fR: Zahl der Wahlversuche in Hylafax, anstatt  ('\fB11\fR')
+.br
+\fB -gz, --gleichziel\fR: Faxe werden auch ohne Faxerfolg ins Zielverzeichnis kopiert\fB oder nicht\fR (\fB1\fR)
+.br
+\fB -ocre, --ocre\fR: Text aus empfangenen Faxen wird ermittelt\fB oder nicht\fR (\fB1\fR)
+.br
+\fB -ocra, --ocra\fR: Text aus gesandten Bildern wird ermittelt\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -afs, --anfaxstr <string>\fR: faxnr wird hinter <string> erwartet statt hinter ('\fBan Fax\fR')
+.br
+\fB -acfs, --ancfaxstr <string>\fR: faxnr fuer primaer Capisuite wird hinter <string> erwartet statt hinter ('\fBan cFax\fR')
+.br
+\fB -ahfs, --anhfaxstr <string>\fR: faxnr fuer primaer hylafax wird hinter <string> erwartet statt hinter ('\fBan hFax\fR')
+.br
+\fB -as, --anstr <string>\fR: Adressatenname wird hinter <string> erwartet statt hinter ('\fB an \fR')
+.br
+\fB -us, --undstr <string>\fR: Trennstring <string> fuer mehrere Adressaten/Telefonnummern statt ('\fBund\fR')
+.br
+\fB -fd, --finde <string>\fR: Version 1,2 oder 3 -Dateisuche (variable Performanceunterschiede) anstatt ('\fB3\fR')
+.br
+\fB -host, --host <string>\fR: verwendet die Datenbank auf Host <string> anstatt auf ('\fBlocalhost\fR')
+.br
+\fB -muser, --muser <string>\fR: verwendet fuer MySQL/MariaDB den Benutzer <string> anstatt ('\fB\fR')
 .br
 \fB -mpwd, --mpwd <string>\fR: verwendet fuer MySQL/MariaDB das Passwort <string>
 .br
-\fB -db, --datenbank <string>\fR: verwendet die Datenbank <string> anstatt '\fBfaxe\fR'
+\fB -db, --datenbank <string>\fR: verwendet die Datenbank <string> anstatt ('\fBfaxe\fR')
 .br
-\fB -tb, --tabelle <string>\fR: verwendet die Tabelle <string> anstatt '\fB\fR'
+\fB -tb, --tabelle <string>\fR: verwendet die Tabelle <string> anstatt ('\fB\fR')
 .br
-\fB -sp, --sprache <string>\fR: Language/Sprache/Lingue/Lingua [\fBd\fReutsch,\fBe\fRnglisch] '\fBd\fR'
+\fB -sp, --sprache <string>\fR: Language/Sprache/Lingue/Lingua [\fBd\fReutsch,\fBe\fRnglisch] ('\fBd\fR')
 .br
-\fB -lvz, --logvz <pfad>\fR: waehlt als Logverzeichnis <pfad>, derzeit '\fB/var/log\fR'
+\fB -lvz, --logvz <pfad>\fR: waehlt als Logverzeichnis <pfad>, derzeit ('\fB/var/log\fR')
 .br
-\fB -ld, --logdname <string>\fR: logdatei <string> (im Pfad '\fB/var/log\fR') wird verwendet anstatt '\fBautofax2.log\fR'
+\fB -ld, --logdname <string>\fR: logdatei <string> (im Pfad '\fB/var/log\fR') wird verwendet anstatt ('\fBautofax2.log\fR')
 .br
-\fB -l, --log <zahl>\fR: protokolliert ausfuehrlich in Datei '\fB/var/log/autofax2.log\fR' (sonst knapper) '\fB0\fR'
+\fB -l, --log <zahl>\fR: protokolliert ausfuehrlich in Datei '\fB/var/log/autofax2.log\fR' (sonst knapper)\fB oder nicht\fR (\fB0\fR)
 .br
-\fB -cm, --cronminuten <string>\fR: alle wieviel Minuten soll \fBautofax2\fR ueber crontab aufgerufen werden (0=gar nicht), anstatt  '\fB0\fR'
+\fB -cm, --cronminuten <string>\fR: alle wieviel Minuten soll \fBautofax2\fR ueber crontab aufgerufen werden (0=gar nicht), anstatt  ('\fB0\fR')
 .br
-\fB -autoakt, --autoaktual <zahl>\fR: Programm automatisch aktualisieren '\fB1\fR'
+\fB -autoakt, --autoaktual\fR: Programm automatisch aktualisieren\fB oder nicht\fR (\fB1\fR)

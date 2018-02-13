@@ -855,7 +855,7 @@ struct confdcl {
 };
 
 // fuer Commandline-Optionen
-enum par_t:uchar {psons,ppwd,pverz,pfile,puchar,pint,plong,pdat}; // Parameterart: Sonstiges, Verzeichnis, Datei, uchar, int, long, Datum (struct tm)
+enum par_t:uchar {psons,pdez,ppwd,pverz,pfile,puchar,pint,plong,pdat}; // Parameterart: Sonstiges, Verzeichnis, Datei, uchar, int, long, Datum (struct tm)
 
 // neue Klasse für map
 // fuer Wertepaare, die aus Datei gezogen werden und zusaetzlich ueber die Befehlszeile eingegeben werden koennen
@@ -864,7 +864,6 @@ struct optcl
 		string pname; // Name des Konfigurationsparameters
     const void *pptr=0; // Zeiger auf Parameter, der hier eingestellt werden kann
     par_t art=psons; // Parameterart
-//		optcl() {if (parart==pzahl) *(int*)par=0;}
 		const int kurzi=0;
 		const int langi=0;
     TxB *TxBp=0; // nicht const, da lgn geändert werden muß
@@ -873,7 +872,7 @@ struct optcl
     const long Txi2=-1;
     const string *const rottxt=0; // ggf rot zu markierender Text zwischen Txi und Txi2
 //    string oerkl;
-    int iwert; // Wert, der pptr zugewiesen wird, falls dieser Parameter gewaehlt wird; 0= Wert steht im nächsten Parameter, 1=pro Nennung in der Kommandozeile wert um 1 erhöhen
+    int iwert; // Wert, der pptr zugewiesen wird, falls dieser Parameter gewaehlt wird; -1= Wert steht im nächsten Parameter, 1=pro Nennung in der Kommandozeile wert um 1 erhöhen
 //    string *zptr=0; // Zeiger auf Zusatzparameter, der hier eingegeben werden kann (z.B. Zahl der Zeilen nach -n (Zeilenzahl)
 //    schAcl<WPcl> *cpA=0; // Konfigurationsarray, das ggf. geschrieben werden muss
 //    uchar ogefunden=0; // braucht man nicht, ist in argcl
@@ -1259,6 +1258,7 @@ class hcl
     void lieskonfein();
     void verarbeitkonf();
 		int zeighilfe(const stringstream *const erkl);
+		virtual void testerg()=0;
 		void lieszaehlerein();
 		void dovi();
 		virtual void virtzeigversion(const string& ltiffv=nix);

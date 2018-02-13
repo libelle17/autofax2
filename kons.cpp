@@ -579,7 +579,7 @@ const char *kons_T[T_konsMAX+1][SprachZahl]=
 	// T_keinerueckfragen_l
 	{"keinerueckfragen","nointeraction"},
 	// T_keine_Rueckfragen_zB_aus_Cron
-	{"keine Rueckfragen, z.B. für Aufruf aus cron","no questions, e.g. for a call from within cron"},
+	{"keine Rueckfragen, z.B. fuer Aufruf aus cron","no questions, e.g. for a call from within cron"},
 	// T_alle_Parameter_werden_abgefragt_darunter_einige_hier_nicht_gezeigte
 	{"alle Parameter werden abgefragt (darunter einige hier nicht gezeigte)","all parameters will be prompted (some of them not shown here)"},
 	// T_info_k
@@ -1866,27 +1866,31 @@ template <typename SCL> void confdcl::auswert(schAcl<SCL> *sA, int obverb, const
 	}
   if (obgelesen) {
     string ibemerk;
-		for(size_t i=0;i<zn.size();i++) {
+		for(size_t i=zn.size();i;) {
+			--i;
       string *zeile=&zn[i];
       size_t pos=zeile->find('#');
-      if (pos!=string::npos) {
-        // wir nehmen an, die Kommentarzeile gehoert zum naechsten Parameter, wenn sie vorne beginnt
-        if (!pos) {
-        // Ueberschrift am Anfang  weglassen
-          if (!richtige && zeile->find("onfigura")!=string::npos && zeile->find("automati")!=string::npos) {
-          } else {
-            if (!ibemerk.empty()) ibemerk+='\n';
-            ibemerk+=zeile->substr(pos);
-          } // if (!richtige ... else
-        } // if (!pos)
-        zeile->erase(pos);
-      } // if (pos!=string::npos)
-      ltrim(zeile);
-      if (!zeile->empty()) {
-        if (obverb>1) Log(Txk[T_stern_zeile]+*zeile,obverb);
-        pos=zeile->find(tz);
-        if (pos!=string::npos && pos>0) { 
-          string pname=zeile->substr(0,pos);
+			if (!pos||zeile->empty()) {
+				zn.erase(zn.begin()+i);
+				continue;
+			} else if (pos!=string::npos) {
+				// wir nehmen an, die Kommentarzeile gehoert zum naechsten Parameter, wenn sie vorne beginnt
+				if (!pos) {
+					// Ueberschrift am Anfang  weglassen
+					if (!richtige && zeile->find("onfigura")!=string::npos && zeile->find("automati")!=string::npos) {
+					} else {
+						if (!ibemerk.empty()) ibemerk+='\n';
+						ibemerk+=zeile->substr(pos);
+					} // if (!richtige ... else
+				} // if (!pos)
+				zeile->erase(pos);
+			} // if (pos!=string::npos)
+			ltrim(zeile);
+			if (!zeile->empty()) {
+				if (obverb>1) Log(Txk[T_stern_zeile]+*zeile,obverb);
+				pos=zeile->find(tz);
+				if (pos!=string::npos && pos>0) { 
+					string pname=zeile->substr(0,pos);
 					rtrim(&pname);
 					string wert=zeile->substr(pos+1);
 					gtrim(&wert);
@@ -3092,199 +3096,6 @@ void optcl::oausgeb()
 	cout<<endl;
 } // void optcl::oausgeb()
 
-#ifdef alt
-int optioncl::pruefpar(vector<argcl> *const argcvm , size_t *const akt, uchar *hilfe) // 1 = das war der Parameter, 0 = nicht
-	// argcvm = Vektor der Kommandozeilenparameter
-	// *akt = Index auf aktuell zu untersuchenden
-	// *hilfe = Aussage, ob Hilfe aufgerufen werden muss
-	// vorangestellte "1" => opschreibp auf 0 setzen
-	// vorangestelltes "un" => bei binaeren Operatoren nicht
-{
-	////  Log(violetts+Txk[T_pruefpar]+schwarz+" "+ltoan(*akt),1,0);
-	uchar nichtspeichern=0;
-	uchar gegenteil=0;
-	// wenn der Index noch im Bereich und der zugehoerige Kommandozeilenparameter noch nicht unter den Programmparametern gefunden wurde ...
-	if (*akt<argcvm->size()) if (!argcvm->at(*akt).agef) {
-		const char *acstr=argcvm->at(*akt).argcs;
-		////    <<rot<<"acstr: "<<schwarz<<acstr<<endl;
-		int aclen=strlen(acstr);
-		if (aclen>1) {
-			if (aclen>2 && acstr[0]=='-'&&acstr[1]=='-') {
-				acstr+=2;
-				aclen-=2;
-				if (aclen>1 && *acstr=='1') {
-					nichtspeichern=1; 
-					acstr++;
-					aclen--;
-				}
-				if (aclen>2 && acstr[0]=='n'&&acstr[1]=='o') {
-					gegenteil=1;
-					acstr+=2;
-					aclen-=2;
-				}
-				if (langi) {
-					Sprache altSpr=TxBp->lgn;
-					for(int akts=0;akts<SprachZahl;akts++) {
-						TxBp->lgn=(Sprache)akts;
-						if (!strcmp(acstr,(*TxBp)[langi])) {
-							argcvm->at(*akt).agef=1;
-						}
-					} //         for(int akts=0;akts<SprachZahl;akts++)
-					TxBp->lgn=altSpr;
-					/*//
-						KLZ else KLA
-						if (!strcmp(acstr,lang.c_str())) KLA
-						argcvm->at(*akt).agef=1;
-						KLZ
-					 */
-				}
-			} else if (strchr("-/",acstr[0])) {
-				acstr+=1;
-				aclen-=1;
-				if (aclen>1 && *acstr=='1') {
-					nichtspeichern=1; 
-					acstr++;
-					aclen--;
-				}
-				if (aclen>2 && acstr[0]=='n'&&acstr[1]=='o') {
-					gegenteil=1;
-					acstr+=2;
-					aclen-=2;
-				}
-				if (kurzi) {
-					Sprache altSpr=TxBp->lgn;
-					for(int akts=0;akts<SprachZahl;akts++) {
-						TxBp->lgn=(Sprache)akts;
-						if (!strcmp(acstr,(*TxBp)[kurzi])) {
-							argcvm->at(*akt).agef=1;
-						}
-					} //         for(int akts=0;akts<SprachZahl;akts++)
-					TxBp->lgn=altSpr;
-					/*//
-						KLZ else KLA
-						if (!strcmp(acstr,kurz.c_str())) KLA 
-						argcvm->at(*akt).agef=1;
-						KLZ
-					 */
-				} // if (kurzi) else
-			} //       if (strchr("-/",acstr[0])
-		} // if (strlen(acstr)>1) 
-		// wenn Kommandozeilenparameter gefunden ...
-		if (argcvm->at(*akt).agef) {
-			// ... und zu setzender binaerer Parameter hinterlegt ...
-			if (pptr) {
-				// ggf. auf Gegenteil korrigieren
-				if (gegenteil) wert=!wert;
-				// ... und dieser noch nicht richtig gesetzt ist ...
-				if (*pptr!=wert) {
-					// ... dann setzen ...
-					*pptr=wert;
-					// ... merken, dass die Konfigurationsdatei geschrieben werden muss ...
-					if (!nichtspeichern) {
-						if (obschreibp) *obschreibp=1;
-						// ... und wenn ein Konfigurationsarray uebergeben wurde und ein Elementname dazu ...
-						if (cpA && pname) {
-							// ... dann diesen auch auf den Wert setzen
-							cpA->setze(pname,ltoan(wert));
-						} //             if (cpA && pname)
-					} // if (!nichtspeichern)
-				} // if (*pptr!=wert) 
-				// wenn also kein binaerer Parameter hinterlegt (=> Textparameter)
-			} else {
-				const char *pstr=0;
-				uchar wiefalsch=0;
-				// und hinter dem aktuellen Parameter noch einer kommt ...
-				if (*akt<argcvm->size()-1) {
-					const char *nacstr=argcvm->at(*akt+1).argcs;
-					struct stat entryarg={0};
-					switch (art) {
-						// und das ein "sonstiger Parameter" ist, ...
-						case psons:
-							// er also nicht mit '-' oder '/' anfaengt ...
-							if (!strchr("-/",nacstr[0])) {
-								// ... dann zuweisen
-								pstr=nacstr;
-							}
-							break;
-							// wenn es ein Verzeichnis oder eine Datei sein soll ...
-						case pverz:
-						case pfile:
-							// ... die also nicht mit '-' anfaengt
-							if (nacstr[0]!='-') {
-								// ... und sie bestimmte existentielle Bedingungen erfuellt ...
-								if (stat(nacstr,&entryarg)) wiefalsch=1;  // wenn inexistent
-								else if ((art==pverz)^(S_ISDIR(entryarg.st_mode))) wiefalsch=2; // Datei fuer Verzeichnis o.u.
-								// ... dann zuweisen
-								else pstr=nacstr;
-							} //               if (nacstr[0]!='-')
-							break;
-							// oder wenn es eine Zahl sein soll ...
-						case puchar: case pint: case plong:
-							// und sie nicht mit '-' oder '/' anfaengt ...
-							if (!strchr("-/",nacstr[0])) {
-								// und tatsaechlich numerisch ist ...
-								if (!isnumeric(nacstr)) wiefalsch=1;
-								// dann zuweisen
-								else pstr=nacstr;
-							} // if (!strchr("-/",nacstr[0])) 
-							break;
-					} // switch (art) 
-				} // if (*akt<argcvm->size()-1)
-				/// wenn nacstr als Zusatzparameter bestaetigt
-				if (pstr) {
-					// ... und dessen Inhalt sich von zptr unterscheidet ...
-					if (*zptr!=pstr) {
-						// ... dann zuweisen ...
-						*zptr=pstr; 
-						// ... und ggf. Konfigurationsdatei speichern, 
-						if (!nichtspeichern) {
-							if (obschreibp) *obschreibp=1;
-							// wenn Konfigurationsarray und ein Indexname dort uebergeben ... 
-							if (cpA && pname) {
-								// dann Inhalt dort zuweisen
-								cpA->setze(pname,pstr);
-							} // if (cpA && pname)
-						} // if (!nichtspeichern)
-					} // if (*zptr!=pstr) 
-					argcvm->at(++(*akt)).agef=1;
-				} else {
-					// wenn kein Zusatzparameter erkennbar, dann melden
-					switch (art) {
-						case psons:
-							Log(drots+Txk[T_Fehlender_Parameter_string_zu]+(*TxBp)[kurzi]+Txk[T_oder]+(*TxBp)[langi]+"!"+schwarz,1,1);
-							break;
-						case pverz:
-						case pfile:
-							Log(drots+Txk[T_Fehler_Parameter]+(*TxBp)[kurzi]+Txk[T_oder]+(*TxBp)[langi]+" "+(wiefalsch==1?Txk[T_ohne_gueltigen]:wiefalsch==2?
-										Txk[T_mit_Datei_als]:Txk[T_mit_falschem])+Txk[T_Pfad_angegeben]+schwarz,1,1);
-							break;
-						case puchar: case pint: case plong:
-							Log(drots+(wiefalsch==1?Txk[T_Nicht_numerischer]:Txk[T_Fehlender])+Txk[T_Parameter_nr_zu]
-									+(*TxBp)[kurzi]+Txk[T_oder]+(*TxBp)[langi]+"!"+schwarz,1,1);
-							break;
-					} // switch (art)
-					if (!*hilfe) *hilfe=1;
-				} // if (pstr) else
-			} // if (pptr) else
-			return 1;
-		} // if (argcvm->at(*akt).agef)
-	} // if (*akt<argcvm->size()) if (!argcvm->at(*akt).agef) 
-	return 0;
-} // pruefpar
-
-void optioncl::hilfezeile(Sprache lg)
-{
-	if (TxBp) {
-		if (Txi!=-1) {
-			if (TxBp->TCp[Txi][lg]) {
-				cout<<drot<<" -"<<(*TxBp)[kurzi]<<", --"<<(*TxBp)[langi];
-				if (zptr) {if (art==psons || art==pfile) cout<<" <string>"; else if (art==pverz) cout<<" <"<<Txk[T_pfad]<<">"; else cout<<" <zahl>";}
-				cout<<schwarz<<": "<< machbemerk(lg)<<endl;
-			} // if (TxBp->TCp[Txi][lg])
-		} // if (Txi!=-1)
-	} // if (TxBp)
-} // hilfezeile
-#endif
 
 void optcl::hilfezeile(Sprache lg)
 {
@@ -3292,7 +3103,7 @@ void optcl::hilfezeile(Sprache lg)
 		if (Txi!=-1) {
 			if (TxBp->TCp[Txi][lg]) {
 				cout<<drot<<" -"<<(*TxBp)[kurzi]<<", --"<<(*TxBp)[langi];
-				if (pptr) {if (art==psons||art==ppwd||art==pfile) cout<<" <string>"; else if (art==pverz) cout<<" <"<<Txk[T_pfad]<<">"; else cout<<" <zahl>";}
+				if (pptr) {if (art==psons||art==pdez||art==ppwd||art==pfile) cout<<" <string>"; else if (art==pverz) cout<<" <"<<Txk[T_pfad]<<">"; else if (art!=puchar) cout<<" <zahl>";}
 				cout<<schwarz<<": "<< machbemerk(lg)<<endl;
 			} // if (TxBp->TCp[Txi][lg])
 		} // if (Txi!=-1)
@@ -4810,7 +4621,7 @@ int dateivgl(const string& d1, const string& d2,uchar obzeit/*=0*/)
 	} // 	if (lst1 || lst2)
 	if (!erg) {
 		if (lst1||st1.st_size>1000000) {
-			erg=systemrueck("diff -q "/*"cmp --silent "*/+d1+" "+d2,0,0,/*rueck=*/0,/*obsudc=*/0);
+			erg=systemrueck("diff -q '"/*"cmp --silent "*/+d1+"' '"+d2+"'",0,0,/*rueck=*/0,/*obsudc=*/0);
 		} else {
 			// http://www.cplusplus.com/forum/general/94032/
 			boost::iostreams::mapped_file_source f1(d1);
@@ -4891,8 +4702,10 @@ void hcl::lauf()
 		verarbeitkonf();
 		if (obverb) optausg(gruen);
 	} // if (obhilfe==3)
-	if (zeighilfe(&erkl)) 
+	if (zeighilfe(&erkl)) {
+    testerg();
 		exit(1);
+}
 	lieszaehlerein();
 	if (obvi) dovi(); 
 	else if (obvs) {
@@ -5036,20 +4849,20 @@ void hcl::virtVorgbAllg()
 // wird aufgerufen in lauf
 void hcl::virtinitopt()
 {
-	opn<<optcl(/*pname*/"language",/*pptr*/&langu,/*art*/psons,T_lg_k,T_language_l,/*TxBp*/&Txk,/*Txi*/T_sprachstr,/*wi*/1,/*Txi2*/-1,/*rottxt*/0,/*wert*/0);
-	opn<<optcl(/*pname*/"language",/*pptr*/&langu,/*art*/psons,T_lang_k,T_lingue_l,/*TxBp*/&Txk,/*Txi*/-1,/*wi*/1,/*Txi2*/-1,/*rottxt*/0,/*wert*/0);
+	opn<<optcl(/*pname*/"language",/*pptr*/&langu,/*art*/psons,T_lg_k,T_language_l,/*TxBp*/&Txk,/*Txi*/T_sprachstr,/*wi*/1,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
+	opn<<optcl(/*pname*/"language",/*pptr*/&langu,/*art*/psons,T_lang_k,T_lingue_l,/*TxBp*/&Txk,/*Txi*/-1,/*wi*/1,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
 	opn<<optcl(/*pname*/"",/*pptr*/&obverb,/*art*/puchar,T_v_k,T_verbose_l,/*TxBp*/&Txk,/*Txi*/T_Bildschirmausgabe_gespraechiger,/*wi*/1,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
-	opn<<optcl(/*pname*/"logvz",/*pptr*/&logvz,/*art*/pverz,T_lvz_k,T_logvz_l,/*TxBp*/&Txk,/*Txi*/T_waehlt_als_Logverzeichnis_pfad_derzeit,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/0);
-	opn<<optcl(/*pname*/"logdname",/*pptr*/&logdname,/*art*/psons,T_ld_k,T_logdname_l,/*TxBp*/&Txk,/*Txi*/T_logdatei_string_im_Pfad,/*wi*/0,/*Txi2*/T_wird_verwendet_anstatt,/*rottxt*/&logvz,/*wert*/0);
+	opn<<optcl(/*pname*/"logvz",/*pptr*/&logvz,/*art*/pverz,T_lvz_k,T_logvz_l,/*TxBp*/&Txk,/*Txi*/T_waehlt_als_Logverzeichnis_pfad_derzeit,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
+	opn<<optcl(/*pname*/"logdname",/*pptr*/&logdname,/*art*/psons,T_ld_k,T_logdname_l,/*TxBp*/&Txk,/*Txi*/T_logdatei_string_im_Pfad,/*wi*/0,/*Txi2*/T_wird_verwendet_anstatt,/*rottxt*/&logvz,/*wert*/-1);
 	opn<<optcl(/*pname*/"oblog",/*pptr*/&oblog,/*art*/pint,T_l_k,T_log_l,/*TxBp*/&Txk,/*Txi*/T_protokolliert_ausfuehrlich_in_Datei,/*wi*/1,/*Txi2*/T_sonst_knapper,/*rottxt*/&loggespfad,/*wert*/1);
 	opn<<optcl(/*pname*/"",/*pptr*/&logdateineu,/*art*/puchar,T_ldn_k,T_logdateineu_l,/*TxBp*/&Txk,/*Txi*/T_logdatei_vorher_loeschen,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
-	opn<<optcl(/*pname*/"",/*pptr*/&akonfdt,/*art*/pfile,T_kd_k,T_konfdatei_l,/*TxBp*/&Txk,/*Txi*/T_verwendet_Konfigurationsdatei_string_anstatt,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/0);
+	opn<<optcl(/*pname*/"",/*pptr*/&akonfdt,/*art*/pfile,T_kd_k,T_konfdatei_l,/*TxBp*/&Txk,/*Txi*/T_verwendet_Konfigurationsdatei_string_anstatt,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
 	opn<<optcl(/*pname*/"",/*pptr*/&obhilfe,/*art*/puchar,T_h_k,T_hilfe_l,/*TxBp*/&Txk,/*Txi*/T_Erklaerung_haeufiger_Optionen,/*wi*/255,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
 	opn<<optcl(/*pname*/"",/*pptr*/&obhilfe,/*art*/puchar,T_lh_k,T_lhilfe_l,/*TxBp*/&Txk,/*Txi*/T_Erklaerung_aller_Optionen,/*wi*/255,/*Txi2*/-1,/*rottxt*/0,/*wert*/2);
 	opn<<optcl(/*pname*/"",/*pptr*/&obhilfe,/*art*/puchar,T_fgz_k,T_fgz_l,/*TxBp*/&Txk,/*Txi*/-1,/*wi*/255,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
 	opn<<optcl(/*pname*/"",/*pptr*/&obhilfe,/*art*/puchar,T_sh,T_standardhilfe,/*TxBp*/&Txk,/*Txi*/-1,/*wi*/255,/*Txi2*/-1,/*rottxt*/0,/*wert*/3);
 	opn<<optcl(/*pname*/"",/*pptr*/&obhilfe,/*art*/puchar,T_libtest,T_libtest,/*TxBp*/&Txk,/*Txi*/-1,/*wi*/255,/*Txi2*/-1,/*rottxt*/0,/*wert*/4);
-	opn<<optcl(/*pname*/"cronminut",/*pptr*/&cronminut,/*art*/psons,T_cm_k,T_cronminuten_l,/*TxBp*/&Txk,/*Txi*/T_Alle_wieviel_Minuten_soll,/*wi*/1,/*Txi2*/T_aufgerufen_werden_0_ist_gar_nicht,/*rottxt*/&meinname,/*wert*/0);
+	opn<<optcl(/*pname*/"cronminut",/*pptr*/&cronminut,/*art*/pdez,T_cm_k,T_cronminuten_l,/*TxBp*/&Txk,/*Txi*/T_Alle_wieviel_Minuten_soll,/*wi*/1,/*Txi2*/T_aufgerufen_werden_0_ist_gar_nicht,/*rottxt*/&meinname,/*wert*/-1);
 	opn<<optcl(/*pname*/"",/*pptr*/&obvi,/*art*/puchar,T_vi_k,T_vi_l,/*TxBp*/&Txk,/*Txi*/T_Konfigurationsdatei,/*wi*/0,/*Txi2*/T_Logdatei_usw_bearbeiten_sehen,/*rottxt*/&akonfdt,/*wert*/1);
 	opn<<optcl(/*pname*/"",/*pptr*/&obvs,/*art*/puchar,T_vs_k,T_vs_l,/*TxBp*/&Txk,/*Txi*/T_Quelldateien_in,/*wi*/0,/*Txi2*/T_bearbeiten_sehen,/*rottxt*/&instvz,/*wert*/1);
 	opn<<optcl(/*pname*/"autoupd",/*pptr*/&autoupd,/*art*/puchar,T_autoupd_k,T_autoupd_l,/*TxBp*/&Txk,/*Txi*/T_Programm_automatisch_aktualisieren,/*wi*/1,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
@@ -5833,8 +5646,8 @@ string WPcl::holstr()
 			 break;
 		 case wdat:
 			 thr_strftime((struct tm*)pptr,&rstr);
-	 }
- }
+	 } // 	 switch (wart)
+ } //  if (pptr)
  return rstr;
 } // string WPcl::holstr()
 
@@ -5853,7 +5666,7 @@ string optcl::holstr()
 			case puchar:
 				rstr=ltoan(*(uchar*)pptr);
 				break;
-			case psons: case pverz: case pfile:
+			case psons: case pdez: case pverz: case pfile:
 				rstr=*(string*)pptr;
 				break;
 			case ppwd:
@@ -5861,8 +5674,8 @@ string optcl::holstr()
 				break;
 			case pdat:
 				thr_strftime((struct tm*)pptr,&rstr);
-		}
-	}
+		} // 		switch (art)
+	} // 	if (pptr)
 	return rstr;
 } // string optcl::holstr()
 
@@ -5875,6 +5688,8 @@ string& WPcl::machbemerk(Sprache lg,binaer obfarbe/*=wahr*/)
 string& optcl::machbemerk(Sprache lg,binaer obfarbe/*=wahr*/)
 {
 	static const string nix; // =""
+	const uchar obnum=(art==plong||art==pint||art==puchar);
+	const uchar geheim=(art==ppwd);
 	bemerk.clear();
 	if (TxBp) {
 		if (Txi!=-1) {
@@ -5884,9 +5699,9 @@ string& optcl::machbemerk(Sprache lg,binaer obfarbe/*=wahr*/)
 				if (rottxt) bemerk+=(obfarbe?blaus:nix)+*rottxt+(obfarbe?schwarz:nix);
 				if (Txi2!=-1) bemerk+=(const char*)hilf[Txi2][lg]; 
 				////        if (zptr && !strstr(pname,"pwd")) bemerk+=" '"+(obfarbe?blaus:nix)+*zptr+(obfarbe?schwarz:nix)+"'"; // pname==0
-				if ((art==psons||art==plong||art==pint||art==puchar||art==pverz||art==pfile)&&pptr/*&&bemerk.find("assw")==string::npos*/) 
-					bemerk+=" '"+(obfarbe?blaus:nix)+(art==plong||art==pint||art==puchar?ltoan(art==plong?*(long*)pptr:art==pint?*(int*)pptr:*(uchar*)pptr):*(string*)pptr)+(obfarbe?schwarz:nix)+"'";
 				if (obno) bemerk+=(obfarbe?violetts:nix)+Txk[T_oder_nicht]+(obfarbe?schwarz:nix);
+				if (!geheim && pptr/*&&bemerk.find("assw")==string::npos*/) 
+					bemerk+=string(" (")+(obnum?"":"'")+(obfarbe?blaus:nix)+(obnum?ltoan(art==plong?*(long*)pptr:art==pint?*(int*)pptr:*(uchar*)pptr):*(string*)pptr)+(obfarbe?schwarz:nix)+(obnum?"":"'")+")";
 			} // if (TxBp->TCp[Txi][lg])
 		} // if (Txi!=-1)
 	} // if (TxBp)
@@ -5919,10 +5734,9 @@ int optcl::setzstr(const char* neuw,uchar *const obzuschreib/*=0*/,const uchar a
 		string neuws;
 		int neui;
 		long neul;
-		//// <<"Hier art: "<<(int)art<<"!!!!!!!!!!!!!!!!!!!"<<endl;
 		switch (art) {
 			// und das ein "sonstiger Parameter" ist, ...
-			case psons:
+			case psons: case pdez:
 				//// <<"*(string*)pptr: "<<*(string*)pptr<<", neuw: "<<neuw<<endl;
 				// ... dann zuweisen
 				if (*(string*)pptr!=neuw) {
@@ -5932,7 +5746,10 @@ int optcl::setzstr(const char* neuw,uchar *const obzuschreib/*=0*/,const uchar a
 							*obzuschreib=1; 
 						}
 					} else {
-						*(string*)pptr=neuw;
+						if (art==pdez && !isnumeric(neuw))
+							wiefalsch=1;
+						else
+							*(string*)pptr=neuw;
 					}
 				}
 				break;
@@ -6054,7 +5871,7 @@ int optcl::pzuweis(const char *nacstr, const uchar vgegenteil/*=0*/, const uchar
 	int wiefalsch=0;
 	gegenteil=vgegenteil;
 	nichtspeichern=vnichtspeichern;
-  if (iwert) {
+  if (iwert!=-1) {
 		setzwert();
 	} else {
 		//// <<rot<<"nacstr: "<<nacstr<<schwarz<<endl;
@@ -6071,6 +5888,7 @@ int optcl::pzuweis(const char *nacstr, const uchar vgegenteil/*=0*/, const uchar
 					Log(drots+Txk[T_Fehlender_Parameter_Datum_zu]+(*TxBp)[kurzi]+Txk[T_oder]+(*TxBp)[langi]+"!"+schwarz,1,1);
 					break;
 				case psons:
+				case pdez:
 				case ppwd:
 					Log(drots+Txk[T_Fehlender_Parameter_string_zu]+(*TxBp)[kurzi]+Txk[T_oder]+(*TxBp)[langi]+"!"+schwarz,1,1);
 					break;
@@ -6095,8 +5913,9 @@ int optcl::pzuweis(const char *nacstr, const uchar vgegenteil/*=0*/, const uchar
 optcl::optcl(const string& pname,const void* pptr,const par_t art, const int kurzi, const int langi, TxB* TxBp, const long Txi,
 		const uchar wi, const long Txi2, const string* const rottxt, const int iwert):
 	pname(pname),pptr(pptr),art(art),kurzi(kurzi),langi(langi),TxBp(TxBp),Txi(Txi),wi(wi),Txi2(Txi2),rottxt(rottxt),iwert(iwert),
-	obno(pname.empty())
-{}
+	obno(iwert!=-1)
+{
+}
 
 int hcl::Log(const string& text,const bool oberr/*=0*/,const short klobverb/*=0*/) const
 {
