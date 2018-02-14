@@ -6319,9 +6319,10 @@ confdcl::confdcl(const string& fname, int obverb):obgelesen(0),obzuschreib(0)
 } // confdcl::confdcl
 
 // Achtung: Wegen der Notwendigkeit zur Existenz der Datei zum Aufruf von setfacl kann die Datei erstellt werden!
-int confdcl::lies(const string& fname, int obverb)
+int confdcl::lies(const string& vfname, int obverb)
 {
-	caus<<violett<<"lies: "<<blau<<fname<<schwarz<<endl;
+	caus<<violett<<"lies: "<<blau<<vfname<<schwarz<<endl;
+  fname=vfname;
 	int erg=0;
 	if (fname.empty()) {
 		erg=2;

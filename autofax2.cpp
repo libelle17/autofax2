@@ -222,6 +222,8 @@ enum T_
 	T_haengean,
 	T_an_mdpp,
 	T_pruefsfftobmp,
+	T_clieskonf,
+	T_pruefmodcron,
 	T_MAX //α
 }; // enum T_ //ω
 // fuer verschiedene Sprachen //α
@@ -660,6 +662,10 @@ char const *DPROG_T[T_MAX+1][SprachZahl]={
 	{" an: ",": "},
 	// T_pruefsfftobmp
 	{"pruefsfftobmp()","checksfftobmp()"},
+	// T_clieskonf
+	{"clieskonf()","creadconf()"},
+	// T_pruefmodcron
+	{"pruefmodcron()","checkmodcron()"},
 	{"",""} //α
 }; // char const *DPROG_T[T_MAX+1][SprachZahl]=
 
@@ -885,6 +891,24 @@ void pruefblack(int obverb, int oblog)
 	} // if (blacki.is_open())  else
 } // void pruefblack(int obverb, int oblog) 
 
+// wird aufgerufen in pruefsfftobmp und empfcapi
+void hhcl::instsfftobmp()
+{
+	uchar obboostda=!linstp->doggfinst("boost-devel",obverb,oblog);
+	if (obboostda) {
+		const string sff="sfftobmp_copy";
+		holvomnetz(sff);
+		const string vorcfg="sed -i.bak -e \"s/^[[:blank:]]*\\(char \\*shortopts.*\\)/const \\1/;"
+			"s/m_vFiles.push_back( fs::path(m_argv\\[n\\].*/m_vFiles.push_back( fs::path(string(m_argv[n])\\/*, fs::native*\\/) );"
+			"/\" src/cmdline.cpp"
+			"&& sed -i.bak -e \"s/lboost_filesystem-mt/lboost_filesystem/g\" src/Makefile.in "
+			////                      " && sed -i.bak -e 's/-${am__api_version}//g' aclocal.m4 "
+			////                      " && sed -i.bak -e 's/-${am__api_version}//g' configure "
+			"&& sed -i.bak -e \"s/\\(-lboost_filesystem\\)/-lboost_system \\1/g\" src/Makefile.in ";
+		kompiliere(sff,s_gz,vorcfg);
+	} // 	if (obboostda)
+} // void instsfftobmp
+
 
 zielmustercl::zielmustercl(const char * const vmuster,const char * const vziel):muster(vmuster),ziel(vziel)
 {
@@ -982,9 +1006,10 @@ void hhcl::liescapiconf()
 	if (!cfaxconfdt.empty()) {
 		cfcnfCfuell();
 		pruefverz(dir_name(cfaxconfdt),obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/0);
-		confdcl cfaxc(cfaxconfdt,obverb);
-		cfaxc.auswert(&cfcnfC);
-		cfaxc.Abschn_auswert(obverb);
+		if (cfaxcp) delete cfaxcp;
+		cfaxcp = new confdcl(cfaxconfdt,obverb);
+		cfaxcp->auswert(&cfcnfC);
+		cfaxcp->Abschn_auswert(obverb);
 #ifdef false
 		cfcnfA.init(10,"spool_dir","fax_user_dir","send_tries","send_delays","outgoing_MSN",
 				"dial_prefix","fax_stationID","fax_headline","fax_email_from","outgoing_timeout");
@@ -1001,9 +1026,9 @@ void hhcl::liescapiconf()
 			//   sonst cuser setzen
 			////    cuser="";
 		string ncuser;
-		for(size_t i=cfaxc.zn.size();i>0;) {
+		for(size_t i=cfaxcp->zn.size();i>0;) {
 			char buf[250]={0};
-			if ((sscanf(cfaxc.zn[--i].c_str(),"[%[^]]]",buf))>0) 
+			if ((sscanf(cfaxcp->zn[--i].c_str(),"[%[^]]]",buf))>0) 
 				if (strcasecmp(buf,"global")) {
 					if (!cuser.empty()) {
 						if (cuser==buf) {
@@ -1013,7 +1038,7 @@ void hhcl::liescapiconf()
 					} //           if (!cuser.empty())
 					if (ncuser.empty()) ncuser=buf; // nehme den letzten besten user
 				} //         if (strcasecmp(buf,"global"))
-		} //     for(size_t i=cfaxc.zn.size();i>0;)
+		} //     for(size_t i=cfaxcp->zn.size();i>0;)
 		if (cuser.empty()) 
 			cuser=ncuser;
 		if (cuser.empty()) {
@@ -1435,6 +1460,106 @@ void hhcl::capisv()
 {
 	if (!scapis) scapis=new servc("","capisuite");
 } // void hhcl::capisv(obverb,oblog)
+
+// wird aufgerufen in: pruefcapi
+// lieftert 0, wenn die Dienstdatei da (erg)
+// setzt csfehler, wenn Dienst nicht laeuft
+int hhcl::cservice()
+{
+	Log(violetts+"cservice()"+schwarz);
+	int csfehler=0;
+	int erg=-1;
+	string cspfad;
+	if (obprogda("capisuite",obverb,oblog,&cspfad)) {
+		erg=0;
+		scapis->stopggf(obverb,oblog,1); 
+		const string vz="/etc/init.d",datei="/capisuite",ziel="/etc/ausrangiert";
+		if (findv==1) {
+			erg=systemrueck(/*//sudc+"sh -c 'systemctl stop capisuite; pkill capisuite >/dev/null 2>&1; pkill -9 capisuite >/dev/null 2>&1; "*/
+					"cd "+vz+
+					" && [ $(find . -maxdepth 1 -name \"capisuite\" 2>/dev/null | wc -l) -ne 0 ]"
+					" &&{ "+sudc+"mkdir -p "+ziel+"&&"+sudc+"mv -f "+vz+datei+" "+ziel+"; }||:"/*//'*/,obverb,oblog,/*rueck=*/0,/*obsudc=*/0);
+		} else {
+			svec qrueck;
+			findfile(&qrueck,findv,obverb,oblog,0,vz,/*muster=*/datei+"$",1,1,Fol_Dat);
+			if (qrueck.size()) {
+				pruefverz(ziel,obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/1,/*besitzer=*/"",/*benutzer=*/cuser);
+				systemrueck("mv -f "+vz+datei+" "+ziel,obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
+			} // 			if (qrueck.size())
+		} // 		if (findv==1)
+		// entweder Type=forking oder Parameter -d weglassen; was besser ist, weiss ich nicht
+		csfehler+=!scapis->spruef("Capisuite",0,meinname,cspfad/*+" -d"*/,"","",linstp,obverb,oblog);
+		if (obverb) Log("csfehler: "+gruens+ltoan(csfehler)+schwarz);
+		////    return csfehler;
+	} // if (obprogda("capisuite",obverb,oblog,&cspfad)) 
+	return erg;
+} // int hhcl::cservice()
+
+// in pruefcapi
+void hhcl::clieskonf()
+{
+	Log(violetts+Tx[T_clieskonf]+schwarz+", cfaxcp->name: "+violett+(cfaxcp?cfaxcp->fname:"0")+schwarz);
+	if (fax_stationID!="+"+countrycode+" "+citycode+" "+msn  
+			|| outgoing_MSN!=msn  
+			|| fax_headline!=cFaxUeberschrift  
+		 ) {
+		capizukonf=1;
+	}
+	int richtige=0;
+	if (cfaxcp) {
+		cfaxcp->Abschn_auswert(obverb);
+		for(size_t i=0;i<cfaxcp->abschv.size();i++) {
+			if (cfaxcp->abschv[i].aname==cuser) {
+				richtige=0;
+				//// <<"abschv["<<i<<"].av.size() "<<cfaxcp->abschv[i].av.size()<<endl;
+				for(size_t j=0;j<cfaxcp->abschv[i].av.size();j++) {
+					if (cfaxcp->abschv[i].av[j].pname=="fax_numbers") {if (cfaxcp->abschv[i].av[j].wert==outgoing_MSN) richtige++;}
+					else if (cfaxcp->abschv[i].av[j].pname=="fax_stationID") {if (cfaxcp->abschv[i].av[j].wert==fax_stationID) richtige++;}
+					else if (cfaxcp->abschv[i].av[j].pname=="fax_headline") {if (cfaxcp->abschv[i].av[j].wert==fax_headline) richtige++;}
+					else if (cfaxcp->abschv[i].av[j].pname=="fax_email_from") {if (cfaxcp->abschv[i].av[j].wert==fax_email_from) richtige++;}
+				} //         for(size_t j=0;j<cfaxcp->abschv[i].av.size();j++)
+				break;
+			} //       if (cfaxcp->abschv[i].aname==cuser)
+		} //     for(size_t i=0;i<cfaxcp->abschv.size();i++)
+		if (richtige!=4) {
+			capizukonf=1;
+		} //     if (richtige!=4)
+	} //   if (cfaxcp)
+	svec ckzlrueck;
+	systemrueck("grep connect_faxG3 `grep incoming_script= "+ccapiconfdt+" 2>/dev/null|cut -d'\"' -f2 2>/dev/null`"
+			"|sed 's/.*headline//;s/^,//;s/).*//'",obverb,oblog,&ckzlrueck,/*obsudc=*/0,/*verbergen=*/1);
+	if (ckzlrueck.size()) {
+		if (cklingelzahl!=ckzlrueck[0]) {
+			//// <<", ckzlrueck[0]: '"<<ckzlrueck[0]<<"', cklingelzahl: '"<<cklingelzahl<<"'"<<endl;
+			capizukonf=1;
+		}
+	} else {
+		capizukonf=1;
+	} // 	if (ckzlrueck.size()) else
+} // void hhcl::clieskonf()
+
+// wird aufgerufen in: pruefcapi
+void hhcl::pruefmodcron()
+{
+	//  ::Log(violetts+Tx[T_pruefmodcron]+schwarz,obverb?obverb-1:0,oblog);
+	Log(violetts+Tx[T_pruefmodcron]+schwarz);
+	const string mp="@reboot /sbin/modprobe ";
+	const string mps[]={mp+"capi",mp+"fcpci"};
+	setztmpcron();
+	for(uchar ru=0;ru<sizeof mps/sizeof *mps;ru++) {
+		if (systemrueck("bash -c 'grep \""+mps[ru]+"\" -q <("+sudc+"crontab -l 2>/dev/null)'",obverb,oblog,/*rueck=*/0,/*obsudc=*/0)) {
+			svec rueck;
+			const string bef="crontab -l 2>/dev/null >"+tmpcron+";echo \""+mps[ru]+"\">>"+tmpcron+";crontab "+tmpcron;
+			if (!systemrueck(bef,obverb,oblog,&rueck,/*obsudc=*/1)) {
+				////    for(size_t znr=0;znr<rueck.size();znr++) { ::Log(rueck[znr],1+obverb,oblog); } //     for(size_t znr=0;znr<rueck.size();znr++)
+				const string befehl=sudc+"bash -c 'grep \""+mps[ru]+"\" -q <(crontab -l 2>/dev/null)&&"
+					"{ crontab -l 2>/dev/null|sed \"/"+ersetzAllezu(mps[ru],"/","\\/")+"/d\">"+tmpcron+";crontab "+tmpcron+";};:'";
+				anfgg(unindt,befehl,bef,obverb,oblog);
+			} //if (!systemrueck("("+sudc+"crontab -l 2>/dev/null >"+tmpcron+";echo \""+mps[ru]+"\">>"+tmpcron+";"+sudc+"crontab "+tmpcron+")",obverb,oblog,&rueck))
+		} // 		if (systemrueck("bash -c 'grep \""+mps[ru]+"\" -q <("+sudc+"crontab -l 2>/dev/null)'",obverb,oblog))
+	} //   for(uchar ru=0;ru<sizeof mps/sizeof *mps;ru++)
+} // void pruefmodcron(int obverb, int oblog)
+
 
 // wird aufgerufen in: untersuchespool, main
 // rueckgabe: wie obcapi eingestellt sein sollte
@@ -1910,18 +2035,19 @@ schluss: // sonst eine sonst sinnlose for-Schleife mehr oder return mitten aus d
 void hhcl::dovc()
 {
 	pruefcapi();
+	string zeig;
 	cmd=edit;
-	viadd(&cmd,&cfaxconfdt);
-	viadd(&cmd,&ccapiconfdt);
-	viadd(&cmd,&rulesdt);
-	viadd(&cmd,&blackdt);
-	if (scapis) viadd(&cmd,scapis->systemd);
-	if (!cdn[0].empty()) viadd(&cmd,cdn[0]); // incoming_script
-	if (!cdn[3].empty()) viadd(&cmd,cdn[3]); // idle_script
+	viadd(&cmd,&zeig,cfaxconfdt);
+	viadd(&cmd,&zeig,ccapiconfdt);
+	viadd(&cmd,&zeig,rulesdt);
+	viadd(&cmd,&zeig,blackdt);
+	if (scapis) viadd(&cmd,&zeig,scapis->systemd);
+	if (!cdn[0].empty()) viadd(&cmd,&zeig,cdn[0]); // incoming_script
+	if (!cdn[3].empty()) viadd(&cmd,&zeig,cdn[3]); // idle_script
 	string erg;
-	if (!cdn[1].empty()) viadd(&cmd,cdn[1],1,1,1); // log_file
-	if (!cdn[2].empty()) viadd(&cmd,cdn[2],1,1,1); // log_error
-	vischluss(erg);
+	if (!cdn[1].empty()) viadd(&erg,&zeig,cdn[1],1,1,1); // log_file
+	if (!cdn[2].empty()) viadd(&erg,&zeig,cdn[2],1,1,1); // log_error
+	vischluss(erg,zeig);
 } // void hhcl::dovc()
 
 
@@ -2098,7 +2224,7 @@ void hhcl::virtschlussanzeige()
 	dhcl::virtschlussanzeige(); //α
 } // void hhcl::virtschlussanzeige
  //ω
-
+#if false
 // wird aufgerufen in: main
 void hhcl::autofkonfschreib()
 {
@@ -2131,6 +2257,12 @@ void hhcl::autofkonfschreib()
 		multischlschreib(akonfdt, ggcnfAp, sizeof ggcnfAp/sizeof *ggcnfAp, mpfad);
 	} // if (rzf||obkschreib) 
 } // void hhcl::autofkonfschreib()
+#endif
+
+hhcl::~hhcl() //α
+{ //ω
+	if (cfaxcp) delete cfaxcp;
+} //α //ω
 
 int main(int argc,char** argv) //α
 {

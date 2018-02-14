@@ -843,16 +843,17 @@ class absch
 
 // Konfigurationsdatei-Klasse, Nachfolger von confdat
 struct confdcl {
-		svec zn;
-		uchar obgelesen;
-		uchar obzuschreib;
-    size_t richtige;
-    vector<absch> abschv;
-		confdcl(const string& fname, int obverb);
-		confdcl();
-		int lies(const string& fname, int obverb);
-    template <typename SCL> void auswert(schAcl<SCL> *sA, int obverb=0, const char tz='=',const uchar mitclear=1);
-    void Abschn_auswert(int obverb=0, const char tz='=');
+	string fname; // Dateiname
+	svec zn;
+	uchar obgelesen;
+	uchar obzuschreib;
+	size_t richtige;
+	vector<absch> abschv;
+	confdcl(const string& fname, int obverb);
+	confdcl();
+	int lies(const string& vfname, int obverb);
+	template <typename SCL> void auswert(schAcl<SCL> *sA, int obverb=0, const char tz='=',const uchar mitclear=1);
+	void Abschn_auswert(int obverb=0, const char tz='=');
 };
 
 // fuer Commandline-Optionen
@@ -1241,8 +1242,8 @@ class hcl
 	private:
 		void tucronschreib(const string& zsauf,const uchar cronzuplanen,const string& cbef);
 		void dodovi(const svec d1,const svec d2);
-		void vischluss(string& erg,string& zeig);
 	protected:
+		void vischluss(string& erg,string& zeig);
 		void holbefz0(const int argc, const char *const *const argv);
     virtual void virtlgnzuw(); // wird aufgerufen in: virtrueckfragen, parsecl, lieskonfein, hcl::hcl nach holsystemsprache
     int pruefinstv();

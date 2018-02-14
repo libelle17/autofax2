@@ -53,12 +53,15 @@ class hhcl:public dhcl
     string anstr; // ' an '
     string undstr;  //  'und'
 
+    uchar capizukonf=0; // capi zu konfigurieren
+    uchar hylazukonf=0; // hyla zu konfigurieren
 		string findvers; // find-Version (1=linux fund 2=intern mit readdir, 3=intern mit nftw 
 		int ifindv; // integer-Variante der find-Version
     string dbq; // Datenbank
     string muser; // Benutzer fuer Mysql/MariaDB
 
     servc *sfaxq=0, *shfaxd=0, *shylafaxd=0, *sfaxgetty=0, *scapis=0;
+    confdcl *cfaxcp=0; // Zeiger auf ausgelesene /etc/capisuite/fax.conf
 		const string s1="mv -n ";
 		//		const string s2="/2200/* ";
 		//schlArr hylcnfA; // fuer q1234 o.ae.
@@ -177,9 +180,13 @@ class hhcl:public dhcl
 	void konfcapi(); // aufgerufen in pruefcapi
 	void capisv();
 	int pruefcapi();
+	int cservice();
+	void clieskonf();
 	void pruefcvz();
 	void pruefsfftobmp();
+	void instsfftobmp();
 	void nextnum();
+	void pruefmodcron();
 	void dovc();
 	void autofkonfschreib();
  protected: //α
@@ -202,4 +209,5 @@ class hhcl:public dhcl
 	void virtschlussanzeige(); //ω
  public: //α
   hhcl(const int argc, const char *const *const argv);
+	~hhcl();
 }; // class hhcl //ω
