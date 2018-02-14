@@ -662,7 +662,8 @@ struct WPcl { // Wertepaarklasse
 		uchar eingetragen; // Hilfsvariable zur genau einmaligen Eintragung einer Option mit name=pname in Konfigurationsdatei
 		WPcl(const string& pname,const void* pptr,war_t wart);
 		WPcl(const string& pname); // wird benoetigt in: schAcl::init(size_t vzahl, ...)
-		int setzstr(const char* neuw,uchar *const obzuschreib=0,const uchar ausDatei=0);
+		int setzstr(const string& neus,uchar *const obzuschreib=0,const uchar ausDatei=0);
+		int setzstr(const char* const neuw,uchar *const obzuschreib=0,const uchar ausDatei=0);
 		string holstr();
 		uchar einzutragen(schAcl<WPcl> *schlp);
     void tusetzbemerkwoher(const string& ibemerk,const uchar vwoher);
@@ -888,7 +889,7 @@ struct optcl
 		optcl(const string& pname,const void* pptr,const par_t art, const int kurzi, const int langi, TxB* TxBp, const long Txi,
 				         const uchar wi, const long Txi2, const string* const rottxt, const int iwert);
 		void setzwert();
-		int setzstr(const char* neuw,uchar *const obzuschreib=0,const uchar ausDatei=0);
+		int setzstr(const char* const neuw,uchar *const obzuschreib=0,const uchar ausDatei=0);
     void tusetzbemerkwoher(const string& ibemerk,const uchar vwoher);
 		string holstr();
 		void oausgeb();

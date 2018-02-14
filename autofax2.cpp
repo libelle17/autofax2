@@ -166,6 +166,62 @@ enum T_
 	T_vh_k,
 	T_vh_l,
 	T_Hylafax_Modem_Konfigurationsdatei_bearbeiten,
+	T_konfcapi,
+	T_Capisuite_ist_offenbar_noch_nicht_richtig_konfiguriert,
+	T_ist_Apostroph,
+	T_Die_Einstellungen_koennen_spaeter_in,
+	T_geaendert_werden,
+	T_Faxnr_die_zum_Adressaten_gesandt_wird_bis_20_Zeichen_nur_plus_und_Ziffern,
+	T_ausgehende_Multiple_Subscriber_Number_Faxnummer_ohne_Vorwahl,
+	T_Amtsholung_ueblicherweise_kk_oder_0,
+	T_Faxueberschrift,
+	T_Adressat_empfangener_Faxe_die_ueber_Email_verteilt_werden,
+	T_Zahl_der_Sendeversuche,
+	T_kommagetrennte_Liste_mit_Sekundenabstaenden_zwischen_Sendeversuchen,
+	T_Geduld_bis_zum_Verbindungsaufbau_in_s,
+	T_komma_wert,
+	T_komma_Altwert,
+	T_Verschiebe,
+	T_Fehler_beim_Verschieben,
+	T_FehlerbeimUmbenennenbei,
+	T_Kopiere_Doppelpunkt,
+	T_Fehler_beim_Kopieren,
+	T_Dateiname,
+	T_schlechtgeformt,
+	T_zielname_erstes_Ziel,
+	T_zielname_Ausweichziel,
+	T_Quelle_und_Ziel_gleich,
+	T_entspricht,
+	T_entsprichtnicht,
+	T_entsprichtdoch,
+	T_Muster_Doppelpunkt,
+	T_pruefcvz,
+	T_pruefcapi,
+	T_capilaeuft,
+	T_Module_geladen,
+	T_Lade_Capi_Module,
+	T_Kernelversion,
+	T_KannFcpciNInstVerwCapiNicht,
+	T_eine_neuere_Version_als_die_des_aktuellen_Kernels_installiert_worden_sein_dann_bitte_erneutes_Systemupdate,
+	T_nichtgefFcpciMfdKinstallierwerden,
+	T_Zur_Inbetriebnahme_der_Capisuite_muss_das_Modul_capi_geladen_werten,
+	T_Bitte_zu_dessen_Verwendung_den_Rechner_neu_starten,
+	T_aufrufen,
+	T_Moment_muss_Kernel_herunterladen,
+	T_Der_Kernel_hat_sich_offenbar_seit_dem_Einloggen_von,
+	T_nach_,
+	T_verjuengt_Bitte_den_Rechner_neu_starten_und_dann_mich_nochmal_aufrufen,
+	T_Konnte,
+	T_nichtstarten,
+	T_StarteCapisuite,
+	T_Capisuite_gestartet,
+	T_konntecapisuiteservice,
+	T_malnichtstartenverwN,
+	T_pruefrules,
+	T_pruefblack,
+	T_haengean,
+	T_an_mdpp,
+	T_pruefsfftobmp,
 	T_MAX //α
 }; // enum T_ //ω
 // fuer verschiedene Sprachen //α
@@ -484,6 +540,126 @@ char const *DPROG_T[T_MAX+1][SprachZahl]={
 	{"vh","vh"},
 	// T_Hylafax_Modem_Konfigurationsdatei_bearbeiten
 	{"Hylafax-Modem-Konfigurationsdatei bearbeiten (beenden mit ':qa')","edit hylafax modem configuration file (finish with ':qa')"},
+	// T_konfcapi
+	{"konfcapi()","confcapi()"},
+	// T_Capisuite_ist_offenbar_noch_nicht_richtig_konfiguriert
+	{"Capisuite ist offenbar noch nicht konfiguriert (","Capisuite seems not to be configured correcty ("},
+	// T_ist_Apostroph,
+	{" ist '"," is '"},
+	// T_Die_Einstellungen_koennen_spaeter_in,
+	{" Die Einstellungen koennen spaeter in '"," The settings can later be modified in '"},
+	// T_geaendert_werden,
+	{"' geaendert werden.","'"},
+	// T_Faxnr_die_zum_Adressaten_gesandt_wird_bis_20_Zeichen_nur_plus_und_Ziffern,
+	{"Faxnr., die zum Adressaten gesandt wird (bis 20 Zeichen, nur '+' und Ziffern)",
+		"Fax number which is sent to the addressee (up to 20 characters, only '+' and numerals)"},
+	// T_ausgehende_Multiple_Subscriber_Number_Faxnummer_ohne_Vorwahl,
+	{"hinausgehende 'Multiple Subscriber Number' (Faxnummer ohne Vorwahl)","outgoing 'multiple subscriber number' (fax number without prefix)"},
+	// T_Amtsholung_ueblicherweise_kk_oder_0,
+	{"Amtsholung, ueblicherweise '' oder '0'","outside line access, typically '' or '0'"},
+	// T_Faxueberschrift,
+	{"Faxueberschrift","fax headline"},
+	// T_Adressat_empfangener_Faxe_die_ueber_Email_verteilt_werden,
+	{"Adressat empfangener Faxe, die ueber Email verteilt werden","addressee of received faxes which are distributed via email"},
+	// T_Zahl_der_Sendeversuche,
+	{"Zahl der Sendeversuche","Number of transmission tries"},
+	// T_kommagetrennte_Liste_mit_Sekundenabstaenden_zwischen_Sendeversuchen,
+	{"kommagetrennte Liste mit Sekundenabstaenden zwischen Sendeversuchen","comma separated list with distances between transmission tries"},
+	// T_Geduld_bis_zum_Verbindungsaufbau_in_s,
+	{"Geduld bis zum Verbindungsaufbau in s","timeout for connection establishment"},
+	// T_komma_wert,
+	{", wert: ",", value: "},
+	// T_komma_Altwert,
+	{", Altwert: ",", old value: "},
+	// T_Verschiebe
+	{"Verschiebe: '","Moving: '"},
+	// T_Fehler_beim_Verschieben
+	{"Fehler beim Verschieben ","Error while moving "},
+	// T_FehlerbeimUmbenennenbei
+	{" Fehler beim Umbenennen bei:"," Error while renaming:"},
+	// T_Kopiere_Doppelpunkt
+	{"Kopiere: '","Copying: "},
+	// T_Fehler_beim_Kopieren
+	{"Fehler beim Kopieren: ","Error while copying: "},
+	// T_Dateiname,
+	{"Dateiname ","File name "},
+	// T_schlechtgeformt
+	{" schlecht geformt!","malformed!"},
+	// T_zielname_erstes_Ziel
+	{" zielname:  erstes Ziel: '"," target name:  first target: '"},
+	// T_zielname_Ausweichziel
+	{" zielname: Ausweichziel: '"," target name:  alternate target: '"},
+	// T_Quelle_und_Ziel_gleich
+	{", Quelle und Ziel gleich",", source and target identical"},
+	// T_entspricht
+	{"' entspricht "," "},
+	// T_entsprichtnicht
+	{"nicht ","does not match to "},
+	// T_entsprichtdoch
+	{"","matches to "},
+	// T_Muster_Doppelpunkt
+	{"Muster: '","pattern: '"},
+	// T_pruefcvz
+	{"pruefcvz()","checkcdirs()"},
+	// T_pruefcapi,
+	{"pruefcapi()","checkcapi()"},
+	// T_capilaeuft
+	{"capilaeuft: ","capirunning: "},
+	// T_Module_geladen
+	{"Module geladen:","Modules loaded:"},
+	// T_Lade_Capi_Module
+	{", lade Capi-Module ...",", loading capi-modules ..."},
+	// T_Kernelversion
+	{"Kernelversion: ","Kernel version: "},
+	// T_KannFcpciNInstVerwCapiNicht
+	{"Kann Fritz-Modul fcpci nicht installieren, verwende capi nicht.\nZ.B.koennte mit ",
+		"Cannot install module fcpci for the fritz card, not utilizing capi. For example, with "},
+	// T_eine_neuere_Version_als_die_des_aktuellen_Kernels_installiert_worden_sein_dann_bitte_erneutes_Systemupdate
+	{" eine neuere Version als die des aktuellen Kernels installiert worden sein, dann bitte erneutes Systemupdate",
+		", a newer version than the current kernel could have been installed, in this case please do another system update"},
+	// T_nichtgefFcpciMfdKinstallierwerden
+	{"' nicht gefunden, fcpci muss fuer diesen Kernel installiert werden, versuche es:",
+		"' not found, fcpci must be installed for this kernel, trying to:"},
+	// T_Zur_Inbetriebnahme_der_Capisuite_muss_das_Modul_capi_geladen_werten,
+	{"Zur Inbetriebnahme der Capisuite muss das Modul capi geladen werden. Zu dessen Erstellung musste der Befehl "
+		"'sudo dnf -y install kernel-modules-extra' aufgerufen werden, der den Linux-Kernel aktualisiert hat (",
+		"In order to use the capisuite, the module capi has to be loaded. In order to generate this, the command "
+			"'sudo dnf -y install kernel-modules-extra' hat to be called, which updated the linux kernel ("},
+	// T_Bitte_zu_dessen_Verwendung_den_Rechner_neu_starten
+	{"Bitte zu dessen Verwendung den Rechner neu starten und dann nochmal ",
+		"Please reboot and afterwords call "},
+	// T_aufrufen,
+	{" aufrufen!"," again!"},
+	// T_Moment_muss_Kernel_herunterladen
+	{"Moment, muss Kernel-rpm herunterladen ...","One moment, must download kernel-rpm ..."},
+	// T_Der_Kernel_hat_sich_offenbar_seit_dem_Einloggen_von
+	{"Der Kernel hat sich offenbar seit dem Einloggen von '","The kernel seems to have been updated sind logging in from '"},
+	// T_nach_
+	{"' nach '","' to '"},
+	// T_verjuengt_Bitte_den_Rechner_neu_starten_und_dann_mich_nochmal_aufrufen
+	{"' verjuengt. \nBitte den Rechner neu starten und dann mich nochmal aufrufen!","'. \nPlease restart the pc and then call me again!"},
+	// T_Konnte
+	{"Konnte '","Could not start '"},
+	// T_nichtstarten
+	{"' nicht starten",""},
+	// T_StarteCapisuite
+	{"Starte Capisuite ...","Starting Capisuite ..."},
+	// T_Capisuite_gestartet
+	{"Capisuite gestartet.","capisuite started."},
+	// T_konntecapisuiteservice
+	{"Konnte capisuite.service ","Could not start capisuite.service "},
+	// T_malnichtstartenverwN
+	{" mal nicht starten, verwende es nicht."," times, not utilizing it."},
+	// T_pruefrules
+	{"pruefrules()","checkrules()"},
+	// T_pruefblack
+	{"pruefblack()","checkblack()"},
+	// T_haengean
+	{"haenge an ","appending to "},
+	// T_an_mdpp
+	{" an: ",": "},
+	// T_pruefsfftobmp
+	{"pruefsfftobmp()","checksfftobmp()"},
 	{"",""} //α
 }; // char const *DPROG_T[T_MAX+1][SprachZahl]=
 
@@ -491,6 +667,224 @@ class TxB Tx((const char* const* const* const*)DPROG_T);
 const char *logdt="/var/log/" DPROG "vorgabe.log";//darauf wird in kons.h verwiesen;
 
 using namespace std; //ω
+
+class lsyscl lsys;
+
+// wird aufgerufen in: verschiebe (Version 1), verschiebe (Version 2), wegfaxen
+// ziel kann Verzeichnis oder Datei sein; im ersten Fall wird eine Datei des Namens von quelle dort als *zielp verwendet
+// wenn quelle und zielp identisch sind, tut dorename() nichts, ansonsten:
+// verschiebt oder benennt um; prueft nicht auf etwa schon vorhandenes Ziel,
+// aber wenn mit 'schonda' Vorhandensein und Gültigkeit des Ziels signalisiert wird, so wird statt dessen die Quelle gelöscht,
+void dorename(const string& quelle, const string& ziel, const string& cuser/*=nix*/, uint *vfehlerp/*=0*/, uchar schonda/*=0*/,
+		int obverb/*=0*/, int oblog/*=0*/, stringstream *ausgp/*=0*/)
+{
+	const string meld=Tx[T_Verschiebe]+tuerkiss+quelle+schwarz+"'\n         -> '"+gruen+ziel+schwarz+"'";
+	unsigned fehler=0;
+	if (ausgp&&obverb) *ausgp<<meld<<endl; else Log(meld,obverb,oblog);
+	string *zielp=(string*)&ziel,ersatzziel;
+	struct stat zstat={0};
+	// wenn das Ziel ein Verzeichnis ist, Dateinamen anhaengen
+	if (!lstat(ziel.c_str(),&zstat)&&S_ISDIR(zstat.st_mode)) {
+		ersatzziel=ziel;
+		kuerzevtz(&ersatzziel);	
+		ersatzziel+=vtz;
+		ersatzziel+=base_name(quelle);
+		zielp=&ersatzziel;
+	} // 	if (!lstat(ziel.c_str(),&zstat)&&S_ISDIR(zstat.st_mode))
+	uchar obident=0;
+	if (char* act1=realpath(quelle.c_str(),NULL)) {
+		if (char* act2=realpath(zielp->c_str(),NULL)) {
+			if (!strcmp(act1,act2))
+				obident=1;
+			free(act2);
+		} // 		if (char* act2=realpath(ziel.c_str(),NULL))
+		free(act1);
+	} // 	if (char* act1=realpath(quelle.c_str(),NULL))
+	if (!obident) {
+		if (schonda) {
+			if (int erg=tuloeschen(quelle.c_str(),cuser,obverb,oblog,ausgp)) {
+				fehler+=erg;
+			}
+		} else {
+			for(uchar iru=1;iru<3;iru++) {
+				if (rename(quelle.c_str(),zielp->c_str())) {
+					if(cuser.empty()) iru++;
+					if(iru==1) {
+						setfaclggf(dir_name(quelle),obverb>1?obverb-1:0,oblog,/*obunter=*/wahr,/*mod=*/7,/*obimmer=*/1,
+								/*faclbak=*/1,/*user=*/nix,/*fake=*/0,ausgp);
+					} else if (!schonda) {
+						perror((Tx[T_Fehler_beim_Verschieben]+quelle+" -> "+ziel).c_str());
+						const string cmd=sudc+"mv \""+quelle+"\" \""+*zielp+"\"";
+						int erg=systemrueck(cmd,obverb,1);
+						fehler+=erg;
+					} // if(iru) else
+				} // if (rename(quelle.c_str(),zielp->c_str())) 
+				else break;
+			} // for(uchar iru=1;iru>-1;iru--)
+		} // 	if (schonda)
+	} // 	if (!obident)
+	if (fehler) {
+		cerr<<rot<<fehler<<schwarz<<" = "<<Tx[T_FehlerbeimUmbenennenbei]<<endl<<blau<<quelle<<schwarz<<" ->\n"<<blau<<ziel<<schwarz<<endl;
+	} // if (fehler)
+	if (vfehlerp) *vfehlerp=fehler;
+} // dorename
+
+// aufgerufen in wegfaxen, main, kopiere (2), wandle, empfhyla, empfcapi
+string kopiere(const string& qdatei, const string& zield, uint *kfehler, const uchar wieweiterzaehl, int obverb, int oblog)
+{
+	// wieweiterzaehl: 0: auf *_1_1 nach *_1, 1: auf *_2 nach *_1, 2: gar nicht
+	int fehler=0;
+	int efeh=0;	
+	////	if (is_same<decltype(zield),const std::string&>::value) KLA
+	const string dir=dir_name(zield);
+	const string base=base_name(zield);
+	string ziel;
+	uchar obgleich=0;
+	if (!base.empty() && !dir.empty()) {
+		ziel=zielname(base,dir,wieweiterzaehl,/*zieldatei=*/0,&obgleich,obverb,oblog);
+		Log(Tx[T_Kopiere_Doppelpunkt]+rots+qdatei+schwarz+"'\n         -> '"+rot+ziel+schwarz+"'",obverb,oblog);
+		if ((efeh=kopier(qdatei,ziel,obverb,oblog))) {
+			fehler+=efeh;
+			Log(rots+Tx[T_Fehler_beim_Kopieren]+Tx[T_Dateiname]+blau+zield+schwarz,1,1);
+		} // if (efeh=kopier(qdatei,ziel,obverb,oblog))
+	} else {
+		Log(rots+Tx[T_Fehler_beim_Kopieren]+Tx[T_Dateiname]+blau+zield+schwarz+Tx[T_schlechtgeformt],1,1);
+	} // if (!base.empty() && !dir.empty())  else 
+	if (kfehler) *kfehler=fehler;
+	return ziel;
+	////	KLZ
+	////	return nix;
+} // string kopiere
+
+// ermittelt fuer eine in ein Zielverzeichnis zu kopierende Datei den dortigen Namen
+// falls obgleichp, wird darin gespeichert, ob die Datei dort schon vorhanden und identisch ist (in diesem Fall wird kein anderer Name ermittelt)
+// sonst wird, wenn wieweiterzaehl<2 ist, im Fall des Vorhandenseins im Zielverzeichnis ein neuer Name gefunden
+// wird aufgerufen von verschiebe (Version 1) und kopiere (Version 1), neuerdateiname, zielname (Version 2)
+string zielname(const string& qdatei, const string& rzielvz, uchar wieweiterzaehl/*=0*/, string* zieldatei/*=0*/, uchar *obgleichp/*=0*/,
+		int obverb/*=0*/, int oblog/*=0*/, stringstream *ausgp/*=0*/)
+{
+	//  Log(violetts+Tx[T_zielname]+schwarz,obverb,oblog);
+	// wieweiterzaehl: 0: auf *_1_1 nach *_1, 1: auf *_2 nach *_1, 2: gar nicht
+	string dateiname=base_name(qdatei);
+	struct stat st={0};
+	string ziel,zielvz=rzielvz;
+	if (lstat(zielvz.c_str(),&st)||!S_ISDIR(st.st_mode)) {
+		ziel=zielvz;
+		zielvz=dir_name(zielvz);
+	} else {
+		ziel=zielvz+(zielvz[zielvz.length()-1]==vtz?"":vtzs)+dateiname;
+	}
+	// auf Gleichheit testen
+	if (obgleichp) *obgleichp=!dateivgl(qdatei,ziel);
+	string meld=Tx[T_zielname_erstes_Ziel]+rots+ziel+schwarz+"'"+(obgleichp&&*obgleichp?Tx[T_Quelle_und_Ziel_gleich]:"");
+	if (ausgp&&obverb) *ausgp<<meld<<endl; else Log(meld,obverb,oblog);
+	if (!(obgleichp&&*obgleichp)) {
+		if (wieweiterzaehl<2) {
+			ulong ausweich=0;
+			uchar ausgewichen=0;
+			string stamm,exten;
+			for(;1;) {
+				struct stat entryziel={0};
+				if (lstat(ziel.c_str(), &entryziel)) break;
+				// in der Schleife nur beim ersten Mal aufrufen
+				if (!ausgewichen) {
+					getstammext(&dateiname,&stamm,&exten); // kommt hier außer bei obgleich immer vorbei
+					// wenn von einer vorhandenen Ausweichnummerierung aus weitergezaehlt werden soll (anstatt dateiname_1_1 ...)
+					if (wieweiterzaehl) {
+						size_t pos = stamm.rfind('_');
+						if (pos!=string::npos) {
+							const string auswstr=stamm.substr(pos+1);
+							if (isnumeric(auswstr)) { 
+								ausweich=atol(auswstr.c_str());
+								if (ausweich) if (stamm.length()>pos) stamm.erase(pos);
+							}
+						} // if (pos!=string::npos) 
+					} // if (wieweiterzaehl) 
+				}
+				ausweich++;
+				ausgewichen=1;
+				dateiname=stamm+"_"+ltoan(ausweich)+"."+exten;
+				ziel=zielvz + (zielvz[zielvz.length()-1]==vtz?"":vtzs) + dateiname;
+			} // for(;1;) 
+			if (ausgewichen) {
+				meld=Tx[T_zielname_Ausweichziel]+rots+ziel+schwarz+"'";
+				if (ausgp&&obverb) *ausgp<<meld<<endl; else Log(meld,obverb,oblog);
+			}
+		} // if (wieweiterzaehl<2) 
+	} // 	if (obgleichp&&*obgleichp)
+	if (zieldatei) *zieldatei=dateiname;
+	return ziel;
+} // zielname 
+
+// wird aufgerufen in: verschiebe (Version 2), kopiere (Version 2), neuerdateiname, 
+string zielname(const string& qdatei, const zielmustercl& zmp, uchar wieweiterzaehl/*=0*/, string* zieldatei/*=0*/, uchar *obgleichp/*=0*/, 
+		int obverb/*=0*/, int oblog/*=0*/, stringstream *ausgp/*=0*/)
+{
+	//  Log(violetts+Tx[T_zielname]+schwarz,obverb,oblog);
+	for(const zielmustercl *zmakt=&zmp;1;zmakt++){
+		int reti=regexec(&(zmakt->regex),qdatei.c_str(),0,NULL,0);
+		const string meld=Txk[T_datei]+rots+qdatei+schwarz+Tx[T_entspricht]+(reti?Tx[T_entsprichtnicht]:Tx[T_entsprichtdoch])+
+			Tx[T_Muster_Doppelpunkt]+rot+zmakt->holmuster()+schwarz+"'";
+		if (ausgp&&obverb) *ausgp<<meld<<endl; else Log(meld,obverb,oblog);
+		if (!reti){
+			return zielname(qdatei,zmakt->ziel,wieweiterzaehl,zieldatei,obgleichp,obverb,oblog,ausgp);
+		} //     if (!reti)
+		if (zmakt->obmusterleer()) break;
+	} //   for(zielmustercl *zmakt=zmp;1;zmakt++)
+	return {};
+} // zielname
+
+// von fkn-systems
+const char * const rulesdt="/etc/udev/rules.d/46-FKN_isdn_capi.rules";
+// wird aufgerufen in: hhcl::pruefcapi
+void pruefrules(int obverb, int oblog) 
+{
+	Log(violetts+Tx[T_pruefrules]+schwarz,obverb?obverb-1:0,oblog);
+	struct stat entrybuf={0};
+	if (lstat(rulesdt, &entrybuf)) { 
+		mdatei rules(rulesdt,ios::out);
+		if (rules.is_open()) {
+			rules<<"# Symlink (capi20 -> capi) zu"<<endl;
+			rules<<"# Kompatibilitaetszwecken erstellen"<<endl;
+			rules<<"KERNEL==\"capi\", SYMLINK=\"capi20\""<<endl;
+		} //     if (rules.is_open())
+	} //   if (lstat(rulesdt, &entrybuf))
+} // void pruefrules() {
+
+const string blackdt="/etc/modprobe.d/50-blacklist.conf";
+// wird aufgerufen in: pruefcapi
+void pruefblack(int obverb, int oblog) 
+{
+	Log(violetts+Tx[T_pruefblack]+schwarz,obverb?obverb-1:0,oblog);
+	const char* vgl[]={"blacklist avmfritz", "blacklist mISDNipac"};
+	uchar obda[]={0}, obeinsfehlt=0;
+	mdatei blacki(blackdt,ios::in);
+	if (blacki.is_open()) {
+		string zeile;
+		while(getline(blacki,zeile)) {
+			for(unsigned i=0;i<sizeof vgl/sizeof *vgl;i++) {
+				if (zeile.find(vgl[i])!=string::npos) obda[i]=1;
+			}
+		} //     while(getline(blacki,zeile))
+		blacki.close();
+		for(unsigned i=0;i<sizeof vgl/sizeof *vgl;i++) {
+			if (!obda[i]) {obeinsfehlt=1;break;}
+		} //     for(unsigned i=0;i<sizeof vgl/sizeof *vgl;i++)
+		if (obeinsfehlt) {
+			mdatei blacka(blackdt,ios::out|ios::app);
+			if (blacka.is_open()) {
+				for(unsigned i=0;i<sizeof vgl/sizeof *vgl;i++) {
+					if (!obda[i]) {
+						Log(Tx[T_haengean]+blaus+blackdt+schwarz+Tx[T_an_mdpp]+gruen+vgl[i]+schwarz,obverb,oblog);
+						blacka<<vgl[i]<<endl;
+					}
+				} // for(unsigned i=0;i<sizeof vgl/sizeof *vgl;i++) 
+			} // if (blacka.is_open()) 
+		} // obeinsfehlt
+	} else {
+	} // if (blacki.is_open())  else
+} // void pruefblack(int obverb, int oblog) 
+
 
 zielmustercl::zielmustercl(const char * const vmuster,const char * const vziel):muster(vmuster),ziel(vziel)
 {
@@ -714,7 +1108,7 @@ void hhcl::konfcapi()
 		size_t cs=sizeof cccnfA/sizeof*cccnfA;
 	 */
 	//// <<"cccnfA[0].wert: "<<cccnfA[0].wert<<endl;
-	if (!cccnfA[0].wert.empty()) {
+	if (!cdn[0].empty()) {
 		systemrueck("sed -i$(test -f "+cdn[0]+".orig||echo '.orig') "
 				"'s/\\(^.*connect_faxG3.*headline\\).*\\().*$\\)/\\1,"+cklingelzahl+"\\2/' "+cdn[0],obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
 	}
@@ -822,8 +1216,8 @@ void hhcl::konfcapi()
 		outgoing_timeout="60";
 		outgoing_timeout=Tippstr(string("outgoing_timeout: ")+Tx[T_Geduld_bis_zum_Verbindungsaufbau_in_s],&outgoing_timeout);
 		if (obverb>0) {
-			for(unsigned snr=0;snr<cfcnfA.zahl;snr++) {
-				Log("snr: "+blaus+ltoan(snr)+schwarz+" "+cfcnfA[snr].name+", "+cfcnfA[snr].wert);
+			for(unsigned snr=0;snr<cfcnfC.size();snr++) {
+				Log("snr: "+blaus+ltoan(snr)+schwarz+" "+cfcnfC[snr].pname+", "+cfcnfC[snr].holstr());
 			}
 		} // if (obverb>0)
 	} // if (rzf || (capicffehlt && !nrzf))
@@ -859,22 +1253,22 @@ void hhcl::konfcapi()
 						if (nkz<kommpos) {
 							lzeile=zeile.substr(0,nkz); 
 							rzeile=zeile.substr(nkz+1);
-							for(unsigned snr=0;snr<cfcnfA.zahl;snr++) {
-								if (lzeile.find(cfcnfA[snr].name)!=string::npos) {
+							for(unsigned snr=0;snr<cfcnfC.size();snr++) {
+								if (lzeile.find(cfcnfC[snr].pname)!=string::npos) {
 									//// _out<<"snr: "<<snr<<", lzeile: "<<tuerkis<<lzeile<<schwarz<<", rzeile: "<<blau<<rzeile<<schwarz<<endl;
 									string altwert=rzeile;
 									gtrim(&altwert);
 									anfzweg(altwert); // Anfuehrungszeichen entfernen
-									if (snr==0 || snr==1) cfcnfA[snr].wert=altwert; // spool_dir und fax_user_dir hier nicht konfigurierbar
-									Log(string("cfcnfA[")+ltoan(snr)+"].name: "+tuerkis+cfcnfA[snr].name+schwarz+Tx[T_komma_wert]+
-											(cfcnfA[snr].wert==altwert?blau:rot)+cfcnfA[snr].wert+schwarz+Tx[T_komma_Altwert]+
+									if (snr==0 || snr==1) cfcnfC[snr].setzstr(altwert); // spool_dir und fax_user_dir hier nicht konfigurierbar
+									Log(string("cfcnfC[")+ltoan(snr)+"].name: "+tuerkis+cfcnfC[snr].pname+schwarz+Tx[T_komma_wert]+
+											(cfcnfC[snr].holstr()==altwert?blau:rot)+cfcnfC[snr].holstr()+schwarz+Tx[T_komma_Altwert]+
 											blau+altwert+schwarz,obverb+iru,oblog+iru);
-									if (cfcnfA[snr].wert!=altwert) {
+									if (cfcnfC[snr].holstr()!=altwert) {
 										if (!iru) {
 											neuschreiben=1;
 											paramdiff=1;
 										} else {
-											string zschr=cfcnfA[snr].name+" = \""+cfcnfA[snr].wert+"\"";
+											string zschr=cfcnfC[snr].pname+" = \""+cfcnfC[snr].holstr()+"\"";
 											*fneu<<zschr<<endl;
 											geschrieben=1;
 										} //                   if (!iru) else
@@ -929,14 +1323,598 @@ void hhcl::konfcapi()
 	Log(violetts+Txk[T_Ende]+Tx[T_konfcapi]+schwarz+"ccapiconfdt: "+violett+ccapiconfdt+schwarz);
 } // void hhcl::konfcapi
 
+// wird aufgerufen in: konfcapi, verzeichnisse
+void hhcl::pruefcvz()
+{
+	//// <<rot<<"cfaxuservz in pruefcvz: "<<cfaxuservz<<schwarz<<endl;
+	Log(violetts+Tx[T_pruefcvz]+schwarz+" ccfaxuservz: "+violett+cfaxuservz+schwarz);
+	kuerzevtz(&cfaxuservz);
+	pruefverz(cfaxuservz,obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/0,/*besitzer=*/"",/*benutzer=*/cuser,/*obmachen=*/0);
+	cfaxusersqvz=cfaxuservz+vtz+cuser+"/sendq"; //  "/var/spool/capisuite/users/<user>/sendq";
+	pruefverz(cfaxusersqvz,obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/0,/*besitzer=*/"",/*benutzer=*/cuser,/*obmachen=*/0);
+	cfaxuserrcvz=cfaxuservz+vtz+cuser+"/received";
+	cfaxuserrcfalschevz=cfaxuserrcvz+"/falsche";
+	//// <<violett<<"cfaxuserrcvz: "<<cfaxuserrcvz<<schwarz<<endl;
+	pruefverz(cfaxuserrcvz,obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/0,/*besitzer=*/"",/*benutzer=*/cuser,/*obmachen=*/0);
+} // hhcl::pruefcvz
+
+// in empfcapi() und pruefcapi(), rueckfragen()
+void hhcl::pruefsfftobmp()
+{
+	Log(violetts+Tx[T_pruefsfftobmp]+schwarz);
+	lsysen system=lsys.getsys(obverb,oblog);
+	if (system==fed) {
+		//// P=hylafax_copy; T=$P.tar.gz; wget https://github.com/libelle17/$P/archive/master.tar.gz -O $T && tar xpvf $T && rm -f $T && mv ${P}-master/* . && rmdir ${P}-master
+		uchar obboostda=!linstp->doggfinst("boost-devel",obverb,oblog);
+		if (!obprogda("sfftobmp",obverb,oblog) || systemrueck("sfftobmp --version 2>/dev/null")) {
+			uchar obfrei= obprogda("jpegtran",obverb,oblog) && obprogda("cjpeg",obverb,oblog) && obprogda("djpeg",obverb,oblog);
+			if (!obfrei) {
+				const string jpeg="jpegsrc_copy";
+				holvomnetz(jpeg);
+				obfrei=!kompiliere(jpeg,s_gz);
+			}
+			if (obfrei) {
+				/*//
+					svec brueck;
+				// rpm -q boost-devel / dpkg -s libboost-dev -> evtl. besser
+				systemrueck(sudc+"find "+lsys.getlib64()+" /usr/lib /usr/local/lib /usr/local/lib64 /lib -name libboost_python.so -print -quit",
+				obverb,oblog,&brueck);
+				uchar obboostda=brueck.size();
+				if (!obboostda) KLA
+				obboostda = !linstp->doggfinst("boost",obverb,oblog) && !linstp->doggfinst("boost-devel",obverb,oblog);
+				KLZ
+				 */
+				if (obboostda) {
+					int serg=0;
+					if (systemrueck("grep '/usr/local/lib' /etc/ld.so.conf",obverb,oblog,/*rueck=*/0,/*obsudc=*/1)) {
+            systemrueck("echo '/usr/local/lib' >> /etc/ld.so.conf",obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
+						serg=systemrueck("ldconfig",obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
+					}
+					if (!serg) {
+						instsfftobmp();
+					} // if (!systemrueck(sudc+"grep
+				} // if (!linstp->doggfinst("boost",obverb,oblog) && !linstp->doggfinst("boost-devel",obverb,oblog)) 
+			} // if (!systemrueck(befehl,obverb,oblog)) 
+		} // if (!obprogda("sfftobmp",obverb,oblog)) 
+	} else {
+		linstp->doggfinst("sfftobmp",obverb,oblog);
+	} // if (system==fed) else
+	Log(violetts+Txk[T_Ende]+Tx[T_pruefsfftobmp]+schwarz);
+} // pruefsfftobmp
+
+
+// in konfcapi und faxemitC (da konfacpi aus pruefcapi nicht unbedingt aufgerufen wird)
+// Datei /fax-nextnr ggf. richtigstellen
+void hhcl::nextnum()
+{
+	//// dieser Abschnitt war zuvor richtcapiher
+	ulong nextnr=0;
+	struct stat entrynextnr={0};
+	//// <<"cfaxusersqvz: "<<cfaxusersqvz<<endl;
+	nextdatei=cfaxusersqvz+"/fax-nextnr";
+	//// <<ndatei<<endl;
+	if (!lstat(cfaxusersqvz.c_str(),&entrynextnr)) {
+		mdatei nextstr(nextdatei,ios::in);
+		if (nextstr.is_open()) {
+			string zeile;
+			if (getline(nextstr,zeile)) {
+				nextnr=atol(zeile.c_str());
+			}
+		} // if (nextstr.is_open()) 
+	} // if (!lstat(cfaxusersqvz.c_str(),&entrynextnr))
+	if (!nextnr) {
+		pruefverz(cfaxuservz,obverb,oblog,/*obmitfacl=*/2,/*obmitcon=*/0,/*besitzer=*/"",/*benutzer=*/cuser);
+		setfaclggf(spoolcapivz,obverb>1?obverb-1:0,oblog,/*obunter=*/wahr,/*mod=*/7,/*obimmer=*/wahr);
+		if (findv==1) {
+			cmd=sudc+"echo $(( `find "+spoolcapivz+ " -type f -name '*-fax-*.sff' 2>/dev/null "
+				"| cut -d '-' -f3 | cut -d '.' -f1 | sort -rn | head -n1` + 1 )) > '"+nextdatei+"'";
+			systemrueck(cmd,obverb,oblog,/*rueck=*/0,/*obsudc=*/0);
+		} else {
+			svec qrueck;
+			findfile(&qrueck,findv,obverb,oblog,0,spoolcapivz,/*muster=*/"-fax-.*\\.sff$");
+			size_t maxzahl=0;
+			for(size_t i=0;i<qrueck.size();i++) {
+				string q=qrueck[i];
+				string zahls;
+				for(size_t j=0;j<qrueck[i].length();j++){char buch=qrueck[i][j];if (buch>='0'&&buch<='9') zahls+=buch;}
+				size_t zahl=atol(zahls.c_str());
+				if (zahl>maxzahl) maxzahl=zahl;
+			} // 			for(size_t i=0;i<qrueck.size();i++)
+			maxzahl++;
+			mdatei nextstr(nextdatei,ios::out);
+			if (nextstr.is_open()) {
+				nextstr<<maxzahl<<endl;
+			} // 			if (nextstr.is_open())
+		} // 		if (findv==1) else
+	} // 	if (!nextnr)
+	setfaclggf(nextdatei,obverb>1?obverb-1:0,oblog,/*obunter=*/falsch,/*mod=*/6);
+} // void hhcl::nextnum()
+
+// wird aufgerufen in: pruefcapi(), anhalten()
+void hhcl::capisv()
+{
+	if (!scapis) scapis=new servc("","capisuite");
+} // void hhcl::capisv(obverb,oblog)
+
+// wird aufgerufen in: untersuchespool, main
+// rueckgabe: wie obcapi eingestellt sein sollte
+int hhcl::pruefcapi()
+{
+	Log(violetts+Tx[T_pruefcapi]+schwarz+" obcapi: "+(obcapi?"1":"0"));
+	static uchar capiloggekuerzt=0;
+	static uchar capischonerfolgreichinstalliert=0;
+	int capilaeuft=0;
+	int erg=0;
+	unsigned versuch=0;
+	uchar schonkonfiguriert=0;
+	capisv();
+	if (obcapi) {
+		for(;versuch<2;versuch++) {
+			// capi4linux muss zum Laufen der Capisuite installiert sein
+			// fuer fcpci muss in driver.c eingefuegt werden:
+			//// #if !defined(IRQF_DISABLED)
+			//// #  define IRQF_DISABLED 0x00
+			//// #endif
+			////    capilaeuft=(PIDausName("capisuite")>=0);
+			capilaeuft=this->scapis->machfit(obverb?obverb-1:0,oblog,wahr)&&!ccapiconfdt.empty()&&!cfaxconfdt.empty();
+			Log(violetts+Tx[T_capilaeuft]+schwarz+ltoan(capilaeuft)+schwarz);
+			if (capilaeuft) {
+				capischonerfolgreichinstalliert=1;
+			} else {
+				////      pid_t pid = GetPIDbyName("capisuite") ; // If -1 = not found, if -2 = proc fs access error
+				uchar fcpcida=0, capida=0, capidrvda=0;
+				vector<string> rueck;
+				systemrueck("lsmod",obverb,oblog,&rueck,/*obsudc=*/0);
+				for(size_t i=0;i<rueck.size();i++){
+					if (!fcpcida) {if (!rueck[i].find("fcpci ")) {fcpcida=1;continue;}}
+					if (!capidrvda) {if (!rueck[i].find("capidrv ")) {capidrvda=1;continue;}}
+					if (!capida) {if (!rueck[i].find("capi ")) {capida=1;continue;}}
+					if (fcpcida && capida && capidrvda) break;
+				} // for(size_t i=0;i<rueck.size();i++)
+				lsysen system=lsys.getsys(obverb,oblog);
+				if (!fcpcida || !capida || !capidrvda) {
+					::Log(blaus+Tx[T_Module_geladen]+schwarz+" fcpci: "+blau+(fcpcida?"1":"0")+schwarz+", capi: "+blau+(capida?"1":"0")+schwarz+
+							", capidrv: "+blau+(capidrvda?"1":"0")+schwarz+Tx[T_Lade_Capi_Module],obverb,0);
+					systemrueck("modprobe -rf avmfritz mISDNipac hisax_fcpcipnp hisax_isac hisax",obverb,oblog,/*rueck=*/0,/*obsudc=*/1,1);
+					utsname unbuf;
+					if (!fcpcida) {
+						uname(&unbuf);
+						Log(Tx[T_Kernelversion]+blaus+unbuf.release+schwarz);
+					}
+					for(uchar ivers=0;ivers<3;ivers++) {
+						if (!fcpcida)
+							if (systemrueck("modprobe -v fcpci 2>/dev/null",obverb-1+ivers,oblog,/*rueck=*/0,/*obsudc=*/1)) {
+								const string fcpciko=string("/lib/modules/")+unbuf.release+"/kernel/extras/fcpci.ko";
+								switch (ivers) {
+									case 1:
+										tuloeschen(fcpciko,cuser,obverb,oblog);
+										break;
+									case 2:
+										::Log(rots+Tx[T_KannFcpciNInstVerwCapiNicht]+blau+linstp->ersetzeprog("kernel-source")+rots+
+												Tx[T_eine_neuere_Version_als_die_des_aktuellen_Kernels_installiert_worden_sein_dann_bitte_erneutes_Systemupdate]+schwarz,1,1);
+										erg=1;
+										goto schluss;
+								} // 								switch (ivers)
+								struct stat entryfc={0};
+								if (lstat(fcpciko.c_str(), &entryfc)) {
+									::Log(Txk[T_datei]+blaus+fcpciko+schwarz+Tx[T_nichtgefFcpciMfdKinstallierwerden],obverb,1);
+									int altobverb=obverb;
+									obverb=obverb<2?2:obverb;
+									linstp->doinst("kernel-source",1+obverb,oblog);
+									/*// 
+										const string qvz="/usr/src";
+										const string versi="fcpci-3.10.0";
+										const string srcf=string("fritz-")+versi+".tar.bz2";
+										pruefverz(qvz,obverb,oblog,0);
+										struct stat entrysrc={0};
+										if (lstat((qvz+vtz+srcf).c_str(),&entrysrc)) KLA
+										systemrueck(string("cd ")+qvz+";"+sudc+"wget https://belug.de/~lutz/pub/fcpci/"+srcf+
+										" --no-check-certificate",1+obverb,oblog);
+										KLZ
+										string srcvz=qvz+vtz+versi+"/src";
+										if (lstat(srcvz.c_str(),&entrysrc)) KLA
+										systemrueck(string("cd ")+qvz+";"+sudc+"tar xjf "+srcf,obverb,oblog);
+									//sed -e '/#include <linux\/isdn\/capilli.h>/ a\#include <linux\/utsname.h>' -e '/NOTE("(%s built on %s at %s)\\n", TARGET, __DATE__, __TIME__);/ c    NOTE("(%s built on release %s, version %s)\\n", TARGET, utsname()->release, utsname()->version);' main.c >main_neu.c
+									// fuer Kernel 4.3.3-3-default und gcc muss jetzt noch 1) , __DATE__ und __TIME__ aus main.c Zeile 365 entfernt werden,
+									// 2) in driver.c Zeile 373 IRQF_DISABLED durch 0x00 ersetzt werden, dann kompilier- und installierbar
+									KLZ
+									systemrueck("cd "+srcvz+";"+sudc+"test -f driver.c.bak || sed -i.bak '/request_irq/i#if !defined(IRQF_DISABLED)\\n"
+									"# define IRQF_DISABLED 0x00\\n#endif' driver.c;"
+									sudc+"sed -e '/#include <linux\\/isdn\\/capilli.h>/a #include <linux\\/utsname.h>' "
+									"-e '/NOTE(\"(%s built on %s at %s)\\\\n\", TARGET, __DATE__, __TIME__);/"
+									"c NOTE(\"(%s built on release %s, version %s)\\\\n\", TARGET, utsname()->release, utsname()->version);' "
+									"main.c >main_neu.c;mv -n main.c main.c.bak;mv -n main_neu.c main.c;"
+									sudc+"make clean",1+obverb,oblog);
+									svec rueck;
+									systemrueck(sudc+"rm -f /root/bin/xargs",1+obverb,oblog);
+									systemrueck("cd "+srcvz+";"+sudc+"make all ",1+obverb,oblog); 
+									// || { "+sudc+"dnf clean all;"+sudc+"dnf update;"+sudc+"make all; }
+									systemrueck("cd "+srcvz+";"+sudc+"make install",1+obverb,oblog);
+									 */
+									// in Mint musste man gcc downgraden, um fcpci installieren zu koennen
+									uchar obdown=0;
+									string gccpfad,gpppfad;
+									struct utsname unameD={0};
+									uname(&unameD);
+									const string rel=unameD.release;
+									size_t p1=rel.find('.');
+									if (p1!=string::npos) {
+										size_t p2=rel.find('.',p1+1);
+										if (p2!=string::npos) {
+											float vers=atof(rel.substr(0,p2).c_str());
+											if (vers>0 && vers<3.14) {
+												if (obprogda("gcc",obverb,oblog,&gccpfad) && obprogda("g++",obverb,oblog,&gpppfad)) {
+													obdown=1;
+													//// systemrueck(sudc+"cp \""+gccpfad+"\" \""+gccpfad+".bak\" && " sudc+"cp \""+gpppfad+"\" \""+gpppfad+".bak\"",obverb,oblog);
+													if (!kopier(gccpfad,gccpfad+".bak",obverb,oblog)) kopier(gpppfad,gpppfad+".bak",obverb,oblog);
+													linstp->doinst("gcc-4.8",1+obverb,oblog);
+													linstp->doinst("g++-4.8",1+obverb,oblog);
+													systemrueck("ln -sf \""+gccpfad+"-4.8\" \""+gccpfad+"\" && "+
+															"ln -sf \""+gpppfad+"-4.8\" \""+gpppfad+"\"",obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
+												} // if (!obprogda("gcc",obverb,oblog,&gccpfad) && !obprogda("g++",obverb,oblog,&gpppfad)) 
+											} // if (vers>0 && vers<3.14) 
+										} // if (p2!=string::npos) 
+									} // if (p1!=string::npos) 
+									if (systemrueck("ls /lib/modules/$(uname -r)/build",obverb,oblog,/*rueck=*/0,/*obsudc=*/0)) {
+										if (system==deb) {
+											systemrueck("apt -y install linux-headers-$(uname -r)",obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
+										}
+									} // 									if (systemrueck("ls /lib/modules/$(uname -r)/build",obverb,oblog))
+									systemrueck("ls -l /lib/modules/$(uname -r)/build 2>/dev/null || "
+											"{ NEU=$(find /lib/modules -type l -name build -print0|"+linstp->xargspf+" -0 -r ls -l --time-style=full-iso|"
+											"sort -nk6,7|head -n1|cut -d' ' -f9); test -h $NEU &&"+sudc+"cp -a $NEU /lib/modules/$(uname -r)/build; }",
+											obverb,oblog,/*rueck=*/0,/*obsudc=*/0);
+									const string proj="fcpci_copy";
+									const string srcvz=instvz+vtz+proj+".tar.gz";
+									holvomnetz(proj);
+									const string vorcfg=sudc+"test -f driver.c.bak || sed -i.bak \"/request_irq/i#if \\!defined(IRQF_DISABLED)\\n"
+										"# define IRQF_DISABLED 0x00\\n#endif\" driver.c;"+
+										sudc+"sed -e '/#include <linux\\/isdn\\/capilli.h>/a #include <linux\\/utsname.h>' "
+										"-e '/NOTE(\"(%s built on %s at %s)\\\\n\", TARGET, __DATE__, __TIME__);/"
+										"c NOTE(\"(%s built on release %s, version %s)\\\\n\", TARGET, utsname()->release, utsname()->version);' "
+										"main.c >main_neu.c;mv -n main.c main.c.bak;mv -n main_neu.c main.c;"+
+										sudc+"sed -i.bak \"/install: / i .PHONY: uninstall\\nuninstall:\\n\\t\\t"+
+										sudc+"modprobe -r \\$\\(CARD\\).ko\\n\\t\\tsudo rm \\$\\(TARGETDIR\\)/\\$\\(CARD\\)\\n\" Makefile;"+
+										sudc+"make clean";
+									const string cfgbismake=" 2>/dev/null;"+sudc;
+									kompiliere(proj,s_gz,vorcfg,cfgbismake);
+									systemrueck("depmod",obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
+									if (obdown) {
+										systemrueck("mv -f \""+gccpfad+".bak\" \""+gccpfad+"\" &&"+
+												"mv -f \""+gpppfad+".bak\" \""+gpppfad+"\"",obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
+									} // 									if (obdown)
+									obverb=altobverb;
+								} // if (lstat(fcpciko.c_str(), &entryfc)) 
+							} // if (systemrueck
+					} // for(uchar ivers=0;ivers<2;ivers++) 
+
+					// Fedora:
+					// dnf install ncurses-devel
+					// cd /usr/src/kernels/4.7.3-200.fc24.x86_64
+					// make olddefconfig
+					// dnf install elfutils-libelf-devel
+					if (systemrueck("modprobe capi 2>/dev/null",obverb,oblog,/*rueck=*/0,/*obsudc=*/1)) {
+						if (system==fed) {
+							svec vrueck1,vrueck2;
+							string v1,v2;
+							const string getvmvers=sudc+"ls /boot/vmlinuz-* -r|head -n 1|cut -d- -f2,3,4,5";
+							systemrueck(getvmvers,obverb,oblog,&vrueck1,/*obsudc=*/1);
+							if (vrueck1.size()) v1=vrueck1[0];
+							systemrueck("dnf -y install kernel-modules-extra-$(uname -r) && "
+									"{ lsmod | grep capidrv ||modprobe capidrv 2>/dev/null; "
+									"lsmod | grep kernelcapi ||modprobe kernelcapi 2>/dev/null;}",obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
+							systemrueck(getvmvers,obverb,oblog,&vrueck2,/*obsudc=*/1);
+							if (vrueck2.size()) v2=vrueck2[0];
+							////            <<"vi: "<<v1<<"\n"<<"v2: "<<v2<<endl;
+							// sollte nach Korrektur von kernel-modules-extra zu kernel-modules-extra-$(uname -r) kaum mehr vorkommen
+							if (v1!=v2) {
+								autofkonfschreib();
+								::Log(blaus+Tx[T_Zur_Inbetriebnahme_der_Capisuite_muss_das_Modul_capi_geladen_werten]+schwarz+v1+blau+" -> "
+										+schwarz+v2+blau+").\n"+blau+Tx[T_Bitte_zu_dessen_Verwendung_den_Rechner_neu_starten]+schwarz+mpfad+blau+Tx[T_aufrufen]
+										+schwarz,1,1);
+								exit(9);
+							} // if (v1!=v2) 
+#ifdef brauchtsaano // am 19.3.17 braucht's es ned
+							//// nach kdpeter.blogspot.de/2013/10/fedora-compile-single-module-directory.html
+							////         systemrueck(sudc+"dnf -y install @\"Development Tools\" rpmdevtools yum-utils ncurses-devel",obverb,oblog);
+							linstp->doggfinst("fedpkg",obverb+1,oblog);
+							linstp->doinst("fedora-packager",obverb+1,oblog,"fedora-cert");
+							linstp->doinst("rpmdevtools",obverb+1,oblog,"rpmdev-setuptree");
+							struct stat nstat={0};
+							if (lstat("/usr/include/numa.h",&nstat))
+								linstp->doinst("numactl-devel",obverb+1,oblog);
+							if (lstat("/usr/include/curses.h",&nstat))
+								linstp->doinst("ncurses-devel",obverb+1,oblog);
+							linstp->doggfinst("pesign",obverb+1,oblog);
+							systemrueck("rpmdev-setuptree",obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
+							svec krue;
+							systemrueck("find "+instvz+" -name kernel-$(uname -r|rev|cut -d. -f2-|rev).src.rpm",obverb,oblog,&krue,/*obsudc=*/1);
+							if (!krue.size()) {
+								::Log(Tx[T_Moment_muss_Kernel_herunterladen],-1,oblog);
+								systemrueck("cd "+instvz+" && dnf download --source kernel-$(uname -r)",obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
+							} // 							if (!krue.size())
+							svec rueck;
+							string kstring; // kernel-4.8.4-200.fc24.src.rpm
+							systemrueck("cd "+instvz+" && ls -t kernel*.rpm|head -n 1",obverb,oblog,&rueck,/*obsudc=*/0);
+							if (rueck.size()) {
+								kstring=rueck[0]; // "kernel-4.8.4-200.fc24.src.rpm"
+								string kernel=kstring.substr(kstring.find('-')+1);
+								kernel.erase(kernel.rfind('.'));
+								kernel.erase(kernel.rfind('.'));
+								utsname unbuf;
+								uname(&unbuf);
+								const string release=unbuf.release;
+								const string relev=release.substr(0,release.find(unbuf.machine)-1);
+								if (kernel.find(relev)) {
+									::Log(Tx[T_Der_Kernel_hat_sich_offenbar_seit_dem_Einloggen_von]+blaus+relev+schwarz+Tx[T_nach_]+blau+kernel+schwarz+
+											Tx[T_verjuengt_Bitte_den_Rechner_neu_starten_und_dann_mich_nochmal_aufrufen],1,1);
+									exit(10);
+								} // 							if (kernel.find(relev))
+								systemrueck("cd "+instvz+" && dnf -y builddep "+kstring,obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
+								systemrueck("cd "+instvz+" && rpm -ivh "+kstring,obverb,oblog,/*rueck=*/0,/*obsudc=*/0);// mit sudo wird kernel.spec nicht erstellt
+								// warning: group/user mockbuild does not exist - using root
+								const string grund=gethome()+"/rpmbuild",specs=grund+"/SPECS",build=grund+"/BUILD";
+								pruefverz(specs,obverb,oblog);
+								pruefverz(build,obverb,oblog);
+								for(unsigned iru=0;iru<2;iru++) {
+									if (!systemrueck("cd '"+gethome()+"/rpmbuild/SPECS' && rpmbuild -bp --target=$(uname -m) kernel.spec",
+												obverb,oblog,/*rueck=*/0,/*obsudc=*/1)) {
+										systemrueck("dnf -y install kernel-devel-$(uname -r)",obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
+										systemrueck("KSTRING="+kstring+" && cd "+gethome()+"/rpmbuild/BUILD/$(echo $KSTRING|cut -d. -f1,2,4)/linux-`uname -r` && "
+												"make -C /lib/modules/`uname -r`/build M=`pwd`/drivers/isdn/capi modules",obverb,oblog,/*rueck=*/0,/*obsudc=*/0);
+										break;
+									} // 									if (!systemrueck
+									if (iru) break;
+									systemrueck("dnf -y install $(cd '"+gethome()+"/rpmbuild/SPECS' && "
+											sudc+"rpmbuild -bp --target=$(uname -m) kernel.spec 2>&1 >/dev/null"
+											"| sed '/is needed by/!d;s/^[[:blank:]]*\\(.*\\) is needed by.*/\\1/')",obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
+									// dnf install audit-libs-devel binutils-devel bison elfutils-devel flex hmaccalc newt-devel numactl-devel 
+									//     pciutils-devel "perl(ExtUtils::Embed)" perl-devel xz-devel
+									// dann nochmal
+								} // for(unsigned iru=0;iru<2;iru++) 
+								// dann nach Anleitung: dnf -y install kernel-devel
+								// cd ~/rpmbuild/BUILD/kernel<version>/linux<version>
+								// make -C /lib/modules/`uname -r`/build M=`pwd`/drivers/isdn/capi modules
+							} // if (rueck.size()) 
+#endif					
+						} // if (system==fed) 
+					} // if (systemrueck(sudc+"modprobe capi",obverb,oblog))
+					systemrueck("modprobe capidrv 2>/dev/null",obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
+				} // if (!fcpcida || !capida || !capidrvda) 
+				pruefrules(obverb,oblog);
+				pruefblack(obverb,oblog);
+				capischonerfolgreichinstalliert=!linstp->obfehlt("capisuite capi4linux i4l-isdnlog");
+				//// <<violett<<"capischonerfolgreichinstalliert: "<<schwarz<<(int)capischonerfolgreichinstalliert<<endl;
+				if (capischonerfolgreichinstalliert) {
+					struct stat d1={0}, d2={0};
+					if (lstat("/etc/capisuite",&d1) && lstat("/usr/local/etc/capisuite",&d2))
+						capischonerfolgreichinstalliert=0;
+				}
+				//// <<rot<<"capischonerfolgreichinstalliert 0: "<<(int)capischonerfolgreichinstalliert<<schwarz<<endl;
+				if (!capischonerfolgreichinstalliert) {
+					::Log(Tx[T_Konnte]+blaus+"capisuite"+schwarz+Tx[T_nichtstarten],1,oblog);
+					linstp->doinst("ghostscript",obverb+1,oblog,"gs");
+					//// if (systemrueck("which zypper",-1,-1)) KLA
+					////        if (linstp->checkinst(-1,-1)!=zyp) KLA
+					/*//
+						if (linstp->ipr!=zypper) {
+						::Log(rots+Tx[T_Kann_Capisuite_nicht_installieren_verwende_Capi_nicht],1,1);
+						this->obcapi=0;
+						erg=1;
+						goto schluss;
+						}
+					 */
+					if (system!=sus)
+						linstp->doggfinst("capiutils",obverb+1,oblog);
+					pruefsfftobmp();
+					linstp->doggfinst("libcapi20-2",obverb+1,oblog);
+					linstp->doggfinst("libcapi20-3",obverb+1,oblog);
+					linstp->doggfinst("python-devel",obverb+1,oblog);
+					linstp->doinst("libxslt-tools",obverb+1,oblog,"xsltproc");
+					uchar mitcservice=0;
+					// 25.11.16 nicht mehr auf Repo
+					/*
+						 if (system==sus) {
+						 linstp->doggfinst("capi4linux i4l-isdnlog",obverb+1,oblog);
+						 systemrueck("zypper lr | grep 'kkeil factory development project' || "
+						 sudc+"zypper ar -f http://download.opensuse.org/repositories/home:/kkeil:/Factory/openSUSE_Factory/home:kkeil:Factory.repo",
+						 1,1);
+					// i4l-isdnlog scheint nicht wirklich noetig zu sein
+					//   capischonerfolgreichinstalliert=!systemrueck("zypper -n --gpg-auto-import-keys in capisuite capi4linux i4l-isdnlog", 1+obverb,oblog); 
+					// i4l-base geloescht
+					capischonerfolgreichinstalliert=!linstp->doinst("-f capisuite capi4linux i4l-isdnlog",obverb+1,oblog);
+					} // if (lsys.getsys(obverb,oblog)==sus) 
+					 */
+					if (!capischonerfolgreichinstalliert) {
+						holvomnetz("capisuite_copy");
+						svec csrueck;
+						systemrueck("find /usr/lib*/python* -type f -name Makefile -printf '%h\\n' "+string(obverb?"":"2>/dev/null")+"| sort -r",
+								obverb,oblog,&csrueck,/*obsudc=*/0);
+						if (csrueck.size()) {
+							struct stat c20stat={0},c20hstat={0};
+							if (lstat((lsys.getlib64()+"/libcapi20.so").c_str(),&c20stat)||
+									lstat("/usr/include/capi20.h",&c20hstat)) {
+								holvomnetz("capi20_copy");
+								kompiliere("capi20_copy",s_gz,"make clean");
+								// ln sollte er in crontab finden
+								systemrueck("cd "+instvz+" && L="+lsys.getlib64()+"/libcapi20.so && L3=${L}.3 && test -f $L3 && ! test -f $L && "+
+										sudc+"ln -s $L3 $L; test -f $L;",obverb,oblog,/*rueck=*/0,/*obsudc=*/0);
+							} // 							if (lstat((lsys.getlib64()+"/libcapi20.so").c_str(),&c20stat)||
+							/*//
+							//            systemrueck("sh -c 'P=capi20_copy;T=$P.tar.bz2;M=$P-master;cd "+instvz+" && tar xpvf $T && rm -rf $P; mv $M $P && cd $P "
+							//                        " && ./configure && make &&"+sudc+"make install '",obverb,oblog);
+							//            svec rueck;
+							//            systemrueck("find /usr -name capi20.h 2>/dev/null",obverb,oblog,&rueck); 
+							 */
+							systemrueck("cd "+instvz+" &&{ cd capisuite 2>/dev/null &&{ test -f Makefile && make clean;};}",obverb-1,oblog,/*rueck=*/0,/*obsudc=*/0);
+							obverb++;
+							svec rueck;
+							string pyvz;
+							systemrueck("python -c \"import os; print os.path.dirname(os.__file__)\"",obverb,oblog,&rueck,/*obsudc=*/0);
+							if (rueck.size()) {
+								pyvz=*sersetze(&rueck[0],"/","\\/");
+							} else {
+								pyvz=ersetzAllezu(lsys.getlib64(),"/","\\/")+"\\/python2.7";
+							} // 							if (rueck.size()) else
+							if (!kompiliere("capisuite_copy",s_gz,
+										"sed -i.bak \""
+										// 20.11.16 diese Zeile scheint jetzt wieder in Fedora 24 unnoetig
+										//													 "s/python_configdir=.*/python_configdir="+*sersetze(&csrueck[0],"/","\\/")+"/;"
+										// 20.11.16 pyexecdir und pythondir mussten in Fedora 24 so gesetzt werden
+										// 23.11.16: für openSUSE müsste man wohl --datarootdir=/usr/local/lib64 versuchen, 
+										//           so wie es in capisuite.conf hier auch schon steht
+										"s/\\( pyexecdir=\\).*/\\1\\`\\${PYTHON} -c \\\"import site;"
+										"print site.getsitepackages()[0]\\\"\\`/;"
+										"s/\\( pythondir=\\).*/\\1\\`\\${PYTHON} -c \\\"import site;"
+										"print site.getsitepackages()[0]\\\"\\`/;"
+										////													 "s/\\( *pyexecdir=\\).*/\\1"+pyvz+"\\/site-packages\\/capisuite/;"
+										////													 "s/\\( *pythondir=\\).*/\\1"+pyvz+"\\/site-packages\\/capisuite/;"
+										"s/\\( *python_configdir=\\).*/\\1\\`\\${PYTHON} -c \\\"import distutils.sysconfig;"
+										"print distutils.sysconfig.get_config_var('\\''LIBPL'\\'')\\\"\\`/;"
+										"s/\\( *python_moduledir=\\).*/\\1\\`\\${PYTHON} -c \\\"import site;"
+										"print site.getsitepackages()[0]\\\"\\`/;"
+										"s/\\( *python_moduleexecdir=\\).*/\\1\\`\\${PYTHON} -c \\\"import site;"
+										"print site.getsitepackages()[0]\\\"\\`/;"
+										"\" configure"
+										////                           " && { test -f /usr/lib64/libcapi20.so.3 && ! test -f /usr/lib64/libcapi20.so && "
+										////                           "ln -s /usr/lib64/libcapi20.so.3 /usr/lib64/libcapi20.so; true; }"
+										,"HAVE_NEW_CAPI4LINUX=0 --libdir=/usr/local/lib64 --datarootdir=/usr/local/lib64 --sysconfdir=/etc --localstatedir=/var && "
+										"sed -i \"s/PyErr_NewException(\\\"/PyErr_NewException((char*)\\\"/g\" src/application/capisuitemodule.cpp && ")) {
+											mitcservice=1;
+											// die durch konfcapi erstellte Datei cfaxconfdt wird durch Obiges überschrieben
+											struct stat st={0};
+											if (!lstat(cfaxconfeigdt.c_str(),&st)) {
+												kopier(/*quel=*/cfaxconfeigdt,/*ziel=*/cfaxconfdt,obverb,oblog);
+											}
+										}
+							/*//
+							//            string befehl="sh -c 'P=capisuite; T=$P.tar.gz; M=$P-master; cd "+instvz+""
+							//                  " && tar xpvf $T && rm -rf $P ; mv $M $P && cd $P"
+							//                  " && sed -i.bak \"s_python_configdir=.*_python_configdir="+*sersetze(&csrueck[0],"/","\\/")+"_\" configure"
+							//                  " && { test -f /usr/lib64/libcapi20.so.3 && ! test -f /usr/lib64/libcapi20.so && "
+							//                        "ln -s /usr/lib64/libcapi20.so.3 /usr/lib64/libcapi20.so; true; } "
+							//                  " && ./configure HAVE_NEW_CAPI4LINUX=0 --datarootdir=/usr/local/lib --sysconfdir=/etc --localstatedir=/var"
+							//                  " && sed -i \"s/PyErr_NewException(\\\"/PyErr_NewException((char*)\\\"/g\" src/application/capisuitemodule.cpp"
+							////                  " && sed -i.bak 's/<capi20.h>/\\\""+*sersetze(&rueck[0],"/","\\\"\\/")+"/' src/backend/capi.h"
+							////                  " && sed -i.bak 's/<capi20.h>/\\\""+*sersetze(&rueck[0],"/","\\\"\\/")+"/' src/backend/connection.h"
+							//                  " && make"
+							//                  " && "+sudc+"make install"
+							//                  " && "+sudc+"systemctl daemon-reload; "
+							//                  "'";
+							//            if (!systemrueck(befehl,obverb,oblog)) {
+							//              //        pruefverz("/etc/capisuite",obverb,oblog,1,0);
+							//              //        systemrueck("ls /etc/capisuite/capisuite.conf "
+							//              //                    "|| cp -a "+instvz+"/capisuite/src/capisuite.conf /etc/capisuite");
+							//              //        systemrueck("ls /etc/capisuite/fax.conf || cp -a "+instvz+"/capisuite/scripts/fax.conf /etc/capisuite");
+							////              pruefverz("/usr/local/var/log",obverb,oblog,1,0);
+							//              //         pruefverz("/usr/local/var/log",obverb,oblog,1,0);
+							//              mitcservice=1;
+							//            } // if (!systemrueck(sh -c ...
+							 */
+							obverb--;
+						} // if (csrueck.size()) 
+						// aktuelles Verzeichnis
+					} // if (!capischonerfolgreichinstalliert) 
+					liescapiconf();
+					if (mitcservice) {
+						capischonerfolgreichinstalliert=!cservice() && !ccapiconfdt.empty() && !cfaxconfdt.empty();
+					}
+					/*//
+					// capisuite unter Kernel 4: 
+					// zypper in sfftobmp libcapi20-2
+					//        // scp linux2:/usr/include/capiutils.h /usr/include
+					//        // scp linux2:/usr/include/capicmd.h /usr/include
+					// zypper in libcapi20-3 python-devel capi4linux capi4linux-devel
+					// in ubuntu: sfftobmp, (libcapi20-3)?, libcapi20-dev, python-dev, xsltproc
+
+					// git clone https://github.com/larsimmisch/capisuite.git
+					// wget https://github.com/larsimmisch/capisuite/archive/master.tar.gz -O capisuite.tar.gz
+					// tar xpvf capisuite.tar.gz
+					// mv capisuite-master capisuite
+					// cd capisuite
+					// bei mehreren Installationen wird hier unsortiert die erste Zeile genommen:
+					// sed -i.bak 's_python_configdir=.*_python_configdir=`find \/usr\/lib*\/python* -type f -name Makefile -printf "%h\\\\n"`_' configure
+					// bei mehreren Installationen koennte hier die richtigen genommen werden:
+					// sed -i.bak 's_python_configdir=.*_python_configdir=`cat $(which python-config) | head -n 1| sed "s\/#\\!\\(.*\\)\/\\1\\\/config\/"`_' configure
+					// auf Fedora funzt aber nur die Original-configure
+					// in ubuntu: ./configure HAVE_NEW_CAPI4LINUX 0
+					//            make
+					//            "+sudc+"make install
+					// "+sudc+"cp -ai "+instvz+"/capisuite/src/capisuite.conf /etc/capisuite/
+					// "+sudc+"cp -ai "+instvz+"/capisuite/scripts/fax.conf /etc/capisuite/
+					// "+sudc+"chmod 777 /usr/local/var/log
+					// ln -s /usr/lib64/libcapi20.so.3.0.6 libcapi20.so
+					// in ./src/application/pythonscript.cpp Zeile 104: (Py_ssize_t*)&length statt &length
+					// in /usr/include/capiutils.h eine dritte Zeile einfuegen: #define CAPI_LIBRARY_V2
+					// in src/backend/connection.cpp eine Zeile 26 einfuegen: #include <cstring>
+					 */
+				} // if (!capischonerfolgreichinstalliert)
+				servc::daemon_reload();
+			} // if (capilaeuft) else
+			//// <<rot<<"capischonerfolgreichinstalliert: "<<schwarz<<(int)capischonerfolgreichinstalliert<<endl;
+			//// <<rot<<"capizukonf: "<<schwarz<<(int)capizukonf<<endl;
+			//// <<rot<<"versuch: "<<schwarz<<versuch<<endl;
+			if (capischonerfolgreichinstalliert) {
+				if (!capizukonf) {
+					clieskonf();
+				}
+				if (/*//obcapi && */!schonkonfiguriert && (versuch>0 || this->capizukonf || rzf)) {
+					this->konfcapi();
+					scapis->restart(obverb-1,oblog);
+					capizukonf=0;
+					schonkonfiguriert=1;
+				} //     if (versuch>0) KLA
+				// das Folgende verhindert zwar den Programmabbruch bei active (exit), das nuetzt aber nichts. In dem Fall fcpci aktualisieren! 23.5.14
+				//    capilaeuft = !systemrueck("systemctl status capisuite | grep ' active (running)' >/dev/null 2>&1",0,obverb,oblog);
+				//     capilaeuft  = !systemrueck("systemctl is-active capisuite",0,obverb,oblog);
+				capilaeuft=!scapis->obsvfeh(obverb-1,oblog);
+				if (capilaeuft) {
+					break;
+				} else {
+					servc::daemon_reload();
+					systemrueck("systemctl stop isdn",obverb>0?obverb:-1,oblog,0,/*obsudc=*/1,1);
+					////      systemrueck(sudc+"systemctl start isdn",obverb,oblog);
+					::Log(Tx[T_StarteCapisuite],-1,oblog);
+					scapis->stop(-1,oblog);
+					capilaeuft=scapis->startundenable(-1,oblog);
+					if (capilaeuft) {
+						::Log(Tx[T_Capisuite_gestartet],1,oblog);
+						break;
+					} else {
+						////       ::Log("Capisuite konnte nicht gestartet werden.",1,1);
+					} // 					if (capilaeuft)
+				} //       if (capilaeuft) else
+			} // if (capischonerfolgreichinstalliert) 
+		} //  for(unsigned versuch=0;1;versuch++) (3.)
+		if (capilaeuft) {
+			if (!capiloggekuerzt) {
+				kuerzelogdatei("/var/log/capisuite.log",obverb); // screen
+				capiloggekuerzt=1;
+			} // 			if (!capiloggekuerzt) 
+			if (!kez&& !bvz && !anhl && !lista && !listi && !listw && suchstr.empty())
+				/*//if (this->obcapi) */pruefmodcron();
+		} else {
+			::Log(rots+Tx[T_konntecapisuiteservice]+gruen+ltoan(versuch)+rot+Tx[T_malnichtstartenverwN]+schwarz,1,1);
+			erg=1;
+		} //   if (capilaeuft)
+		//// if (obcapi)
+	} else {
+		if (scapis) scapis->stopdis(obverb,oblog);
+		erg=1;
+	} // 	if (obcapi) else
+schluss: // sonst eine sonst sinnlose for-Schleife mehr oder return mitten aus der Funktion ...
+	Log(violetts+Txk[T_Ende]+Tx[T_pruefcapi]+schwarz+" obcapi: "+(obcapi?"1":"0"));
+	return erg;
+} // pruefcapi()
+
 void hhcl::dovc()
 {
 	pruefcapi();
 	cmd=edit;
-	viadd(&cmd,cfaxconfdt);
-	viadd(&cmd,ccapiconfdt);
-	viadd(&cmd,rulesdt);
-	viadd(&cmd,blackdt);
+	viadd(&cmd,&cfaxconfdt);
+	viadd(&cmd,&ccapiconfdt);
+	viadd(&cmd,&rulesdt);
+	viadd(&cmd,&blackdt);
 	if (scapis) viadd(&cmd,scapis->systemd);
 	if (!cdn[0].empty()) viadd(&cmd,cdn[0]); // incoming_script
 	if (!cdn[3].empty()) viadd(&cmd,cdn[3]); // idle_script
@@ -1120,6 +2098,40 @@ void hhcl::virtschlussanzeige()
 	dhcl::virtschlussanzeige(); //α
 } // void hhcl::virtschlussanzeige
  //ω
+
+// wird aufgerufen in: main
+void hhcl::autofkonfschreib()
+{
+	Log(violetts+Tx[T_autokonfschreib]+schwarz+", "+Tx[T_zu_schreiben]+((rzf||obkschreib)?Txk[T_ja]:Txk[T_nein]));
+	/*//
+		capizukonf und hylazukonf hier immer 0
+		char buf[200];
+		sprintf(buf,"rzf: %d, capizukonf: %d, hylazukonf: %d, obkschreib: %d",(int)rzf, (int)capizukonf, (int)hylazukonf, (int)obkschreib);
+		Log(blaus+buf+schwarz);
+	 */
+	if (rzf||obkschreib) {
+		Log(gruens+Tx[T_schreibe_Konfiguration]+schwarz);
+		// restliche Erklaerungen festlegen
+		////    agcnfA.setzbem("language",sprachstr);
+		agcnfA.setzbemv("countrycode",&Tx,T_Eigene_Landesvorwahl_ohne_plus_oder_00);
+		agcnfA.setzbemv("citycode",&Tx,T_Eigene_Ortsvorwahl_ohne_0);
+		agcnfA.setzbemv("msn",&Tx,T_Eigene_MSN_Faxnummer_ohne_Vorwahl);
+		agcnfA.setzbemv("LongDistancePrefix",&Tx,T_Praefix_fuer_ausserorts_zB_0);
+		agcnfA.setzbemv("InternationalPrefix",&Tx,T_Praefix_fuer_das_Ausland_zB_00);
+		agcnfA.setzbemv("LocalIdentifier",&Tx,T_Hylafax_bis_10_Buchstabe_fuer_eigenen_Namen);
+		agcnfA.setzbemv("cFaxUeberschrift",&Tx,T_Capisuite_bis_20_Buchstaben_fuer_eigenen_Namen);
+		agcnfA.setzbemv("sqlz",&Tx,T_Zahl_der_angegebenen_sql_Befehle_zur_Suche_nach_Absendern);
+		agcnfA.setzbemv("musterzahl",&Tx,T_Zahl_der_Muster_Verzeichnis_Paare_zum_Speichern_ankommender_Faxe);
+		for (size_t i=0;i<agcnfA.zahl;i++) {
+			if (agcnfA[i].name=="obhyla") agcnfA[i].setze(&obhyla);
+			else if (agcnfA[i].name=="obcapi") agcnfA[i].setze(&obcapi);
+			else if (agcnfA[i].name=="obfbox") agcnfA[i].setze(&obfbox);
+		} //     for (size_t i=0;i<agcnfA.zahl;i++)
+		schlArr *ggcnfAp[3]={&agcnfA,&sqlcnfA,&zmcnfA};
+		multischlschreib(akonfdt, ggcnfAp, sizeof ggcnfAp/sizeof *ggcnfAp, mpfad);
+	} // if (rzf||obkschreib) 
+} // void hhcl::autofkonfschreib()
+
 int main(int argc,char** argv) //α
 {
 	if (argc>1) { //ω

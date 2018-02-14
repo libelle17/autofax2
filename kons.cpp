@@ -3078,7 +3078,7 @@ void optcl::oausgeb()
 		} else {
 			cout<<*(string*)pptr;
 		}
-	}
+	} // 	if (pptr)
 	cout<<schwarz;
 	cout<<",kurzi:"<<blau<<setw(10)<<(*TxBp)[kurzi]<<schwarz;
 	cout<<",langi:"<<blau<<setw(13)<<(*TxBp)[langi]<<schwarz;
@@ -5563,8 +5563,12 @@ void optcl::setzwert()
 	 default: /*case plong:*/ *(long*)pptr=zahl;
  }
 } // void optcl::setzwert()
+int WPcl::setzstr(const string& neus,uchar *const obzuschreib/*=0*/,const uchar ausDatei/*=0*/)
+{
+	return setzstr(neus.c_str(),obzuschreib,ausDatei);
+}
 
-int WPcl::setzstr(const char* neuw,uchar *const obzuschreib/*=0*/,const uchar ausDatei/*=0*/)
+int WPcl::setzstr(const char* const neuw,uchar *const obzuschreib/*=0*/,const uchar ausDatei/*=0*/)
 {
 	struct tm tmp={0},tmmax={0},neu={0};
 	char *emax=0,*eakt;
@@ -5723,7 +5727,7 @@ void optcl::reset()
 
 
 // weist einer Option einen c-String zu
-int optcl::setzstr(const char* neuw,uchar *const obzuschreib/*=0*/,const uchar ausDatei/*=0*/)
+int optcl::setzstr(const char* const neuw,uchar *const obzuschreib/*=0*/,const uchar ausDatei/*=0*/)
 {
 	int wiefalsch=0;
 	struct tm tmp={0},tmmax={0},neu={0};

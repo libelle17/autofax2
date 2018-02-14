@@ -1,10 +1,20 @@
 #define DPROG "autofax2"
+#include <sys/utsname.h> // utsname
 
 enum FaxTyp:uchar {capi=1,hyla};
 enum FxStat:uchar {init/*0*/,gestrichen,schwebend,wartend/*3*/,blockiert/*4*/,bereit/*5*/,verarb/*6*/,gesandt/*7*/,gescheitert/*8*/,fehlend,woasined};
 enum hyinst {keineh,hysrc,hypak,hyppk}; // hyla source, hyla Paket, hylaplus Paket
-
+void dorename(const string& quelle, const string& ziel, const string& cuser=nix, uint *vfehlerp=0, uchar schonda=0, int obverb=0, int oblog=0,
+                  stringstream *ausgp=0);
 class zielmustercl; // fuer die Verteilung der erfolgreich gefaxten Dateien auf verschiedene Dateien
+string kopiere(const string& qdatei, const string& zield, uint *kfehler, const uchar wieweiterzaehl, int obverb=0, int oblog=0);
+string kopiere(const string& qdatei, const zielmustercl& zmp, uint *kfehler, const uchar wieweiterzaehl, int obverb=0, int oblog=0);
+string zielname(const string& qdatei, const string& zielvz,uchar wieweiterzaehl=0, string* zieldatei=0, uchar* obgleichp=0, 
+                int obverb=0, int oblog=0, stringstream *ausgp=0);
+string zielname(const string& qdatei, const zielmustercl& zmp,uchar wieweiterzaehl=0, string* zieldatei=0, uchar* obgleichp=0, int obverb=0, 
+                int oblog=0, stringstream *ausgp=0);
+void pruefrules(int obverb, int oblog);
+
 
 // Steuerung der Abspeicherung gesendeter Faxe je nach Muster
 class zielmustercl 
@@ -47,6 +57,8 @@ class hhcl:public dhcl
 		int ifindv; // integer-Variante der find-Version
     string dbq; // Datenbank
     string muser; // Benutzer fuer Mysql/MariaDB
+
+    servc *sfaxq=0, *shfaxd=0, *shylafaxd=0, *sfaxgetty=0, *scapis=0;
 		const string s1="mv -n ";
 		//		const string s2="/2200/* ";
 		//schlArr hylcnfA; // fuer q1234 o.ae.
@@ -122,10 +134,15 @@ class hhcl:public dhcl
     string cklingelzahl; // Zahl der Klingeltoene, bis Capisuite einen Anruf annnimmt
     string hklingelzahl; // Zahl der Klingeltoene, bis Hylafax einen Anruf annnimmt
     string cfaxconfdt; // /etc/capisuite/fax.conf oder /usr/local/etc/capisuite/fax.conf laut Handbuch
+		string cfaxconfeigdt; // ~/autofax/cfaxconfdt
     string spoolcapivz; // Verzeichnis der Capi-Spool-Dateien /var/spool/capisuite/
     string ccapiconfdt; // /etc/capisuite/capisuite.conf oder /usr/local/etc/capisuite/capisuite.conf laut Handbuch
 		string cempfavz; //  /var/spool/capisuite/" DPROG "arch/
     string cfaxuservz;    // /var/spool/capisuite/users/
+    string nextdatei;  // /var/spool/capisuite/users/<user>/sendq/fax-nextnr
+    string cfaxusersqvz;    // /var/spool/capisuite/users/<user>/sendq
+    string cfaxuserrcvz;    // /var/spool/capisuite/users/<user>/received
+		string cfaxuserrcfalschevz;  // /var/spool/capisuite/users/<user>/received/falsche
     string cdonevz; // Capisuite-Archiv: /var/spool/capisuite/done
     string cfailedvz; // Capisuite-Archiv der gescheiterten /var/spool/capisuite/failed
 		string /*spool_dir(spoolcapivz),*/fax_user_dir,/*send_tries(maxcdials),*/send_delays,outgoing_MSN, dial_prefix,fax_stationID,fax_headline,fax_email_from,outgoing_timeout; // capisuite: fax.conf
@@ -158,7 +175,13 @@ class hhcl:public dhcl
 	void cccnfCfuell();
 	void liescapiconf();
 	void konfcapi(); // aufgerufen in pruefcapi
+	void capisv();
+	int pruefcapi();
+	void pruefcvz();
+	void pruefsfftobmp();
+	void nextnum();
 	void dovc();
+	void autofkonfschreib();
  protected: //α
 	// void virtlgnzuw(); // wird aufgerufen in: virtrueckfragen, parsecl, lieskonfein, hcl::hcl nach holsystemsprache
 	void virtVorgbAllg();
