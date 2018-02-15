@@ -674,7 +674,6 @@ const char *logdt="/var/log/" DPROG "vorgabe.log";//darauf wird in kons.h verwie
 
 using namespace std; //ω
 
-class lsyscl lsys;
 
 // wird aufgerufen in: verschiebe (Version 1), verschiebe (Version 2), wegfaxen
 // ziel kann Verzeichnis oder Datei sein; im ersten Fall wird eine Datei des Namens von quelle dort als *zielp verwendet
@@ -1733,7 +1732,7 @@ int hhcl::pruefcapi()
 							////            <<"vi: "<<v1<<"\n"<<"v2: "<<v2<<endl;
 							// sollte nach Korrektur von kernel-modules-extra zu kernel-modules-extra-$(uname -r) kaum mehr vorkommen
 							if (v1!=v2) {
-								autofkonfschreib();
+								autokonfschreib();
 								::Log(blaus+Tx[T_Zur_Inbetriebnahme_der_Capisuite_muss_das_Modul_capi_geladen_werten]+schwarz+v1+blau+" -> "
 										+schwarz+v2+blau+").\n"+blau+Tx[T_Bitte_zu_dessen_Verwendung_den_Rechner_neu_starten]+schwarz+mpfad+blau+Tx[T_aufrufen]
 										+schwarz,1,1);
@@ -2224,21 +2223,24 @@ void hhcl::virtschlussanzeige()
 	dhcl::virtschlussanzeige(); //α
 } // void hhcl::virtschlussanzeige
  //ω
-#if false
 // wird aufgerufen in: main
-void hhcl::autofkonfschreib()
+void hhcl::autokonfschreib()
 {
-	Log(violetts+Tx[T_autokonfschreib]+schwarz+", "+Tx[T_zu_schreiben]+((rzf||obkschreib)?Txk[T_ja]:Txk[T_nein]));
+	Log(violetts+Tx[T_autokonfschreib]+schwarz+", "+Tx[T_zu_schreiben]+((rzf||hccd.obzuschreib)?Txk[T_ja]:Txk[T_nein]));
 	/*//
 		capizukonf und hylazukonf hier immer 0
 		char buf[200];
 		sprintf(buf,"rzf: %d, capizukonf: %d, hylazukonf: %d, obkschreib: %d",(int)rzf, (int)capizukonf, (int)hylazukonf, (int)obkschreib);
 		Log(blaus+buf+schwarz);
 	 */
-	if (rzf||obkschreib) {
+	if (rzf||hccd.obzuschreib) {
 		Log(gruens+Tx[T_schreibe_Konfiguration]+schwarz);
 		// restliche Erklaerungen festlegen
 		////    agcnfA.setzbem("language",sprachstr);
+// falsch:		cfcnfC.confschreib(cfaxconfdt,ios::out,mpfad,/*faclbak=*/0);
+		hcl::autokonfschreib();
+		cfcnfC.confschreib(akonfdt,ios::out,mpfad);
+#if false
 		agcnfA.setzbemv("countrycode",&Tx,T_Eigene_Landesvorwahl_ohne_plus_oder_00);
 		agcnfA.setzbemv("citycode",&Tx,T_Eigene_Ortsvorwahl_ohne_0);
 		agcnfA.setzbemv("msn",&Tx,T_Eigene_MSN_Faxnummer_ohne_Vorwahl);
@@ -2255,9 +2257,9 @@ void hhcl::autofkonfschreib()
 		} //     for (size_t i=0;i<agcnfA.zahl;i++)
 		schlArr *ggcnfAp[3]={&agcnfA,&sqlcnfA,&zmcnfA};
 		multischlschreib(akonfdt, ggcnfAp, sizeof ggcnfAp/sizeof *ggcnfAp, mpfad);
-	} // if (rzf||obkschreib) 
-} // void hhcl::autofkonfschreib()
 #endif
+	} // if (rzf||obkschreib) 
+} // void hhcl::autokonfschreib()
 
 hhcl::~hhcl() //α
 { //ω

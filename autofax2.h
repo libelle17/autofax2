@@ -188,7 +188,7 @@ class hhcl:public dhcl
 	void nextnum();
 	void pruefmodcron();
 	void dovc();
-	void autofkonfschreib();
+	void autokonfschreib();
  protected: //α
 	// void virtlgnzuw(); // wird aufgerufen in: virtrueckfragen, parsecl, lieskonfein, hcl::hcl nach holsystemsprache
 	void virtVorgbAllg();

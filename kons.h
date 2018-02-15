@@ -1163,6 +1163,8 @@ extern const string& defvors; // ="https://github.com/"+gitv+"/";
 extern const string& defnachs; // ="/archive/master.tar.gz";
 void viadd(string *cmdp,string* zeigp,const string& datei,const uchar ro=0,const uchar hinten=0, const uchar unten=0);
 
+extern class lsyscl lsys;
+
 // Haupt-Klasse
 class hcl
 {
@@ -1262,6 +1264,8 @@ class hcl
 		int zeighilfe(const stringstream *const erkl);
 		virtual void testerg()=0;
 		void lieszaehlerein();
+		void setzzaehler();
+		void schreibzaehler();
 		void dovi();
 		virtual void virtzeigversion(const string& ltiffv=nix);
 		virtual void pvirtvorrueckfragen()=0;
@@ -1271,10 +1275,8 @@ class hcl
 		uchar pruefcron(const string& cm);
 		virtual void virtzeigueberschrift();
     virtual void pvirtfuehraus()=0;
-		void autokonfschreib(); 
+		virtual void autokonfschreib(); 
 		void update(const string& DPROG);
-		void setzzaehler();
-		void schreibzaehler();
 		virtual void virtschlussanzeige();
 	public:
 		void optausg(const char *farbe); // Optionen ausgeben
