@@ -2158,7 +2158,7 @@ dhcl::dhcl(const int argc, const char *const *const argv,const char* const DPROG
 {
 }
 
-// wird aufgerufen in: virtrueckfragen, parsecl, lieskonfein, hcl::hcl nach holsystemsprache
+// wird aufgerufen in: virtrueckfragen, parsecl, virtlieskonfein, hcl::hcl nach holsystemsprache
 void dhcl::virtlgnzuw()
 {
 	hcl::virtlgnzuw();

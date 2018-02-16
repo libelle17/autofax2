@@ -224,6 +224,7 @@ enum T_
 	T_pruefsfftobmp,
 	T_clieskonf,
 	T_pruefmodcron,
+	T_Zahl_der_SQL_Befehle_fuer_die_Adresszuordnung,
 	T_MAX //α
 }; // enum T_ //ω
 // fuer verschiedene Sprachen //α
@@ -666,6 +667,8 @@ char const *DPROG_T[T_MAX+1][SprachZahl]={
 	{"clieskonf()","creadconf()"},
 	// T_pruefmodcron
 	{"pruefmodcron()","checkmodcron()"},
+	// T_Zahl_der_SQL_Befehle_fuer_die_Adresszuordnung,
+	{"Zahl der SQL-Befehle fuer die Adresszuordnung","No.of the sql-commands for matching addresses"},
 	{"",""} //α
 }; // char const *DPROG_T[T_MAX+1][SprachZahl]=
 
@@ -1732,7 +1735,7 @@ int hhcl::pruefcapi()
 							////            <<"vi: "<<v1<<"\n"<<"v2: "<<v2<<endl;
 							// sollte nach Korrektur von kernel-modules-extra zu kernel-modules-extra-$(uname -r) kaum mehr vorkommen
 							if (v1!=v2) {
-								autokonfschreib();
+								virtautokonfschreib();
 								::Log(blaus+Tx[T_Zur_Inbetriebnahme_der_Capisuite_muss_das_Modul_capi_geladen_werten]+schwarz+v1+blau+" -> "
 										+schwarz+v2+blau+").\n"+blau+Tx[T_Bitte_zu_dessen_Verwendung_den_Rechner_neu_starten]+schwarz+mpfad+blau+Tx[T_aufrufen]
 										+schwarz,1,1);
@@ -2141,6 +2144,7 @@ void hhcl::virtinitopt()
 	opn<<optcl(/*pname*/"",/*pptr*/&dszahl,/*art*/pdez,T_n_k,T_dszahl_l,/*TxBp*/&Tx,/*Txi*/T_Zahl_der_aufzulistenden_Datensaetze_ist_zahl_statt,/*wi*/1,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
 	opn<<optcl(/*pname*/"",/*pptr*/&obvc,/*art*/puchar,T_vc_k,T_vc_l,/*TxBp*/&Tx,/*Txi*/T_Capisuite_Konfigurationdateien_bearbeiten,/*wi*/1,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
 	opn<<optcl(/*pname*/"",/*pptr*/&obvh,/*art*/puchar,T_vh_k,T_vh_l,/*TxBp*/&Tx,/*Txi*/T_Hylafax_Modem_Konfigurationsdatei_bearbeiten,/*wi*/1,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
+	opn<<optcl(/*pname*/"sqlz",/*pptr*/&sqlzn,/*art*/plong,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zahl_der_SQL_Befehle_fuer_die_Adresszuordnung,/*wi*/-1,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
 	dhcl::virtinitopt(); //α
 } // void hhcl::virtinitopt
 
@@ -2163,7 +2167,7 @@ void hhcl::virtMusterVorgb()
 	msn="999999";
 	LocalIdentifier=Tx[T_MeiEinrichtung];
 	cFaxUeberschrift=Tx[T_Mei_FaxUeberschrift];
-	sqlz=sqlvz="0";
+	/*//sqlz=*/sqlvz="0";
 	////  host="localhost"; // 'localhost' schon Vorgabe bei Definition
 	zufaxenvz="/var/"+meinname+vtz+Tx[T_zufaxen];
 	wvz="/var/"+meinname+vtz+Tx[T_warteauffax];
@@ -2224,7 +2228,7 @@ void hhcl::virtschlussanzeige()
 } // void hhcl::virtschlussanzeige
  //ω
 // wird aufgerufen in: main
-void hhcl::autokonfschreib()
+void hhcl::virtautokonfschreib()
 {
 	Log(violetts+Tx[T_autokonfschreib]+schwarz+", "+Tx[T_zu_schreiben]+((rzf||hccd.obzuschreib)?Txk[T_ja]:Txk[T_nein]));
 	/*//
@@ -2238,8 +2242,10 @@ void hhcl::autokonfschreib()
 		// restliche Erklaerungen festlegen
 		////    agcnfA.setzbem("language",sprachstr);
 // falsch:		cfcnfC.confschreib(cfaxconfdt,ios::out,mpfad,/*faclbak=*/0);
-		hcl::autokonfschreib();
+		/*
+		hcl::virtautokonfschreib();
 		cfcnfC.confschreib(akonfdt,ios::out,mpfad);
+		*/
 #if false
 		agcnfA.setzbemv("countrycode",&Tx,T_Eigene_Landesvorwahl_ohne_plus_oder_00);
 		agcnfA.setzbemv("citycode",&Tx,T_Eigene_Ortsvorwahl_ohne_0);
@@ -2259,12 +2265,22 @@ void hhcl::autokonfschreib()
 		multischlschreib(akonfdt, ggcnfAp, sizeof ggcnfAp/sizeof *ggcnfAp, mpfad);
 #endif
 	} // if (rzf||obkschreib) 
-} // void hhcl::autokonfschreib()
+} // void hhcl::virtautokonfschreib()
 
 hhcl::~hhcl() //α
 { //ω
 	if (cfaxcp) delete cfaxcp;
-} //α //ω
+} //α
+
+void hhcl::virtlieskonfein()
+{
+	hcl::virtlieskonfein(); //ω
+	caus<<"sqlzn: "<<sqlzn<<endl;
+	for(long i=0;i<sqlzn;i++) {
+		stringstream soptname;
+
+	}
+} //α
 
 int main(int argc,char** argv) //α
 {
@@ -2272,10 +2288,10 @@ int main(int argc,char** argv) //α
 	} //α
 	hhcl hhi(argc,argv); // hiesige Hauptinstanz, mit lngzuw, setzlog und pruefplatte
 	hhi.lauf(); // Einleitungsteil mit virtuellen Funktionen, 
-	// mit virtVorgbAllg,pvirtVorgbSpeziell,initopt,parsecl,pvirtmacherkl,zeighilfe,lieskonfein,verarbeitkonf,lieszaehlerein,MusterVorgb,dovi,dovs,virtzeigversion
-	// autokonfschreib,update,
+	// mit virtVorgbAllg,pvirtVorgbSpeziell,initopt,parsecl,pvirtmacherkl,zeighilfe,virtlieskonfein,verarbeitkonf,lieszaehlerein,MusterVorgb,dovi,dovs,virtzeigversion
+	// virtautokonfschreib,update,
 } // int main //ω
 
-void hhcl::testerg()
+void hhcl::virttesterg()
 {
 }

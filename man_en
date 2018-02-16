@@ -2,7 +2,7 @@
 .\" manual page for ²DPROG²
 .\" write to geraldschade@gmx.de if You discover an error or a deficit in the program
 .pc
-.TH man 1 "16.02.18" "Version 0.10147" "\fB²DPROG²\fR man page"
+.TH man 1 "16.02.18" "Version 0.10159" "\fB²DPROG²\fR man page"
 .SH NAME
 \fB²DPROG² \- Fax server functionality\fR: induces automatic fax transmission of files, naming of received faxes and logging of all of them in a database
 .br
@@ -16,6 +16,32 @@
 .SH PRECONDITIONS
 .br
 \fBlies: \fB/etc/sysconfig/language\fR
+.br
+\fBlies: \fB/etc/capisuite/fax.conf\fR
+.br
+\fBlies: \fB/etc/capisuite/capisuite.conf\fR
+.br
+hier bin ich
+.br
+Stelle 0
+.br
+Stelle 1
+.br
+Stelle 2
+.br
+\fBacstr: \fR-1lg
+.br
+Stelle 3
+.br
+Stelle 4
+.br
+Stelle 2
+.br
+\fBacstr: \fR-sh
+.br
+Stelle 3
+.br
+Stelle 4
 .br
 \fBOptions which are not saved: \fR
 .br
@@ -127,24 +153,4 @@
 .br
 \fB -fd, --find <string>\fR: version 1,2 or 3 of filefind (variable performance differences instead of ('\fB3\fR')
 .br
-\fB -host, --host <string>\fR: takes the database on host <string> instead of ('\fBlocalhost\fR')
-.br
-\fB -muser, --muser <string>\fR: takes the user <string> for MySQL/MariaDB instead of ('\fB\fR')
-.br
-\fB -mpwd, --mpwd <string>\fR: takes the password <string> for MySQL/MariaDB
-.br
-\fB -db, --database <string>\fR: uses the database <string> instead of ('\fBfaxe\fR')
-.br
-\fB -tb, --table <string>\fR: uses the table <string> instead of ('\fB\fR')
-.br
-\fB -lg, --language <string>\fR: Language/Sprache/Lingue/Lingua [\fBd\fReutsch,\fBe\fRnglisch] ('\fBe\fR')
-.br
-\fB -ldr, --logdir <path>\fR: choses <path> as log directory, currently ('\fB/var/log\fR')
-.br
-\fB -lf, --logfilename <string>\fR: log file <string> (in path '\fB/var/log\fR') will be used instead of ('\fBautofax2.log\fR')
-.br
-\fB -l, --log <zahl>\fR: put detailed logs in file '\fB/var/log/autofax2.log\fR' (otherwise shorter)\fB or not\fR (\fB0\fR)
-.br
-\fB -cm, --cronminutes <string>\fR: every how many minutes shall \fBautofax2\fR be called in crontab (0=not at all), instead of  ('\fB0\fR')
-.br
-\fB -autoupd, --autoupdate\fR: Update program automatically\fB or not\fR (\fB1\fR)
+\fB -

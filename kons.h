@@ -336,7 +336,7 @@ enum Tkons_
 	T_libtest,
 	T_protokolliert_ausfuehrlich_in_Datei,
 	T_sh,
-	T_lieskonfein,
+	T_virtlieskonfein,
 	T_pruefcron,
 	T_cronzuplanen,
 	T_Kein_cron_gesetzt_nicht_zu_setzen,
@@ -430,6 +430,7 @@ enum Tkons_
 	T_Logpfad,
 	T_oblog,
 	T_in_main_pidv_am_Schluss,
+	T_parsecl,
 	T_konsMAX
 }; // Tkons_
 
@@ -1247,7 +1248,7 @@ class hcl
 	protected:
 		void vischluss(string& erg,string& zeig);
 		void holbefz0(const int argc, const char *const *const argv);
-    virtual void virtlgnzuw(); // wird aufgerufen in: virtrueckfragen, parsecl, lieskonfein, hcl::hcl nach holsystemsprache
+    virtual void virtlgnzuw(); // wird aufgerufen in: virtrueckfragen, parsecl, virtlieskonfein, hcl::hcl nach holsystemsprache
     int pruefinstv();
 		void setzlog();
 
@@ -1259,10 +1260,10 @@ class hcl
 		void parsecl();
 		virtual void pvirtmacherkl()=0;
     virtual void virtMusterVorgb();
-    void lieskonfein();
+    virtual void virtlieskonfein();
     void verarbeitkonf();
 		int zeighilfe(const stringstream *const erkl);
-		virtual void testerg()=0;
+		virtual void virttesterg()=0;
 		void lieszaehlerein();
 		void setzzaehler();
 		void schreibzaehler();
@@ -1275,7 +1276,7 @@ class hcl
 		uchar pruefcron(const string& cm);
 		virtual void virtzeigueberschrift();
     virtual void pvirtfuehraus()=0;
-		virtual void autokonfschreib(); 
+		virtual void virtautokonfschreib(); 
 		void update(const string& DPROG);
 		virtual void virtschlussanzeige();
 	public:

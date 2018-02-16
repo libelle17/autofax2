@@ -445,7 +445,7 @@ class dhcl:public hcl
 	const size_t maxconz=12;//aktc: 0=... //α
  private:
  protected:
-	void virtlgnzuw(); // wird aufgerufen in: virtrueckfragen, parsecl, lieskonfein, hcl::hcl nach holsystemsprache
+	void virtlgnzuw(); // wird aufgerufen in: virtrueckfragen, parsecl, virtlieskonfein, hcl::hcl nach holsystemsprache
 	void virtVorgbAllg();
 	void pvirtVorgbSpeziell();
 	void virtinitopt(); // (programm-)spezifische Optionen

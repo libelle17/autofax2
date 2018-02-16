@@ -42,7 +42,7 @@ class hhcl:public dhcl
     uchar hylazuerst;  // ob ein Fax zuerst ueber Hylafax versucht werden soll zu faxen
     //    string hmodemstr; // Erkennung des Faxgeraetes nach /dev/tty, Standard ACM
     string maxcapiv; // maximale Versuchnr in Capi, bis Hyla versucht wird
-		void testerg();
+		void virttesterg();
     string maxhylav; // maixmale Versuchsnr in Hylafax, bis Capi versucht wird
     string maxhdials;     // Zahl der Wahlversuche in Hylafax
 		string maxcdials;    // Zahl der Wahlversuche in Capisuite
@@ -119,8 +119,8 @@ class hhcl:public dhcl
     const string tudoc="udoc"; // MariaDB-Tabelle fuer gesandte oder gescheiterte Faxe
     const string tinca="inca"; // MariaDB-Tabelle fuer empfangene Faxe
 
-    string sqlz;  // Zahl der SQL-Befehle
-    size_t sqlzn=0; // Zahl der SQL-Befehle numerisch
+//    string sqlz;  // Zahl der SQL-Befehle
+//    size_t sqlzn=0; // Zahl der SQL-Befehle numerisch
     string sqlvz;  // Zahl der SQL-Befehle aus Vorgaben
     size_t sqlvzn=0; // Zahl der SQL-Befehle aus Vorgaben numerisch
     string zufaxenvz;
@@ -172,6 +172,7 @@ class hhcl:public dhcl
 	string p3;
 	uchar oblista=0;
 	long listz=30; //ω
+	long sqlzn=0; // Zahl der SQL-Befehle numerisch
  public: //α //ω
  private: //α //ω
 	void cfcnfCfuell();
@@ -188,7 +189,8 @@ class hhcl:public dhcl
 	void nextnum();
 	void pruefmodcron();
 	void dovc();
-	void autokonfschreib();
+	void virtlieskonfein();
+	void virtautokonfschreib();
  protected: //α
 	// void virtlgnzuw(); // wird aufgerufen in: virtrueckfragen, parsecl, lieskonfein, hcl::hcl nach holsystemsprache
 	void virtVorgbAllg();

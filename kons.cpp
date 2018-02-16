@@ -422,8 +422,8 @@ const char *kons_T[T_konsMAX+1][SprachZahl]=
 	{"protokolliert ausfuehrlich in Datei '","put detailed logs in file '"},
 	// T_sh
 	{"sh","sh"},
-	// T_lieskonfein
-	{"lieskonfein()","readconf()"},
+	// T_virtlieskonfein
+	{"virtlieskonfein()","virtreadconf()"},
 	// T_pruefcron
 	{"pruefcron()","checkcron()"},
 	// T_cronzuplanen
@@ -516,8 +516,8 @@ const char *kons_T[T_konsMAX+1][SprachZahl]=
 	// T_Optionen_die_in_der_Konfigurationsdatei_gespeichert_werden,
 	{"Optionen z.Speich. i.Konfigur'datei (vorausg. '1'=doch nicht speichern, 'no'=Gegenteil, z.B. '-noocra','-1noocri'):",
 		"Options to be saved in the configuration file: (preced. '1'=don't save, 'no'=contrary, e.g. '-noocra','-1noocri'):"},
-	// T_autokonfschreib
-	{"autokonfschreib()","autoconfwrite()"},
+	// T_virtautokonfschreib
+	{"virtautokonfschreib()","virtautoconfwrite()"},
 	// T_zu_schreiben
 	{"zu schreiben: ","must write: "},
 	// T_schreibe_Konfiguration
@@ -612,6 +612,8 @@ const char *kons_T[T_konsMAX+1][SprachZahl]=
 	{"' (oblog: ","' (with logging: "},
 	// T_in_main_pidv_am_Schluss
 	{"in main, pidv, am Schluss","in main, pidv, at the end"},
+	// T_parsecl,
+	{"parsecl()","parasecl()"},
   {"",""}
 }; // const char *Txkonscl::TextC[T_konsMAX+1][SprachZahl]=
 
@@ -2836,7 +2838,7 @@ int pruefverz(const string& verz,int obverb/*=0*/,int oblog/*=0*/, uchar obmitfa
 } // void pruefverz(const string& verz,int obverb,int oblog)
 
 
-// verwendet in: lieskonfein
+// verwendet in: virtlieskonfein
 string aktprogverz()
 {
 	char pBuf[300];
@@ -4698,14 +4700,14 @@ void hcl::lauf()
 	if (obhilfe==3) { // Standardausgabe gewaehrleisten
 		virtMusterVorgb();
 	} else {
-		lieskonfein();
+		virtlieskonfein();
 		verarbeitkonf();
 		if (obverb) optausg(gruen);
 	} // if (obhilfe==3)
 	if (zeighilfe(&erkl)) {
-    testerg();
+		virttesterg();
 		exit(1);
-}
+	}
 	lieszaehlerein();
 	if (obvi) dovi(); 
 	else if (obvs) {
@@ -4731,7 +4733,7 @@ void hcl::lauf()
 		virtzeigueberschrift();
 		pvirtfuehraus();
 	} //  if (!keineverarbeitung)
-	autokonfschreib();
+	virtautokonfschreib();
 	update(DPROG);
 	if (mitpids) 
 		wartaufpids(&pidv,0,obverb,oblog,Txk[T_in_main_pidv_am_Schluss]);
@@ -4795,7 +4797,7 @@ string holsystemsprache(int obverb/*=0*/)
 	return ret;
 } // string holsystemsprache
 
-// wird aufgerufen in: virtrueckfragen, parsecl, lieskonfein, hcl::hcl nach holsystemsprache
+// wird aufgerufen in: virtrueckfragen, parsecl, virtlieskonfein, hcl::hcl nach holsystemsprache
 void hcl::virtlgnzuw()
 {
 	if (langu=="d" || langu=="D" || langu=="deutsch" || langu=="Deutsch") {
@@ -4819,7 +4821,7 @@ int hcl::pruefinstv()
 	return erg;
 } // int hcl::pruefinstv()
 
-// wird aufgerufen in hcl::hcl, von der von hcl abgeleiteten Klasse, dort lieskonfein()
+// wird aufgerufen in hcl::hcl, von der von hcl abgeleiteten Klasse, dort virtlieskonfein()
 void hcl::setzlog()
 {
 	loggespfad=logvz+vtz+logdname;
@@ -4878,6 +4880,7 @@ void hcl::virtinitopt()
 // wird aufgerufen in lauf
 void hcl::parsecl()
 {
+	Log(violetts+Txk[T_parsecl]+schwarz);
 	// (opts[optslsz].pruefpar(&argcmv,&i,&obhilfe))
 	vector<argcl>::iterator ap,apn;
 	for(ap=argcmv.begin();ap!=argcmv.end();ap++) {
@@ -4914,7 +4917,7 @@ void hcl::parsecl()
 					for(omit=omp->begin();omit!=omp->end();omit++) {
 						//// <<"omit: "<<omit->second->pname<<", "<<omit->first<<endl;
 						// omit ist also jetzt iterator fuer die relevante map auf die aktuelle Option (kurz oder lang)
-						if (!strcmp(omit->first,acstr)) {
+						if (omit->first) if (!strcmp(omit->first,acstr)) {
 							ap->agef++; // Parameter gefunden
 							if (omit->second->pptr) {
 								// pzuweis liefert -1, wenn der naechste Parameter als Inhalt verwendet wurde, sonst wiefalsch
@@ -4955,6 +4958,7 @@ void hcl::parsecl()
 			if (!obhilfe) obhilfe=1;
 		} //     if (!argcmv[i].agef)
 	} //   for(size_t i=0;i<argcmv.size();i++)
+	Log(violetts+Txk[T_Ende]+Txk[T_parsecl]+schwarz);
 	return;
 } // void hcl::parsecl()
 
@@ -4964,9 +4968,9 @@ void hcl::virtMusterVorgb()
 } // void hhcl::MusterVorgb
 
 // wird aufgerufen in lauf
-void hcl::lieskonfein()
+void hcl::virtlieskonfein()
 {
-	Log(violetts+Txk[T_lieskonfein]+schwarz);
+	Log(violetts+Txk[T_virtlieskonfein]+schwarz);
 //	if (akonfdt.empty()) akonfdt=aktprogverz()+".conf";
 	if (akonfdt.empty()) {
 		svec rue;
@@ -4984,8 +4988,8 @@ void hcl::lieskonfein()
 	hccd.auswert(&opn,obverb,'=',0);
 	virtlgnzuw();
 	setzlog();
-	// <<violett<<"Ende lieskonfein, obzuschreib: "<<rot<<(int)hccd.obzuschreib<<schwarz<<endl;
-} // void hcl::lieskonfein
+	// <<violett<<"Ende virtlieskonfein, obzuschreib: "<<rot<<(int)hccd.obzuschreib<<schwarz<<endl;
+} // void hcl::virtlieskonfein
 
 // wird aufgerufen in lauf
 void hcl::verarbeitkonf()
@@ -5237,7 +5241,7 @@ void hcl::virtzeigueberschrift()
 
 
 // wird aufgerufen in lauf
-void hcl::autokonfschreib()
+void hcl::virtautokonfschreib()
 {
 	Log(violetts+Txk[T_autokonfschreib]+schwarz+", "+Txk[T_zu_schreiben]+((rzf||hccd.obzuschreib)?Txk[T_ja]:Txk[T_nein]));
 	caus<<rot<<"obzuschreib: "<<violett<<(int)hccd.obzuschreib<<schwarz<<endl;
@@ -5251,7 +5255,7 @@ void hcl::autokonfschreib()
 	multischlschreib(akonfdt, ggcnfAp, sizeof ggcnfAp/sizeof *ggcnfAp, mpfad);
 	chmod(akonfdt.c_str(),S_IRWXU);
 	*/
-} // void hhcl::autokonfschreib
+} // void hhcl::virtautokonfschreib
 
 // wird aufgerufen in lauf
 void hcl::update(const string& DPROG)
@@ -6401,7 +6405,7 @@ template<typename SCL> void schAcl<SCL>::gibaus(const int nr/*=0*/)
   }
 } // template<typename SCL> void schAcl
 
-// wird augerufen in autokonfschreib und schreibzaehler
+// wird augerufen in virtautokonfschreib und schreibzaehler
 template<typename SCL> int schAcl<SCL>::confschreib(const string& fname,ios_base::openmode modus/*=ios_base::out*/,const string& mpfad,
 		uchar faclbak/*=1*/, int obverb/*=0*/,int oblog/*=0*/)
 {
