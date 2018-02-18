@@ -173,6 +173,7 @@ class hhcl:public dhcl
 	uchar oblista=0;
 	long listz=30; //ω
 	long sqlzn=0; // Zahl der SQL-Befehle numerisch
+	string* sqlp; // Array der SQL-Befehle
  public: //α //ω
  private: //α //ω
 	void cfcnfCfuell();

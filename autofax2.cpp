@@ -224,7 +224,9 @@ enum T_
 	T_pruefsfftobmp,
 	T_clieskonf,
 	T_pruefmodcron,
-	T_Zahl_der_SQL_Befehle_fuer_die_Adresszuordnung,
+	T_Zahl_der_SQL_Befehle_fuer_die_Absenderermittlung,
+	T_SQL_Befehl_Nr,
+	T_Zahl_der_Muster_Verzeichnis_Paare_zum_Speichern_ankommender_Faxe,
 	T_MAX //α
 }; // enum T_ //ω
 // fuer verschiedene Sprachen //α
@@ -667,8 +669,12 @@ char const *DPROG_T[T_MAX+1][SprachZahl]={
 	{"clieskonf()","creadconf()"},
 	// T_pruefmodcron
 	{"pruefmodcron()","checkmodcron()"},
-	// T_Zahl_der_SQL_Befehle_fuer_die_Adresszuordnung,
-	{"Zahl der SQL-Befehle fuer die Adresszuordnung","No.of the sql-commands for matching addresses"},
+	// T_Zahl_der_SQL_Befehle_fuer_die_Absenderermittlung,
+	{"Zahl der SQL-Befehle fuer die Absenderermittlung","No.of the sql-commands for finding out senders"},
+	// T_SQL_Befehl_Nr
+	{"SQL-Befehl Nr. ","SQL-command no. "},
+	// T_Zahl_der_Muster_Verzeichnis_Paare_zum_Speichern_ankommender_Faxe
+	{"Zahl der Muster/Verzeichnis-Paare zum Speichern ankommender Faxe","No of pairs of patterns/directories for saving received faxes"},
 	{"",""} //α
 }; // char const *DPROG_T[T_MAX+1][SprachZahl]=
 
@@ -2144,7 +2150,8 @@ void hhcl::virtinitopt()
 	opn<<optcl(/*pname*/"",/*pptr*/&dszahl,/*art*/pdez,T_n_k,T_dszahl_l,/*TxBp*/&Tx,/*Txi*/T_Zahl_der_aufzulistenden_Datensaetze_ist_zahl_statt,/*wi*/1,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
 	opn<<optcl(/*pname*/"",/*pptr*/&obvc,/*art*/puchar,T_vc_k,T_vc_l,/*TxBp*/&Tx,/*Txi*/T_Capisuite_Konfigurationdateien_bearbeiten,/*wi*/1,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
 	opn<<optcl(/*pname*/"",/*pptr*/&obvh,/*art*/puchar,T_vh_k,T_vh_l,/*TxBp*/&Tx,/*Txi*/T_Hylafax_Modem_Konfigurationsdatei_bearbeiten,/*wi*/1,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
-	opn<<optcl(/*pname*/"sqlz",/*pptr*/&sqlzn,/*art*/plong,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zahl_der_SQL_Befehle_fuer_die_Adresszuordnung,/*wi*/-1,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
+	opn<<optcl(/*pname*/"sqlz",/*pptr*/&sqlzn,/*art*/plong,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zahl_der_SQL_Befehle_fuer_die_Absenderermittlung,/*wi*/-1,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
+	opn<<optcl(/*pname*/"musterzahl",/*pptr*/&zmvzn,/*art*/plong,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zahl_der_Muster_Verzeichnis_Paare_zum_Speichern_ankommender_Faxe,/*wi*/-1,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
 	dhcl::virtinitopt(); //α
 } // void hhcl::virtinitopt
 
@@ -2275,10 +2282,20 @@ hhcl::~hhcl() //α
 void hhcl::virtlieskonfein()
 {
 	hcl::virtlieskonfein(); //ω
+		schAcl<optcl> op2,op3; // Optionen
 	caus<<"sqlzn: "<<sqlzn<<endl;
-	for(long i=0;i<sqlzn;i++) {
+	sqlp=new string[sqlzn];
+	for(long i=0;i<sqlzn;) {
+		++i;
 		stringstream soptname;
-
+		soptname<<"SQL_"<<i;
+		const string istr=ltoan(i);
+		op2<<optcl(/*pname*/soptname.str(),/*pptr*/&sqlp[i],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/&istr,/*wert*/-1);
+	}
+	hccd.auswert(&op2,obverb,'=',0);
+	for(long i=0;i<sqlzn;) {
+		++i;
+		caus<<"op2["<<i<<"]: "<<sqlp[i]<<endl;
 	}
 } //α
 

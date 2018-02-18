@@ -2,7 +2,7 @@
 .\" Manual-Seite für ²DPROG²
 .\" Schreiben Sie an geraldschade@gmx.de, wenn Sie Fehler oder Mängel entdeckt haben
 .pc
-.TH man 1 "16.02.18" "Version 0.10159" "Manual-Seite für ²DPROG²"
+.TH man 1 "18.02.18" "Version 0.10165" "Manual-Seite für ²DPROG²"
 .SH NAME
 \fB²DPROG² \- FaxServer-Funktionalität\fR: veranlasst automatischen Faxversand von Dateien, Benennung empfangener Faxe und Protokollierung aller Faxe in einer Datenbank 
 .br
@@ -20,28 +20,6 @@
 \fBlies: \fB/etc/capisuite/fax.conf\fR
 .br
 \fBlies: \fB/etc/capisuite/capisuite.conf\fR
-.br
-hier bin ich
-.br
-Stelle 0
-.br
-Stelle 1
-.br
-Stelle 2
-.br
-\fBacstr: \fR-1lg
-.br
-Stelle 3
-.br
-Stelle 4
-.br
-Stelle 2
-.br
-\fBacstr: \fR-sh
-.br
-Stelle 3
-.br
-Stelle 4
 .br
 \fBOptionen, die nicht gespeichert werden: \fR
 .br

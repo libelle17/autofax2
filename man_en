@@ -2,7 +2,7 @@
 .\" manual page for ²DPROG²
 .\" write to geraldschade@gmx.de if You discover an error or a deficit in the program
 .pc
-.TH man 1 "16.02.18" "Version 0.10159" "\fB²DPROG²\fR man page"
+.TH man 1 "18.02.18" "Version 0.10165" "\fB²DPROG²\fR man page"
 .SH NAME
 \fB²DPROG² \- Fax server functionality\fR: induces automatic fax transmission of files, naming of received faxes and logging of all of them in a database
 .br
@@ -20,28 +20,6 @@
 \fBlies: \fB/etc/capisuite/fax.conf\fR
 .br
 \fBlies: \fB/etc/capisuite/capisuite.conf\fR
-.br
-hier bin ich
-.br
-Stelle 0
-.br
-Stelle 1
-.br
-Stelle 2
-.br
-\fBacstr: \fR-1lg
-.br
-Stelle 3
-.br
-Stelle 4
-.br
-Stelle 2
-.br
-\fBacstr: \fR-sh
-.br
-Stelle 3
-.br
-Stelle 4
 .br
 \fBOptions which are not saved: \fR
 .br
