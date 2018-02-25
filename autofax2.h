@@ -174,6 +174,9 @@ class hhcl:public dhcl
 	long listz=30; //ω
 	long sqlzn=0; // Zahl der SQL-Befehle numerisch
 	string* sqlp; // Array der SQL-Befehle
+	long zmzn=0; // Zahl der Zielmusterpaare numerisch
+	string *zmmp; // Array der Zielmuster
+	string *zmzp; // Array der Ziele
  public: //α //ω
  private: //α //ω
 	void cfcnfCfuell();

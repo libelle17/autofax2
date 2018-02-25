@@ -2151,7 +2151,7 @@ void hhcl::virtinitopt()
 	opn<<optcl(/*pname*/"",/*pptr*/&obvc,/*art*/puchar,T_vc_k,T_vc_l,/*TxBp*/&Tx,/*Txi*/T_Capisuite_Konfigurationdateien_bearbeiten,/*wi*/1,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
 	opn<<optcl(/*pname*/"",/*pptr*/&obvh,/*art*/puchar,T_vh_k,T_vh_l,/*TxBp*/&Tx,/*Txi*/T_Hylafax_Modem_Konfigurationsdatei_bearbeiten,/*wi*/1,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
 	opn<<optcl(/*pname*/"sqlz",/*pptr*/&sqlzn,/*art*/plong,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zahl_der_SQL_Befehle_fuer_die_Absenderermittlung,/*wi*/-1,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
-	opn<<optcl(/*pname*/"musterzahl",/*pptr*/&zmvzn,/*art*/plong,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zahl_der_Muster_Verzeichnis_Paare_zum_Speichern_ankommender_Faxe,/*wi*/-1,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
+	opn<<optcl(/*pname*/"musterzahl",/*pptr*/&zmzn,/*art*/plong,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zahl_der_Muster_Verzeichnis_Paare_zum_Speichern_ankommender_Faxe,/*wi*/-1,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
 	dhcl::virtinitopt(); //α
 } // void hhcl::virtinitopt
 
@@ -2285,6 +2285,8 @@ void hhcl::virtlieskonfein()
 		schAcl<optcl> op2,op3; // Optionen
 	caus<<"sqlzn: "<<sqlzn<<endl;
 	sqlp=new string[sqlzn];
+	zmmp=new string[zmzn];
+	zmzp=new string[zmzn];
 	for(long i=0;i<sqlzn;) {
 		++i;
 		stringstream soptname;
