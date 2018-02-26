@@ -3068,7 +3068,7 @@ uchar VerzeichnisGibts(const char* vname)
 
 void optcl::oausgeb()
 {
-	cout<<"pname:"<<blau<<setw(8)<<pname<<schwarz;
+	cout<<"pname:"<<blau<<setw(13)<<pname<<schwarz;
 	cout<<",pptr:"<<blau<<setw(25);
 	if (pptr) {
 		if (art==puchar) {
@@ -3082,13 +3082,13 @@ void optcl::oausgeb()
 		}
 	} // 	if (pptr)
 	cout<<schwarz;
-	cout<<",kurzi:"<<blau<<setw(10)<<(*TxBp)[kurzi]<<schwarz;
-	cout<<",langi:"<<blau<<setw(13)<<(*TxBp)[langi]<<schwarz;
+	cout<<",kurzi:"<<blau<<setw(10)<<(kurzi<0?ltoan(kurzi):(*TxBp)[kurzi])<<schwarz;
+	cout<<",langi:"<<blau<<setw(18)<<(langi<0?ltoan(langi):(*TxBp)[langi])<<schwarz;
 	cout<<",wi:"<<blau<<setw(3)<<(int)wi<<schwarz;
 	cout<<",Txi:"<<blau<<setw(3)<<Txi<<schwarz;
-	cout<<",rottxt:"<<blau<<setw(15)<<(rottxt?*rottxt:string(""))<<schwarz;
+	cout<<",rottxt:"<<blau<<setw(22)<<(rottxt?*rottxt:string(""))<<schwarz;
 	cout<<",Txi2:"<<blau<<setw(3)<<Txi2<<schwarz;
-	cout<<",iwert:"<<blau<<iwert<<schwarz;
+	cout<<",iwert:"<<blau<<setw(2)<<iwert<<schwarz;
 	cout<<",part:"<<blau<<art<<schwarz;
 	cout<<",obno:"<<blau<<(int)obno<<schwarz;
 	cout<</*endl<<setw(22)<<*/",bemkg:"<<blau<<bemerk<<schwarz;

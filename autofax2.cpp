@@ -226,6 +226,8 @@ enum T_
 	T_pruefmodcron,
 	T_Zahl_der_SQL_Befehle_fuer_die_Absenderermittlung,
 	T_SQL_Befehl_Nr,
+	T_Zielmuster_Nr,
+	T_Ziel_Nr,
 	T_Zahl_der_Muster_Verzeichnis_Paare_zum_Speichern_ankommender_Faxe,
 	T_MAX //α
 }; // enum T_ //ω
@@ -673,6 +675,10 @@ char const *DPROG_T[T_MAX+1][SprachZahl]={
 	{"Zahl der SQL-Befehle fuer die Absenderermittlung","No.of the sql-commands for finding out senders"},
 	// T_SQL_Befehl_Nr
 	{"SQL-Befehl Nr. ","SQL-command no. "},
+	// T_Zielmuster_Nr
+	{"Zielmuster Nr. ","Target pattern no. "},
+	// T_Ziel_Nr
+	{"Ziel Nr. ","Target no. "},
 	// T_Zahl_der_Muster_Verzeichnis_Paare_zum_Speichern_ankommender_Faxe
 	{"Zahl der Muster/Verzeichnis-Paare zum Speichern ankommender Faxe","No of pairs of patterns/directories for saving received faxes"},
 	{"",""} //α
@@ -2282,22 +2288,38 @@ hhcl::~hhcl() //α
 void hhcl::virtlieskonfein()
 {
 	hcl::virtlieskonfein(); //ω
-		schAcl<optcl> op2,op3; // Optionen
+	schAcl<optcl> op2,op3; // Optionen
 	caus<<"sqlzn: "<<sqlzn<<endl;
 	sqlp=new string[sqlzn];
-	zmmp=new string[zmzn];
-	zmzp=new string[zmzn];
 	for(long i=0;i<sqlzn;) {
 		++i;
 		stringstream soptname;
 		soptname<<"SQL_"<<i;
 		const string istr=ltoan(i);
-		op2<<optcl(/*pname*/soptname.str(),/*pptr*/&sqlp[i],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/&istr,/*wert*/-1);
+		op2<<optcl(/*pname*/soptname.str(),/*pptr*/&sqlp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/&istr,/*wert*/-1);
 	}
 	hccd.auswert(&op2,obverb,'=',0);
 	for(long i=0;i<sqlzn;) {
 		++i;
-		caus<<"op2["<<i<<"]: "<<sqlp[i]<<endl;
+		caus<<"sqlp["<<i<<"]: "<<sqlp[i-1]<<endl;
+	}
+	caus<<"zmzn: "<<zmzn<<endl;
+	zmmp=new string[zmzn];
+	zmzp=new string[zmzn];
+	for(long i=0;i<zmzn;) {
+		++i;
+		stringstream zmmname,zmzname;
+		zmmname<<"ZMMuster_"<<i;
+		zmzname<<"ZMZiel_"<<i;
+		const string istr=ltoan(i);
+		op3<<optcl(/*pname*/zmmname.str(),/*pptr*/&zmmp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zielmuster_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/&istr,/*wert*/-1);
+		op3<<optcl(/*pname*/zmzname.str(),/*pptr*/&zmzp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Ziel_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/&istr,/*wert*/-1);
+	}
+	hccd.auswert(&op3,obverb,'=',0);
+	for(long i=0;i<zmzn;) {
+		++i;
+		caus<<"zmmp["<<i<<"]: "<<zmmp[i-1]<<endl;
+		caus<<"zmzp["<<i<<"]: "<<zmzp[i-1]<<endl;
 	}
 } //α
 
