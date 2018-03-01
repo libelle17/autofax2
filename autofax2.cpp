@@ -2299,9 +2299,8 @@ void hhcl::virtlieskonfein()
 		op2<<optcl(/*pname*/soptname.str(),/*pptr*/&sqlp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/&istr,/*wert*/-1);
 	}
 	hccd.auswert(&op2,obverb,'=',0);
-	for(long i=0;i<sqlzn;) {
-		++i;
-		caus<<"sqlp["<<i<<"]: "<<sqlp[i-1]<<endl;
+	for(long i=0;i<sqlzn;i++) {
+		caus<<"sqlp["<<i+1<<"]: "<<sqlp[i]<<endl;
 	}
 	caus<<"zmzn: "<<zmzn<<endl;
 	zmmp=new string[zmzn];
@@ -2316,10 +2315,9 @@ void hhcl::virtlieskonfein()
 		op3<<optcl(/*pname*/zmzname.str(),/*pptr*/&zmzp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Ziel_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/&istr,/*wert*/-1);
 	}
 	hccd.auswert(&op3,obverb,'=',0);
-	for(long i=0;i<zmzn;) {
-		++i;
-		caus<<"zmmp["<<i<<"]: "<<zmmp[i-1]<<endl;
-		caus<<"zmzp["<<i<<"]: "<<zmzp[i-1]<<endl;
+	for(long i=0;i<zmzn;i++) {
+		caus<<"zmmp["<<i+1<<"]: "<<zmmp[i]<<endl;
+		caus<<"zmzp["<<i+1<<"]: "<<zmzp[i]<<endl;
 	}
 } //α
 
