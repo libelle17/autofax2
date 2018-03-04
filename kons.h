@@ -1209,7 +1209,7 @@ class hcl
     string loggespfad; // Gesamtpfad, auf den dann die in kons.h verwiesene und oben definierte Variable logdt zeigt
                        // bei jeder Aenderung muss auch logdt neu gesetzt werden!
     string cmd; // string fuer command fuer Betriebssystembefehle
-		schAcl<optcl> opn; // Optionen
+		schAcl<optcl> opn,opsql,opzm,opvsql,opvzm; // Optionen
 #ifdef alt
     vector<optioncl> opts;
 #endif

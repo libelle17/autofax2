@@ -2181,6 +2181,7 @@ void hhcl::virtMusterVorgb()
 	LocalIdentifier=Tx[T_MeiEinrichtung];
 	cFaxUeberschrift=Tx[T_Mei_FaxUeberschrift];
 	/*//sqlz=*/sqlvz="0";
+	sqlvzn=atol(sqlvz.c_str());
 	////  host="localhost"; // 'localhost' schon Vorgabe bei Definition
 	zufaxenvz="/var/"+meinname+vtz+Tx[T_zufaxen];
 	wvz="/var/"+meinname+vtz+Tx[T_warteauffax];
@@ -2288,7 +2289,6 @@ hhcl::~hhcl() //α
 void hhcl::virtlieskonfein()
 {
 	hcl::virtlieskonfein(); //ω
-	schAcl<optcl> op2,op3; // Optionen
 	caus<<"sqlzn: "<<sqlzn<<endl;
 	sqlp=new string[sqlzn];
 	for(long i=0;i<sqlzn;) {
@@ -2296,12 +2296,19 @@ void hhcl::virtlieskonfein()
 		stringstream soptname;
 		soptname<<"SQL_"<<i;
 		const string istr=ltoan(i);
-		op2<<optcl(/*pname*/soptname.str(),/*pptr*/&sqlp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/&istr,/*wert*/-1);
-	}
-	hccd.auswert(&op2,obverb,'=',0);
+		opsql<<optcl(/*pname*/soptname.str(),/*pptr*/&sqlp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/&istr,/*wert*/-1);
+	} // 	for(long i=0;i<sqlzn;)
+	// wenn in der Konfigurationsdatei keine sql-Befehle stehen, dann die aus den Vorgaben nehmen
+	hccd.auswert(&opsql,obverb,'=',0);
 	for(long i=0;i<sqlzn;i++) {
 		caus<<"sqlp["<<i+1<<"]: "<<sqlp[i]<<endl;
-	}
+	} // 	for(long i=0;i<sqlzn;i++)
+	if (!sqlzn) {
+		sqlzn=sqlvzn;
+		for(long i=0;i<sqlzn;i++) {
+      opsql<<opvsql[i];
+		}
+	} // 	if (!sqlzn)
 	caus<<"zmzn: "<<zmzn<<endl;
 	zmmp=new string[zmzn];
 	zmzp=new string[zmzn];
@@ -2311,14 +2318,20 @@ void hhcl::virtlieskonfein()
 		zmmname<<"ZMMuster_"<<i;
 		zmzname<<"ZMZiel_"<<i;
 		const string istr=ltoan(i);
-		op3<<optcl(/*pname*/zmmname.str(),/*pptr*/&zmmp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zielmuster_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/&istr,/*wert*/-1);
-		op3<<optcl(/*pname*/zmzname.str(),/*pptr*/&zmzp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Ziel_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/&istr,/*wert*/-1);
-	}
-	hccd.auswert(&op3,obverb,'=',0);
+		opzm<<optcl(/*pname*/zmmname.str(),/*pptr*/&zmmp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zielmuster_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/&istr,/*wert*/-1);
+		opzm<<optcl(/*pname*/zmzname.str(),/*pptr*/&zmzp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Ziel_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/&istr,/*wert*/-1);
+	} // 	for(long i=0;i<zmzn;)
+	hccd.auswert(&opzm,obverb,'=',0);
 	for(long i=0;i<zmzn;i++) {
 		caus<<"zmmp["<<i+1<<"]: "<<zmmp[i]<<endl;
 		caus<<"zmzp["<<i+1<<"]: "<<zmzp[i]<<endl;
-	}
+	} // 	for(long i=0;i<zmzn;i++)
+	if (!zmzn) {
+		zmzn=zmvzn;
+		for(long i=0;i<zmzn;i++) {
+	    opzm<<opvzm[i];
+		} // 		for(long i=0;i<zmzn;i++) 
+	} // 	if (!zmzn)
 } //α
 
 int main(int argc,char** argv) //α
