@@ -614,6 +614,12 @@ const char *kons_T[T_konsMAX+1][SprachZahl]=
 	{"in main, pidv, am Schluss","in main, pidv, at the end"},
 	// T_parsecl,
 	{"parsecl()","parasecl()"},
+	// T_lies,
+	{"lies()","read()"},
+	// T_verarbeitkonf,
+	{"verarbeitkonf()","processconf()"},
+	// T_auswert,
+	{"auswert()","exploit()"},
   {"",""}
 }; // const char *Txkonscl::TextC[T_konsMAX+1][SprachZahl]=
 
@@ -1862,6 +1868,7 @@ void confdcl::Abschn_auswert(int obverb/*=0*/, const char tz/*='='*/)
 // setzt die Werte aus der Datei in der Optionenschar *sA
 template <typename SCL> void confdcl::auswert(schAcl<SCL> *sA, int obverb, const char tz,const uchar mitclear/*=1*/)
 {
+	Log(violetts+Txk[T_auswert]+schwarz);
   richtige=0;
   if (mitclear) {
 		sA->reset();
@@ -1928,6 +1935,7 @@ template <typename SCL> void confdcl::auswert(schAcl<SCL> *sA, int obverb, const
     KLZ
   KLZ
 */
+	Log(violetts+Txk[T_Ende]+Txk[T_auswert]+schwarz);
 } // void sAdat::auswert
 
 
@@ -4867,7 +4875,7 @@ void hcl::virtinitopt()
 	opn<<optcl(/*pname*/"cronminut",/*pptr*/&cronminut,/*art*/pdez,T_cm_k,T_cronminuten_l,/*TxBp*/&Txk,/*Txi*/T_Alle_wieviel_Minuten_soll,/*wi*/1,/*Txi2*/T_aufgerufen_werden_0_ist_gar_nicht,/*rottxt*/&meinname,/*wert*/-1);
 	opn<<optcl(/*pname*/"",/*pptr*/&obvi,/*art*/puchar,T_vi_k,T_vi_l,/*TxBp*/&Txk,/*Txi*/T_Konfigurationsdatei,/*wi*/0,/*Txi2*/T_Logdatei_usw_bearbeiten_sehen,/*rottxt*/&akonfdt,/*wert*/1);
 	opn<<optcl(/*pname*/"",/*pptr*/&obvs,/*art*/puchar,T_vs_k,T_vs_l,/*TxBp*/&Txk,/*Txi*/T_Quelldateien_in,/*wi*/0,/*Txi2*/T_bearbeiten_sehen,/*rottxt*/&instvz,/*wert*/1);
-	opn<<optcl(/*pname*/"autoupd",/*pptr*/&autoupd,/*art*/puchar,T_autoupd_k,T_autoupd_l,/*TxBp*/&Txk,/*Txi*/T_Programm_automatisch_aktualisieren,/*wi*/1,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
+	opn<<optcl(/*pname*/"autoupd",/*pptr*/&autoupd,/*art*/pint,T_autoupd_k,T_autoupd_l,/*TxBp*/&Txk,/*Txi*/T_Programm_automatisch_aktualisieren,/*wi*/1,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
 	opn<<optcl(/*pname*/"",/*pptr*/&rzf,/*art*/puchar,T_rf_k,T_rueckfragen_l,/*TxBp*/&Txk,/*Txi*/T_alle_Parameter_werden_abgefragt_darunter_einige_hier_nicht_gezeigte,/*wi*/1,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
 	opn<<optcl(/*pname*/"",/*pptr*/&nrzf,/*art*/puchar,T_krf_k,T_keinerueckfragen_l,/*TxBp*/&Txk,/*Txi*/T_keine_Rueckfragen_zB_aus_Cron,/*wi*/1,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
 	opn<<optcl(/*pname*/"",/*pptr*/&zeigvers,/*art*/puchar,T_info_k,T_version_l,/*TxBp*/&Txk,/*Txi*/T_Zeigt_die_Programmversion_an,/*wi*/1,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
@@ -4938,7 +4946,7 @@ void hcl::parsecl()
 										keineverarbeitung=1;
 										cmeingegeben=1;
 									}
-									opn.setzbemerkwoher(omit->second,/*ibemerk=*/nix,/*vwoher=*/1);
+									opn.setzbemerkwoher(omit->second,/*ibemerk=*/nix,/*vwoher=*/3);
 								} else {
 									if (!obhilfe) obhilfe=1;
 								} // 								if (wiefalsch<=0) else
@@ -4988,19 +4996,23 @@ void hcl::virtlieskonfein()
 	hccd.auswert(&opn,obverb,'=',0);
 	virtlgnzuw();
 	setzlog();
+	Log(violetts+Txk[T_Ende]+Txk[T_virtlieskonfein]+schwarz);
 	// <<violett<<"Ende virtlieskonfein, obzuschreib: "<<rot<<(int)hccd.obzuschreib<<schwarz<<endl;
 } // void hcl::virtlieskonfein
 
 // wird aufgerufen in lauf
 void hcl::verarbeitkonf()
 {
+	Log(violetts+Txk[T_verarbeitkonf]+schwarz);
 	if (!nrzf&&obhilfe<=2) {
 		for (size_t i = 0;i<opn.size();i++) {
 			if (!opn[i].pname.empty() && !opn[i].woher) {
+				::Log("rueckzufragen wegen: "+rots+opn[i].pname+schwarz,1);
 				rzf=1;
 			}
 		} // 		for (size_t i = 0;i<opn.size();i++)
 	} // 	if (!nrzf&&obhilfe<=2)
+	Log(violetts+Txk[T_Ende]+Txk[T_verarbeitkonf]+schwarz);
 } // void hcl::verarbeitkonf()
 
 // wird aufgerufen in lauf
@@ -5133,7 +5145,7 @@ uchar hcl::pruefcron(const string& cm)
 	uchar obschreib=0;
 	// damit nicht nur deshalb das root-Passwort abgefragt werden muss => cronminuten nur ueberpruefen/aendern, wenn etweder ohnehin root oder ueber Befehlszeile neue Minutenzahl gewuenscht
 ////	<<"opn.olmap[Txk[T_cronminuten_l]]->woher: "<<(int)opn.olmap[Txk[T_cronminuten_l]]->woher<<", !cus.cuid: "<<cus.cuid<<endl;
-	if (opn.olmap[Txk[T_cronminuten_l]]->woher==1 ||!cus.cuid) {
+	if (opn.olmap[Txk[T_cronminuten_l]]->woher==3 ||!cus.cuid) {
 		const string& cmhier=cm.empty()?cronminut:cm;
 		crongeprueft=1;
 		//  svec rueck;
@@ -5749,7 +5761,7 @@ int optcl::setzstr(const char* const neuw,uchar *const obzuschreib/*=0*/,const u
 				// ... dann zuweisen
 				if (*(string*)pptr!=neuw) {
 					// Befehlszeilenoptionen nicht durch Konfigurationsdateioptionen ueberschreiben lassen
-					if (woher) {
+					if (woher>1) {
 						if (obzuschreib) if (!*obzuschreib) if (!nichtspeichern) { 
 							*obzuschreib=1; 
 						}
@@ -5766,7 +5778,7 @@ int optcl::setzstr(const char* const neuw,uchar *const obzuschreib/*=0*/,const u
 				// ... dann zuweisen
 				if (*(string*)pptr!=XOR(neuws,pwk)) {
 					// Befehlszeilenoptionen nicht durch Konfigurationsdateioptionen ueberschreiben lassen
-					if (woher) {
+					if (woher>1) {
 						if (obzuschreib) if (!*obzuschreib) if (!nichtspeichern) { 
 							*obzuschreib=1; 
 						}
@@ -5789,7 +5801,7 @@ int optcl::setzstr(const char* const neuw,uchar *const obzuschreib/*=0*/,const u
 				// ... dann zuweisen
 				else {
 					if (*(string*)pptr!=neuw) {
-						if (woher) {
+						if (woher>1) {
 							if (obzuschreib) if (!*obzuschreib) if (!nichtspeichern) { 
 								*obzuschreib=1; 
 							}
@@ -5809,7 +5821,7 @@ int optcl::setzstr(const char* const neuw,uchar *const obzuschreib/*=0*/,const u
 						case puchar:
 							neuu=atol(neuw);
 							if (*(uchar*)pptr!=neuu) {
-								if (woher) {
+								if (woher>1) {
 									if (obzuschreib) if (!*obzuschreib) if (!nichtspeichern) { 
 										*obzuschreib=1; 
 									}
@@ -5821,7 +5833,7 @@ int optcl::setzstr(const char* const neuw,uchar *const obzuschreib/*=0*/,const u
 						case pint:
 							neui=atol(neuw);
 							if (*(int*)pptr!=neui) {
-								if (woher) {
+								if (woher>1) {
 									if (obzuschreib) if (!*obzuschreib) if (!nichtspeichern) { 
 										*obzuschreib=1; 
 									}
@@ -5833,7 +5845,7 @@ int optcl::setzstr(const char* const neuw,uchar *const obzuschreib/*=0*/,const u
 						default: /* case plong: */
 							neul=atol(neuw);
 							if (*(long*)pptr!=neul) {
-								if (woher) {
+								if (woher>1) {
 									if (obzuschreib) if (!*obzuschreib) if (!nichtspeichern) { 
 										*obzuschreib=1; 
 									}
@@ -5857,7 +5869,7 @@ int optcl::setzstr(const char* const neuw,uchar *const obzuschreib/*=0*/,const u
 				if (emax) {
 					//// <<blau<<"Sieger: "<<ztacl(&tmmax)<<schwarz<<endl;
 					if (!memcmp((struct tm*)pptr,&tmmax,sizeof tmmax)) {
-						if (woher) {
+						if (woher>1) {
 							if (obzuschreib) if (!*obzuschreib) if (!nichtspeichern) { 
 								*obzuschreib=1; 
 							}
@@ -5868,7 +5880,7 @@ int optcl::setzstr(const char* const neuw,uchar *const obzuschreib/*=0*/,const u
 				}
 				break;
 		} // switch (art) 
-	} // 	if (!woher)
+	} // 	if (!woher>1)
 	return wiefalsch;
 } // void optcl::setzstr
 
@@ -5923,6 +5935,19 @@ optcl::optcl(const string& pname,const void* pptr,const par_t art, const int kur
 	pname(pname),pptr(pptr),art(art),kurzi(kurzi),langi(langi),TxBp(TxBp),Txi(Txi),wi(wi),Txi2(Txi2),rottxt(rottxt),iwert(iwert),
 	obno(iwert!=-1)
 {
+	if (art<puchar) {
+		if (!((string*)pptr)->empty()) {
+			woher=1;
+		} 
+	} else if (art==pint) {
+		if (*(int*)pptr!=-1) {
+			woher=1;
+		} 
+	} else if (art==plong) {
+		if (*(long*)pptr!=-1) {
+			woher=1;
+		} 
+	}
 }
 
 int hcl::Log(const string& text,const bool oberr/*=0*/,const short klobverb/*=0*/) const
@@ -6325,7 +6350,7 @@ confdcl::confdcl(const string& fname, int obverb):obgelesen(0),obzuschreib(0)
 // Achtung: Wegen der Notwendigkeit zur Existenz der Datei zum Aufruf von setfacl kann die Datei erstellt werden!
 int confdcl::lies(const string& vfname, int obverb)
 {
-	caus<<violett<<"lies: "<<blau<<vfname<<schwarz<<endl;
+	Log(violetts+Txk[T_lies]+blau+vfname+schwarz);
   fname=vfname;
 	int erg=0;
 	if (fname.empty()) {
@@ -6349,6 +6374,7 @@ int confdcl::lies(const string& vfname, int obverb)
 		else
 			cout<<Txk[T_confdat_lies_Erfolg]<<endl;
 	} // 	if (obverb>0)
+	Log(violetts+Txk[T_Ende]+Txk[T_lies]+blau+vfname+schwarz);
 	return erg;
 } // confdcl::lies
 

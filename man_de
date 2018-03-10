@@ -2,7 +2,7 @@
 .\" Manual-Seite für ²DPROG²
 .\" Schreiben Sie an geraldschade@gmx.de, wenn Sie Fehler oder Mängel entdeckt haben
 .pc
-.TH man 1 "04.03.18" "Version 0.10179" "Manual-Seite für ²DPROG²"
+.TH man 1 "10.03.18" "Version 0.1021" "Manual-Seite für ²DPROG²"
 .SH NAME
 \fB²DPROG² \- FaxServer-Funktionalität\fR: veranlasst automatischen Faxversand von Dateien, Benennung empfangener Faxe und Protokollierung aller Faxe in einer Datenbank 
 .br
@@ -15,7 +15,29 @@
 .SH OPTIONEN 
 .SH VORAUSSETZUNGEN
 .br
-\fBlies: \fB/etc/sysconfig/language\fR
+\fBlies()\fB/etc/sysconfig/language\fR
+.br
+\fB-Ende- lies()\fB/etc/sysconfig/language\fR
+.br
+\fBauswert()\fR
+.br
+\fB-Ende- auswert()\fR
+.br
+\fBlies()\fB/etc/capisuite/fax.conf\fR
+.br
+\fB-Ende- lies()\fB/etc/capisuite/fax.conf\fR
+.br
+\fBauswert()\fR
+.br
+\fB-Ende- auswert()\fR
+.br
+\fBlies()\fB/etc/capisuite/capisuite.conf\fR
+.br
+\fB-Ende- lies()\fB/etc/capisuite/capisuite.conf\fR
+.br
+\fBauswert()\fR
+.br
+\fB-Ende- auswert()\fR
 .br
 \fBOptionen, die nicht gespeichert werden: \fR
 .br
@@ -83,25 +105,25 @@
 .br
 \fB -evz, --empfvz <pfad>\fR: Empfangsverzeichnis fuer Faxempfang ('\fB/var/autofax2/empfvz\fR')
 .br
-\fB -fbox, --obfbox\fR: Fritzbox verwenden\fB oder nicht\fR (\fB1\fR)
+\fB -fbox, --obfbox <zahl>\fR: Fritzbox verwenden\fB oder nicht\fR (\fB1\fR)
 .br
-\fB -fbvz, --fritzboxvz <pfad>\fR: Ankunftsverzeichnis der Fritzbox (ueber CIFS) ('\fB\fR')
+\fB -fbvz, --fritzboxvz <pfad>\fR: Ankunftsverzeichnis der Fritzbox (ueber CIFS) ('\fB/mnt/diabfb/Generic-FlashDisk-01/FRITZ/faxbox\fR')
 .br
-\fB -capi, --obcapi\fR: Capisuite verwenden\fB oder nicht\fR (\fB1\fR)
+\fB -capi, --obcapi <zahl>\fR: Capisuite verwenden\fB oder nicht\fR (\fB1\fR)
 .br
-\fB -hyla, --obhyla\fR: Hylafax verwenden\fB oder nicht\fR (\fB1\fR)
+\fB -hyla, --obhyla <zahl>\fR: Hylafax verwenden\fB oder nicht\fR (\fB1\fR)
 .br
-\fB -hz, --hylazuerst\fR: versuche faxe zuerst ueber Hylafax wegzuschicken\fB oder nicht\fR (\fB0\fR)
+\fB -hz, --hylazuerst <zahl>\fR: versuche faxe zuerst ueber Hylafax wegzuschicken\fB oder nicht\fR (\fB0\fR)
 .br
-\fB -cz, --capizuerst\fR: versuche faxe zuerst ueber Capisuite wegzuschicken\fB oder nicht\fR (\fB0\fR)
+\fB -cz, --capizuerst <zahl>\fR: versuche faxe zuerst ueber Capisuite wegzuschicken\fB oder nicht\fR (\fB0\fR)
 .br
-\fB -mod, --hmodem <string>\fR: Fuer Hylafax verwendetes Modem, anstatt  ('\fB\fR')
+\fB -mod, --hmodem <string>\fR: Fuer Hylafax verwendetes Modem, anstatt  ('\fBttyACM0\fR')
 .br
 \fB -mc, --maxcapiv <string>\fR: nach <zahl> Versuchen Capisuite wird Hylafax versucht, anstatt nach ('\fB3\fR')
 .br
 \fB -mh, --maxhylav <string>\fR: nach <zahl> Versuchen Hylafax wird Capisuite versucht, anstatt nach ('\fB3\fR')
 .br
-\fB -cuser, --cuser <string>\fR: verwendet fuer Capisuite und/oder Samba den Linux-Benutzer <string> anstatt ('\fB\fR')
+\fB -cuser, --cuser <string>\fR: verwendet fuer Capisuite und/oder Samba den Linux-Benutzer <string> anstatt ('\fBschade\fR')
 .br
 \fB -ckzl, --cklingelzahl <string>\fR: Zahl der Klingeltoene, bis Capisuite den Anruf annimmt, anstatt ('\fB1\fR')
 .br
@@ -109,11 +131,11 @@
 .br
 \fB -hmw, --hmaxwahlvers <string>\fR: Zahl der Wahlversuche in Hylafax, anstatt  ('\fB11\fR')
 .br
-\fB -gz, --gleichziel\fR: Faxe werden auch ohne Faxerfolg ins Zielverzeichnis kopiert\fB oder nicht\fR (\fB1\fR)
+\fB -gz, --gleichziel <zahl>\fR: Faxe werden auch ohne Faxerfolg ins Zielverzeichnis kopiert\fB oder nicht\fR (\fB1\fR)
 .br
-\fB -ocre, --ocre\fR: Text aus empfangenen Faxen wird ermittelt\fB oder nicht\fR (\fB1\fR)
+\fB -ocre, --ocre <zahl>\fR: Text aus empfangenen Faxen wird ermittelt\fB oder nicht\fR (\fB1\fR)
 .br
-\fB -ocra, --ocra\fR: Text aus gesandten Bildern wird ermittelt\fB oder nicht\fR (\fB0\fR)
+\fB -ocra, --ocra <zahl>\fR: Text aus gesandten Bildern wird ermittelt\fB oder nicht\fR (\fB0\fR)
 .br
 \fB -afs, --anfaxstr <string>\fR: faxnr wird hinter <string> erwartet statt hinter ('\fBan Fax\fR')
 .br
@@ -126,3 +148,5 @@
 \fB -us, --undstr <string>\fR: Trennstring <string> fuer mehrere Adressaten/Telefonnummern statt ('\fBund\fR')
 .br
 \fB -fd, --finde <string>\fR: Version 1,2 oder 3 -Dateisuche (variable Performanceunterschiede) anstatt ('\fB3\fR')
+.br
+\fB -

@@ -431,6 +431,9 @@ enum Tkons_
 	T_oblog,
 	T_in_main_pidv_am_Schluss,
 	T_parsecl,
+	T_lies,
+	T_verarbeitkonf,
+	T_auswert,
 	T_konsMAX
 }; // Tkons_
 
@@ -882,7 +885,7 @@ struct optcl
 		// ermittelte Optionen:
     const uchar obno=0; // ob auch die Option mit vorangestelltem 'no' eingefuegt werden soll
     string bemerk;
-		uchar woher=0; // 1= ueber die Befehlszeile gesetzt, 2=ueber Konfigurationsdatei gesetzt
+		uchar woher=0; // 1= ueber Vorgaben, 2= ueber Konfigurationsdatei, 3= ueber Befehlszeile gesetzt
 		uchar gegenteil=0;
 		uchar nichtspeichern=0;
 		uchar eingetragen; // Hilfsvariable zur genau einmaligen Eintragung einer Option mit name=pname in Konfigurationsdatei
@@ -1187,7 +1190,7 @@ class hcl
 		static const string edit;
 		static const string passwddt, groupdt, sudoersdt;
 		static const char* const smbdt;// "/etc/samba/smb.conf"
-		uchar autoupd;  // 1=Programm automatisch updadaten
+		int autoupd=-1;  // 1=Programm automatisch updadaten
 		string host="localhost";  // fuer MySQL/MariaDB
 		string dbq="faxe"; // Datenbank
 		string tabelle  //ω

@@ -2,7 +2,7 @@
 .\" manual page for ²DPROG²
 .\" write to geraldschade@gmx.de if You discover an error or a deficit in the program
 .pc
-.TH man 1 "04.03.18" "Version 0.10179" "\fB²DPROG²\fR man page"
+.TH man 1 "10.03.18" "Version 0.1021" "\fB²DPROG²\fR man page"
 .SH NAME
 \fB²DPROG² \- Fax server functionality\fR: induces automatic fax transmission of files, naming of received faxes and logging of all of them in a database
 .br
@@ -15,7 +15,29 @@
 .SH OPTIONS 
 .SH PRECONDITIONS
 .br
-\fBlies: \fB/etc/sysconfig/language\fR
+\fBlies()\fB/etc/sysconfig/language\fR
+.br
+\fB-Ende- lies()\fB/etc/sysconfig/language\fR
+.br
+\fBauswert()\fR
+.br
+\fB-Ende- auswert()\fR
+.br
+\fBlies()\fB/etc/capisuite/fax.conf\fR
+.br
+\fB-Ende- lies()\fB/etc/capisuite/fax.conf\fR
+.br
+\fBauswert()\fR
+.br
+\fB-Ende- auswert()\fR
+.br
+\fBlies()\fB/etc/capisuite/capisuite.conf\fR
+.br
+\fB-Ende- lies()\fB/etc/capisuite/capisuite.conf\fR
+.br
+\fBauswert()\fR
+.br
+\fB-Ende- auswert()\fR
 .br
 \fBOptions which are not saved: \fR
 .br
@@ -83,25 +105,25 @@
 .br
 \fB -rdr, --receiveddir <path>\fR: directory for recieved faxes ('\fB/var/autofax2/recvdir\fR')
 .br
-\fB -fbox, --takefbox\fR: use fritzbox\fB or not\fR (\fB1\fR)
+\fB -fbox, --takefbox <zahl>\fR: use fritzbox\fB or not\fR (\fB1\fR)
 .br
-\fB -fbdr, --fritzboxdir <path>\fR: receiving directory of the fritzbox (via CIFS) ('\fB\fR')
+\fB -fbdr, --fritzboxdir <path>\fR: receiving directory of the fritzbox (via CIFS) ('\fB/mnt/diabfb/Generic-FlashDisk-01/FRITZ/faxbox\fR')
 .br
-\fB -capi, --takecapi\fR: use capisuite\fB or not\fR (\fB1\fR)
+\fB -capi, --takecapi <zahl>\fR: use capisuite\fB or not\fR (\fB1\fR)
 .br
-\fB -hyla, --takehyla\fR: use hylafax\fB or not\fR (\fB1\fR)
+\fB -hyla, --takehyla <zahl>\fR: use hylafax\fB or not\fR (\fB1\fR)
 .br
-\fB -hf, --hylafirst\fR: trying to send faxes first via hylafax\fB or not\fR (\fB0\fR)
+\fB -hf, --hylafirst <zahl>\fR: trying to send faxes first via hylafax\fB or not\fR (\fB0\fR)
 .br
-\fB -fc, --firstcapi\fR: try to send faxes primarily via capisuite\fB or not\fR (\fB0\fR)
+\fB -fc, --firstcapi <zahl>\fR: try to send faxes primarily via capisuite\fB or not\fR (\fB0\fR)
 .br
-\fB -mod, --hmodem <string>\fR: Modem used for hylafax, instead of  ('\fB\fR')
+\fB -mod, --hmodem <string>\fR: Modem used for hylafax, instead of  ('\fBttyACM0\fR')
 .br
 \fB -mc, --maxcapitries <string>\fR: try Hylafax after <no> tries of Capisuite instead of ('\fB3\fR')
 .br
 \fB -mh, --maxhylatries <string>\fR: try Capisuite after <no> tries of Hylafax instead of ('\fB3\fR')
 .br
-\fB -cuser, --cuser <string>\fR: takes the linux user <string> for capisuite and/or samba instead of ('\fB\fR')
+\fB -cuser, --cuser <string>\fR: takes the linux user <string> for capisuite and/or samba instead of ('\fBschade\fR')
 .br
 \fB -crct, --cringcount <string>\fR: No. of bell rings until Capisuite accepts the call, instead of ('\fB1\fR')
 .br
@@ -109,11 +131,11 @@
 .br
 \fB -hmd, --hmaxdials <string>\fR: No of dialing retries in hylafax, instead of   ('\fB11\fR')
 .br
-\fB -it, --immediatelytarget\fR: copy faxes into target directory irrespective of faxing success\fB or not\fR (\fB1\fR)
+\fB -it, --immediatelytarget <zahl>\fR: copy faxes into target directory irrespective of faxing success\fB or not\fR (\fB1\fR)
 .br
-\fB -ocri, --ocri\fR: Text from received faxes will be filtered\fB or not\fR (\fB1\fR)
+\fB -ocri, --ocri <zahl>\fR: Text from received faxes will be filtered\fB or not\fR (\fB1\fR)
 .br
-\fB -ocro, --ocro\fR: Text from sent pictures will be filtered\fB or not\fR (\fB0\fR)
+\fB -ocro, --ocro <zahl>\fR: Text from sent pictures will be filtered\fB or not\fR (\fB0\fR)
 .br
 \fB -tfs, --tofaxstr <string>\fR: the fax number will be expected after <string> instead of ('\fBan Fax\fR')
 .br

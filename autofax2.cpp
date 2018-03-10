@@ -7,231 +7,6 @@
 #define VOMHAUPTCODE // um Funktionsdefinition manchmal mit "__attribute__((weak)) " versehen zu können //ω
 #include "autofax2.h"
 // fuer verschiedene Sprachen //α
-enum T_      
-{
-	T_virtVorgbAllg,
-	T_pvirtVorgbSpeziell,
-	T_virtMusterVorgb,
-	T_pvirtvorrueckfragen,
-	T_virtrueckfragen,
-	T_Fehler_beim_Pruefen_von,
-	T_Fuege_ein, //ω
-	T_an_Fax,
-	T_an_cFax,
-	T_an_hFax,
-	T_an_fFax,
-	T_an,
-	T_und,
-	T_liescapiconf,
-	T_MeiEinrichtung,
-	T_Mei_FaxUeberschrift,
-	T_Der_regulaere_Ausdruck,
-	T_konnte_nicht_kompiliert_werden_Fehler,
-	T_Zufaxen,
-	T_zufaxen,
-	T_Warteauffax,
-	T_warteauffax,
-	T_Nichtgefaxt,
-	T_nichtgefaxt,
-	T_empfvz,
-	T_gesandt,
-	T_zvz_k,
-	T_zufaxenvz_l,
-	T_faxt_die_Dateien_aus_pfad_anstatt_aus,
-	T_wvz_k,
-	T_wartevz_l,
-	T_Dateien_warten_in_pfad_anstatt,
-	T_ngvz_k,
-	T_nichtgefaxtvz_l,
-	T_Gescheiterte_Faxe_werden_hier_gesammelt_anstatt_in,
-	T_evz_k,
-	T_empfvz_l,
-	T_Empfangsverzeichnis_fuer_Faxempfang,
-	T_fbox_k,
-	T_obfbox_l,
-	T_Fritzbox_verwenden,
-	T_fbankvz_k,
-	T_fbankvz_l,
-	T_Ankunftsverzeichnis_der_Fritzbox_ueber_CIFS,
-	T_capi_k,
-	T_obcapi_l,
-	T_Capisuite_verwenden,
-	T_hyla_k,
-	T_obhyla_l,
-	T_hylafax_verwenden,
-	T_hz_k,
-	T_hylazuerst_l,
-	T_versuche_faxe_zuerst_ueber_Hylafax_wegzuschicken,
-	T_mod_k,
-	T_hmodem_l,
-	T_Fuer_Hylafax_verwendetes_Modem,
-	T_cz_k,
-	T_capizuerst_l,
-	T_versuche_faxe_zuerst_ueber_Capisuite_wegzuschicken,
-	T_mc_k,
-	T_maxcapiv_l,
-	T_nach_zahl_Versuchen_Capisuite_wird_Hylafax_versucht,
-	T_mh_k,
-	T_maxhylav_l,
-	T_nach_zahl_Versuchen_Hylafax_wird_Capisuite_verwendet,
-	T_cuser_k,
-	T_cuser_l,
-	T_verwendet_fuer_Capisuite_Samba_den_Linux_Benutzer_string_anstatt,
-	T_ckzl_k,
-	T_cklingelzahl_l,
-	T_Zahl_der_Klingeltoene_bis_Capisuite_den_Anruf_annimmt_anstatt,
-	T_hkzl_k,
-	T_hklingelzahl_l,
-	T_Zahl_der_Klingeltoene_bis_Hylafax_den_Anruf_annimmt_anstatt,
-	T_md_k,
-	T_maxdials_l,
-	T_Zahl_der_Wahlversuche_in_Hylafax,
-	T_gz_k,
-	T_gleichziel_l,
-	T_Faxe_werden_auch_ohne_Faxerfolg_ins_Zielverzeichnis_kopiert,
-	T_ocri_k,
-	T_ocri_l,
-	T_Text_aus_empfangenen_Faxen_wird_ermittelt,
-	T_ocra_k,
-	T_ocra_l,
-	T_Text_aus_gesandten_Bildern_wird_ermittelt,
-	T_afs_k,
-	T_anfaxstr_l,
-	T_faxnr_wird_hinter_string_erwartet_statt_hinter,
-	T_acfs_k,
-	T_ancfaxstr,
-	T_faxnr_fuer_primaer_Capisuite_wird_hinter_string_erwartet_statt_hinter,
-	T_ahfs_k,
-	T_anhfaxstr_l,
-	T_faxnr_fuer_primaer_hylafax_wird_hinter_string_erwartet_statt_hinter,
-	T_as_k,
-	T_anstr_l,
-	T_Adressatenname_wird_hinter_string_erwartet_statt_hinter,
-	T_us_k,
-	T_undstr_l,
-	T_Trennstring_string_fuer_mehrere_Adressaten_Telefonnummern_statt,
-	T_find_k,
-	T_find_l,
-	T_Version_1_2_oder_3_Dateisuche_anstatt,
-	T_loef,
-	T_loeschefax_l,
-	T_ein_Fax_nach_Rueckfrage_loeschen,
-	T_loew,
-	T_loeschewaise_l,
-	T_Eintraege_aus,
-	T_loeschen_zu_denen_kein_Datei_im_Wartevz_und_kein_Capi_oder_Hylafax_nachweisbar_ist,
-	T_loea_k,
-	T_loescheallew_l,
-	T_alle_wartenden_Faxe_und_zugehoerige_Eintraege_aus,
-	T_loeschen,
-	T_erneut_k,
-	T_erneutempf_l,
-	T_empfangenes_Fax_erneut_bereitstellen,
-	T_uml_k,
-	T_umleiten_l,
-	T_ausgehendes_Fax_vorzeitig_auf_zweitem_Weg_schicken,
-	T_kez_k,
-	T_korrerfolgszeichen_l,
-	T_in_der_Datenbanktabelle,
-	T_wird_das_Erfolgszeichen_korrigiert,
-	T_bvz_k,
-	T_bereinigevz_l,
-	T_Dateien_aus_Warteverzeichnis_Gescheitertenvz_und_Gefaxtvz_gegen,
-	T_pruefen_und_aufraeumen,
-	T_st_k,
-	T_stop_l,
-	T_DPROG_anhalten,
-	T_lista_k,
-	T_listausg_l,
-	T_listet_Datensaetze_aus,
-	T_mit_Erfolgskennzeichen_auf,
-	T_listf_k,
-	T_listfailed_l,
-	T_ohne_Erfolgskennzeichen_auf,
-	T_listi_k,
-	T_listinca_l,
-	T__auf,
-	T_listw_k,
-	T_listwart_l,
-	T_listet_wartende_Faxe_auf,
-	T_s_k,
-	T_suche_l,
-	T_suche_in_verarbeiteten_Faxen_nach,
-	T_n_k,
-	T_dszahl_l,
-	T_Zahl_der_aufzulistenden_Datensaetze_ist_zahl_statt,
-	T_vc_k,
-	T_vc_l,
-	T_Capisuite_Konfigurationdateien_bearbeiten,
-	T_vh_k,
-	T_vh_l,
-	T_Hylafax_Modem_Konfigurationsdatei_bearbeiten,
-	T_konfcapi,
-	T_Capisuite_ist_offenbar_noch_nicht_richtig_konfiguriert,
-	T_ist_Apostroph,
-	T_Die_Einstellungen_koennen_spaeter_in,
-	T_geaendert_werden,
-	T_Faxnr_die_zum_Adressaten_gesandt_wird_bis_20_Zeichen_nur_plus_und_Ziffern,
-	T_ausgehende_Multiple_Subscriber_Number_Faxnummer_ohne_Vorwahl,
-	T_Amtsholung_ueblicherweise_kk_oder_0,
-	T_Faxueberschrift,
-	T_Adressat_empfangener_Faxe_die_ueber_Email_verteilt_werden,
-	T_Zahl_der_Sendeversuche,
-	T_kommagetrennte_Liste_mit_Sekundenabstaenden_zwischen_Sendeversuchen,
-	T_Geduld_bis_zum_Verbindungsaufbau_in_s,
-	T_komma_wert,
-	T_komma_Altwert,
-	T_Verschiebe,
-	T_Fehler_beim_Verschieben,
-	T_FehlerbeimUmbenennenbei,
-	T_Kopiere_Doppelpunkt,
-	T_Fehler_beim_Kopieren,
-	T_Dateiname,
-	T_schlechtgeformt,
-	T_zielname_erstes_Ziel,
-	T_zielname_Ausweichziel,
-	T_Quelle_und_Ziel_gleich,
-	T_entspricht,
-	T_entsprichtnicht,
-	T_entsprichtdoch,
-	T_Muster_Doppelpunkt,
-	T_pruefcvz,
-	T_pruefcapi,
-	T_capilaeuft,
-	T_Module_geladen,
-	T_Lade_Capi_Module,
-	T_Kernelversion,
-	T_KannFcpciNInstVerwCapiNicht,
-	T_eine_neuere_Version_als_die_des_aktuellen_Kernels_installiert_worden_sein_dann_bitte_erneutes_Systemupdate,
-	T_nichtgefFcpciMfdKinstallierwerden,
-	T_Zur_Inbetriebnahme_der_Capisuite_muss_das_Modul_capi_geladen_werten,
-	T_Bitte_zu_dessen_Verwendung_den_Rechner_neu_starten,
-	T_aufrufen,
-	T_Moment_muss_Kernel_herunterladen,
-	T_Der_Kernel_hat_sich_offenbar_seit_dem_Einloggen_von,
-	T_nach_,
-	T_verjuengt_Bitte_den_Rechner_neu_starten_und_dann_mich_nochmal_aufrufen,
-	T_Konnte,
-	T_nichtstarten,
-	T_StarteCapisuite,
-	T_Capisuite_gestartet,
-	T_konntecapisuiteservice,
-	T_malnichtstartenverwN,
-	T_pruefrules,
-	T_pruefblack,
-	T_haengean,
-	T_an_mdpp,
-	T_pruefsfftobmp,
-	T_clieskonf,
-	T_pruefmodcron,
-	T_Zahl_der_SQL_Befehle_fuer_die_Absenderermittlung,
-	T_SQL_Befehl_Nr,
-	T_Zielmuster_Nr,
-	T_Ziel_Nr,
-	T_Zahl_der_Muster_Verzeichnis_Paare_zum_Speichern_ankommender_Faxe,
-	T_MAX //α
-}; // enum T_ //ω
-// fuer verschiedene Sprachen //α
 char const *DPROG_T[T_MAX+1][SprachZahl]={
 	// T_virtVorgbAllg
 	{"virtVorgbAllg()","virtgeneralprefs()"},
@@ -930,6 +705,11 @@ zielmustercl::zielmustercl(const char * const vmuster,const char * const vziel):
 };  // zielmustercl
 
 zielmustercl::zielmustercl(const char * const vmuster,const string& vziel):muster(vmuster),ziel(vziel)
+{
+	kompilier();
+};  // zielmustercl
+
+zielmustercl::zielmustercl(const string& vmuster,const string& vziel):muster(vmuster),ziel(vziel)
 {
 	kompilier();
 };  // zielmustercl
@@ -2118,12 +1898,12 @@ void hhcl::virtinitopt()
 	opn<<optcl(/*pname*/"wartevz",/*pptr*/&wvz,/*art*/pverz,T_wvz_k,T_wartevz_l,/*TxBp*/&Tx,/*Txi*/T_Dateien_warten_in_pfad_anstatt,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
 	opn<<optcl(/*pname*/"nichtgefaxtvz",/*pptr*/&ngvz,/*art*/pverz,T_ngvz_k,T_nichtgefaxtvz_l,/*TxBp*/&Tx,/*Txi*/T_Gescheiterte_Faxe_werden_hier_gesammelt_anstatt_in,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
 	opn<<optcl(/*pname*/"empfvz",/*pptr*/&empfvz,/*art*/pverz,T_evz_k,T_empfvz_l,/*TxBp*/&Tx,/*Txi*/T_Empfangsverzeichnis_fuer_Faxempfang,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
-	opn<<optcl(/*pname*/"obfbox",/*pptr*/&obfbox,/*art*/puchar,T_fbox_k,T_obfbox_l,/*TxBp*/&Tx,/*Txi*/T_Fritzbox_verwenden,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
+	opn<<optcl(/*pname*/"obfbox",/*pptr*/&obfbox,/*art*/pint,T_fbox_k,T_obfbox_l,/*TxBp*/&Tx,/*Txi*/T_Fritzbox_verwenden,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
 	opn<<optcl(/*pname*/"fbankvz",/*pptr*/&fbankvz,/*art*/pverz,T_fbankvz_k,T_fbankvz_l,/*TxBp*/&Tx,/*Txi*/T_Ankunftsverzeichnis_der_Fritzbox_ueber_CIFS,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
-	opn<<optcl(/*pname*/"obcapi",/*pptr*/&obcapi,/*art*/puchar,T_capi_k,T_obcapi_l,/*TxBp*/&Tx,/*Txi*/T_Capisuite_verwenden ,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
-	opn<<optcl(/*pname*/"obhyla",/*pptr*/&obhyla,/*art*/puchar,T_hyla_k,T_obhyla_l,/*TxBp*/&Tx,/*Txi*/T_hylafax_verwenden ,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
-	opn<<optcl(/*pname*/"hylazuerst",/*pptr*/&hylazuerst,/*art*/puchar,T_hz_k,T_hylazuerst_l,/*TxBp*/&Tx,/*Txi*/T_versuche_faxe_zuerst_ueber_Hylafax_wegzuschicken,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
-	opn<<optcl(/*pname*/"hylazuerst",/*pptr*/&hylazuerst,/*art*/puchar,T_cz_k,T_capizuerst_l,/*TxBp*/&Tx,/*Txi*/T_versuche_faxe_zuerst_ueber_Capisuite_wegzuschicken,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/0);
+	opn<<optcl(/*pname*/"obcapi",/*pptr*/&obcapi,/*art*/pint,T_capi_k,T_obcapi_l,/*TxBp*/&Tx,/*Txi*/T_Capisuite_verwenden ,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
+	opn<<optcl(/*pname*/"obhyla",/*pptr*/&obhyla,/*art*/pint,T_hyla_k,T_obhyla_l,/*TxBp*/&Tx,/*Txi*/T_hylafax_verwenden ,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
+	opn<<optcl(/*pname*/"hylazuerst",/*pptr*/&hylazuerst,/*art*/pint,T_hz_k,T_hylazuerst_l,/*TxBp*/&Tx,/*Txi*/T_versuche_faxe_zuerst_ueber_Hylafax_wegzuschicken,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
+	opn<<optcl(/*pname*/"hylazuerst",/*pptr*/&hylazuerst,/*art*/pint,T_cz_k,T_capizuerst_l,/*TxBp*/&Tx,/*Txi*/T_versuche_faxe_zuerst_ueber_Capisuite_wegzuschicken,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/0);
 	opn<<optcl(/*pname*/"hmodem",/*pptr*/&hmodem,/*art*/psons,T_mod_k,T_hmodem_l,/*TxBp*/&Tx,/*Txi*/T_Fuer_Hylafax_verwendetes_Modem,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
 	opn<<optcl(/*pname*/"maxcapiv",/*pptr*/&maxcapiv,/*art*/pdez,T_mc_k,T_maxcapiv_l,/*TxBp*/&Tx,/*Txi*/T_nach_zahl_Versuchen_Capisuite_wird_Hylafax_versucht,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
 	opn<<optcl(/*pname*/"maxhylav",/*pptr*/&maxhylav,/*art*/pdez,T_mh_k,T_maxhylav_l,/*TxBp*/&Tx,/*Txi*/T_nach_zahl_Versuchen_Hylafax_wird_Capisuite_verwendet,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
@@ -2131,9 +1911,9 @@ void hhcl::virtinitopt()
 	opn<<optcl(/*pname*/"cklingelzahl",/*pptr*/&cklingelzahl,/*art*/pdez,T_ckzl_k,T_cklingelzahl_l,/*TxBp*/&Tx,/*Txi*/T_Zahl_der_Klingeltoene_bis_Capisuite_den_Anruf_annimmt_anstatt,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
 	opn<<optcl(/*pname*/"hklingelzahl",/*pptr*/&hklingelzahl,/*art*/pdez,T_hkzl_k,T_hklingelzahl_l,/*TxBp*/&Tx,/*Txi*/T_Zahl_der_Klingeltoene_bis_Hylafax_den_Anruf_annimmt_anstatt,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
 	opn<<optcl(/*pname*/"maxdials",/*pptr*/&maxhdials,/*art*/pdez,T_md_k,T_maxdials_l,/*TxBp*/&Tx,/*Txi*/T_Zahl_der_Wahlversuche_in_Hylafax,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
-	opn<<optcl(/*pname*/"gleichziel",/*pptr*/&gleichziel,/*art*/puchar,T_gz_k,T_gleichziel_l,/*TxBp*/&Tx,/*Txi*/T_Faxe_werden_auch_ohne_Faxerfolg_ins_Zielverzeichnis_kopiert,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
-	opn<<optcl(/*pname*/"ocri",/*pptr*/&obocri,/*art*/puchar,T_ocri_k,T_ocri_l,/*TxBp*/&Tx,/*Txi*/T_Text_aus_empfangenen_Faxen_wird_ermittelt,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
-	opn<<optcl(/*pname*/"ocra",/*pptr*/&obocra,/*art*/puchar,T_ocra_k,T_ocra_l,/*TxBp*/&Tx,/*Txi*/T_Text_aus_gesandten_Bildern_wird_ermittelt,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
+	opn<<optcl(/*pname*/"gleichziel",/*pptr*/&gleichziel,/*art*/pint,T_gz_k,T_gleichziel_l,/*TxBp*/&Tx,/*Txi*/T_Faxe_werden_auch_ohne_Faxerfolg_ins_Zielverzeichnis_kopiert,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
+	opn<<optcl(/*pname*/"ocri",/*pptr*/&obocri,/*art*/pint,T_ocri_k,T_ocri_l,/*TxBp*/&Tx,/*Txi*/T_Text_aus_empfangenen_Faxen_wird_ermittelt,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
+	opn<<optcl(/*pname*/"ocra",/*pptr*/&obocra,/*art*/pint,T_ocra_k,T_ocra_l,/*TxBp*/&Tx,/*Txi*/T_Text_aus_gesandten_Bildern_wird_ermittelt,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
 	opn<<optcl(/*pname*/"anfaxstr",/*pptr*/&anfaxstr,/*art*/psons,T_afs_k,T_anfaxstr_l,/*TxBp*/&Tx,/*Txi*/T_faxnr_wird_hinter_string_erwartet_statt_hinter,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
 	opn<<optcl(/*pname*/"ancfaxstr",/*pptr*/&ancfaxstr,/*art*/psons,T_acfs_k,T_ancfaxstr,/*TxBp*/&Tx,/*Txi*/T_faxnr_fuer_primaer_Capisuite_wird_hinter_string_erwartet_statt_hinter,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
 	opn<<optcl(/*pname*/"anhfaxstr",/*pptr*/&anhfaxstr,/*art*/psons,T_ahfs_k,T_anhfaxstr_l,/*TxBp*/&Tx,/*Txi*/T_faxnr_fuer_primaer_hylafax_wird_hinter_string_erwartet_statt_hinter,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
@@ -2288,10 +2068,11 @@ hhcl::~hhcl() //α
 
 void hhcl::virtlieskonfein()
 {
+	Log(violetts+Txk[T_virtlieskonfein]+schwarz);
 	hcl::virtlieskonfein(); //ω
 	caus<<"sqlzn: "<<sqlzn<<endl;
 	sqlp=new string[sqlzn];
-	for(long i=0;i<sqlzn;) {
+	for(size_t i=0;i<sqlzn;) {
 		++i;
 		stringstream soptname;
 		soptname<<"SQL_"<<i;
@@ -2300,19 +2081,19 @@ void hhcl::virtlieskonfein()
 	} // 	for(long i=0;i<sqlzn;)
 	// wenn in der Konfigurationsdatei keine sql-Befehle stehen, dann die aus den Vorgaben nehmen
 	hccd.auswert(&opsql,obverb,'=',0);
-	for(long i=0;i<sqlzn;i++) {
+	for(size_t i=0;i<sqlzn;i++) {
 		caus<<"sqlp["<<i+1<<"]: "<<sqlp[i]<<endl;
 	} // 	for(long i=0;i<sqlzn;i++)
 	if (!sqlzn) {
 		sqlzn=sqlvzn;
-		for(long i=0;i<sqlzn;i++) {
+		for(size_t i=0;i<sqlzn;i++) {
       opsql<<opvsql[i];
 		}
 	} // 	if (!sqlzn)
 	caus<<"zmzn: "<<zmzn<<endl;
 	zmmp=new string[zmzn];
 	zmzp=new string[zmzn];
-	for(long i=0;i<zmzn;) {
+	for(size_t i=0;i<zmzn;) {
 		++i;
 		stringstream zmmname,zmzname;
 		zmmname<<"ZMMuster_"<<i;
@@ -2322,16 +2103,23 @@ void hhcl::virtlieskonfein()
 		opzm<<optcl(/*pname*/zmzname.str(),/*pptr*/&zmzp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Ziel_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/&istr,/*wert*/-1);
 	} // 	for(long i=0;i<zmzn;)
 	hccd.auswert(&opzm,obverb,'=',0);
-	for(long i=0;i<zmzn;i++) {
+	for(size_t i=0;i<zmzn;i++) {
 		caus<<"zmmp["<<i+1<<"]: "<<zmmp[i]<<endl;
 		caus<<"zmzp["<<i+1<<"]: "<<zmzp[i]<<endl;
 	} // 	for(long i=0;i<zmzn;i++)
 	if (!zmzn) {
 		zmzn=zmvzn;
-		for(long i=0;i<zmzn;i++) {
+		for(size_t i=0;i<zmvzn;i++) {
 	    opzm<<opvzm[i];
 		} // 		for(long i=0;i<zmzn;i++) 
+		zmp=zmvp;
+	} else {
+		zmp=new zielmustercl[zmzn];
+		for(size_t i=0;i<zmzn;i++) {
+			zmp[i]=zielmustercl(zmmp[i],zmzp[i]);
+		}
 	} // 	if (!zmzn)
+	Log(violetts+Txk[T_Ende]+Txk[T_virtlieskonfein]+schwarz);
 } //α
 
 int main(int argc,char** argv) //α

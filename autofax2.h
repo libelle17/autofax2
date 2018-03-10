@@ -1,5 +1,230 @@
 #define DPROG "autofax2"
 #include <sys/utsname.h> // utsname
+// fuer verschiedene Sprachen //α
+enum T_      
+{
+	T_virtVorgbAllg,
+	T_pvirtVorgbSpeziell,
+	T_virtMusterVorgb,
+	T_pvirtvorrueckfragen,
+	T_virtrueckfragen,
+	T_Fehler_beim_Pruefen_von,
+	T_Fuege_ein, //ω
+	T_an_Fax,
+	T_an_cFax,
+	T_an_hFax,
+	T_an_fFax,
+	T_an,
+	T_und,
+	T_liescapiconf,
+	T_MeiEinrichtung,
+	T_Mei_FaxUeberschrift,
+	T_Der_regulaere_Ausdruck,
+	T_konnte_nicht_kompiliert_werden_Fehler,
+	T_Zufaxen,
+	T_zufaxen,
+	T_Warteauffax,
+	T_warteauffax,
+	T_Nichtgefaxt,
+	T_nichtgefaxt,
+	T_empfvz,
+	T_gesandt,
+	T_zvz_k,
+	T_zufaxenvz_l,
+	T_faxt_die_Dateien_aus_pfad_anstatt_aus,
+	T_wvz_k,
+	T_wartevz_l,
+	T_Dateien_warten_in_pfad_anstatt,
+	T_ngvz_k,
+	T_nichtgefaxtvz_l,
+	T_Gescheiterte_Faxe_werden_hier_gesammelt_anstatt_in,
+	T_evz_k,
+	T_empfvz_l,
+	T_Empfangsverzeichnis_fuer_Faxempfang,
+	T_fbox_k,
+	T_obfbox_l,
+	T_Fritzbox_verwenden,
+	T_fbankvz_k,
+	T_fbankvz_l,
+	T_Ankunftsverzeichnis_der_Fritzbox_ueber_CIFS,
+	T_capi_k,
+	T_obcapi_l,
+	T_Capisuite_verwenden,
+	T_hyla_k,
+	T_obhyla_l,
+	T_hylafax_verwenden,
+	T_hz_k,
+	T_hylazuerst_l,
+	T_versuche_faxe_zuerst_ueber_Hylafax_wegzuschicken,
+	T_mod_k,
+	T_hmodem_l,
+	T_Fuer_Hylafax_verwendetes_Modem,
+	T_cz_k,
+	T_capizuerst_l,
+	T_versuche_faxe_zuerst_ueber_Capisuite_wegzuschicken,
+	T_mc_k,
+	T_maxcapiv_l,
+	T_nach_zahl_Versuchen_Capisuite_wird_Hylafax_versucht,
+	T_mh_k,
+	T_maxhylav_l,
+	T_nach_zahl_Versuchen_Hylafax_wird_Capisuite_verwendet,
+	T_cuser_k,
+	T_cuser_l,
+	T_verwendet_fuer_Capisuite_Samba_den_Linux_Benutzer_string_anstatt,
+	T_ckzl_k,
+	T_cklingelzahl_l,
+	T_Zahl_der_Klingeltoene_bis_Capisuite_den_Anruf_annimmt_anstatt,
+	T_hkzl_k,
+	T_hklingelzahl_l,
+	T_Zahl_der_Klingeltoene_bis_Hylafax_den_Anruf_annimmt_anstatt,
+	T_md_k,
+	T_maxdials_l,
+	T_Zahl_der_Wahlversuche_in_Hylafax,
+	T_gz_k,
+	T_gleichziel_l,
+	T_Faxe_werden_auch_ohne_Faxerfolg_ins_Zielverzeichnis_kopiert,
+	T_ocri_k,
+	T_ocri_l,
+	T_Text_aus_empfangenen_Faxen_wird_ermittelt,
+	T_ocra_k,
+	T_ocra_l,
+	T_Text_aus_gesandten_Bildern_wird_ermittelt,
+	T_afs_k,
+	T_anfaxstr_l,
+	T_faxnr_wird_hinter_string_erwartet_statt_hinter,
+	T_acfs_k,
+	T_ancfaxstr,
+	T_faxnr_fuer_primaer_Capisuite_wird_hinter_string_erwartet_statt_hinter,
+	T_ahfs_k,
+	T_anhfaxstr_l,
+	T_faxnr_fuer_primaer_hylafax_wird_hinter_string_erwartet_statt_hinter,
+	T_as_k,
+	T_anstr_l,
+	T_Adressatenname_wird_hinter_string_erwartet_statt_hinter,
+	T_us_k,
+	T_undstr_l,
+	T_Trennstring_string_fuer_mehrere_Adressaten_Telefonnummern_statt,
+	T_find_k,
+	T_find_l,
+	T_Version_1_2_oder_3_Dateisuche_anstatt,
+	T_loef,
+	T_loeschefax_l,
+	T_ein_Fax_nach_Rueckfrage_loeschen,
+	T_loew,
+	T_loeschewaise_l,
+	T_Eintraege_aus,
+	T_loeschen_zu_denen_kein_Datei_im_Wartevz_und_kein_Capi_oder_Hylafax_nachweisbar_ist,
+	T_loea_k,
+	T_loescheallew_l,
+	T_alle_wartenden_Faxe_und_zugehoerige_Eintraege_aus,
+	T_loeschen,
+	T_erneut_k,
+	T_erneutempf_l,
+	T_empfangenes_Fax_erneut_bereitstellen,
+	T_uml_k,
+	T_umleiten_l,
+	T_ausgehendes_Fax_vorzeitig_auf_zweitem_Weg_schicken,
+	T_kez_k,
+	T_korrerfolgszeichen_l,
+	T_in_der_Datenbanktabelle,
+	T_wird_das_Erfolgszeichen_korrigiert,
+	T_bvz_k,
+	T_bereinigevz_l,
+	T_Dateien_aus_Warteverzeichnis_Gescheitertenvz_und_Gefaxtvz_gegen,
+	T_pruefen_und_aufraeumen,
+	T_st_k,
+	T_stop_l,
+	T_DPROG_anhalten,
+	T_lista_k,
+	T_listausg_l,
+	T_listet_Datensaetze_aus,
+	T_mit_Erfolgskennzeichen_auf,
+	T_listf_k,
+	T_listfailed_l,
+	T_ohne_Erfolgskennzeichen_auf,
+	T_listi_k,
+	T_listinca_l,
+	T__auf,
+	T_listw_k,
+	T_listwart_l,
+	T_listet_wartende_Faxe_auf,
+	T_s_k,
+	T_suche_l,
+	T_suche_in_verarbeiteten_Faxen_nach,
+	T_n_k,
+	T_dszahl_l,
+	T_Zahl_der_aufzulistenden_Datensaetze_ist_zahl_statt,
+	T_vc_k,
+	T_vc_l,
+	T_Capisuite_Konfigurationdateien_bearbeiten,
+	T_vh_k,
+	T_vh_l,
+	T_Hylafax_Modem_Konfigurationsdatei_bearbeiten,
+	T_konfcapi,
+	T_Capisuite_ist_offenbar_noch_nicht_richtig_konfiguriert,
+	T_ist_Apostroph,
+	T_Die_Einstellungen_koennen_spaeter_in,
+	T_geaendert_werden,
+	T_Faxnr_die_zum_Adressaten_gesandt_wird_bis_20_Zeichen_nur_plus_und_Ziffern,
+	T_ausgehende_Multiple_Subscriber_Number_Faxnummer_ohne_Vorwahl,
+	T_Amtsholung_ueblicherweise_kk_oder_0,
+	T_Faxueberschrift,
+	T_Adressat_empfangener_Faxe_die_ueber_Email_verteilt_werden,
+	T_Zahl_der_Sendeversuche,
+	T_kommagetrennte_Liste_mit_Sekundenabstaenden_zwischen_Sendeversuchen,
+	T_Geduld_bis_zum_Verbindungsaufbau_in_s,
+	T_komma_wert,
+	T_komma_Altwert,
+	T_Verschiebe,
+	T_Fehler_beim_Verschieben,
+	T_FehlerbeimUmbenennenbei,
+	T_Kopiere_Doppelpunkt,
+	T_Fehler_beim_Kopieren,
+	T_Dateiname,
+	T_schlechtgeformt,
+	T_zielname_erstes_Ziel,
+	T_zielname_Ausweichziel,
+	T_Quelle_und_Ziel_gleich,
+	T_entspricht,
+	T_entsprichtnicht,
+	T_entsprichtdoch,
+	T_Muster_Doppelpunkt,
+	T_pruefcvz,
+	T_pruefcapi,
+	T_capilaeuft,
+	T_Module_geladen,
+	T_Lade_Capi_Module,
+	T_Kernelversion,
+	T_KannFcpciNInstVerwCapiNicht,
+	T_eine_neuere_Version_als_die_des_aktuellen_Kernels_installiert_worden_sein_dann_bitte_erneutes_Systemupdate,
+	T_nichtgefFcpciMfdKinstallierwerden,
+	T_Zur_Inbetriebnahme_der_Capisuite_muss_das_Modul_capi_geladen_werten,
+	T_Bitte_zu_dessen_Verwendung_den_Rechner_neu_starten,
+	T_aufrufen,
+	T_Moment_muss_Kernel_herunterladen,
+	T_Der_Kernel_hat_sich_offenbar_seit_dem_Einloggen_von,
+	T_nach_,
+	T_verjuengt_Bitte_den_Rechner_neu_starten_und_dann_mich_nochmal_aufrufen,
+	T_Konnte,
+	T_nichtstarten,
+	T_StarteCapisuite,
+	T_Capisuite_gestartet,
+	T_konntecapisuiteservice,
+	T_malnichtstartenverwN,
+	T_pruefrules,
+	T_pruefblack,
+	T_haengean,
+	T_an_mdpp,
+	T_pruefsfftobmp,
+	T_clieskonf,
+	T_pruefmodcron,
+	T_Zahl_der_SQL_Befehle_fuer_die_Absenderermittlung,
+	T_SQL_Befehl_Nr,
+	T_Zielmuster_Nr,
+	T_Ziel_Nr,
+	T_Zahl_der_Muster_Verzeichnis_Paare_zum_Speichern_ankommender_Faxe,
+	T_MAX //α
+}; // enum T_ //ω
 
 enum FaxTyp:uchar {capi=1,hyla};
 enum FxStat:uchar {init/*0*/,gestrichen,schwebend,wartend/*3*/,blockiert/*4*/,bereit/*5*/,verarb/*6*/,gesandt/*7*/,gescheitert/*8*/,fehlend,woasined};
@@ -20,14 +245,14 @@ void pruefrules(int obverb, int oblog);
 class zielmustercl 
 {
   // beim letzten Element muss ziel leer sein!
-  private:
-    string muster;
   public:
+    string muster;
     string ziel;
     regex_t regex;
     // wird nur in Vorgaben gebraucht:
     zielmustercl(const char * const muster,const char * const ziel);
     zielmustercl(const char * const muster,const string& ziel);
+    zielmustercl(const string& muster,const string& ziel);
     zielmustercl();
     int kompilier(const uchar obext=1);
     int setzemuster(const string& vmuster,const uchar obext=1);
@@ -39,23 +264,23 @@ class zielmustercl
 class hhcl:public dhcl
 {
  private: //ω
-    uchar hylazuerst;  // ob ein Fax zuerst ueber Hylafax versucht werden soll zu faxen
+    int hylazuerst=-1;  // ob ein Fax zuerst ueber Hylafax versucht werden soll zu faxen
     //    string hmodemstr; // Erkennung des Faxgeraetes nach /dev/tty, Standard ACM
     string maxcapiv; // maximale Versuchnr in Capi, bis Hyla versucht wird
 		void virttesterg();
     string maxhylav; // maixmale Versuchsnr in Hylafax, bis Capi versucht wird
     string maxhdials;     // Zahl der Wahlversuche in Hylafax
 		string maxcdials;    // Zahl der Wahlversuche in Capisuite
-    uchar gleichziel; // faxe auch ohne Fax-Erfolg auf Zielverzeichnis abspeichern
-    uchar obocri; // empfangene Faxe OCR unterziehen
-    uchar obocra; // gesandte Bilder OCR unterziehen
+    int gleichziel=-1; // faxe auch ohne Fax-Erfolg auf Zielverzeichnis abspeichern
+    int obocri=-1; // empfangene Faxe OCR unterziehen
+    int obocra=-1; // gesandte Bilder OCR unterziehen
     string anfaxstr, ancfaxstr, anhfaxstr, anffaxstr; // 'an Fax', "an cFax", "an hFax", "an fFax"
     string anstr; // ' an '
     string undstr;  //  'und'
 
     uchar capizukonf=0; // capi zu konfigurieren
     uchar hylazukonf=0; // hyla zu konfigurieren
-		string findvers; // find-Version (1=linux fund 2=intern mit readdir, 3=intern mit nftw 
+		string findvers; // find-Version (1=linux find, 2=intern mit readdir, 3=intern mit nftw 
 		int ifindv; // integer-Variante der find-Version
     string dbq; // Datenbank
     string muser; // Benutzer fuer Mysql/MariaDB
@@ -104,9 +329,9 @@ class hhcl:public dhcl
     ulong gzahl=0;
     ulong fzahl=0;
     ulong weizahl=0; // Zahl der weiteren wartenden Faxe, die nicht in der Spooltabelle dieses Programms eingetragen sind
-    uchar obfbox=1; // ob ueberhaupt die Fritzbox verwendet werden soll, gesetzt in: pruefisdn(), lieskonfein(), rueckfragen(), getcommandline(), main()
-    uchar obcapi=1; // ob ueberhaupt die Capisuite verwendet werden soll, gesetzt in: pruefisdn(), lieskonfein(), rueckfragen(), getcommandline(), main()
-    uchar obhyla=1; // ob ueberhaupt hylafax verwendet werden soll
+    int obfbox=-1; // ob ueberhaupt die Fritzbox verwendet werden soll, gesetzt in: pruefisdn(), lieskonfein(), rueckfragen(), getcommandline(), main()
+    int obcapi=-1; // ob ueberhaupt die Capisuite verwendet werden soll, gesetzt in: pruefisdn(), lieskonfein(), rueckfragen(), getcommandline(), main()
+    int obhyla=-1; // ob ueberhaupt hylafax verwendet werden soll
     uchar konfobfbox; // ob obfbox in der Konfigurationsdatei eingestellt ist
     uchar konfobcapi; // ob obcapi in der Konfigurationsdatei eingestellt ist
     uchar konfobhyla; // ob obhyla in der Konfigurationsdatei eingestellt ist
@@ -119,17 +344,11 @@ class hhcl:public dhcl
     const string tudoc="udoc"; // MariaDB-Tabelle fuer gesandte oder gescheiterte Faxe
     const string tinca="inca"; // MariaDB-Tabelle fuer empfangene Faxe
 
-//    string sqlz;  // Zahl der SQL-Befehle
-//    size_t sqlzn=0; // Zahl der SQL-Befehle numerisch
-    string sqlvz;  // Zahl der SQL-Befehle aus Vorgaben
-    size_t sqlvzn=0; // Zahl der SQL-Befehle aus Vorgaben numerisch
     string zufaxenvz;
     string wvz; // Warteverzeichnis
     string ngvz; // Nichtgefaxt-Verzeichnis (Gescheiterte)
     string empfvz; // Empfangsverzeichnis
 		string fbankvz;  // auf CIFS gemountetes NAS-Verzeichnis der Fritzbox mit ankommenden Faxen
-    zielmustercl *zmvp; // Zielmusterzeiger aus Vorgaben
-    size_t zmvzn=0; // Zielmusterzahl numerisch aus Vorgaben
 
     string countrycode; // Landesvorwahl
     string LongDistancePrefix; // Vorsatz fuer ausserorts
@@ -172,11 +391,22 @@ class hhcl:public dhcl
 	string p3;
 	uchar oblista=0;
 	long listz=30; //ω
-	long sqlzn=0; // Zahl der SQL-Befehle numerisch
+
+	size_t sqlzn=0; // Zahl der SQL-Befehle numerisch
 	string* sqlp; // Array der SQL-Befehle
-	long zmzn=0; // Zahl der Zielmusterpaare numerisch
+	//    string sqlz;  // Zahl der SQL-Befehle
+	//    size_t sqlzn=0; // Zahl der SQL-Befehle numerisch
+	string sqlvz;  // Zahl der SQL-Befehle aus Vorgaben
+	size_t sqlvzn=0; // Zahl der SQL-Befehle aus Vorgaben numerisch
+	string* sqlvp; // Array der Vorgabe-SQL-Befehle
+
+	size_t zmzn=0; // Zahl der Zielmusterpaare numerisch
 	string *zmmp; // Array der Zielmuster
 	string *zmzp; // Array der Ziele
+	zielmustercl *zmp; // Zielmusterzeiger
+	size_t zmvzn=0; // Zielmusterzahl numerisch aus Vorgaben
+	zielmustercl *zmvp; // Zielmusterzeiger aus Vorgaben
+
  public: //α //ω
  private: //α //ω
 	void cfcnfCfuell();
