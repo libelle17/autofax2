@@ -2024,20 +2024,25 @@ void hhcl::virtschlussanzeige()
 // wird aufgerufen in: main
 void hhcl::virtautokonfschreib()
 {
-	Log(violetts+Tx[T_autokonfschreib]+schwarz+", "+Tx[T_zu_schreiben]+((rzf||hccd.obzuschreib)?Txk[T_ja]:Txk[T_nein]));
+	int altobverb=obverb;
+	obverb=1;
+	Log(violetts+Tx[T_autokonfschreib]+schwarz+", "+Tx[T_zu_schreiben]+((rzf||hccd.obzuschreib)?Txk[T_ja]:Txk[T_nein]),obverb);
 	/*//
 		capizukonf und hylazukonf hier immer 0
 		char buf[200];
 		sprintf(buf,"rzf: %d, capizukonf: %d, hylazukonf: %d, obkschreib: %d",(int)rzf, (int)capizukonf, (int)hylazukonf, (int)obkschreib);
 		Log(blaus+buf+schwarz);
 	 */
+	struct stat kstat={0};
+	if (lstat(akonfdt.c_str(),&kstat))
+		hccd.obzuschreib=1;
 	if (rzf||hccd.obzuschreib) {
-		Log(gruens+Tx[T_schreibe_Konfiguration]+schwarz);
+		Log(gruens+Tx[T_schreibe_Konfiguration]+schwarz,obverb);
 		// restliche Erklaerungen festlegen
 		////    agcnfA.setzbem("language",sprachstr);
+		hcl::virtautokonfschreib();
 // falsch:		cfcnfC.confschreib(cfaxconfdt,ios::out,mpfad,/*faclbak=*/0);
 		/*
-		hcl::virtautokonfschreib();
 		cfcnfC.confschreib(akonfdt,ios::out,mpfad);
 		*/
 #if false
@@ -2059,6 +2064,7 @@ void hhcl::virtautokonfschreib()
 		multischlschreib(akonfdt, ggcnfAp, sizeof ggcnfAp/sizeof *ggcnfAp, mpfad);
 #endif
 	} // if (rzf||obkschreib) 
+	obverb=altobverb;
 } // void hhcl::virtautokonfschreib()
 
 hhcl::~hhcl() //α
@@ -2076,11 +2082,12 @@ void hhcl::virtlieskonfein()
 		++i;
 		stringstream soptname;
 		soptname<<"SQL_"<<i;
-		const string istr=ltoan(i);
-		opsql<<optcl(/*pname*/soptname.str(),/*pptr*/&sqlp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/&istr,/*wert*/-1);
+	  const string *const istrp=new string(ltoan(i));	
+		opsql<<optcl(/*pname*/soptname.str(),/*pptr*/&sqlp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istrp,/*wert*/-1);
+		opn<<opsql[opsql.size()-1];
 	} // 	for(long i=0;i<sqlzn;)
-	// wenn in der Konfigurationsdatei keine sql-Befehle stehen, dann die aus den Vorgaben nehmen
 	hccd.auswert(&opsql,obverb,'=',0);
+	// wenn in der Konfigurationsdatei keine sql-Befehle stehen, dann die aus den Vorgaben nehmen
 	for(size_t i=0;i<sqlzn;i++) {
 		caus<<"sqlp["<<i+1<<"]: "<<sqlp[i]<<endl;
 	} // 	for(long i=0;i<sqlzn;i++)
@@ -2088,6 +2095,7 @@ void hhcl::virtlieskonfein()
 		sqlzn=sqlvzn;
 		for(size_t i=0;i<sqlzn;i++) {
       opsql<<opvsql[i];
+			opn<<opsql[opsql.size()-1];
 		}
 	} // 	if (!sqlzn)
 	caus<<"zmzn: "<<zmzn<<endl;
@@ -2098,9 +2106,11 @@ void hhcl::virtlieskonfein()
 		stringstream zmmname,zmzname;
 		zmmname<<"ZMMuster_"<<i;
 		zmzname<<"ZMZiel_"<<i;
-		const string istr=ltoan(i);
-		opzm<<optcl(/*pname*/zmmname.str(),/*pptr*/&zmmp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zielmuster_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/&istr,/*wert*/-1);
-		opzm<<optcl(/*pname*/zmzname.str(),/*pptr*/&zmzp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Ziel_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/&istr,/*wert*/-1);
+	  const string *const istrp=new string(ltoan(i));	
+		opzm<<optcl(/*pname*/zmmname.str(),/*pptr*/&zmmp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zielmuster_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istrp,/*wert*/-1);
+		opn<<opzm[opzm.size()-1];
+		opzm<<optcl(/*pname*/zmzname.str(),/*pptr*/&zmzp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Ziel_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istrp,/*wert*/-1);
+		opn<<opzm[opzm.size()-1];
 	} // 	for(long i=0;i<zmzn;)
 	hccd.auswert(&opzm,obverb,'=',0);
 	for(size_t i=0;i<zmzn;i++) {
@@ -2111,6 +2121,7 @@ void hhcl::virtlieskonfein()
 		zmzn=zmvzn;
 		for(size_t i=0;i<zmvzn;i++) {
 	    opzm<<opvzm[i];
+			opn<<opzm[opzm.size()-1];
 		} // 		for(long i=0;i<zmzn;i++) 
 		zmp=zmvp;
 	} else {
@@ -2119,6 +2130,7 @@ void hhcl::virtlieskonfein()
 			zmp[i]=zielmustercl(zmmp[i],zmzp[i]);
 		}
 	} // 	if (!zmzn)
+	optausg(rot);
 	Log(violetts+Txk[T_Ende]+Txk[T_virtlieskonfein]+schwarz);
 } //α
 

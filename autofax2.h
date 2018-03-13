@@ -283,7 +283,6 @@ class hhcl:public dhcl
 		string findvers; // find-Version (1=linux find, 2=intern mit readdir, 3=intern mit nftw 
 		int ifindv; // integer-Variante der find-Version
     string dbq; // Datenbank
-    string muser; // Benutzer fuer Mysql/MariaDB
 
     servc *sfaxq=0, *shfaxd=0, *shylafaxd=0, *sfaxgetty=0, *scapis=0;
     confdcl *cfaxcp=0; // Zeiger auf ausgelesene /etc/capisuite/fax.conf
@@ -339,7 +338,6 @@ class hhcl:public dhcl
     string hmodem;    // erkanntes und laufendes Modem ttyACM0
     //    string hmodname;  // ttyACM0
 		string cuser; // Linux-Benutzer fuer Capisuite, Samba
-    string mpwd;  // Passwort fuer Mysql/MariaDB
     const string touta="outa"; // MariaDB-Tabelle fuer gesandte oder gescheiterte Faxe
     const string tudoc="udoc"; // MariaDB-Tabelle fuer gesandte oder gescheiterte Faxe
     const string tinca="inca"; // MariaDB-Tabelle fuer empfangene Faxe
@@ -373,6 +371,7 @@ class hhcl:public dhcl
     string msn;         // MSN fuer Fax
     string LocalIdentifier; // eigener Namen fuer Hylafax bis 10 Buchstaben
     string cFaxUeberschrift; // eigener Namen fuer Capisuite bis 20 Buchstaben
+		schAcl<optcl> opsql,opzm,opvsql,opvzm; // Optionen
 
 #ifdef _WIN32
     char cpt[255];

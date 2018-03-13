@@ -434,6 +434,7 @@ enum Tkons_
 	T_lies,
 	T_verarbeitkonf,
 	T_auswert,
+	T_optausg,
 	T_konsMAX
 }; // Tkons_
 
@@ -1193,8 +1194,8 @@ class hcl
 		int autoupd=-1;  // 1=Programm automatisch updadaten
 		string host="localhost";  // fuer MySQL/MariaDB
 		string dbq="faxe"; // Datenbank
-		string tabelle  //ω
-			;  //α
+//		string tabl  //ω
+//			;  //α
 		string muser; // Benutzer fuer Mysql/MariaDB
 		string mpwd;  // Passwort fuer Mysql/MariaDB //ω
 		stringstream uebers; // Ueberschrift fuer Verarbeitungslauf
@@ -1212,7 +1213,7 @@ class hcl
     string loggespfad; // Gesamtpfad, auf den dann die in kons.h verwiesene und oben definierte Variable logdt zeigt
                        // bei jeder Aenderung muss auch logdt neu gesetzt werden!
     string cmd; // string fuer command fuer Betriebssystembefehle
-		schAcl<optcl> opn,opsql,opzm,opvsql,opvzm; // Optionen
+		schAcl<optcl> opn; // Optionen
 #ifdef alt
     vector<optioncl> opts;
 #endif

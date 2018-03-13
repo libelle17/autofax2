@@ -620,7 +620,9 @@ const char *kons_T[T_konsMAX+1][SprachZahl]=
 	{"verarbeitkonf()","processconf()"},
 	// T_auswert,
 	{"auswert()","exploit()"},
-  {"",""}
+	// T_optausg,
+	{"optausg()","optprintout()"},
+	{"",""}
 }; // const char *Txkonscl::TextC[T_konsMAX+1][SprachZahl]=
 
 const int sfeh[]={ T_Dienst_laeuft,T_Dienst_inexistent, T_Dienst_disabled, T_Dienstdateiname_nicht_ermittelbar, T_Dienst_laeuft_noch_aber_Dienstdatei_inexistent, T_Exec_Dateiname_nicht_ermittelbar, T_Exec_Datei_fehlt, T_activating, T_Dienst_kann_gestartet_werden, T_Sonstiges};
@@ -1865,10 +1867,10 @@ void confdcl::Abschn_auswert(int obverb/*=0*/, const char tz/*='='*/)
 */
 } // void confdcl::Abschn_auswert(int obverb, char tz)
 
-// setzt die Werte aus der Datei in der Optionenschar *sA
+// setzt die Werte aus der Datei in der Optionenschaar *sA
 template <typename SCL> void confdcl::auswert(schAcl<SCL> *sA, int obverb, const char tz,const uchar mitclear/*=1*/)
 {
-	Log(violetts+Txk[T_auswert]+schwarz);
+	Log(violetts+Txk[T_auswert]+schwarz+": "+fname,obverb);
   richtige=0;
   if (mitclear) {
 		sA->reset();
@@ -1935,7 +1937,7 @@ template <typename SCL> void confdcl::auswert(schAcl<SCL> *sA, int obverb, const
     KLZ
   KLZ
 */
-	Log(violetts+Txk[T_Ende]+Txk[T_auswert]+schwarz);
+	Log(violetts+Txk[T_Ende]+Txk[T_auswert]+schwarz,obverb);
 } // void sAdat::auswert
 
 
@@ -3101,8 +3103,8 @@ void optcl::oausgeb()
 	cout<<",obno:"<<blau<<(int)obno<<schwarz;
 	cout<</*endl<<setw(22)<<*/",bemkg:"<<blau<<bemerk<<schwarz;
 	cout<<",woher:"<<blau<<(int)woher<<schwarz;
-	cout<<",gegent.:"<<blau<<(int)gegenteil<<schwarz;
-	cout<<",nichtspei.:"<<blau<<(int)nichtspeichern<<schwarz;
+	cout<<",geg't.:"<<blau<<(int)gegenteil<<schwarz;
+	cout<<",n'spei.:"<<blau<<(int)nichtspeichern<<schwarz;
 	cout<<endl;
 } // void optcl::oausgeb()
 
@@ -5255,12 +5257,15 @@ void hcl::virtzeigueberschrift()
 // wird aufgerufen in lauf
 void hcl::virtautokonfschreib()
 {
-	Log(violetts+Txk[T_autokonfschreib]+schwarz+", "+Txk[T_zu_schreiben]+((rzf||hccd.obzuschreib)?Txk[T_ja]:Txk[T_nein]));
+	int altobverb=obverb;
+	obverb=1;
+	Log(violetts+Txk[T_autokonfschreib]+schwarz+", "+Txk[T_zu_schreiben]+((rzf||hccd.obzuschreib)?Txk[T_ja]:Txk[T_nein]),obverb);
 	caus<<rot<<"obzuschreib: "<<violett<<(int)hccd.obzuschreib<<schwarz<<endl;
 	if (rzf||hccd.obzuschreib) {
-		Log(gruens+Txk[T_schreibe_Konfiguration]+schwarz);
+		Log(gruens+Txk[T_schreibe_Konfiguration]+schwarz,obverb);
 		opn.confschreib(akonfdt,ios::out,mpfad,0);
 	} // if (rzf||obzuschreib)
+	obverb=altobverb;
 	return;
 	/*
 	schAcl<WPcl> *ggcnfAp[1]={&agcnfA};
@@ -6330,11 +6335,12 @@ template<typename SCL> void schAcl<SCL>::omapzuw()
 // wird aufgerufen in parsecl, lauf
 void hcl::optausg(const char *farbe)
 {
-	cout<<violett<<"optausg()"<<schwarz<<endl;
+	Log(violetts+Txk[T_optausg]+schwarz,obverb);
 	for(size_t iru=0;iru<opn.size();iru++) {
 			cout<<farbe<<setw(3)<<iru<<schwarz<<" ";
 			opn[iru].oausgeb();
 	}
+	Log(violetts+Txk[T_Ende]+Txk[T_optausg]+schwarz,obverb);
 } // void hcl::optausg
 
 confdcl::confdcl():obgelesen(0),obzuschreib(0)
@@ -6350,7 +6356,7 @@ confdcl::confdcl(const string& fname, int obverb):obgelesen(0),obzuschreib(0)
 // Achtung: Wegen der Notwendigkeit zur Existenz der Datei zum Aufruf von setfacl kann die Datei erstellt werden!
 int confdcl::lies(const string& vfname, int obverb)
 {
-	Log(violetts+Txk[T_lies]+blau+vfname+schwarz);
+	Log(violetts+Txk[T_lies]+blau+": "+vfname+schwarz,obverb);
   fname=vfname;
 	int erg=0;
 	if (fname.empty()) {
@@ -6374,7 +6380,7 @@ int confdcl::lies(const string& vfname, int obverb)
 		else
 			cout<<Txk[T_confdat_lies_Erfolg]<<endl;
 	} // 	if (obverb>0)
-	Log(violetts+Txk[T_Ende]+Txk[T_lies]+blau+vfname+schwarz);
+	Log(violetts+Txk[T_Ende]+Txk[T_lies]+schwarz,obverb);
 	return erg;
 } // confdcl::lies
 

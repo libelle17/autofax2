@@ -25,5 +25,5 @@ REPOS::=zypper lr|grep 'g++\|devel_gcc'\>/dev/null 2>&1||zypper ar http://downlo
 UREPO::=zypper lr|grep \"g++\\|devel_gcc\"\>/dev/null 2>&1 && zypper rr devel_gcc;
 COMP::=gcc gcc-c++ $(CCInst)
 GITV::=libelle17
-DTN::=autofax2.cpp autofax2.h DB.cpp DB.h kons.cpp kons.h  man_?? Makefile configure install.sh viall .exrc uninstallinv inst.log
+DTN::=autofax2.cpp autofax2.h DB.cpp DB.h kons.cpp kons.h vgb.cpp  man_?? Makefile configure install.sh viall .exrc uninstallinv inst.log
 DPROG::=autofax2
