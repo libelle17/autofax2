@@ -877,7 +877,7 @@ struct optcl
     const long Txi=0;
 		const uchar wi=0; // Wichtigkeit: 1= wird mit -lh oder -h, 0= nur mit -lh, 255 (-1) = gar nicht angezeigt
     const long Txi2=-1;
-    const string *const rottxt=0; // ggf rot zu markierender Text zwischen Txi und Txi2
+    const string rottxt; // ggf rot zu markierender Text zwischen Txi und Txi2
 //    string oerkl;
     int iwert; // Wert, der pptr zugewiesen wird, falls dieser Parameter gewaehlt wird; -1= Wert steht im nächsten Parameter, 1=pro Nennung in der Kommandozeile wert um 1 erhöhen
 //    string *zptr=0; // Zeiger auf Zusatzparameter, der hier eingegeben werden kann (z.B. Zahl der Zeilen nach -n (Zeilenzahl)
@@ -893,7 +893,7 @@ struct optcl
 		uchar einzutragen(schAcl<optcl> *schlp);
 		void weisomapzu(schAcl<optcl> *schlp);
 		optcl(const string& pname,const void* pptr,const par_t art, const int kurzi, const int langi, TxB* TxBp, const long Txi,
-				         const uchar wi, const long Txi2, const string* const rottxt, const int iwert);
+				         const uchar wi, const long Txi2, const string rottxt, const int iwert);
 		void setzwert();
 		int setzstr(const char* const neuw,uchar *const obzuschreib=0,const uchar ausDatei=0);
     void tusetzbemerkwoher(const string& ibemerk,const uchar vwoher);

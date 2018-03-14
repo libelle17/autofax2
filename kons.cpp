@@ -3096,7 +3096,7 @@ void optcl::oausgeb()
 	cout<<",langi:"<<blau<<setw(18)<<(langi<0?ltoan(langi):(*TxBp)[langi])<<schwarz;
 	cout<<",wi:"<<blau<<setw(3)<<(int)wi<<schwarz;
 	cout<<",Txi:"<<blau<<setw(3)<<Txi<<schwarz;
-	cout<<",rottxt:"<<blau<<setw(22)<<(rottxt?*rottxt:string(""))<<schwarz;
+	cout<<",rottxt:"<<blau<<setw(22)<<rottxt<<schwarz;
 	cout<<",Txi2:"<<blau<<setw(3)<<Txi2<<schwarz;
 	cout<<",iwert:"<<blau<<setw(2)<<iwert<<schwarz;
 	cout<<",part:"<<blau<<art<<schwarz;
@@ -4714,6 +4714,7 @@ void hcl::lauf()
 		verarbeitkonf();
 		if (obverb) optausg(gruen);
 	} // if (obhilfe==3)
+	opn.omapzuw();
 	if (zeighilfe(&erkl)) {
 		virttesterg();
 		exit(1);
@@ -4861,29 +4862,28 @@ void hcl::virtVorgbAllg()
 // wird aufgerufen in lauf
 void hcl::virtinitopt()
 {
-	opn<<optcl(/*pname*/"language",/*pptr*/&langu,/*art*/psons,T_lg_k,T_language_l,/*TxBp*/&Txk,/*Txi*/T_sprachstr,/*wi*/1,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
-	opn<<optcl(/*pname*/"language",/*pptr*/&langu,/*art*/psons,T_lang_k,T_lingue_l,/*TxBp*/&Txk,/*Txi*/-1,/*wi*/1,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
-	opn<<optcl(/*pname*/"",/*pptr*/&obverb,/*art*/puchar,T_v_k,T_verbose_l,/*TxBp*/&Txk,/*Txi*/T_Bildschirmausgabe_gespraechiger,/*wi*/1,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
-	opn<<optcl(/*pname*/"logvz",/*pptr*/&logvz,/*art*/pverz,T_lvz_k,T_logvz_l,/*TxBp*/&Txk,/*Txi*/T_waehlt_als_Logverzeichnis_pfad_derzeit,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
-	opn<<optcl(/*pname*/"logdname",/*pptr*/&logdname,/*art*/psons,T_ld_k,T_logdname_l,/*TxBp*/&Txk,/*Txi*/T_logdatei_string_im_Pfad,/*wi*/0,/*Txi2*/T_wird_verwendet_anstatt,/*rottxt*/&logvz,/*wert*/-1);
-	opn<<optcl(/*pname*/"oblog",/*pptr*/&oblog,/*art*/pint,T_l_k,T_log_l,/*TxBp*/&Txk,/*Txi*/T_protokolliert_ausfuehrlich_in_Datei,/*wi*/1,/*Txi2*/T_sonst_knapper,/*rottxt*/&loggespfad,/*wert*/1);
-	opn<<optcl(/*pname*/"",/*pptr*/&logdateineu,/*art*/puchar,T_ldn_k,T_logdateineu_l,/*TxBp*/&Txk,/*Txi*/T_logdatei_vorher_loeschen,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
-	opn<<optcl(/*pname*/"",/*pptr*/&akonfdt,/*art*/pfile,T_kd_k,T_konfdatei_l,/*TxBp*/&Txk,/*Txi*/T_verwendet_Konfigurationsdatei_string_anstatt,/*wi*/0,/*Txi2*/-1,/*rottxt*/0,/*wert*/-1);
-	opn<<optcl(/*pname*/"",/*pptr*/&obhilfe,/*art*/puchar,T_h_k,T_hilfe_l,/*TxBp*/&Txk,/*Txi*/T_Erklaerung_haeufiger_Optionen,/*wi*/255,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
-	opn<<optcl(/*pname*/"",/*pptr*/&obhilfe,/*art*/puchar,T_lh_k,T_lhilfe_l,/*TxBp*/&Txk,/*Txi*/T_Erklaerung_aller_Optionen,/*wi*/255,/*Txi2*/-1,/*rottxt*/0,/*wert*/2);
-	opn<<optcl(/*pname*/"",/*pptr*/&obhilfe,/*art*/puchar,T_fgz_k,T_fgz_l,/*TxBp*/&Txk,/*Txi*/-1,/*wi*/255,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
-	opn<<optcl(/*pname*/"",/*pptr*/&obhilfe,/*art*/puchar,T_sh,T_standardhilfe,/*TxBp*/&Txk,/*Txi*/-1,/*wi*/255,/*Txi2*/-1,/*rottxt*/0,/*wert*/3);
-	opn<<optcl(/*pname*/"",/*pptr*/&obhilfe,/*art*/puchar,T_libtest,T_libtest,/*TxBp*/&Txk,/*Txi*/-1,/*wi*/255,/*Txi2*/-1,/*rottxt*/0,/*wert*/4);
-	opn<<optcl(/*pname*/"cronminut",/*pptr*/&cronminut,/*art*/pdez,T_cm_k,T_cronminuten_l,/*TxBp*/&Txk,/*Txi*/T_Alle_wieviel_Minuten_soll,/*wi*/1,/*Txi2*/T_aufgerufen_werden_0_ist_gar_nicht,/*rottxt*/&meinname,/*wert*/-1);
-	opn<<optcl(/*pname*/"",/*pptr*/&obvi,/*art*/puchar,T_vi_k,T_vi_l,/*TxBp*/&Txk,/*Txi*/T_Konfigurationsdatei,/*wi*/0,/*Txi2*/T_Logdatei_usw_bearbeiten_sehen,/*rottxt*/&akonfdt,/*wert*/1);
-	opn<<optcl(/*pname*/"",/*pptr*/&obvs,/*art*/puchar,T_vs_k,T_vs_l,/*TxBp*/&Txk,/*Txi*/T_Quelldateien_in,/*wi*/0,/*Txi2*/T_bearbeiten_sehen,/*rottxt*/&instvz,/*wert*/1);
-	opn<<optcl(/*pname*/"autoupd",/*pptr*/&autoupd,/*art*/pint,T_autoupd_k,T_autoupd_l,/*TxBp*/&Txk,/*Txi*/T_Programm_automatisch_aktualisieren,/*wi*/1,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
-	opn<<optcl(/*pname*/"",/*pptr*/&rzf,/*art*/puchar,T_rf_k,T_rueckfragen_l,/*TxBp*/&Txk,/*Txi*/T_alle_Parameter_werden_abgefragt_darunter_einige_hier_nicht_gezeigte,/*wi*/1,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
-	opn<<optcl(/*pname*/"",/*pptr*/&nrzf,/*art*/puchar,T_krf_k,T_keinerueckfragen_l,/*TxBp*/&Txk,/*Txi*/T_keine_Rueckfragen_zB_aus_Cron,/*wi*/1,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
-	opn<<optcl(/*pname*/"",/*pptr*/&zeigvers,/*art*/puchar,T_info_k,T_version_l,/*TxBp*/&Txk,/*Txi*/T_Zeigt_die_Programmversion_an,/*wi*/1,/*Txi2*/-1,/*rottxt*/0,/*wert*/1);
+	opn<<optcl(/*pname*/"language",/*pptr*/&langu,/*art*/psons,T_lg_k,T_language_l,/*TxBp*/&Txk,/*Txi*/T_sprachstr,/*wi*/1,/*Txi2*/-1,/*rottxt*/nix,/*wert*/-1);
+	opn<<optcl(/*pname*/"language",/*pptr*/&langu,/*art*/psons,T_lang_k,T_lingue_l,/*TxBp*/&Txk,/*Txi*/-1,/*wi*/1,/*Txi2*/-1,/*rottxt*/nix,/*wert*/-1);
+	opn<<optcl(/*pname*/"",/*pptr*/&obverb,/*art*/puchar,T_v_k,T_verbose_l,/*TxBp*/&Txk,/*Txi*/T_Bildschirmausgabe_gespraechiger,/*wi*/1,/*Txi2*/-1,/*rottxt*/nix,/*wert*/1);
+	opn<<optcl(/*pname*/"logvz",/*pptr*/&logvz,/*art*/pverz,T_lvz_k,T_logvz_l,/*TxBp*/&Txk,/*Txi*/T_waehlt_als_Logverzeichnis_pfad_derzeit,/*wi*/0,/*Txi2*/-1,/*rottxt*/nix,/*wert*/-1);
+	opn<<optcl(/*pname*/"logdname",/*pptr*/&logdname,/*art*/psons,T_ld_k,T_logdname_l,/*TxBp*/&Txk,/*Txi*/T_logdatei_string_im_Pfad,/*wi*/0,/*Txi2*/T_wird_verwendet_anstatt,/*rottxt*/logvz,/*wert*/-1);
+	opn<<optcl(/*pname*/"oblog",/*pptr*/&oblog,/*art*/pint,T_l_k,T_log_l,/*TxBp*/&Txk,/*Txi*/T_protokolliert_ausfuehrlich_in_Datei,/*wi*/1,/*Txi2*/T_sonst_knapper,/*rottxt*/loggespfad,/*wert*/1);
+	opn<<optcl(/*pname*/"",/*pptr*/&logdateineu,/*art*/puchar,T_ldn_k,T_logdateineu_l,/*TxBp*/&Txk,/*Txi*/T_logdatei_vorher_loeschen,/*wi*/0,/*Txi2*/-1,/*rottxt*/nix,/*wert*/1);
+	opn<<optcl(/*pname*/"",/*pptr*/&akonfdt,/*art*/pfile,T_kd_k,T_konfdatei_l,/*TxBp*/&Txk,/*Txi*/T_verwendet_Konfigurationsdatei_string_anstatt,/*wi*/0,/*Txi2*/-1,/*rottxt*/nix,/*wert*/-1);
+	opn<<optcl(/*pname*/"",/*pptr*/&obhilfe,/*art*/puchar,T_h_k,T_hilfe_l,/*TxBp*/&Txk,/*Txi*/T_Erklaerung_haeufiger_Optionen,/*wi*/255,/*Txi2*/-1,/*rottxt*/nix,/*wert*/1);
+	opn<<optcl(/*pname*/"",/*pptr*/&obhilfe,/*art*/puchar,T_lh_k,T_lhilfe_l,/*TxBp*/&Txk,/*Txi*/T_Erklaerung_aller_Optionen,/*wi*/255,/*Txi2*/-1,/*rottxt*/nix,/*wert*/2);
+	opn<<optcl(/*pname*/"",/*pptr*/&obhilfe,/*art*/puchar,T_fgz_k,T_fgz_l,/*TxBp*/&Txk,/*Txi*/-1,/*wi*/255,/*Txi2*/-1,/*rottxt*/nix,/*wert*/1);
+	opn<<optcl(/*pname*/"",/*pptr*/&obhilfe,/*art*/puchar,T_sh,T_standardhilfe,/*TxBp*/&Txk,/*Txi*/-1,/*wi*/255,/*Txi2*/-1,/*rottxt*/nix,/*wert*/3);
+	opn<<optcl(/*pname*/"",/*pptr*/&obhilfe,/*art*/puchar,T_libtest,T_libtest,/*TxBp*/&Txk,/*Txi*/-1,/*wi*/255,/*Txi2*/-1,/*rottxt*/nix,/*wert*/4);
+	opn<<optcl(/*pname*/"cronminut",/*pptr*/&cronminut,/*art*/pdez,T_cm_k,T_cronminuten_l,/*TxBp*/&Txk,/*Txi*/T_Alle_wieviel_Minuten_soll,/*wi*/1,/*Txi2*/T_aufgerufen_werden_0_ist_gar_nicht,/*rottxt*/meinname,/*wert*/-1);
+	opn<<optcl(/*pname*/"",/*pptr*/&obvi,/*art*/puchar,T_vi_k,T_vi_l,/*TxBp*/&Txk,/*Txi*/T_Konfigurationsdatei,/*wi*/0,/*Txi2*/T_Logdatei_usw_bearbeiten_sehen,/*rottxt*/akonfdt,/*wert*/1);
+	opn<<optcl(/*pname*/"",/*pptr*/&obvs,/*art*/puchar,T_vs_k,T_vs_l,/*TxBp*/&Txk,/*Txi*/T_Quelldateien_in,/*wi*/0,/*Txi2*/T_bearbeiten_sehen,/*rottxt*/instvz,/*wert*/1);
+	opn<<optcl(/*pname*/"autoupd",/*pptr*/&autoupd,/*art*/pint,T_autoupd_k,T_autoupd_l,/*TxBp*/&Txk,/*Txi*/T_Programm_automatisch_aktualisieren,/*wi*/1,/*Txi2*/-1,/*rottxt*/nix,/*wert*/1);
+	opn<<optcl(/*pname*/"",/*pptr*/&rzf,/*art*/puchar,T_rf_k,T_rueckfragen_l,/*TxBp*/&Txk,/*Txi*/T_alle_Parameter_werden_abgefragt_darunter_einige_hier_nicht_gezeigte,/*wi*/1,/*Txi2*/-1,/*rottxt*/nix,/*wert*/1);
+	opn<<optcl(/*pname*/"",/*pptr*/&nrzf,/*art*/puchar,T_krf_k,T_keinerueckfragen_l,/*TxBp*/&Txk,/*Txi*/T_keine_Rueckfragen_zB_aus_Cron,/*wi*/1,/*Txi2*/-1,/*rottxt*/nix,/*wert*/1);
+	opn<<optcl(/*pname*/"",/*pptr*/&zeigvers,/*art*/puchar,T_info_k,T_version_l,/*TxBp*/&Txk,/*Txi*/T_Zeigt_die_Programmversion_an,/*wi*/1,/*Txi2*/-1,/*rottxt*/nix,/*wert*/1);
 
 	//  for(int i=argc-1;i>0;i--) KLA if (argv[i][0]==0) argc--; KLZ // damit fuer das Compilermakro auch im bash-script argc stimmt
-	opn.omapzuw();
 	//// <<"Ende virtinitopt"<<endl;
 } // hcl::virtinitopt
 
@@ -5721,7 +5721,7 @@ string& optcl::machbemerk(Sprache lg,binaer obfarbe/*=wahr*/)
 			if (TxBp->TCp[Txi][lg]) {
 				TCtp *hilf = reinterpret_cast<TCtp*>(TxBp->TCp);
 				bemerk= (const char*)hilf[Txi][lg];
-				if (rottxt) bemerk+=(obfarbe?blaus:nix)+*rottxt+(obfarbe?schwarz:nix);
+				if (!rottxt.empty()) bemerk+=(obfarbe?blaus:nix)+rottxt+(obfarbe?schwarz:nix);
 				if (Txi2!=-1) bemerk+=(const char*)hilf[Txi2][lg]; 
 				////        if (zptr && !strstr(pname,"pwd")) bemerk+=" '"+(obfarbe?blaus:nix)+*zptr+(obfarbe?schwarz:nix)+"'"; // pname==0
 				if (obno) bemerk+=(obfarbe?violetts:nix)+Txk[T_oder_nicht]+(obfarbe?schwarz:nix);
@@ -5936,7 +5936,7 @@ int optcl::pzuweis(const char *nacstr, const uchar vgegenteil/*=0*/, const uchar
 } // int optcl::pzuweis
 
 optcl::optcl(const string& pname,const void* pptr,const par_t art, const int kurzi, const int langi, TxB* TxBp, const long Txi,
-		const uchar wi, const long Txi2, const string* const rottxt, const int iwert):
+		const uchar wi, const long Txi2, const string rottxt, const int iwert):
 	pname(pname),pptr(pptr),art(art),kurzi(kurzi),langi(langi),TxBp(TxBp),Txi(Txi),wi(wi),Txi2(Txi2),rottxt(rottxt),iwert(iwert),
 	obno(iwert!=-1)
 {
@@ -6404,6 +6404,7 @@ uchar WPcl::einzutragen(schAcl<WPcl> *schlp)
 
 uchar optcl::einzutragen(schAcl<optcl> *schlp)
 {
+	caus<<" einzutragen optcl "<<pname<<" ";
 	map<string,optcl*>::iterator omit=schlp->omap.find(pname);
 	if (omit!=schlp->omap.end()) {
 		if (omit->second->eingetragen) {
@@ -6420,7 +6421,9 @@ template<typename SCL> void schAcl<SCL>::schAschreib(mdatei *const f)
 {
 	eintrinit();
 	for (size_t i = 0;i<schl.size();i++) {
+		caus<<"schreibe: "<<rot<<i<<schwarz<<" pname: "<<schl[i].pname<<" einzutragen: "<<(int)schl[i].einzutragen(this)<<endl;
 		if (!schl[i].pname.empty() && schl[i].einzutragen(this)) {
+			caus<<violett<<"!!: "<<rot<<schl[i].pname<<schwarz<<endl;
 			schl[i].machbemerk(Txk.lgn);
 			if (!schl[i].bemerk.empty()) *f<<(schl[i].bemerk[0]=='#'?"":"# ")<<*loeschefarbenaus(&schl[i].bemerk)<<endl;
 			*f<<schl[i].pname<<" = \""<<schl[i].holstr()<<"\""<<endl;
