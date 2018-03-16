@@ -664,7 +664,7 @@ struct WPcl { // Wertepaarklasse
     uchar gelesen=0;
     string wert;
     string bemerk;
-		uchar eingetragen; // Hilfsvariable zur genau einmaligen Eintragung einer Option mit name=pname in Konfigurationsdatei
+		uchar eingetragen=0; // Hilfsvariable zur genau einmaligen Eintragung einer Option mit name=pname in Konfigurationsdatei
 		WPcl(const string& pname,const void* pptr,war_t wart);
 		WPcl(const string& pname); // wird benoetigt in: schAcl::init(size_t vzahl, ...)
 		int setzstr(const string& neus,uchar *const obzuschreib=0,const uchar ausDatei=0);
@@ -678,6 +678,7 @@ struct WPcl { // Wertepaarklasse
 //    template <typename T> void setze(T *var) { wert=ltoan(*var); }
 //    template <typename T> void setze(T *var,string& bem) { wert=ltoan(*var); bemerk=bem;}
 		void hole (struct tm *tmp);
+		void oausgeb();
 		void reset();
     string& machbemerk(Sprache lg,binaer obfarbe=wahr);
 }; // class WPcl
@@ -735,13 +736,18 @@ class tsvec: public vector<T>
     } // inline tsvec
 }; // template<typename T> class tsvec: public vector<T>
 
+// fuer Commandline-Optionen
+enum par_t:uchar {psons,pdez,ppwd,pverz,pfile,puchar,pint,plong,pdat}; // Parameterart: Sonstiges, Verzeichnis, Datei, uchar, int, long, Datum (struct tm)
 struct optcl;
 
 template <typename SCL> class schAcl {
  public:
 // WPcl *schl=0; 
  vector<SCL> schl; // Schlüsselklasse Schlüssel
- inline schAcl& operator<<(const SCL& sch) { schl.push_back(sch); return *this; }
+//// inline schAcl& operator<<(const SCL& sch) { sch.weisomapzu(this); schl.push_back(sch); return *this; }
+ schAcl& operator<<(SCL& sch);
+//// inline schAcl& operator<<(SCL *schp) { schp->weisomapzu(this); schl.push_back(*schp); return *this; }
+ schAcl& operator<<(SCL *schp);
  inline const SCL& operator[](size_t const& nr) const { return schl[nr]; }
  inline SCL& operator[](size_t const& nr) { return schl[nr]; }
  inline size_t size(){return schl.size();}
@@ -751,10 +757,10 @@ template <typename SCL> class schAcl {
  void init(size_t vzahl, ...);
  void init(vector<SCL*> *sqlvp);
 		map<string,SCL*> omap; // map der Optionen
-		map<const char* const,SCL*> okmap; // map der Optionen, sortiert nach Tx[<kurzi>]
-		map<const char* const,SCL*> olmap; // map der Optionen, sortiert nach Tx[<langi>]
+		map<const char* const,SCL const*> okmap; // map der Optionen, sortiert nach Tx[<kurzi>]
+		map<const char* const,SCL const*> olmap; // map der Optionen, sortiert nach Tx[<langi>]
 		typename map<string,SCL*>::iterator omit; // Optionen-Iterator
-		void omapzuw(); // Optionen an omap zuweisen
+//		void omapzuw(); // Optionen an omap zuweisen
 		// void initd(const char* const* sarr,size_t vzahl);
 // void initv(vector<optcl*> optpv,vector<size_t> optsv);
 // int setze(const string& pname, const string& wert/*, const string& bem=nix*/);
@@ -861,9 +867,6 @@ struct confdcl {
 	void Abschn_auswert(int obverb=0, const char tz='=');
 };
 
-// fuer Commandline-Optionen
-enum par_t:uchar {psons,pdez,ppwd,pverz,pfile,puchar,pint,plong,pdat}; // Parameterart: Sonstiges, Verzeichnis, Datei, uchar, int, long, Datum (struct tm)
-
 // neue Klasse für map
 // fuer Wertepaare, die aus Datei gezogen werden und zusaetzlich ueber die Befehlszeile eingegeben werden koennen
 struct optcl
@@ -889,7 +892,7 @@ struct optcl
 		uchar woher=0; // 1= ueber Vorgaben, 2= ueber Konfigurationsdatei, 3= ueber Befehlszeile gesetzt
 		uchar gegenteil=0;
 		uchar nichtspeichern=0;
-		uchar eingetragen; // Hilfsvariable zur genau einmaligen Eintragung einer Option mit name=pname in Konfigurationsdatei
+		uchar eingetragen=0; // Hilfsvariable zur genau einmaligen Eintragung einer Option mit name=pname in Konfigurationsdatei
 		uchar einzutragen(schAcl<optcl> *schlp);
 		void weisomapzu(schAcl<optcl> *schlp);
 		optcl(const string& pname,const void* pptr,const par_t art, const int kurzi, const int langi, TxB* TxBp, const long Txi,
@@ -1287,6 +1290,7 @@ class hcl
 		void optausg(const char *farbe); // Optionen ausgeben
 		void pruefcl(); // commandline mit omap und mit argcmv parsen
 		hcl(const int argc, const char *const *const argv,const char* const DPROG);
+		~hcl();
 		void lauf();
 		int Log(const string& text,const bool oberr=0,const short klobverb=0) const;
 		void pruefsamba(const vector<const string*>& vzn,const svec& abschni,const svec& suchs,const char* DPROG,const string& cuser);

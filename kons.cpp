@@ -3076,10 +3076,28 @@ uchar VerzeichnisGibts(const char* vname)
 	return 0;
 } // VerzeichnisGibts
 
+void WPcl::oausgeb()
+{
+	cout<<"pname:"<<blau<<setw(13)<<pname<<schwarz;
+	cout<<",pptr:"<<blau<<setw(45);
+	if (pptr) {
+		if (wart==wlong) {
+			cout<<*(long*)pptr;
+		} else {
+			cout<<*(string*)pptr;
+		}
+	} // 	if (pptr)
+	cout<<schwarz;
+	cout<<",wa:"<<blau<<wart<<schwarz;
+	cout<<",we:"<<blau<<wert<<schwarz;
+	cout<<",gel:"<<blau<<setw(1)<<(int)gelesen<<schwarz;
+	cout<<",eing:"<<blau<<(int)eingetragen<<schwarz;
+}
+
 void optcl::oausgeb()
 {
 	cout<<"pname:"<<blau<<setw(13)<<pname<<schwarz;
-	cout<<",pptr:"<<blau<<setw(25);
+	cout<<",pptr:"<<blau<<setw(45);
 	if (pptr) {
 		if (art==puchar) {
 			cout<<(int)*(uchar*)pptr;
@@ -3092,19 +3110,20 @@ void optcl::oausgeb()
 		}
 	} // 	if (pptr)
 	cout<<schwarz;
-	cout<<",kurzi:"<<blau<<setw(10)<<(kurzi<0?ltoan(kurzi):(*TxBp)[kurzi])<<schwarz;
-	cout<<",langi:"<<blau<<setw(18)<<(langi<0?ltoan(langi):(*TxBp)[langi])<<schwarz;
+	cout<<",ku:"<<blau<<setw(10)<<(kurzi<0?ltoan(kurzi):(*TxBp)[kurzi])<<schwarz;
+	cout<<",la:"<<blau<<setw(18)<<(langi<0?ltoan(langi):(*TxBp)[langi])<<schwarz;
 	cout<<",wi:"<<blau<<setw(3)<<(int)wi<<schwarz;
-	cout<<",Txi:"<<blau<<setw(3)<<Txi<<schwarz;
-	cout<<",rottxt:"<<blau<<setw(22)<<rottxt<<schwarz;
-	cout<<",Txi2:"<<blau<<setw(3)<<Txi2<<schwarz;
-	cout<<",iwert:"<<blau<<setw(2)<<iwert<<schwarz;
-	cout<<",part:"<<blau<<art<<schwarz;
+	cout<<",Tx:"<<blau<<setw(3)<<Txi<<schwarz;
+	cout<<",rt:"<<blau<<setw(22)<<rottxt<<schwarz;
+	cout<<",Tx2:"<<blau<<setw(3)<<Txi2<<schwarz;
+	cout<<",iw:"<<blau<<setw(2)<<iwert<<schwarz;
+	cout<<",pa:"<<blau<<art<<schwarz;
 	cout<<",obno:"<<blau<<(int)obno<<schwarz;
 	cout<</*endl<<setw(22)<<*/",bemkg:"<<blau<<bemerk<<schwarz;
-	cout<<",woher:"<<blau<<(int)woher<<schwarz;
-	cout<<",geg't.:"<<blau<<(int)gegenteil<<schwarz;
-	cout<<",n'spei.:"<<blau<<(int)nichtspeichern<<schwarz;
+	cout<<",woh:"<<blau<<(int)woher<<schwarz;
+	cout<<",geg:"<<blau<<(int)gegenteil<<schwarz;
+	cout<<",nsp:"<<blau<<(int)nichtspeichern<<schwarz;
+	cout<<",eing:"<<blau<<(int)eingetragen<<schwarz;
 	cout<<endl;
 } // void optcl::oausgeb()
 
@@ -4714,7 +4733,7 @@ void hcl::lauf()
 		verarbeitkonf();
 		if (obverb) optausg(gruen);
 	} // if (obhilfe==3)
-	opn.omapzuw();
+//	opn.omapzuw();
 	if (zeighilfe(&erkl)) {
 		virttesterg();
 		exit(1);
@@ -4862,26 +4881,26 @@ void hcl::virtVorgbAllg()
 // wird aufgerufen in lauf
 void hcl::virtinitopt()
 {
-	opn<<optcl(/*pname*/"language",/*pptr*/&langu,/*art*/psons,T_lg_k,T_language_l,/*TxBp*/&Txk,/*Txi*/T_sprachstr,/*wi*/1,/*Txi2*/-1,/*rottxt*/nix,/*wert*/-1);
-	opn<<optcl(/*pname*/"language",/*pptr*/&langu,/*art*/psons,T_lang_k,T_lingue_l,/*TxBp*/&Txk,/*Txi*/-1,/*wi*/1,/*Txi2*/-1,/*rottxt*/nix,/*wert*/-1);
-	opn<<optcl(/*pname*/"",/*pptr*/&obverb,/*art*/puchar,T_v_k,T_verbose_l,/*TxBp*/&Txk,/*Txi*/T_Bildschirmausgabe_gespraechiger,/*wi*/1,/*Txi2*/-1,/*rottxt*/nix,/*wert*/1);
-	opn<<optcl(/*pname*/"logvz",/*pptr*/&logvz,/*art*/pverz,T_lvz_k,T_logvz_l,/*TxBp*/&Txk,/*Txi*/T_waehlt_als_Logverzeichnis_pfad_derzeit,/*wi*/0,/*Txi2*/-1,/*rottxt*/nix,/*wert*/-1);
-	opn<<optcl(/*pname*/"logdname",/*pptr*/&logdname,/*art*/psons,T_ld_k,T_logdname_l,/*TxBp*/&Txk,/*Txi*/T_logdatei_string_im_Pfad,/*wi*/0,/*Txi2*/T_wird_verwendet_anstatt,/*rottxt*/logvz,/*wert*/-1);
-	opn<<optcl(/*pname*/"oblog",/*pptr*/&oblog,/*art*/pint,T_l_k,T_log_l,/*TxBp*/&Txk,/*Txi*/T_protokolliert_ausfuehrlich_in_Datei,/*wi*/1,/*Txi2*/T_sonst_knapper,/*rottxt*/loggespfad,/*wert*/1);
-	opn<<optcl(/*pname*/"",/*pptr*/&logdateineu,/*art*/puchar,T_ldn_k,T_logdateineu_l,/*TxBp*/&Txk,/*Txi*/T_logdatei_vorher_loeschen,/*wi*/0,/*Txi2*/-1,/*rottxt*/nix,/*wert*/1);
-	opn<<optcl(/*pname*/"",/*pptr*/&akonfdt,/*art*/pfile,T_kd_k,T_konfdatei_l,/*TxBp*/&Txk,/*Txi*/T_verwendet_Konfigurationsdatei_string_anstatt,/*wi*/0,/*Txi2*/-1,/*rottxt*/nix,/*wert*/-1);
-	opn<<optcl(/*pname*/"",/*pptr*/&obhilfe,/*art*/puchar,T_h_k,T_hilfe_l,/*TxBp*/&Txk,/*Txi*/T_Erklaerung_haeufiger_Optionen,/*wi*/255,/*Txi2*/-1,/*rottxt*/nix,/*wert*/1);
-	opn<<optcl(/*pname*/"",/*pptr*/&obhilfe,/*art*/puchar,T_lh_k,T_lhilfe_l,/*TxBp*/&Txk,/*Txi*/T_Erklaerung_aller_Optionen,/*wi*/255,/*Txi2*/-1,/*rottxt*/nix,/*wert*/2);
-	opn<<optcl(/*pname*/"",/*pptr*/&obhilfe,/*art*/puchar,T_fgz_k,T_fgz_l,/*TxBp*/&Txk,/*Txi*/-1,/*wi*/255,/*Txi2*/-1,/*rottxt*/nix,/*wert*/1);
-	opn<<optcl(/*pname*/"",/*pptr*/&obhilfe,/*art*/puchar,T_sh,T_standardhilfe,/*TxBp*/&Txk,/*Txi*/-1,/*wi*/255,/*Txi2*/-1,/*rottxt*/nix,/*wert*/3);
-	opn<<optcl(/*pname*/"",/*pptr*/&obhilfe,/*art*/puchar,T_libtest,T_libtest,/*TxBp*/&Txk,/*Txi*/-1,/*wi*/255,/*Txi2*/-1,/*rottxt*/nix,/*wert*/4);
-	opn<<optcl(/*pname*/"cronminut",/*pptr*/&cronminut,/*art*/pdez,T_cm_k,T_cronminuten_l,/*TxBp*/&Txk,/*Txi*/T_Alle_wieviel_Minuten_soll,/*wi*/1,/*Txi2*/T_aufgerufen_werden_0_ist_gar_nicht,/*rottxt*/meinname,/*wert*/-1);
-	opn<<optcl(/*pname*/"",/*pptr*/&obvi,/*art*/puchar,T_vi_k,T_vi_l,/*TxBp*/&Txk,/*Txi*/T_Konfigurationsdatei,/*wi*/0,/*Txi2*/T_Logdatei_usw_bearbeiten_sehen,/*rottxt*/akonfdt,/*wert*/1);
-	opn<<optcl(/*pname*/"",/*pptr*/&obvs,/*art*/puchar,T_vs_k,T_vs_l,/*TxBp*/&Txk,/*Txi*/T_Quelldateien_in,/*wi*/0,/*Txi2*/T_bearbeiten_sehen,/*rottxt*/instvz,/*wert*/1);
-	opn<<optcl(/*pname*/"autoupd",/*pptr*/&autoupd,/*art*/pint,T_autoupd_k,T_autoupd_l,/*TxBp*/&Txk,/*Txi*/T_Programm_automatisch_aktualisieren,/*wi*/1,/*Txi2*/-1,/*rottxt*/nix,/*wert*/1);
-	opn<<optcl(/*pname*/"",/*pptr*/&rzf,/*art*/puchar,T_rf_k,T_rueckfragen_l,/*TxBp*/&Txk,/*Txi*/T_alle_Parameter_werden_abgefragt_darunter_einige_hier_nicht_gezeigte,/*wi*/1,/*Txi2*/-1,/*rottxt*/nix,/*wert*/1);
-	opn<<optcl(/*pname*/"",/*pptr*/&nrzf,/*art*/puchar,T_krf_k,T_keinerueckfragen_l,/*TxBp*/&Txk,/*Txi*/T_keine_Rueckfragen_zB_aus_Cron,/*wi*/1,/*Txi2*/-1,/*rottxt*/nix,/*wert*/1);
-	opn<<optcl(/*pname*/"",/*pptr*/&zeigvers,/*art*/puchar,T_info_k,T_version_l,/*TxBp*/&Txk,/*Txi*/T_Zeigt_die_Programmversion_an,/*wi*/1,/*Txi2*/-1,/*rottxt*/nix,/*wert*/1);
+	opn<<new optcl(/*pname*/"language",/*pptr*/&langu,/*art*/psons,T_lg_k,T_language_l,/*TxBp*/&Txk,/*Txi*/T_sprachstr,/*wi*/1,/*Txi2*/-1,/*rottxt*/nix,/*wert*/-1);
+	opn<<new optcl(/*pname*/"language",/*pptr*/&langu,/*art*/psons,T_lang_k,T_lingue_l,/*TxBp*/&Txk,/*Txi*/-1,/*wi*/1,/*Txi2*/-1,/*rottxt*/nix,/*wert*/-1);
+	opn<<new optcl(/*pname*/"",/*pptr*/&obverb,/*art*/puchar,T_v_k,T_verbose_l,/*TxBp*/&Txk,/*Txi*/T_Bildschirmausgabe_gespraechiger,/*wi*/1,/*Txi2*/-1,/*rottxt*/nix,/*wert*/1);
+	opn<<new optcl(/*pname*/"logvz",/*pptr*/&logvz,/*art*/pverz,T_lvz_k,T_logvz_l,/*TxBp*/&Txk,/*Txi*/T_waehlt_als_Logverzeichnis_pfad_derzeit,/*wi*/0,/*Txi2*/-1,/*rottxt*/nix,/*wert*/-1);
+	opn<<new optcl(/*pname*/"logdname",/*pptr*/&logdname,/*art*/psons,T_ld_k,T_logdname_l,/*TxBp*/&Txk,/*Txi*/T_logdatei_string_im_Pfad,/*wi*/0,/*Txi2*/T_wird_verwendet_anstatt,/*rottxt*/logvz,/*wert*/-1);
+	opn<<new optcl(/*pname*/"oblog",/*pptr*/&oblog,/*art*/pint,T_l_k,T_log_l,/*TxBp*/&Txk,/*Txi*/T_protokolliert_ausfuehrlich_in_Datei,/*wi*/1,/*Txi2*/T_sonst_knapper,/*rottxt*/loggespfad,/*wert*/1);
+	opn<<new optcl(/*pname*/"",/*pptr*/&logdateineu,/*art*/puchar,T_ldn_k,T_logdateineu_l,/*TxBp*/&Txk,/*Txi*/T_logdatei_vorher_loeschen,/*wi*/0,/*Txi2*/-1,/*rottxt*/nix,/*wert*/1);
+	opn<<new optcl(/*pname*/"",/*pptr*/&akonfdt,/*art*/pfile,T_kd_k,T_konfdatei_l,/*TxBp*/&Txk,/*Txi*/T_verwendet_Konfigurationsdatei_string_anstatt,/*wi*/0,/*Txi2*/-1,/*rottxt*/nix,/*wert*/-1);
+	opn<<new optcl(/*pname*/"",/*pptr*/&obhilfe,/*art*/puchar,T_h_k,T_hilfe_l,/*TxBp*/&Txk,/*Txi*/T_Erklaerung_haeufiger_Optionen,/*wi*/255,/*Txi2*/-1,/*rottxt*/nix,/*wert*/1);
+	opn<<new optcl(/*pname*/"",/*pptr*/&obhilfe,/*art*/puchar,T_lh_k,T_lhilfe_l,/*TxBp*/&Txk,/*Txi*/T_Erklaerung_aller_Optionen,/*wi*/255,/*Txi2*/-1,/*rottxt*/nix,/*wert*/2);
+	opn<<new optcl(/*pname*/"",/*pptr*/&obhilfe,/*art*/puchar,T_fgz_k,T_fgz_l,/*TxBp*/&Txk,/*Txi*/-1,/*wi*/255,/*Txi2*/-1,/*rottxt*/nix,/*wert*/1);
+	opn<<new optcl(/*pname*/"",/*pptr*/&obhilfe,/*art*/puchar,T_sh,T_standardhilfe,/*TxBp*/&Txk,/*Txi*/-1,/*wi*/255,/*Txi2*/-1,/*rottxt*/nix,/*wert*/3);
+	opn<<new optcl(/*pname*/"",/*pptr*/&obhilfe,/*art*/puchar,T_libtest,T_libtest,/*TxBp*/&Txk,/*Txi*/-1,/*wi*/255,/*Txi2*/-1,/*rottxt*/nix,/*wert*/4);
+	opn<<new optcl(/*pname*/"cronminut",/*pptr*/&cronminut,/*art*/pdez,T_cm_k,T_cronminuten_l,/*TxBp*/&Txk,/*Txi*/T_Alle_wieviel_Minuten_soll,/*wi*/1,/*Txi2*/T_aufgerufen_werden_0_ist_gar_nicht,/*rottxt*/meinname,/*wert*/-1);
+	opn<<new optcl(/*pname*/"",/*pptr*/&obvi,/*art*/puchar,T_vi_k,T_vi_l,/*TxBp*/&Txk,/*Txi*/T_Konfigurationsdatei,/*wi*/0,/*Txi2*/T_Logdatei_usw_bearbeiten_sehen,/*rottxt*/akonfdt,/*wert*/1);
+	opn<<new optcl(/*pname*/"",/*pptr*/&obvs,/*art*/puchar,T_vs_k,T_vs_l,/*TxBp*/&Txk,/*Txi*/T_Quelldateien_in,/*wi*/0,/*Txi2*/T_bearbeiten_sehen,/*rottxt*/instvz,/*wert*/1);
+	opn<<new optcl(/*pname*/"autoupd",/*pptr*/&autoupd,/*art*/pint,T_autoupd_k,T_autoupd_l,/*TxBp*/&Txk,/*Txi*/T_Programm_automatisch_aktualisieren,/*wi*/1,/*Txi2*/-1,/*rottxt*/nix,/*wert*/1);
+	opn<<new optcl(/*pname*/"",/*pptr*/&rzf,/*art*/puchar,T_rf_k,T_rueckfragen_l,/*TxBp*/&Txk,/*Txi*/T_alle_Parameter_werden_abgefragt_darunter_einige_hier_nicht_gezeigte,/*wi*/1,/*Txi2*/-1,/*rottxt*/nix,/*wert*/1);
+	opn<<new optcl(/*pname*/"",/*pptr*/&nrzf,/*art*/puchar,T_krf_k,T_keinerueckfragen_l,/*TxBp*/&Txk,/*Txi*/T_keine_Rueckfragen_zB_aus_Cron,/*wi*/1,/*Txi2*/-1,/*rottxt*/nix,/*wert*/1);
+	opn<<new optcl(/*pname*/"",/*pptr*/&zeigvers,/*art*/puchar,T_info_k,T_version_l,/*TxBp*/&Txk,/*Txi*/T_Zeigt_die_Programmversion_an,/*wi*/1,/*Txi2*/-1,/*rottxt*/nix,/*wert*/1);
 
 	//  for(int i=argc-1;i>0;i--) KLA if (argv[i][0]==0) argc--; KLZ // damit fuer das Compilermakro auch im bash-script argc stimmt
 	//// <<"Ende virtinitopt"<<endl;
@@ -4919,11 +4938,12 @@ void hcl::parsecl()
 					acstr+=2;
 					aclen-=2;
 				} // 				if (aclen>2 && acstr[0]=='n'&&acstr[1]=='o')
-				map<const char* const,optcl*> *omp=0;
-				map<const char* const,optcl*>::iterator omit;
+				map<const char* const,optcl const*> *omp=0;
+				map<const char* const,optcl const*>::iterator omit;
 				if (langp) omp=&opn.olmap;
 				else if (kurzp) omp=&opn.okmap;
 				if (omp) {
+//					caus<<"acstr: '"<<acstr<<"', omp->size(): "<<omp->size()<<endl;
 					for(omit=omp->begin();omit!=omp->end();omit++) {
 						//// <<"omit: "<<omit->second->pname<<", "<<omit->first<<endl;
 						// omit ist also jetzt iterator fuer die relevante map auf die aktuelle Option (kurz oder lang)
@@ -4933,7 +4953,9 @@ void hcl::parsecl()
 								// pzuweis liefert -1, wenn der naechste Parameter als Inhalt verwendet wurde, sonst wiefalsch
 								apn=ap; apn++;
 								const char *nacstr=apn==argcmv.end()?"":apn->argcs;
-								int wiefalsch=omit->second->pzuweis(nacstr,gegenteil,nichtspeichern);
+								optcl* trick=(optcl*)omit->second;
+								int wiefalsch=trick->pzuweis(nacstr,gegenteil,nichtspeichern);
+								//int wiefalsch=omit->second->pzuweis(nacstr,gegenteil,nichtspeichern);
 								if (wiefalsch==-1) { // String-Parameter erfolgreich zugewiesen
 									ap++;
 									ap->agef++; // Zusatzparameter gefunden
@@ -4948,7 +4970,8 @@ void hcl::parsecl()
 										keineverarbeitung=1;
 										cmeingegeben=1;
 									}
-									opn.setzbemerkwoher(omit->second,/*ibemerk=*/nix,/*vwoher=*/3);
+									opn.setzbemerkwoher(trick,/*ibemerk=*/nix,/*vwoher=*/3);
+									//opn.setzbemerkwoher(omit->second,/*ibemerk=*/nix,/*vwoher=*/3);
 								} else {
 									if (!obhilfe) obhilfe=1;
 								} // 								if (wiefalsch<=0) else
@@ -4965,6 +4988,7 @@ void hcl::parsecl()
 	for(size_t i=0;i<argcmv.size();i++) {
 		if (!argcmv[i].agef) {
 			::Log(rots+"Parameter: "+gruen+argcmv[i].argcs+rot+Txk[T_nicht_erkannt]+schwarz,1,0);
+			exit(17);
 			if (!obhilfe) obhilfe=1;
 		} //     if (!argcmv[i].agef)
 	} //   for(size_t i=0;i<argcmv.size();i++)
@@ -5053,10 +5077,10 @@ void hcl::lieszaehlerein()
 {
 	azaehlerdt=aktprogverz()+".zaehl";
 	////<<"0 zcnfA.zahl: "<<zcnfA.size()<<endl;
-	zcnfA<<WPcl("aufrufe",&aufrufe,wlong);
-	zcnfA<<WPcl("lDatum",&laufrtag,wdat);
-	zcnfA<<WPcl("tagesaufr",&tagesaufr,wlong);
-	zcnfA<<WPcl("monatsaufr",&monatsaufr,wlong);
+	zcnfA<<new WPcl("aufrufe",&aufrufe,wlong);
+	zcnfA<<new WPcl("lDatum",&laufrtag,wdat);
+	zcnfA<<new WPcl("tagesaufr",&tagesaufr,wlong);
+	zcnfA<<new WPcl("monatsaufr",&monatsaufr,wlong);
 	////<<"1 zcnfA.zahl: "<<zcnfA.size()<<endl;
 	confdcl zlzn;
 	zlzn.lies(azaehlerdt,obverb);
@@ -5938,7 +5962,7 @@ int optcl::pzuweis(const char *nacstr, const uchar vgegenteil/*=0*/, const uchar
 optcl::optcl(const string& pname,const void* pptr,const par_t art, const int kurzi, const int langi, TxB* TxBp, const long Txi,
 		const uchar wi, const long Txi2, const string rottxt, const int iwert):
 	pname(pname),pptr(pptr),art(art),kurzi(kurzi),langi(langi),TxBp(TxBp),Txi(Txi),wi(wi),Txi2(Txi2),rottxt(rottxt),iwert(iwert),
-	obno(iwert!=-1)
+	obno(iwert!=-1)//,eingetragen(0)
 {
 	if (art<puchar) {
 		if (!((string*)pptr)->empty()) {
@@ -6325,12 +6349,15 @@ void WPcl::weisomapzu(schAcl<WPcl> *optp)
 {
 }
 
+/*
+// sollte unnoetig werden
 template<typename SCL> void schAcl<SCL>::omapzuw()
 {
 	for(size_t i=0;i<size();i++) {
 		schl[i].weisomapzu(this);
 	}
 } // void hcl::omapzuw(optcl *optp,size_t optz)
+*/
 
 // wird aufgerufen in parsecl, lauf
 void hcl::optausg(const char *farbe)
@@ -6404,12 +6431,15 @@ uchar WPcl::einzutragen(schAcl<WPcl> *schlp)
 
 uchar optcl::einzutragen(schAcl<optcl> *schlp)
 {
-	caus<<" einzutragen optcl "<<pname<<" ";
 	map<string,optcl*>::iterator omit=schlp->omap.find(pname);
 	if (omit!=schlp->omap.end()) {
 		if (omit->second->eingetragen) {
+			caus<<"schon eingetragen: '"<<omit->first<<"'"<<endl;
 			return 0;
 		}
+//		optcl* trick=(optcl*)omit->second;
+//		trick->eingetragen=1;
+		caus<<blau<<"wird jetzt eingetragen: '"<<omit->first<<"'"<<schwarz<<endl;
 		omit->second->eingetragen=1;
 		return 1;
 	}
@@ -6420,10 +6450,12 @@ uchar optcl::einzutragen(schAcl<optcl> *schlp)
 template<typename SCL> void schAcl<SCL>::schAschreib(mdatei *const f)
 {
 	eintrinit();
+	caus<<"schl.size(): "<<schl.size()<<endl;
 	for (size_t i = 0;i<schl.size();i++) {
-		caus<<"schreibe: "<<rot<<i<<schwarz<<" pname: "<<schl[i].pname<<" einzutragen: "<<(int)schl[i].einzutragen(this)<<endl;
-		if (!schl[i].pname.empty() && schl[i].einzutragen(this)) {
-			caus<<violett<<"!!: "<<rot<<schl[i].pname<<schwarz<<endl;
+			schl[i].oausgeb();
+		const uchar einzt=/*1;*/schl[i].einzutragen(this);
+			schl[i].oausgeb();
+		if (!schl[i].pname.empty() && einzt) {
 			schl[i].machbemerk(Txk.lgn);
 			if (!schl[i].bemerk.empty()) *f<<(schl[i].bemerk[0]=='#'?"":"# ")<<*loeschefarbenaus(&schl[i].bemerk)<<endl;
 			*f<<schl[i].pname<<" = \""<<schl[i].holstr()<<"\""<<endl;
@@ -6478,6 +6510,24 @@ template<typename SCL> int multischlschreib(const string& fname, schAcl<SCL> *co
   } //   if (f.is_open())
   return 1;
 } // int multischlschreib
+
+
+template<typename SCL> schAcl<SCL>& schAcl<SCL>::operator<<(SCL& sch) 
+{ 
+	sch.weisomapzu(this); 
+	schl.push_back(sch); 
+	return *this; 
+}
+
+template<typename SCL> schAcl<SCL>& schAcl<SCL>::operator<<(SCL *schp) 
+{ 
+	return operator<<(*schp); 
+}
+
+hcl::~hcl()
+{
+	//	caus<<"hcl-Destruktor"<<endl;
+}
 
 // damit nicht Template-Klassen-Funktionen in Header-Dateien geschrieben werden muessen
 template class schAcl<WPcl>;

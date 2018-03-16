@@ -128,7 +128,7 @@ void hhcl::pvirtVorgbSpeziell()
 		stringstream soptname;
 		soptname<<"SQL_"<<i;
 		const string istr=ltoan(i);
-		opvsql<<optcl(/*pname*/soptname.str(),/*pptr*/&sqlvp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1);
+		opvsql<<new optcl(/*pname*/soptname.str(),/*pptr*/&sqlvp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1);
 	} // 	for(long i=0;i<sqlzn;)
 
   // cpt in VorgbAllg festgelegt
@@ -163,8 +163,8 @@ void hhcl::pvirtVorgbSpeziell()
 			zmmname<<"ZMMuster_"<<i;
 			zmzname<<"ZMZiel_"<<i;
 			const string istr=ltoan(i);
-			opvzm<<optcl(/*pname*/zmmname.str(),/*pptr*/&zmvp[i-1].muster,/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zielmuster_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1);
-			opvzm<<optcl(/*pname*/zmzname.str(),/*pptr*/&zmvp[i-1].ziel,/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Ziel_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1);
+			opvzm<<new optcl(/*pname*/zmmname.str(),/*pptr*/&zmvp[i-1].muster,/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zielmuster_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1);
+			opvzm<<new optcl(/*pname*/zmzname.str(),/*pptr*/&zmvp[i-1].ziel,/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Ziel_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1);
 		}
 	} else {
 	}

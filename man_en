@@ -2,7 +2,7 @@
 .\" manual page for ²DPROG²
 .\" write to geraldschade@gmx.de if You discover an error or a deficit in the program
 .pc
-.TH man 1 "14.03.18" "Version 0.10243" "\fB²DPROG²\fR man page"
+.TH man 1 "16.03.18" "Version 0.10279" "\fB²DPROG²\fR man page"
 .SH NAME
 \fB²DPROG² \- Fax server functionality\fR: induces automatic fax transmission of files, naming of received faxes and logging of all of them in a database
 .br
@@ -15,176 +15,6 @@
 .SH OPTIONS 
 .SH PRECONDITIONS
 .br
-\fBParameter: \fB-1lg\fB nicht erkannt!\fR
-.br
-\fBParameter: \fBe\fB nicht erkannt!\fR
-.br
-\fBParameter: \fB-sh\fB nicht erkannt!\fR
-.br
-sqlzn: 0
-.br
-zmzn: 0
-.br
-\fB  0\fR pname:\fB    zufaxenvz\fR,pptr:\fB/DATA/Patientendokumente/zufaxen\fR,kurzi:\fB       zvz\fR,langi:\fB         zufaxenvz\fR,wi:\fB  0\fR,Txi:\fB 28\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB3\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB  1\fR pname:\fB      wartevz\fR,pptr:\fB/DATA/Patientendokumente/warteauffax\fR,kurzi:\fB       wvz\fR,langi:\fB           wartevz\fR,wi:\fB  0\fR,Txi:\fB 31\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB3\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB  2\fR pname:\fBnichtgefaxtvz\fR,pptr:\fB/DATA/Patientendokumente/nichtgefaxt\fR,kurzi:\fB      ngvz\fR,langi:\fB     nichtgefaxtvz\fR,wi:\fB  0\fR,Txi:\fB 34\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB3\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB  3\fR pname:\fB       empfvz\fR,pptr:\fB /DATA/Patientendokumente\fR,kurzi:\fB       evz\fR,langi:\fB            empfvz\fR,wi:\fB  0\fR,Txi:\fB 37\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB3\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB  4\fR pname:\fB       obfbox\fR,pptr:\fB                        1\fR,kurzi:\fB      fbox\fR,langi:\fB            obfbox\fR,wi:\fB  0\fR,Txi:\fB 40\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB 1\fR,part:\fB6\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB  5\fR pname:\fB      fbankvz\fR,pptr:\fB/mnt/diabfb/Generic-FlashDisk-01/FRITZ/faxbox\fR,kurzi:\fB      fbvz\fR,langi:\fB        fritzboxvz\fR,wi:\fB  0\fR,Txi:\fB 43\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB3\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB  6\fR pname:\fB       obcapi\fR,pptr:\fB                        1\fR,kurzi:\fB      capi\fR,langi:\fB            obcapi\fR,wi:\fB  0\fR,Txi:\fB 46\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB 1\fR,part:\fB6\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB  7\fR pname:\fB       obhyla\fR,pptr:\fB                        1\fR,kurzi:\fB      hyla\fR,langi:\fB            obhyla\fR,wi:\fB  0\fR,Txi:\fB 49\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB 1\fR,part:\fB6\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB  8\fR pname:\fB   hylazuerst\fR,pptr:\fB                        0\fR,kurzi:\fB        hz\fR,langi:\fB        hylazuerst\fR,wi:\fB  0\fR,Txi:\fB 52\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB 1\fR,part:\fB6\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB  9\fR pname:\fB   hylazuerst\fR,pptr:\fB                        0\fR,kurzi:\fB        cz\fR,langi:\fB        capizuerst\fR,wi:\fB  0\fR,Txi:\fB 58\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB 0\fR,part:\fB6\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 10\fR pname:\fB       hmodem\fR,pptr:\fB                  ttyACM0\fR,kurzi:\fB       mod\fR,langi:\fB            hmodem\fR,wi:\fB  0\fR,Txi:\fB 55\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB0\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 11\fR pname:\fB     maxcapiv\fR,pptr:\fB                        3\fR,kurzi:\fB        mc\fR,langi:\fB          maxcapiv\fR,wi:\fB  0\fR,Txi:\fB 61\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB1\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 12\fR pname:\fB     maxhylav\fR,pptr:\fB                        3\fR,kurzi:\fB        mh\fR,langi:\fB          maxhylav\fR,wi:\fB  0\fR,Txi:\fB 64\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB1\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 13\fR pname:\fB        cuser\fR,pptr:\fB                   schade\fR,kurzi:\fB     cuser\fR,langi:\fB             cuser\fR,wi:\fB  0\fR,Txi:\fB 67\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB0\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 14\fR pname:\fB cklingelzahl\fR,pptr:\fB                        1\fR,kurzi:\fB      ckzl\fR,langi:\fB      cklingelzahl\fR,wi:\fB  0\fR,Txi:\fB 70\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB1\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 15\fR pname:\fB hklingelzahl\fR,pptr:\fB                        2\fR,kurzi:\fB      hkzl\fR,langi:\fB      hklingelzahl\fR,wi:\fB  0\fR,Txi:\fB 73\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB1\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 16\fR pname:\fB     maxdials\fR,pptr:\fB                       11\fR,kurzi:\fB       hmw\fR,langi:\fB      hmaxwahlvers\fR,wi:\fB  0\fR,Txi:\fB 76\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB1\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 17\fR pname:\fB   gleichziel\fR,pptr:\fB                        1\fR,kurzi:\fB        gz\fR,langi:\fB        gleichziel\fR,wi:\fB  0\fR,Txi:\fB 79\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB 1\fR,part:\fB6\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 18\fR pname:\fB         ocri\fR,pptr:\fB                        1\fR,kurzi:\fB      ocre\fR,langi:\fB              ocre\fR,wi:\fB  0\fR,Txi:\fB 82\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB 1\fR,part:\fB6\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 19\fR pname:\fB         ocra\fR,pptr:\fB                        0\fR,kurzi:\fB      ocra\fR,langi:\fB              ocra\fR,wi:\fB  0\fR,Txi:\fB 85\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB 1\fR,part:\fB6\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 20\fR pname:\fB     anfaxstr\fR,pptr:\fB                   an Fax\fR,kurzi:\fB       afs\fR,langi:\fB          anfaxstr\fR,wi:\fB  0\fR,Txi:\fB 88\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB0\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 21\fR pname:\fB    ancfaxstr\fR,pptr:\fB                  an cFax\fR,kurzi:\fB      acfs\fR,langi:\fB         ancfaxstr\fR,wi:\fB  0\fR,Txi:\fB 91\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB0\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 22\fR pname:\fB    anhfaxstr\fR,pptr:\fB                  an hFax\fR,kurzi:\fB      ahfs\fR,langi:\fB         anhfaxstr\fR,wi:\fB  0\fR,Txi:\fB 94\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB0\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 23\fR pname:\fB        anstr\fR,pptr:\fB                      an \fR,kurzi:\fB        as\fR,langi:\fB             anstr\fR,wi:\fB  0\fR,Txi:\fB 97\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB0\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 24\fR pname:\fB       undstr\fR,pptr:\fB                      und\fR,kurzi:\fB        us\fR,langi:\fB            undstr\fR,wi:\fB  0\fR,Txi:\fB100\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB0\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 25\fR pname:\fB     findvers\fR,pptr:\fB                        3\fR,kurzi:\fB        fd\fR,langi:\fB             finde\fR,wi:\fB  0\fR,Txi:\fB103\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB1\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 26\fR pname:\fB             \fR,pptr:\fB                        0\fR,kurzi:\fB      loef\fR,langi:\fB        loeschefax\fR,wi:\fB  1\fR,Txi:\fB106\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB 1\fR,part:\fB5\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 27\fR pname:\fB             \fR,pptr:\fB                        0\fR,kurzi:\fB      loew\fR,langi:\fB      loeschewaise\fR,wi:\fB  1\fR,Txi:\fB109\fR,rottxt:\fB                 spool\fR,Txi2:\fB110\fR,iwert:\fB 1\fR,part:\fB5\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 28\fR pname:\fB             \fR,pptr:\fB                        0\fR,kurzi:\fB      loea\fR,langi:\fB      loescheallew\fR,wi:\fB  1\fR,Txi:\fB113\fR,rottxt:\fB                 spool\fR,Txi2:\fB114\fR,iwert:\fB 1\fR,part:\fB5\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 29\fR pname:\fB             \fR,pptr:\fB                        0\fR,kurzi:\fB    erneut\fR,langi:\fB        erneutempf\fR,wi:\fB  1\fR,Txi:\fB117\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB 1\fR,part:\fB5\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 30\fR pname:\fB             \fR,pptr:\fB                        0\fR,kurzi:\fB       uml\fR,langi:\fB          umleiten\fR,wi:\fB  1\fR,Txi:\fB120\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB 1\fR,part:\fB5\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 31\fR pname:\fB             \fR,pptr:\fB                        0\fR,kurzi:\fB       kez\fR,langi:\fBkorrerfolgszeichen\fR,wi:\fB  0\fR,Txi:\fB123\fR,rottxt:\fB                  outa\fR,Txi2:\fB124\fR,iwert:\fB 1\fR,part:\fB5\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 32\fR pname:\fB             \fR,pptr:\fB                        0\fR,kurzi:\fB       bvz\fR,langi:\fB       bereinigevz\fR,wi:\fB  0\fR,Txi:\fB127\fR,rottxt:\fB                  outa\fR,Txi2:\fB128\fR,iwert:\fB 1\fR,part:\fB5\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 33\fR pname:\fB             \fR,pptr:\fB                        0\fR,kurzi:\fB        st\fR,langi:\fB              stop\fR,wi:\fB  1\fR,Txi:\fB131\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB 1\fR,part:\fB5\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 34\fR pname:\fB             \fR,pptr:\fB                        0\fR,kurzi:\fB     lista\fR,langi:\fB          listausg\fR,wi:\fB  1\fR,Txi:\fB134\fR,rottxt:\fB                  outa\fR,Txi2:\fB135\fR,iwert:\fB 1\fR,part:\fB5\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 35\fR pname:\fB             \fR,pptr:\fB                        0\fR,kurzi:\fB     listf\fR,langi:\fB    listfehlgeschl\fR,wi:\fB  1\fR,Txi:\fB134\fR,rottxt:\fB                  outa\fR,Txi2:\fB138\fR,iwert:\fB 1\fR,part:\fB5\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 36\fR pname:\fB             \fR,pptr:\fB                        0\fR,kurzi:\fB     liste\fR,langi:\fB          listeing\fR,wi:\fB  1\fR,Txi:\fB134\fR,rottxt:\fB                  inca\fR,Txi2:\fB141\fR,iwert:\fB 1\fR,part:\fB5\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 37\fR pname:\fB             \fR,pptr:\fB                        0\fR,kurzi:\fB     listw\fR,langi:\fB      listwartende\fR,wi:\fB  1\fR,Txi:\fB144\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB 1\fR,part:\fB5\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 38\fR pname:\fB             \fR,pptr:\fB                         \fR,kurzi:\fB         s\fR,langi:\fB             suche\fR,wi:\fB  1\fR,Txi:\fB147\fR,rottxt:\fB                      \fR,Txi2:\fB220\fR,iwert:\fB-1\fR,part:\fB0\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 39\fR pname:\fB             \fR,pptr:\fB                       30\fR,kurzi:\fB         n\fR,langi:\fB            dszahl\fR,wi:\fB  1\fR,Txi:\fB150\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB1\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 40\fR pname:\fB             \fR,pptr:\fB                        0\fR,kurzi:\fB        vc\fR,langi:\fB                vc\fR,wi:\fB  1\fR,Txi:\fB153\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB 1\fR,part:\fB5\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 41\fR pname:\fB             \fR,pptr:\fB                        0\fR,kurzi:\fB        vh\fR,langi:\fB                vh\fR,wi:\fB  1\fR,Txi:\fB156\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB 1\fR,part:\fB5\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 42\fR pname:\fB         sqlz\fR,pptr:\fB                        7\fR,kurzi:\fB        -1\fR,langi:\fB                -1\fR,wi:\fB255\fR,Txi:\fB215\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB7\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 43\fR pname:\fB   musterzahl\fR,pptr:\fB                        2\fR,kurzi:\fB        -1\fR,langi:\fB                -1\fR,wi:\fB255\fR,Txi:\fB219\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB7\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 44\fR pname:\fB         host\fR,pptr:\fB                localhost\fR,kurzi:\fB      host\fR,langi:\fB              host\fR,wi:\fB  1\fR,Txi:\fB 52\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB0\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 45\fR pname:\fB        muser\fR,pptr:\fB                   praxis\fR,kurzi:\fB     muser\fR,langi:\fB             muser\fR,wi:\fB  1\fR,Txi:\fB 53\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB0\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 46\fR pname:\fB         mpwd\fR,pptr:\fB                    sonne\fR,kurzi:\fB      mpwd\fR,langi:\fB              mpwd\fR,wi:\fB  1\fR,Txi:\fB 54\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB2\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 47\fR pname:\fB    datenbank\fR,pptr:\fB                     faxe\fR,kurzi:\fB        db\fR,langi:\fB         datenbank\fR,wi:\fB  1\fR,Txi:\fB 55\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB0\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 48\fR pname:\fB             \fR,pptr:\fB                        0\fR,kurzi:\fB      sqlw\fR,langi:\fB     sql-wortreich\fR,wi:\fB  1\fR,Txi:\fB 51\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB5\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 49\fR pname:\fB     language\fR,pptr:\fB                        d\fR,kurzi:\fB        sp\fR,langi:\fB           sprache\fR,wi:\fB  1\fR,Txi:\fB140\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB0\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 50\fR pname:\fB     language\fR,pptr:\fB                        d\fR,kurzi:\fB      lang\fR,langi:\fB            lingue\fR,wi:\fB  1\fR,Txi:\fB -1\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB0\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 51\fR pname:\fB             \fR,pptr:\fB                        0\fR,kurzi:\fB         w\fR,langi:\fB         wortreich\fR,wi:\fB  1\fR,Txi:\fB153\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB 1\fR,part:\fB5\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 52\fR pname:\fB        logvz\fR,pptr:\fB                 /var/log\fR,kurzi:\fB       lvz\fR,langi:\fB             logvz\fR,wi:\fB  0\fR,Txi:\fB154\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB3\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 53\fR pname:\fB     logdname\fR,pptr:\fB             autofax2.log\fR,kurzi:\fB        ld\fR,langi:\fB          logdname\fR,wi:\fB  0\fR,Txi:\fB155\fR,rottxt:\fB              /var/log\fR,Txi2:\fB157\fR,iwert:\fB-1\fR,part:\fB0\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 54\fR pname:\fB        oblog\fR,pptr:\fB                        0\fR,kurzi:\fB         l\fR,langi:\fB               log\fR,wi:\fB  1\fR,Txi:\fB162\fR,rottxt:\fB /var/log/autofax2.log\fR,Txi2:\fB156\fR,iwert:\fB 1\fR,part:\fB6\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 55\fR pname:\fB             \fR,pptr:\fB                        0\fR,kurzi:\fB       ldn\fR,langi:\fB       logdateineu\fR,wi:\fB  0\fR,Txi:\fB158\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB 1\fR,part:\fB5\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 56\fR pname:\fB             \fR,pptr:\fB     /root/.autofax2.conf\fR,kurzi:\fB        kd\fR,langi:\fB         konfdatei\fR,wi:\fB  0\fR,Txi:\fB159\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB4\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 57\fR pname:\fB             \fR,pptr:\fB                        1\fR,kurzi:\fB         h\fR,langi:\fB             hilfe\fR,wi:\fB255\fR,Txi:\fB219\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB 1\fR,part:\fB5\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 58\fR pname:\fB             \fR,pptr:\fB                        1\fR,kurzi:\fB        lh\fR,langi:\fB         langhilfe\fR,wi:\fB255\fR,Txi:\fB220\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB 2\fR,part:\fB5\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 59\fR pname:\fB             \fR,pptr:\fB                        1\fR,kurzi:\fB         ?\fR,langi:\fB                ??\fR,wi:\fB255\fR,Txi:\fB -1\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB 1\fR,part:\fB5\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 60\fR pname:\fB             \fR,pptr:\fB                        1\fR,kurzi:\fB        sh\fR,langi:\fB     standardhilfe\fR,wi:\fB255\fR,Txi:\fB -1\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB 3\fR,part:\fB5\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 61\fR pname:\fB             \fR,pptr:\fB                        1\fR,kurzi:\fB   libtest\fR,langi:\fB           libtest\fR,wi:\fB255\fR,Txi:\fB -1\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB 4\fR,part:\fB5\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 62\fR pname:\fB    cronminut\fR,pptr:\fB                        0\fR,kurzi:\fB        cm\fR,langi:\fB       cronminuten\fR,wi:\fB  1\fR,Txi:\fB223\fR,rottxt:\fB              autofax2\fR,Txi2:\fB224\fR,iwert:\fB-1\fR,part:\fB1\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 63\fR pname:\fB             \fR,pptr:\fB                        0\fR,kurzi:\fB        vi\fR,langi:\fB                vi\fR,wi:\fB  0\fR,Txi:\fB227\fR,rottxt:\fB                      \fR,Txi2:\fB228\fR,iwert:\fB 1\fR,part:\fB5\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 64\fR pname:\fB             \fR,pptr:\fB                        0\fR,kurzi:\fB        vs\fR,langi:\fB                vs\fR,wi:\fB  0\fR,Txi:\fB231\fR,rottxt:\fB /home/schade/autofax2\fR,Txi2:\fB232\fR,iwert:\fB 1\fR,part:\fB5\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 65\fR pname:\fB      autoupd\fR,pptr:\fB                        1\fR,kurzi:\fB   autoakt\fR,langi:\fB        autoaktual\fR,wi:\fB  1\fR,Txi:\fB236\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB 1\fR,part:\fB6\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 66\fR pname:\fB             \fR,pptr:\fB                        0\fR,kurzi:\fB        rf\fR,langi:\fB       rueckfragen\fR,wi:\fB  1\fR,Txi:\fB242\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB 1\fR,part:\fB5\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 67\fR pname:\fB             \fR,pptr:\fB                        0\fR,kurzi:\fB       krf\fR,langi:\fB  keinerueckfragen\fR,wi:\fB  1\fR,Txi:\fB241\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB 1\fR,part:\fB5\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 68\fR pname:\fB             \fR,pptr:\fB                        0\fR,kurzi:\fB      info\fR,langi:\fB           version\fR,wi:\fB  1\fR,Txi:\fB245\fR,rottxt:\fB                      \fR,Txi2:\fB -1\fR,iwert:\fB 1\fR,part:\fB5\fR,obno:\fB1\fR,bemkg:\fB\fR,woher:\fB0\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 69\fR pname:\fB        SQL_1\fR,pptr:\fBselect if(isnull(arzt),bsname,arzt) getName,bsname from (select bsname, FaxZahl, concat(group_concat(distinct Arzt separator ', '), ', ',ort,';') Arzt from (SELECT bs.name bsname, f.faxzahl, concat(if(instr(Titel,'.')<>0,concat(left(titel,instr(titel,'.')),' '),Titel), left(a.Vorname,1), '.', a.Nachname, if(count(a.nachname)>6,'',concat(' (',group_concat(distinct replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(if(isnull(fachrichtung),'',fachrichtung),'Facharzt für ','FA f.'),'Fachärztin für ','FÄ f.'),'Schwerpunkt',''),'edizin','ed.'),'Allgemeinmed.','Allgm.'),'therapeutische','th.'),'ologie','ol.'),'therapeutin','th.'),'therapeut','th.'),'heilkunde','hk.'),'therapie','th.'),'irurgie','ir.'),'pädie','p.'),'Jugendlichen','Jugdl.'),'Innere ','In.'),'krankheiten','krht.'),'hilfe','h.'),'Praktischer Arzt','Prakt.A.'),'Praktische Ärztin','Prakt.Ä.'),'Diagnostische ','diagn.'),'ologe','ol.'),'Hals-Nasen-Ohrenhk.','HNO'),'ologische ','ol.'),'ologischer ','ol.'),'istische','ist.'),'und ','u.') separator ', '),')'))) Arzt, ort.Ort from `haerzte_neu`.fax f left join `haerzte_neu`.arzt_has_bs ahb on f.bs_id = ahb.bs_id left join `haerzte_neu`.bs on f.bs_id = bs.idbs left join `haerzte_neu`.arzt a on ahb.arzt_id = a.idarzt left join `haerzte_neu`.arzt_has_fachrichtung ahf on ahb.arzt_id = ahf.arzt_id left join `haerzte_neu`.fachrichtung fr on ahf.fachrichtung_id = fr.idfachrichtung left join `haerzte_neu`.ort on bs.ort_id = ort.idort left join `haerzte_neu`.titel t on a.titel_id = t.idtitel where concat(if(instr('12345678',mid(faxzahl,1,1)) and not (length(faxzahl)>8),'08131',''),replace(replace(replace(replace(faxzahl,' ',''),'-',''),'/',''),'\'','')) = '&&faxnr&&' group by faxzahl, nachname, vorname) i) i group by FaxZahl\fR,kurzi:\fB        -1\fR,langi:\fB                -1\fR,wi:\fB  0\fR,Txi:\fB216\fR,rottxt:\fB                     1\fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB0\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 70\fR pname:\fB        SQL_2\fR,pptr:\fBselect concat(titel,if(titel='','',' '),vorname,' ',nvorsatz,if(nvorsatz='','',' '),nachname,', g.',date_format(gebdat,'%d.%m.%y'),', ',ort) name,concat('Pid ',pat_id) bsname from quelle.namen n where concat(if(instr('12345678',mid(privatfax,1,1)) and not (length(privatfax)>8),'08131',''),replace(replace(replace(replace(privatfax,' ',''),'-',''),'/',''),'\'','')) = '&&faxnr&&'\fR,kurzi:\fB        -1\fR,langi:\fB                -1\fR,wi:\fB  0\fR,Txi:\fB216\fR,rottxt:\fB                     2\fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB0\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 71\fR pname:\fB        SQL_3\fR,pptr:\fBselect concat(haname,', ',ort,', ',kvnu) name, zulg,fax1k from kvaerzte.hae where concat(if(instr('12345678',mid(fax1k,1,1)) and not (length(fax1k)>8),'08131',''),replace(replace(replace(replace(fax1k,' ',''),'-',''),'/',''),'\'','')) = '&&faxnr&&'\fR,kurzi:\fB        -1\fR,langi:\fB                -1\fR,wi:\fB  0\fR,Txi:\fB216\fR,rottxt:\fB                     3\fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB0\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 72\fR pname:\fB        SQL_4\fR,pptr:\fBselect concat(titel,if(titel='','',' '),vorname,' ',name,', ',ort) name, zusatzfeld5 from office.adresse where concat(if(instr('12345678',mid(faxk,1,1)) and not (length(faxk)>8),'08131',''),replace(replace(replace(replace(faxk,' ',''),'-',''),'/',''),'\'','')) = '&&faxnr&&' order by zusatzfeld5 desc\fR,kurzi:\fB        -1\fR,langi:\fB                -1\fR,wi:\fB  0\fR,Txi:\fB216\fR,rottxt:\fB                     4\fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB0\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 73\fR pname:\fB        SQL_5\fR,pptr:\fBSELECT concat(if(isnull(name),'',concat(titel,if(titel='','',' '),vorname,' ',name,', ',ort, ', ')),if(isnull(i.firma),'',i.firma)) name, i.abteilung FROM office.telefon t left join office.kontakte k on t.knr  = k.knr left join office.pers p on k.knr = p.knr left join office.inst i on k.knr = i.knr left join office.anschr a on a.knr = p.knr where concat(if(instr('12345678',mid(num,1,1)) and not (length(num)>8),'08131',''),replace(replace(replace(replace(num,' ',''),'-',''),'/',''),'\'',''))  = '&&faxnr&&' and (not isnull(name) or not isnull(firma) or not isnull(vorname)) order by name desc, vorname desc, firma desc\fR,kurzi:\fB        -1\fR,langi:\fB                -1\fR,wi:\fB  0\fR,Txi:\fB216\fR,rottxt:\fB                     5\fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB0\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 74\fR pname:\fB        SQL_6\fR,pptr:\fBselect concat(titel,if(titel='','',' '),vorname,' ',nvorsatz,if(nvorsatz='','',' '),nachname,', g.',date_format(gebdat,'%d.%m.%y'),', ',ort) name,concat('Pid ',pat_id) bsname from quelle.namen n where concat(if(instr('12345678',mid(privattel,1,1)) and not (length(privattel)>8),'08131',''),replace(replace(replace(replace(privattel,' ',''),'-',''),'/',''),'\'','')) = '&&faxnr&&'\fR,kurzi:\fB        -1\fR,langi:\fB                -1\fR,wi:\fB  0\fR,Txi:\fB216\fR,rottxt:\fB                     6\fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB0\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 75\fR pname:\fB        SQL_7\fR,pptr:\fBselect concat(titel,if(titel='','',' '),vorname,' ',name) name,fachgruppe from quelle.listenausgabeuew where concat(if(instr('12345678',mid(fax,1,1)) and not (length(fax)>8),'08131',''),replace(replace(replace(replace(fax,' ',''),'-',''),'/',''),'\'','')) = '&&faxnr&&'\fR,kurzi:\fB        -1\fR,langi:\fB                -1\fR,wi:\fB  0\fR,Txi:\fB216\fR,rottxt:\fB                     7\fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB0\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 76\fR pname:\fB   ZMMuster_1\fR,pptr:\fB             [Aa]rztbrief\fR,kurzi:\fB        -1\fR,langi:\fB                -1\fR,wi:\fB  0\fR,Txi:\fB217\fR,rottxt:\fB                     1\fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB0\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fB 77\fR pname:\fB     ZMZiel_1\fR,pptr:\fB /DATA/Patientendokumente\fR,kurzi:\fB        -1\fR,langi:\fB                -1\fR,wi:\fB  0\fR,Txi:\fB218\fR,rottxt:\fB                     1\fR,Txi2:\fB -1\fR,iwert:\fB-1\fR,part:\fB0\fR,obno:\fB0\fR,bemkg:\fB\fR,woher:\fB1\fR,geg't.:\fB0\fR,n'spei.:\fB0\fR
-.br
-\fBUsage: \fBautofax2 [-<opt>|--<longopt> [<content>]] ...\fR
-.br
-\fBProgramm '\fBautofax2\fB ist etwas ganz Spezielles\fR
-.br
 \fBOptions which are not saved: \fR
 .br
 \fB -delf, --deletefax\fR: delete a fax with query\fB or not\fR (\fB0\fR)
@@ -196,6 +26,10 @@ zmzn: 0
 \fB -again, --receiveagain\fR: present a received fax again\fB or not\fR (\fB0\fR)
 .br
 \fB -red, --redirect\fR: redirect outgoing fax ahead by the other channel\fB or not\fR (\fB0\fR)
+.br
+\fB -csf, --correctsuccessflag\fR: in the database table `\fBouta\fR` the success flag is being corrected\fB or not\fR (\fB0\fR)
+.br
+\fB -rod, --reorderdir\fR: Examine files in waiting,failed a.faxed directory against the tables `\fBouta\fR` and put them to order\fB or not\fR (\fB0\fR)
 .br
 \fB -st, --stop\fR: stop autofax2\fB or not\fR (\fB0\fR)
 .br
@@ -219,9 +53,17 @@ zmzn: 0
 .br
 \fB -v, --verbose\fR: screen output more verbose\fB or not\fR (\fB0\fR)
 .br
-\fB -h, --help\fR: Explanation of frequent options\fB or not\fR (\fB1\fR)
+\fB -lfn, --logfilenew\fR: delete log file afore\fB or not\fR (\fB0\fR)
 .br
-\fB -lh, --longhelp\fR: Explanation of all options\fB or not\fR (\fB1\fR)
+\fB -cf, --conffile <string>\fR: uses configuration file <string> instead of ('\fB\fR')
+.br
+\fB -h, --help\fR: Explanation of frequent options\fB or not\fR (\fB3\fR)
+.br
+\fB -lh, --longhelp\fR: Explanation of all options\fB or not\fR (\fB3\fR)
+.br
+\fB -vi, --vi\fR: edit/view configuration file , log file etc. (finish with ':qa')\fB or not\fR (\fB0\fR)
+.br
+\fB -vs, --vs\fR: edit/view source files in \fB/home/schade/autofax2\fR(finish with ':qa')\fB or not\fR (\fB0\fR)
 .br
 \fB -ia, --interactive\fR: all parameters will be prompted (some of them not shown here)\fB or not\fR (\fB0\fR)
 .br
@@ -230,5 +72,57 @@ zmzn: 0
 \fB -info, --version\fR: shows the program version\fB or not\fR (\fB0\fR)
 .br
 \fBOptions to be saved in the configuration file: (preced. '1'=don't save, 'no'=contrary, e.g. '-noocra','-1noocri'):\fR
+.br
+\fB -tdr, --tofaxdir <path>\fR: faxes the files from <path> instead of ('\fB/var/autofax2/tobefaxed\fR')
+.br
+\fB -wdr, --waitdir <path>\fR: files are waiting in <path> instead of ('\fB/var/autofax2/waitingfaxes\fR')
+.br
+\fB -ndr, --notfaxeddir <path>\fR: Failed Faxes are collected here and not in ('\fB/var/autofax2/notfaxed\fR')
+.br
+\fB -rdr, --receiveddir <path>\fR: directory for recieved faxes ('\fB/var/autofax2/recvdir\fR')
+.br
+\fB -fbox, --takefbox <zahl>\fR: use fritzbox\fB or not\fR (\fB1\fR)
+.br
+\fB -fbdr, --fritzboxdir <path>\fR: receiving directory of the fritzbox (via CIFS) ('\fB/mnt/diabfb/Generic-FlashDisk-01/FRITZ/faxbox\fR')
+.br
+\fB -capi, --takecapi <zahl>\fR: use capisuite\fB or not\fR (\fB1\fR)
+.br
+\fB -hyla, --takehyla <zahl>\fR: use hylafax\fB or not\fR (\fB1\fR)
+.br
+\fB -hf, --hylafirst <zahl>\fR: trying to send faxes first via hylafax\fB or not\fR (\fB0\fR)
+.br
+\fB -fc, --firstcapi <zahl>\fR: try to send faxes primarily via capisuite\fB or not\fR (\fB0\fR)
+.br
+\fB -mod, --hmodem <string>\fR: Modem used for hylafax, instead of  ('\fBttyACM0\fR')
+.br
+\fB -mc, --maxcapitries <string>\fR: try Hylafax after <no> tries of Capisuite instead of ('\fB3\fR')
+.br
+\fB -mh, --maxhylatries <string>\fR: try Capisuite after <no> tries of Hylafax instead of ('\fB3\fR')
+.br
+\fB -cuser, --cuser <string>\fR: takes the linux user <string> for capisuite and/or samba instead of ('\fBschade\fR')
+.br
+\fB -crct, --cringcount <string>\fR: No. of bell rings until Capisuite accepts the call, instead of ('\fB1\fR')
+.br
+\fB -hrct, --hringcount <string>\fR: No. of bell rings until hylafaxs accepts the call, instead of ('\fB2\fR')
+.br
+\fB -hmd, --hmaxdials <string>\fR: No of dialing retries in hylafax, instead of   ('\fB11\fR')
+.br
+\fB -it, --immediatelytarget <zahl>\fR: copy faxes into target directory irrespective of faxing success\fB or not\fR (\fB1\fR)
+.br
+\fB -ocri, --ocri <zahl>\fR: Text from received faxes will be filtered\fB or not\fR (\fB1\fR)
+.br
+\fB -ocro, --ocro <zahl>\fR: Text from sent pictures will be filtered\fB or not\fR (\fB0\fR)
+.br
+\fB -tfs, --tofaxstr <string>\fR: the fax number will be expected after <string> instead of ('\fBan Fax\fR')
+.br
+\fB -tcfs, --tocfaxstr <string>\fR: fax no.for fax with preference to capisuite is expected after <string> instead of ('\fBan cFax\fR')
+.br
+\fB -thfs, --tohfaxstr <string>\fR: fax no.for fax with preference to hylafax is expected after <string> instead of ('\fBan hFax\fR')
+.br
+\fB -ts, --tostr <string>\fR: name of addressee is expected after <string> instead of ('\fB an \fR')
+.br
+\fB -ands, --andstr <string>\fR: separating string <string> for multiple addressees/tel'numbers, instead of ('\fBund\fR')
+.br
+\fB -fd, --find <string>\fR: version 1,2 or 3 of filefind (variable performance differences instead of ('\fB3\fR')
 .br
 \fB -
