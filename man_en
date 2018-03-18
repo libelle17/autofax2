@@ -2,7 +2,7 @@
 .\" manual page for ²DPROG²
 .\" write to geraldschade@gmx.de if You discover an error or a deficit in the program
 .pc
-.TH man 1 "16.03.18" "Version 0.10279" "\fB²DPROG²\fR man page"
+.TH man 1 "18.03.18" "Version 0.10391" "\fB²DPROG²\fR man page"
 .SH NAME
 \fB²DPROG² \- Fax server functionality\fR: induces automatic fax transmission of files, naming of received faxes and logging of all of them in a database
 .br
@@ -14,6 +14,382 @@
 .SH USAGE
 .SH OPTIONS 
 .SH PRECONDITIONS
+.br
+Anfang Schleife
+.br
+vor <<, i=1
+.br
+\fBNeuerstelung optcl: \fBSQL_1\fR
+.br
+weise omap zu, pname: \fBSQL_1\fR
+.br
+nach <<
+.br
+Ende Schleife
+.br
+Anfang Schleife
+.br
+vor <<, i=2
+.br
+\fBNeuerstelung optcl: \fBSQL_2\fR
+.br
+weise omap zu, pname: \fBSQL_2\fR
+.br
+nach <<
+.br
+Ende Schleife
+.br
+Anfang Schleife
+.br
+vor <<, i=3
+.br
+\fBNeuerstelung optcl: \fBSQL_3\fR
+.br
+weise omap zu, pname: \fBSQL_3\fR
+.br
+nach <<
+.br
+Ende Schleife
+.br
+Anfang Schleife
+.br
+vor <<, i=4
+.br
+\fBNeuerstelung optcl: \fBSQL_4\fR
+.br
+weise omap zu, pname: \fBSQL_4\fR
+.br
+nach <<
+.br
+Ende Schleife
+.br
+Anfang Schleife
+.br
+vor <<, i=5
+.br
+\fBNeuerstelung optcl: \fBSQL_5\fR
+.br
+weise omap zu, pname: \fBSQL_5\fR
+.br
+nach <<
+.br
+Ende Schleife
+.br
+Anfang Schleife
+.br
+vor <<, i=6
+.br
+\fBNeuerstelung optcl: \fBSQL_6\fR
+.br
+weise omap zu, pname: \fBSQL_6\fR
+.br
+nach <<
+.br
+Ende Schleife
+.br
+Anfang Schleife
+.br
+vor <<, i=7
+.br
+\fBNeuerstelung optcl: \fBSQL_7\fR
+.br
+weise omap zu, pname: \fBSQL_7\fR
+.br
+nach <<
+.br
+Ende Schleife
+.br
+\fBNeuerstelung optcl: \fBZMMuster_1\fR
+.br
+weise omap zu, pname: \fBZMMuster_1\fR
+.br
+\fBNeuerstelung optcl: \fBZMZiel_1\fR
+.br
+weise omap zu, pname: \fBZMZiel_1\fR
+.br
+\fBNeuerstelung optcl: \fBZMMuster_2\fR
+.br
+weise omap zu, pname: \fBZMMuster_2\fR
+.br
+\fBNeuerstelung optcl: \fBZMZiel_2\fR
+.br
+weise omap zu, pname: \fBZMZiel_2\fR
+.br
+\fBNeuerstelung optcl: \fBzufaxenvz\fR
+.br
+weise omap zu, pname: \fBzufaxenvz\fR
+.br
+\fBNeuerstelung optcl: \fBwartevz\fR
+.br
+weise omap zu, pname: \fBwartevz\fR
+.br
+\fBNeuerstelung optcl: \fBnichtgefaxtvz\fR
+.br
+weise omap zu, pname: \fBnichtgefaxtvz\fR
+.br
+\fBNeuerstelung optcl: \fBempfvz\fR
+.br
+weise omap zu, pname: \fBempfvz\fR
+.br
+\fBNeuerstelung optcl: \fBobfbox\fR
+.br
+weise omap zu, pname: \fBobfbox\fR
+.br
+\fBNeuerstelung optcl: \fBfbankvz\fR
+.br
+weise omap zu, pname: \fBfbankvz\fR
+.br
+\fBNeuerstelung optcl: \fBobcapi\fR
+.br
+weise omap zu, pname: \fBobcapi\fR
+.br
+\fBNeuerstelung optcl: \fBobhyla\fR
+.br
+weise omap zu, pname: \fBobhyla\fR
+.br
+\fBNeuerstelung optcl: \fBhylazuerst\fR
+.br
+weise omap zu, pname: \fBhylazuerst\fR
+.br
+\fBNeuerstelung optcl: \fBhylazuerst\fR
+.br
+weise omap zu, pname: \fBhylazuerst\fR
+.br
+\fBNeuerstelung optcl: \fBhmodem\fR
+.br
+weise omap zu, pname: \fBhmodem\fR
+.br
+\fBNeuerstelung optcl: \fBmaxcapiv\fR
+.br
+weise omap zu, pname: \fBmaxcapiv\fR
+.br
+\fBNeuerstelung optcl: \fBmaxhylav\fR
+.br
+weise omap zu, pname: \fBmaxhylav\fR
+.br
+\fBNeuerstelung optcl: \fBcuser\fR
+.br
+weise omap zu, pname: \fBcuser\fR
+.br
+\fBNeuerstelung optcl: \fBcklingelzahl\fR
+.br
+weise omap zu, pname: \fBcklingelzahl\fR
+.br
+\fBNeuerstelung optcl: \fBhklingelzahl\fR
+.br
+weise omap zu, pname: \fBhklingelzahl\fR
+.br
+\fBNeuerstelung optcl: \fBmaxdials\fR
+.br
+weise omap zu, pname: \fBmaxdials\fR
+.br
+\fBNeuerstelung optcl: \fBgleichziel\fR
+.br
+weise omap zu, pname: \fBgleichziel\fR
+.br
+\fBNeuerstelung optcl: \fBocri\fR
+.br
+weise omap zu, pname: \fBocri\fR
+.br
+\fBNeuerstelung optcl: \fBocra\fR
+.br
+weise omap zu, pname: \fBocra\fR
+.br
+\fBNeuerstelung optcl: \fBanfaxstr\fR
+.br
+weise omap zu, pname: \fBanfaxstr\fR
+.br
+\fBNeuerstelung optcl: \fBancfaxstr\fR
+.br
+weise omap zu, pname: \fBancfaxstr\fR
+.br
+\fBNeuerstelung optcl: \fBanhfaxstr\fR
+.br
+weise omap zu, pname: \fBanhfaxstr\fR
+.br
+\fBNeuerstelung optcl: \fBanstr\fR
+.br
+weise omap zu, pname: \fBanstr\fR
+.br
+\fBNeuerstelung optcl: \fBundstr\fR
+.br
+weise omap zu, pname: \fBundstr\fR
+.br
+\fBNeuerstelung optcl: \fBfindvers\fR
+.br
+weise omap zu, pname: \fBfindvers\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fBsqlz\fR
+.br
+weise omap zu, pname: \fBsqlz\fR
+.br
+\fBNeuerstelung optcl: \fBmusterzahl\fR
+.br
+weise omap zu, pname: \fBmusterzahl\fR
+.br
+\fBNeuerstelung optcl: \fBhost\fR
+.br
+weise omap zu, pname: \fBhost\fR
+.br
+\fBNeuerstelung optcl: \fBmuser\fR
+.br
+weise omap zu, pname: \fBmuser\fR
+.br
+\fBNeuerstelung optcl: \fBmpwd\fR
+.br
+weise omap zu, pname: \fBmpwd\fR
+.br
+\fBNeuerstelung optcl: \fBdatenbank\fR
+.br
+weise omap zu, pname: \fBdatenbank\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fBlanguage\fR
+.br
+weise omap zu, pname: \fBlanguage\fR
+.br
+\fBNeuerstelung optcl: \fBlanguage\fR
+.br
+weise omap zu, pname: \fBlanguage\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fBlogvz\fR
+.br
+weise omap zu, pname: \fBlogvz\fR
+.br
+\fBNeuerstelung optcl: \fBlogdname\fR
+.br
+weise omap zu, pname: \fBlogdname\fR
+.br
+\fBNeuerstelung optcl: \fBoblog\fR
+.br
+weise omap zu, pname: \fBoblog\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fBcronminut\fR
+.br
+weise omap zu, pname: \fBcronminut\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fBautoupd\fR
+.br
+weise omap zu, pname: \fBautoupd\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
 .br
 \fBOptions which are not saved: \fR
 .br
@@ -125,4 +501,26 @@
 .br
 \fB -fd, --find <string>\fR: version 1,2 or 3 of filefind (variable performance differences instead of ('\fB3\fR')
 .br
-\fB -
+\fB --1, ---1 <zahl>\fR: No.of the sql-commands for finding out senders (\fB0\fR)
+.br
+\fB --1, ---1 <zahl>\fR: No of pairs of patterns/directories for saving received faxes (\fB0\fR)
+.br
+\fB -host, --host <string>\fR: takes the database on host <string> instead of ('\fBlocalhost\fR')
+.br
+\fB -muser, --muser <string>\fR: takes the user <string> for MySQL/MariaDB instead of ('\fBuser\fR')
+.br
+\fB -mpwd, --mpwd <string>\fR: takes the password <string> for MySQL/MariaDB
+.br
+\fB -db, --database <string>\fR: uses the database <string> instead of ('\fBfaxe\fR')
+.br
+\fB -lg, --language <string>\fR: Language/Sprache/Lingue/Lingua [\fBd\fReutsch,\fBe\fRnglisch] ('\fBe\fR')
+.br
+\fB -ldr, --logdir <path>\fR: choses <path> as log directory, currently ('\fB/var/log\fR')
+.br
+\fB -lf, --logfilename <string>\fR: log file <string> (in path '\fB/var/log\fR') will be used instead of ('\fBautofax2.log\fR')
+.br
+\fB -l, --log <zahl>\fR: put detailed logs in file '\fB/var/log/autofax2.log\fR' (otherwise shorter)\fB or not\fR (\fB0\fR)
+.br
+\fB -cm, --cronminutes <string>\fR: every how many minutes shall \fBautofax2\fR be called in crontab (0=not at all), instead of  ('\fB0\fR')
+.br
+\fB -autoupd, --autoupdate <zahl>\fR: Update program automatically\fB or not\fR (\fB1\fR)

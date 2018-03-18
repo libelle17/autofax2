@@ -371,7 +371,7 @@ class hhcl:public dhcl
     string msn;         // MSN fuer Fax
     string LocalIdentifier; // eigener Namen fuer Hylafax bis 10 Buchstaben
     string cFaxUeberschrift; // eigener Namen fuer Capisuite bis 20 Buchstaben
-		schAcl<optcl> opsql,opzm,opvsql,opvzm; // Optionen
+		schAcl<optcl> opsql=schAcl<optcl>("opsql"),opzm=schAcl<optcl>("opzm"),opvsql=schAcl<optcl>("opvsql"),opvzm=schAcl<optcl>("opvzm"); // Optionen
 
 #ifdef _WIN32
     char cpt[255];
@@ -382,8 +382,8 @@ class hhcl:public dhcl
 #endif // _WIN32 else
     string host="localhost";  // fuer MySQL/MariaDB
 
-		schAcl<WPcl> cfcnfC; // Capikonfiguration aus fax.conf
-		schAcl<WPcl> cccnfC; // Capikonfiguration aus capisuite.conf
+		schAcl<WPcl> cfcnfC=schAcl<WPcl>("cfcnfC"); // Capikonfiguration aus fax.conf
+		schAcl<WPcl> cccnfC=schAcl<WPcl>("cccnfC"); // Capikonfiguration aus capisuite.conf
  protected: //α
 	string p1;
 	int p2;

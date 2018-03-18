@@ -48,6 +48,7 @@ void hhcl::pvirtVorgbSpeziell()
 	findvers="3";
 	muser="praxis";
 	mpwd="sonne";
+	static optcl* opt[7];
 
   // wird schon fuer systemrueck benoetigt
   const char *const hatab = "haerzte_neu",
@@ -58,6 +59,7 @@ void hhcl::pvirtVorgbSpeziell()
   sqlvzn=atol(sqlvz.c_str());
 	sqlvp=new string[sqlvzn];
 	for(size_t i=0;i<sqlvzn;) {
+		caus<<"Anfang Schleife"<<endl;
       switch (i) {
         case 0:
           sqlvp[i] = string("")+"select if(isnull(arzt),bsname,arzt) getName,bsname from (select bsname, FaxZahl, "
@@ -128,7 +130,12 @@ void hhcl::pvirtVorgbSpeziell()
 		stringstream soptname;
 		soptname<<"SQL_"<<i;
 		const string istr=ltoan(i);
-		opvsql<<new optcl(/*pname*/soptname.str(),/*pptr*/&sqlvp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1);
+		caus<<"vor <<, i="<<i<<endl;
+//		opvsql<<new optcl(/*pname*/soptname.str(),/*pptr*/&sqlvp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1);
+		opt[i]=new optcl(/*pname*/soptname.str(),/*pptr*/&sqlvp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1);
+    opvsql<<opt[i];
+		caus<<"nach <<"<<endl;
+		caus<<"Ende Schleife"<<endl;
 	} // 	for(long i=0;i<sqlzn;)
 
   // cpt in VorgbAllg festgelegt
@@ -168,5 +175,6 @@ void hhcl::pvirtVorgbSpeziell()
 		}
 	} else {
 	}
+  Log(violetts+Txk[T_Ende]+Txv[T_VorgbSpeziell_Ueberlad]+schwarz);
 } // void hhcl::VorgbSpeziell()
 

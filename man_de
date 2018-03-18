@@ -2,7 +2,7 @@
 .\" Manual-Seite für ²DPROG²
 .\" Schreiben Sie an geraldschade@gmx.de, wenn Sie Fehler oder Mängel entdeckt haben
 .pc
-.TH man 1 "16.03.18" "Version 0.10279" "Manual-Seite für ²DPROG²"
+.TH man 1 "18.03.18" "Version 0.10391" "Manual-Seite für ²DPROG²"
 .SH NAME
 \fB²DPROG² \- FaxServer-Funktionalität\fR: veranlasst automatischen Faxversand von Dateien, Benennung empfangener Faxe und Protokollierung aller Faxe in einer Datenbank 
 .br
@@ -14,6 +14,382 @@
 .SH GEBRAUCH
 .SH OPTIONEN 
 .SH VORAUSSETZUNGEN
+.br
+Anfang Schleife
+.br
+vor <<, i=1
+.br
+\fBNeuerstelung optcl: \fBSQL_1\fR
+.br
+weise omap zu, pname: \fBSQL_1\fR
+.br
+nach <<
+.br
+Ende Schleife
+.br
+Anfang Schleife
+.br
+vor <<, i=2
+.br
+\fBNeuerstelung optcl: \fBSQL_2\fR
+.br
+weise omap zu, pname: \fBSQL_2\fR
+.br
+nach <<
+.br
+Ende Schleife
+.br
+Anfang Schleife
+.br
+vor <<, i=3
+.br
+\fBNeuerstelung optcl: \fBSQL_3\fR
+.br
+weise omap zu, pname: \fBSQL_3\fR
+.br
+nach <<
+.br
+Ende Schleife
+.br
+Anfang Schleife
+.br
+vor <<, i=4
+.br
+\fBNeuerstelung optcl: \fBSQL_4\fR
+.br
+weise omap zu, pname: \fBSQL_4\fR
+.br
+nach <<
+.br
+Ende Schleife
+.br
+Anfang Schleife
+.br
+vor <<, i=5
+.br
+\fBNeuerstelung optcl: \fBSQL_5\fR
+.br
+weise omap zu, pname: \fBSQL_5\fR
+.br
+nach <<
+.br
+Ende Schleife
+.br
+Anfang Schleife
+.br
+vor <<, i=6
+.br
+\fBNeuerstelung optcl: \fBSQL_6\fR
+.br
+weise omap zu, pname: \fBSQL_6\fR
+.br
+nach <<
+.br
+Ende Schleife
+.br
+Anfang Schleife
+.br
+vor <<, i=7
+.br
+\fBNeuerstelung optcl: \fBSQL_7\fR
+.br
+weise omap zu, pname: \fBSQL_7\fR
+.br
+nach <<
+.br
+Ende Schleife
+.br
+\fBNeuerstelung optcl: \fBZMMuster_1\fR
+.br
+weise omap zu, pname: \fBZMMuster_1\fR
+.br
+\fBNeuerstelung optcl: \fBZMZiel_1\fR
+.br
+weise omap zu, pname: \fBZMZiel_1\fR
+.br
+\fBNeuerstelung optcl: \fBZMMuster_2\fR
+.br
+weise omap zu, pname: \fBZMMuster_2\fR
+.br
+\fBNeuerstelung optcl: \fBZMZiel_2\fR
+.br
+weise omap zu, pname: \fBZMZiel_2\fR
+.br
+\fBNeuerstelung optcl: \fBzufaxenvz\fR
+.br
+weise omap zu, pname: \fBzufaxenvz\fR
+.br
+\fBNeuerstelung optcl: \fBwartevz\fR
+.br
+weise omap zu, pname: \fBwartevz\fR
+.br
+\fBNeuerstelung optcl: \fBnichtgefaxtvz\fR
+.br
+weise omap zu, pname: \fBnichtgefaxtvz\fR
+.br
+\fBNeuerstelung optcl: \fBempfvz\fR
+.br
+weise omap zu, pname: \fBempfvz\fR
+.br
+\fBNeuerstelung optcl: \fBobfbox\fR
+.br
+weise omap zu, pname: \fBobfbox\fR
+.br
+\fBNeuerstelung optcl: \fBfbankvz\fR
+.br
+weise omap zu, pname: \fBfbankvz\fR
+.br
+\fBNeuerstelung optcl: \fBobcapi\fR
+.br
+weise omap zu, pname: \fBobcapi\fR
+.br
+\fBNeuerstelung optcl: \fBobhyla\fR
+.br
+weise omap zu, pname: \fBobhyla\fR
+.br
+\fBNeuerstelung optcl: \fBhylazuerst\fR
+.br
+weise omap zu, pname: \fBhylazuerst\fR
+.br
+\fBNeuerstelung optcl: \fBhylazuerst\fR
+.br
+weise omap zu, pname: \fBhylazuerst\fR
+.br
+\fBNeuerstelung optcl: \fBhmodem\fR
+.br
+weise omap zu, pname: \fBhmodem\fR
+.br
+\fBNeuerstelung optcl: \fBmaxcapiv\fR
+.br
+weise omap zu, pname: \fBmaxcapiv\fR
+.br
+\fBNeuerstelung optcl: \fBmaxhylav\fR
+.br
+weise omap zu, pname: \fBmaxhylav\fR
+.br
+\fBNeuerstelung optcl: \fBcuser\fR
+.br
+weise omap zu, pname: \fBcuser\fR
+.br
+\fBNeuerstelung optcl: \fBcklingelzahl\fR
+.br
+weise omap zu, pname: \fBcklingelzahl\fR
+.br
+\fBNeuerstelung optcl: \fBhklingelzahl\fR
+.br
+weise omap zu, pname: \fBhklingelzahl\fR
+.br
+\fBNeuerstelung optcl: \fBmaxdials\fR
+.br
+weise omap zu, pname: \fBmaxdials\fR
+.br
+\fBNeuerstelung optcl: \fBgleichziel\fR
+.br
+weise omap zu, pname: \fBgleichziel\fR
+.br
+\fBNeuerstelung optcl: \fBocri\fR
+.br
+weise omap zu, pname: \fBocri\fR
+.br
+\fBNeuerstelung optcl: \fBocra\fR
+.br
+weise omap zu, pname: \fBocra\fR
+.br
+\fBNeuerstelung optcl: \fBanfaxstr\fR
+.br
+weise omap zu, pname: \fBanfaxstr\fR
+.br
+\fBNeuerstelung optcl: \fBancfaxstr\fR
+.br
+weise omap zu, pname: \fBancfaxstr\fR
+.br
+\fBNeuerstelung optcl: \fBanhfaxstr\fR
+.br
+weise omap zu, pname: \fBanhfaxstr\fR
+.br
+\fBNeuerstelung optcl: \fBanstr\fR
+.br
+weise omap zu, pname: \fBanstr\fR
+.br
+\fBNeuerstelung optcl: \fBundstr\fR
+.br
+weise omap zu, pname: \fBundstr\fR
+.br
+\fBNeuerstelung optcl: \fBfindvers\fR
+.br
+weise omap zu, pname: \fBfindvers\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fBsqlz\fR
+.br
+weise omap zu, pname: \fBsqlz\fR
+.br
+\fBNeuerstelung optcl: \fBmusterzahl\fR
+.br
+weise omap zu, pname: \fBmusterzahl\fR
+.br
+\fBNeuerstelung optcl: \fBhost\fR
+.br
+weise omap zu, pname: \fBhost\fR
+.br
+\fBNeuerstelung optcl: \fBmuser\fR
+.br
+weise omap zu, pname: \fBmuser\fR
+.br
+\fBNeuerstelung optcl: \fBmpwd\fR
+.br
+weise omap zu, pname: \fBmpwd\fR
+.br
+\fBNeuerstelung optcl: \fBdatenbank\fR
+.br
+weise omap zu, pname: \fBdatenbank\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fBlanguage\fR
+.br
+weise omap zu, pname: \fBlanguage\fR
+.br
+\fBNeuerstelung optcl: \fBlanguage\fR
+.br
+weise omap zu, pname: \fBlanguage\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fBlogvz\fR
+.br
+weise omap zu, pname: \fBlogvz\fR
+.br
+\fBNeuerstelung optcl: \fBlogdname\fR
+.br
+weise omap zu, pname: \fBlogdname\fR
+.br
+\fBNeuerstelung optcl: \fBoblog\fR
+.br
+weise omap zu, pname: \fBoblog\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fBcronminut\fR
+.br
+weise omap zu, pname: \fBcronminut\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fBautoupd\fR
+.br
+weise omap zu, pname: \fBautoupd\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
+.br
+\fBNeuerstelung optcl: \fB\fR
+.br
+weise omap zu, pname: \fB\fR
 .br
 \fBOptionen, die nicht gespeichert werden: \fR
 .br
@@ -124,3 +500,27 @@
 \fB -us, --undstr <string>\fR: Trennstring <string> fuer mehrere Adressaten/Telefonnummern statt ('\fBund\fR')
 .br
 \fB -fd, --finde <string>\fR: Version 1,2 oder 3 -Dateisuche (variable Performanceunterschiede) anstatt ('\fB3\fR')
+.br
+\fB --1, ---1 <zahl>\fR: Zahl der SQL-Befehle fuer die Absenderermittlung (\fB0\fR)
+.br
+\fB --1, ---1 <zahl>\fR: Zahl der Muster/Verzeichnis-Paare zum Speichern ankommender Faxe (\fB0\fR)
+.br
+\fB -host, --host <string>\fR: verwendet die Datenbank auf Host <string> anstatt auf ('\fBlocalhost\fR')
+.br
+\fB -muser, --muser <string>\fR: verwendet fuer MySQL/MariaDB den Benutzer <string> anstatt ('\fBuser\fR')
+.br
+\fB -mpwd, --mpwd <string>\fR: verwendet fuer MySQL/MariaDB das Passwort <string>
+.br
+\fB -db, --datenbank <string>\fR: verwendet die Datenbank <string> anstatt ('\fBfaxe\fR')
+.br
+\fB -sp, --sprache <string>\fR: Language/Sprache/Lingue/Lingua [\fBd\fReutsch,\fBe\fRnglisch] ('\fBd\fR')
+.br
+\fB -lvz, --logvz <pfad>\fR: waehlt als Logverzeichnis <pfad>, derzeit ('\fB/var/log\fR')
+.br
+\fB -ld, --logdname <string>\fR: logdatei <string> (im Pfad '\fB/var/log\fR') wird verwendet anstatt ('\fBautofax2.log\fR')
+.br
+\fB -l, --log <zahl>\fR: protokolliert ausfuehrlich in Datei '\fB/var/log/autofax2.log\fR' (sonst knapper)\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -cm, --cronminuten <string>\fR: alle wieviel Minuten soll \fBautofax2\fR ueber crontab aufgerufen werden (0=gar nicht), anstatt  ('\fB0\fR')
+.br
+\fB -autoakt, --autoaktual <zahl>\fR: Programm automatisch aktualisieren\fB oder nicht\fR (\fB1\fR)

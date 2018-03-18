@@ -435,6 +435,9 @@ enum Tkons_
 	T_verarbeitkonf,
 	T_auswert,
 	T_optausg,
+	T_einzutragen,
+	T_schon_eingetragen,
+	T_wird_jetzt_eingetragen,
 	T_konsMAX
 }; // Tkons_
 
@@ -670,7 +673,7 @@ struct WPcl { // Wertepaarklasse
 		int setzstr(const string& neus,uchar *const obzuschreib=0,const uchar ausDatei=0);
 		int setzstr(const char* const neuw,uchar *const obzuschreib=0,const uchar ausDatei=0);
 		string holstr();
-		uchar einzutragen(schAcl<WPcl> *schlp);
+		uchar einzutragen(schAcl<WPcl> *schlp,int obverb);
     void tusetzbemerkwoher(const string& ibemerk,const uchar vwoher);
 		void weisomapzu(schAcl<WPcl> *schlp);
 		//    inline WPcl& operator=(WPcl zuzuw){pname=zuzuw.pname;wert=zuzuw.wert; return *this;} // wird nicht benoetigt
@@ -741,18 +744,19 @@ enum par_t:uchar {psons,pdez,ppwd,pverz,pfile,puchar,pint,plong,pdat}; // Parame
 struct optcl;
 
 template <typename SCL> class schAcl {
+	string name;
  public:
 // WPcl *schl=0; 
- vector<SCL> schl; // Schlüsselklasse Schlüssel
+ vector<SCL*> schl; // Schlüsselklasse Schlüssel
 //// inline schAcl& operator<<(const SCL& sch) { sch.weisomapzu(this); schl.push_back(sch); return *this; }
- schAcl& operator<<(SCL& sch);
+//// schAcl& operator<<(SCL& sch);
 //// inline schAcl& operator<<(SCL *schp) { schp->weisomapzu(this); schl.push_back(*schp); return *this; }
  schAcl& operator<<(SCL *schp);
- inline const SCL& operator[](size_t const& nr) const { return schl[nr]; }
- inline SCL& operator[](size_t const& nr) { return schl[nr]; }
+ inline const SCL* operator[](size_t const& nr) const { return schl[nr]; }
+ inline SCL* operator[](size_t const& nr) { return schl[nr]; }
  inline size_t size(){return schl.size();}
- schAcl();
- schAcl(const char* const* sarr,size_t vzahl);
+ schAcl(const string& name);
+// schAcl(const string& name, const char* const* sarr,size_t vzahl);
  // void neu(size_t vzahl=0);
  void init(size_t vzahl, ...);
  void init(vector<SCL*> *sqlvp);
@@ -767,9 +771,10 @@ template <typename SCL> class schAcl {
 // const string& hole(const string& pname);
  void setzbemv(const string& pname,TxB *TxBp,size_t Tind,uchar obfarbe=0,svec *fertige=0);
  void setzbemerkwoher(SCL *optp,const string& ibemerk,const uchar vwoher);
- void schAschreib(mdatei *const f); // Schluessel-Array-schreib
+ void schAschreib(mdatei *const f,int obverb); // Schluessel-Array-schreib
  int confschreib(const string& fname,ios_base::openmode modus=ios_base::out,const string& mpfad=nix,const uchar faclbak=1,int obverb=0,int oblog=0);
  void gibaus(const int nr=0);
+ void gibomapaus();
  void eintrinit();
  void reset();
  ~schAcl();
@@ -874,8 +879,8 @@ struct optcl
 		string pname; // Name des Konfigurationsparameters
     const void *pptr=0; // Zeiger auf Parameter, der hier eingestellt werden kann
     par_t art=psons; // Parameterart
-		const int kurzi=0;
-		const int langi=0;
+		const int kurzi=-1;
+		const int langi=-1;
     TxB *TxBp=0; // nicht const, da lgn geändert werden muß
     const long Txi=0;
 		const uchar wi=0; // Wichtigkeit: 1= wird mit -lh oder -h, 0= nur mit -lh, 255 (-1) = gar nicht angezeigt
@@ -893,7 +898,7 @@ struct optcl
 		uchar gegenteil=0;
 		uchar nichtspeichern=0;
 		uchar eingetragen=0; // Hilfsvariable zur genau einmaligen Eintragung einer Option mit name=pname in Konfigurationsdatei
-		uchar einzutragen(schAcl<optcl> *schlp);
+		uchar einzutragen(schAcl<optcl> *schlp,int obverb);
 		void weisomapzu(schAcl<optcl> *schlp);
 		optcl(const string& pname,const void* pptr,const par_t art, const int kurzi, const int langi, TxB* TxBp, const long Txi,
 				         const uchar wi, const long Txi2, const string rottxt, const int iwert);
@@ -906,6 +911,7 @@ struct optcl
     string& machbemerk(Sprache lg,binaer obfarbe=wahr);
     void hilfezeile(Sprache lg);
 		void reset();
+		~optcl(){caus<<"Loesche optcl, pname: "<<blau<<pname<<schwarz<<endl;exit(32);}
 }; // struct optcl
 
 #endif // kons_H_DRIN
@@ -1216,7 +1222,7 @@ class hcl
     string loggespfad; // Gesamtpfad, auf den dann die in kons.h verwiesene und oben definierte Variable logdt zeigt
                        // bei jeder Aenderung muss auch logdt neu gesetzt werden!
     string cmd; // string fuer command fuer Betriebssystembefehle
-		schAcl<optcl> opn; // Optionen
+		schAcl<optcl> opn=schAcl<optcl>("opn"); // Optionen
 #ifdef alt
     vector<optioncl> opts;
 #endif
@@ -1237,7 +1243,7 @@ class hcl
     string akonfdt; // name der Konfigurationsdatei
 //    schAcl<WPcl> agcnfA; // Gesamtkonfiguration
 		string azaehlerdt; // akonfdt+".zaehl"
-		schAcl<WPcl> zcnfA; // Zaehlkonfiguration
+		schAcl<WPcl> zcnfA=schAcl<WPcl>("zcnfA"); // Zaehlkonfiguration
 		string vorcm; // Vor-Cron-Minuten
 		linst_cl* linstp=0;
 		vector<string> benutzer; // Benutzer aus /etc/passwd, bearbeitet durch setzbenutzer(&user)

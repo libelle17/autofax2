@@ -1036,7 +1036,7 @@ void hhcl::konfcapi()
 		outgoing_timeout=Tippstr(string("outgoing_timeout: ")+Tx[T_Geduld_bis_zum_Verbindungsaufbau_in_s],&outgoing_timeout);
 		if (obverb>0) {
 			for(unsigned snr=0;snr<cfcnfC.size();snr++) {
-				Log("snr: "+blaus+ltoan(snr)+schwarz+" "+cfcnfC[snr].pname+", "+cfcnfC[snr].holstr());
+				Log("snr: "+blaus+ltoan(snr)+schwarz+" "+cfcnfC[snr]->pname+", "+cfcnfC[snr]->holstr());
 			}
 		} // if (obverb>0)
 	} // if (rzf || (capicffehlt && !nrzf))
@@ -1073,21 +1073,21 @@ void hhcl::konfcapi()
 							lzeile=zeile.substr(0,nkz); 
 							rzeile=zeile.substr(nkz+1);
 							for(unsigned snr=0;snr<cfcnfC.size();snr++) {
-								if (lzeile.find(cfcnfC[snr].pname)!=string::npos) {
+								if (lzeile.find(cfcnfC[snr]->pname)!=string::npos) {
 									//// _out<<"snr: "<<snr<<", lzeile: "<<tuerkis<<lzeile<<schwarz<<", rzeile: "<<blau<<rzeile<<schwarz<<endl;
 									string altwert=rzeile;
 									gtrim(&altwert);
 									anfzweg(altwert); // Anfuehrungszeichen entfernen
-									if (snr==0 || snr==1) cfcnfC[snr].setzstr(altwert); // spool_dir und fax_user_dir hier nicht konfigurierbar
-									Log(string("cfcnfC[")+ltoan(snr)+"].name: "+tuerkis+cfcnfC[snr].pname+schwarz+Tx[T_komma_wert]+
-											(cfcnfC[snr].holstr()==altwert?blau:rot)+cfcnfC[snr].holstr()+schwarz+Tx[T_komma_Altwert]+
+									if (snr==0 || snr==1) cfcnfC[snr]->setzstr(altwert); // spool_dir und fax_user_dir hier nicht konfigurierbar
+									Log(string("cfcnfC[")+ltoan(snr)+"].name: "+tuerkis+cfcnfC[snr]->pname+schwarz+Tx[T_komma_wert]+
+											(cfcnfC[snr]->holstr()==altwert?blau:rot)+cfcnfC[snr]->holstr()+schwarz+Tx[T_komma_Altwert]+
 											blau+altwert+schwarz,obverb+iru,oblog+iru);
-									if (cfcnfC[snr].holstr()!=altwert) {
+									if (cfcnfC[snr]->holstr()!=altwert) {
 										if (!iru) {
 											neuschreiben=1;
 											paramdiff=1;
 										} else {
-											string zschr=cfcnfC[snr].pname+" = \""+cfcnfC[snr].holstr()+"\"";
+											string zschr=cfcnfC[snr]->pname+" = \""+cfcnfC[snr]->holstr()+"\"";
 											*fneu<<zschr<<endl;
 											geschrieben=1;
 										} //                   if (!iru) else
@@ -2094,46 +2094,64 @@ void hhcl::virtlieskonfein()
 	if (!sqlzn) {
 		sqlzn=sqlvzn;
 		for(size_t i=0;i<sqlzn;i++) {
+	caus<<"sqlzn: "<<sqlzn<<", sqlvzn: "<<sqlvzn<<endl;
+//			caus<<rot<<"i: "<<violett<<i<<schwarz<<endl;
+//			opn.gibomapaus();
+		caus<<"opn.schl.size(): "<<opn.schl.size()<<", omap.size(): "<<opn.omap.size()<<endl;
       opsql<<opvsql[i];
+		caus<<"opn.schl.size(): "<<opn.schl.size()<<", omap.size(): "<<opn.omap.size()<<endl;
+//			caus<<"opvsql.size(): "<<opvsql.size()<<endl;
+//			caus<<"opsql.size(): "<<opsql.size()<<endl;
+//opsql.schl.push_back(opvsql.schl[i]); 
+//			opn.gibomapaus();
+//opsql[opsql.size()-1]->weisomapzu(&opsql); 
+//			caus<<"opsql.size(): "<<opsql.size()<<endl;
+//opn.schl.push_back(opvsql.schl[i]); 
+//opn[opn.size()-1]->weisomapzu(&opn); 
+//			caus<<"opn.size(): "<<opn.size()<<endl;
 			opn<<opsql[opsql.size()-1];
+//			opn.gibomapaus();
+//			opn<<opvsql[i];
 		}
 	} // 	if (!sqlzn)
 	caus<<"zmzn: "<<zmzn<<endl;
-	zmmp=new string[zmzn];
-	zmzp=new string[zmzn];
-	for(size_t i=0;i<zmzn;) {
-		++i;
-		stringstream zmmname,zmzname;
-		zmmname<<"ZMMuster_"<<i;
-		zmzname<<"ZMZiel_"<<i;
-////	  const string *const istrp=new string(ltoan(i));	
-		string istr=ltoan(i);
-		opzm<<new optcl(/*pname*/zmmname.str(),/*pptr*/&zmmp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zielmuster_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1);
-		caus<<violett<<"!!!!!!!!!!!!!!!!!!!!!!!!     woher: "<<rot<<(int)opzm[opzm.size()-1].woher<<schwarz<<endl;
-		opn<<opzm[opzm.size()-1];
-		opzm<<new optcl(/*pname*/zmzname.str(),/*pptr*/&zmzp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Ziel_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1);
-		opn<<opzm[opzm.size()-1];
-	} // 	for(long i=0;i<zmzn;)
-	hccd.auswert(&opzm,obverb,'=',0);
-	for(size_t i=0;i<zmzn;i++) {
-		caus<<"zmmp["<<i+1<<"]: "<<zmmp[i]<<endl;
-		caus<<"zmzp["<<i+1<<"]: "<<zmzp[i]<<endl;
-	} // 	for(long i=0;i<zmzn;i++)
 	if (!zmzn) {
 		zmzn=zmvzn;
-		for(size_t i=0;i<zmvzn;i++) {
-	    opzm<<opvzm[i];
+		for(size_t i=0;i<zmvzn+zmvzn;i++) {
+			opzm<<opvzm[i];
 			opn<<opzm[opzm.size()-1];
 		} // 		for(long i=0;i<zmzn;i++) 
 		zmp=zmvp;
 	} else {
+		zmmp=new string[zmzn];
+		zmzp=new string[zmzn];
+		for(size_t i=0;i<zmzn;) {
+			++i;
+			stringstream zmmname,zmzname;
+			zmmname<<"ZMMuster_"<<i;
+			zmzname<<"ZMZiel_"<<i;
+			////	  const string *const istrp=new string(ltoan(i));	
+			string istr=ltoan(i);
+			opzm<<new optcl(/*pname*/zmmname.str(),/*pptr*/&zmmp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zielmuster_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1);
+			opn<<opzm[opzm.size()-1];
+			opzm<<new optcl(/*pname*/zmzname.str(),/*pptr*/&zmzp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Ziel_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1);
+			opn<<opzm[opzm.size()-1];
+			caus<<"opn.schl.size(): "<<opn.schl.size()<<", omap.size(): "<<opn.omap.size()<<endl;
+		} // 	for(long i=0;i<zmzn;)
+		hccd.auswert(&opzm,obverb,'=',0);
+		for(size_t i=0;i<zmzn;i++) {
+			caus<<"zmmp["<<i+1<<"]: "<<zmmp[i]<<endl;
+			caus<<"zmzp["<<i+1<<"]: "<<zmzp[i]<<endl;
+		} // 	for(long i=0;i<zmzn;i++)
 		zmp=new zielmustercl[zmzn];
 		for(size_t i=0;i<zmzn;i++) {
 			zmp[i]=zielmustercl(zmmp[i],zmzp[i]);
 		}
 	} // 	if (!zmzn)
-	optausg(rot);
+//	optausg(rot);
 	Log(violetts+Txk[T_Ende]+Txk[T_virtlieskonfein]+schwarz);
+//	opn.gibomapaus();
+//	exit(30);
 } //α
 
 int main(int argc,char** argv) //α
