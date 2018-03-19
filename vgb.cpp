@@ -48,7 +48,6 @@ void hhcl::pvirtVorgbSpeziell()
 	findvers="3";
 	muser="praxis";
 	mpwd="sonne";
-	static optcl* opt[7];
 
   // wird schon fuer systemrueck benoetigt
   const char *const hatab = "haerzte_neu",
@@ -59,7 +58,6 @@ void hhcl::pvirtVorgbSpeziell()
   sqlvzn=atol(sqlvz.c_str());
 	sqlvp=new string[sqlvzn];
 	for(size_t i=0;i<sqlvzn;) {
-		caus<<"Anfang Schleife"<<endl;
       switch (i) {
         case 0:
           sqlvp[i] = string("")+"select if(isnull(arzt),bsname,arzt) getName,bsname from (select bsname, FaxZahl, "
@@ -130,12 +128,7 @@ void hhcl::pvirtVorgbSpeziell()
 		stringstream soptname;
 		soptname<<"SQL_"<<i;
 		const string istr=ltoan(i);
-		caus<<"vor <<, i="<<i<<endl;
-//		opvsql<<new optcl(/*pname*/soptname.str(),/*pptr*/&sqlvp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1);
-		opt[i]=new optcl(/*pname*/soptname.str(),/*pptr*/&sqlvp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1);
-    opvsql<<opt[i];
-		caus<<"nach <<"<<endl;
-		caus<<"Ende Schleife"<<endl;
+		opvsql<<new optcl(/*pname*/soptname.str(),/*pptr*/&sqlvp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
 	} // 	for(long i=0;i<sqlzn;)
 
   // cpt in VorgbAllg festgelegt
@@ -170,8 +163,8 @@ void hhcl::pvirtVorgbSpeziell()
 			zmmname<<"ZMMuster_"<<i;
 			zmzname<<"ZMZiel_"<<i;
 			const string istr=ltoan(i);
-			opvzm<<new optcl(/*pname*/zmmname.str(),/*pptr*/&zmvp[i-1].muster,/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zielmuster_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1);
-			opvzm<<new optcl(/*pname*/zmzname.str(),/*pptr*/&zmvp[i-1].ziel,/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Ziel_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1);
+			opvzm<<new optcl(/*pname*/zmmname.str(),/*pptr*/&zmvp[i-1].muster,/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zielmuster_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
+			opvzm<<new optcl(/*pname*/zmzname.str(),/*pptr*/&zmvp[i-1].ziel,/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Ziel_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
 		}
 	} else {
 	}

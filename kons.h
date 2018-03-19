@@ -901,7 +901,7 @@ struct optcl
 		uchar einzutragen(schAcl<optcl> *schlp,int obverb);
 		void weisomapzu(schAcl<optcl> *schlp);
 		optcl(const string& pname,const void* pptr,const par_t art, const int kurzi, const int langi, TxB* TxBp, const long Txi,
-				         const uchar wi, const long Txi2, const string rottxt, const int iwert);
+				         const uchar wi, const long Txi2, const string rottxt, const int iwert,const uchar woher);
 		void setzwert();
 		int setzstr(const char* const neuw,uchar *const obzuschreib=0,const uchar ausDatei=0);
     void tusetzbemerkwoher(const string& ibemerk,const uchar vwoher);
