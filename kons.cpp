@@ -2138,7 +2138,8 @@ template<typename SCL> void schAcl<SCL>::setzbemerkwoher(SCL *optp,const string&
 void optcl::tusetzbemerkwoher(const string& ibemerk,const uchar vwoher)
 {
 	bemerk=ibemerk;
-	if (!woher) woher=vwoher;
+	// wenn gar nicht (0) oder ueber Vorgaben (1) festgelegt
+	if (woher<2) woher=vwoher;
 }
 
 // woher-Flag gibts nicht
@@ -5033,6 +5034,14 @@ void hcl::virtlieskonfein()
 	hccd.auswert(&opn,obverb,'=',0);
 	virtlgnzuw();
 	setzlog();
+	if (!hccd.obzuschreib) {
+		for (map<string,optcl*>::iterator omit=opn.omap.begin();omit!=opn.omap.end();omit++) {
+			if (omit->second->woher<2) {
+				hccd.obzuschreib=1;
+				break;
+			}
+		}
+	}
 	Log(violetts+Txk[T_Ende]+Txk[T_virtlieskonfein]+schwarz);
 	// <<violett<<"Ende virtlieskonfein, obzuschreib: "<<rot<<(int)hccd.obzuschreib<<schwarz<<endl;
 } // void hcl::virtlieskonfein
@@ -5782,6 +5791,7 @@ void optcl::reset()
 
 
 // weist einer Option einen c-String zu
+//  aufgerufen in: pzuweis (Befehlszeile) und auswert (Datei)
 int optcl::setzstr(const char* const neuw,uchar *const obzuschreib/*=0*/,const uchar ausDatei/*=0*/)
 {
 	int wiefalsch=0;
