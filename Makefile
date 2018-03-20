@@ -291,7 +291,7 @@ debugneu debugnew: neu
 $(EXEC): $(OBJ)
 	-@printf " linking/verlinke %s to/zu %b%s%b ..." "$(OBJ)" $(blau) "$@" $(reset) >$(BA)
 	-@df --output=ipcent / |tail -n1|grep - && $(SUDC)pkill postdrop;:
-	-@man>$(KR);[ $$? -gt 1 ]&&{ ./configure inst _ man verbose;}||:;
+	-@man>$(KR);[ $$? -gt 1 ]&&{ sh configure inst _ man verbose;}||:;
 	-@printf " (Version: %b%s%s%b\n " $(blau) "$$(cat versdt)" ")" $(reset) >$(BA)
 	$(CC) $^ $(DEBUG)-o $@ $(LDFLAGS)
 	-@ls .d/*.Td >$(KR) &&{ for datei in .d/*.Td; do mv -f $${datei} $${datei%.Td}.d; done;};:
@@ -325,19 +325,19 @@ $(error Variable 'SPR' nicht belegt, bitte vorher './install.sh' aufrufen!)
 endif
 	@[ "$(GCCOK)" = "1" ]||{ \
 	[ "$(DISTR)" = "1" ]&&{ $(SUDC)add-apt-repository ppa:ubuntu-toolchain-r/test;$(SUDC)apt-get update;};:;\
-	{ printf "Installiere/Installing Compiler ...\n" >$(BA);./configure inst "$(CCInst)" "$(COMP)";:;};}
+	{ printf "Installiere/Installing Compiler ...\n" >$(BA);sh configure inst "$(CCInst)" "$(COMP)";:;};}
 	-@[ "$(libmac)" ]&&{ for r in 1 2;do [ $$r = 1 ]&&{ lc="$(libmcd)";:;}||lc="$(libmc1d)";\
 	[ -f /usr/include/mysql/mysql.h>$(KR) ]&& \
 	find $$(find /usr -maxdepth 1 -type d -name "lib*" $(KF)|sort -r) -regextype egrep -regex ".*libm(ysql|ariadb)client.so" -print -quit $(KF)|\
 	grep ''>$(KR)&& break;\
-	./configure inst _ "$$lc" verbose; done;}||:
-	-@[ -z $$mitpg ]||$(SPR) $(pgd)>$(KR)||{ ./configure inst _ "$(pgd)" verbose;$(slc);};
+	sh configure inst _ "$$lc" verbose; done;}||:
+	-@[ -z $$mitpg ]||$(SPR) $(pgd)>$(KR)||{ sh configure inst _ "$(pgd)" verbose;$(slc);};
 # 3.5.17: auch libtiff5 hat gefehlt
 	-@[ "$(LT)" ]&& for r in 1 2;do \
 	[ $$r = 1 ]&& LTakt="$(LT)" ||{ [ -z "$(LT5)" ]&&break;LTakt="$(LT5)";};\
 	find /usr/include /usr/local/include -name tiff.h -print -quit $(KF)|grep ''>$(KR)&&\
 	find /usr/lib64 /usr/lib /usr/local/lib64 /usr/local/lib -maxdepth 2 -type l -xtype f -name "libtiff.so" -print -quit $(KF)|grep ''>$(KR)&& break;\
-	./configure inst _ "$$LTakt" verbose;\
+	sh configure inst _ "$$LTakt" verbose;\
 	done; :;
 #	P=tiff_copy;T=$$P.tar.gz;M=$$P-master;wget https://github.com/$(GITV)/$$P/archive/master.tar.gz -O $$T&&{ rm -rf $$P;tar xpvf $$T;} &&\
 	mv $$M $$P&& cd $$P&&{ sed -i.bak s'/(thandle_t) client_data.fd);/(thandle_t) \&client_data.fd);/' tools/fax2tiff.c;\
@@ -345,12 +345,12 @@ endif
 	bef="cd `pwd`;make uninstall;cd -;";grep -q $$bef $(UNF)||printf "$$bef\n">>$(UNF);\
 	$(SUDC)ldconfig;cd ..;};
 
-	-@[ "$(LACL)" ]&&{ [ -f /usr/include/sys/acl.h ]|| ./configure inst _ "$(LACL)" verbose;}||:
-	-@[ "$(LCURL)" ]&&{ [ -f /usr/include/curl/curl.h ]|| ./configure inst _ "$(LCURL)" verbose;}||:
-	-@[ "$(LBOOST)" ]&&{ $(SPR) $(LBOOST)>$(KR)|| ./configure inst _ "$(LBOOST)" verbose;}||:
-	-@[ "$(LBIO)" ]&&{ $(SPR) "$(LBIO)">$(KR)||./configure inst _ "$(LBIO)" verbose;}||:
-	-@[ "$(LBLO)" ]&&{ $(SPR) "$(LBLO)">$(KR)||./configure inst _ "$(LBLO)" verbose;}||:
-#//	-@[ -f /usr/include/boost/iostreams/device/mapped_file.hpp -o -f /usr/share/doc/libboost-dev ]|| ./configure inst _ "$(LBOOST)" verbose;
+	-@[ "$(LACL)" ]&&{ [ -f /usr/include/sys/acl.h ]|| sh configure inst _ "$(LACL)" verbose;}||:
+	-@[ "$(LCURL)" ]&&{ [ -f /usr/include/curl/curl.h ]|| sh configure inst _ "$(LCURL)" verbose;}||:
+	-@[ "$(LBOOST)" ]&&{ $(SPR) $(LBOOST)>$(KR)|| sh configure inst _ "$(LBOOST)" verbose;}||:
+	-@[ "$(LBIO)" ]&&{ $(SPR) "$(LBIO)">$(KR)||sh configure inst _ "$(LBIO)" verbose;}||:
+	-@[ "$(LBLO)" ]&&{ $(SPR) "$(LBLO)">$(KR)||sh configure inst _ "$(LBLO)" verbose;}||:
+#//	-@[ -f /usr/include/boost/iostreams/device/mapped_file.hpp -o -f /usr/share/doc/libboost-dev ]|| sh configure inst _ "$(LBOOST)" verbose;
 # ggf. Korrektur eines Fehlers in libtiff 4.0.7, notwendig fuer hylafax+, 17.1.17 in Programm verlagert
 	@printf "                                  \r" >$(BA)
 
@@ -398,7 +398,7 @@ endef
 define priv_html
 	-@printf " erstelle/generating:%b$(1)%b\n" $(blau) $(reset)
 	-@groff -mandoc -Thtml -v >$(KR);EXC="$$$$?"; \
-	for p in $(PGROFF); do { [ $$$${EXC} -gt 1 ]|| ! which groff>$(KR)|| ! $(SPR) $$$$p>$(KR);}&&{ ./configure inst _ $$$$p verbose;}; done; :;
+	for p in $(PGROFF); do { [ $$$${EXC} -gt 1 ]|| ! which groff>$(KR)|| ! $(SPR) $$$$p>$(KR);}&&{ sh configure inst _ $$$$p verbose;}; done; :;
 	-@rm -f $(1).html
 	-@sed -e 's/²gitv²/$(GITV)/g;s/²DPROG²/$(DPROG)/g;'\
 	 -e 's/Ä/\&Auml;/g;s/Ö/\&Ouml;/g;s/Ü/\&Uuml;/g;s/ä/\&auml;/g;s/ö/\&ouml;/g;s/ü/\&uuml;/g;s/ß/\&szlig;/g;'\
