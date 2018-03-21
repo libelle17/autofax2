@@ -618,8 +618,8 @@ const char *kons_T[T_konsMAX+1][SprachZahl]=
 	{"lies()","read()"},
 	// T_verarbeitkonf,
 	{"verarbeitkonf()","processconf()"},
-	// T_auswert,
-	{"auswert()","exploit()"},
+	// T_causwert,
+	{"causwert()","cexploit()"},
 	// T_optausg,
 	{"optausg()","optprintout()"},
 	// T_einzutragen
@@ -1874,9 +1874,9 @@ void confdcl::Abschn_auswert(int obverb/*=0*/, const char tz/*='='*/)
 } // void confdcl::Abschn_auswert(int obverb, char tz)
 
 // setzt die Werte aus der Datei in der Optionenschaar *sA
-template <typename SCL> void confdcl::auswert(schAcl<SCL> *sA, int obverb, const char tz,const uchar mitclear/*=1*/)
+template <typename SCL> void confdcl::causwert(schAcl<SCL> *sA, int obverb, const char tz,const uchar mitclear/*=1*/)
 {
-	Log(violetts+Txk[T_auswert]+schwarz+": "+fname,obverb);
+	Log(violetts+Txk[T_causwert]+schwarz+": "+fname,obverb);
   richtige=0;
   if (mitclear) {
 		sA->reset();
@@ -1921,7 +1921,7 @@ template <typename SCL> void confdcl::auswert(schAcl<SCL> *sA, int obverb, const
 							//// <<blau<<"setze!"<<schwarz<<endl;
 							int wiefalsch=sA->schl[ii]->setzstr(wert.c_str(),&obzuschreib,/*ausDatei=*/1);
 							if (!wiefalsch) {
-								sA->setzbemerkwoher(sA->schl[ii],/*bemerk=*/ibemerk,/*woher*/2);
+								sA->setzbemerkwoher(sA->schl[ii].get(),/*bemerk=*/ibemerk,/*woher*/2);
 								++richtige;
 								ibemerk.clear();
 							}
@@ -1944,8 +1944,8 @@ template <typename SCL> void confdcl::auswert(schAcl<SCL> *sA, int obverb, const
     KLZ
   KLZ
 */
-	Log(violetts+Txk[T_Ende]+Txk[T_auswert]+schwarz,obverb);
-} // void sAdat::auswert
+	Log(violetts+Txk[T_Ende]+Txk[T_causwert]+schwarz,obverb);
+} // void sAdat::causwert
 
 
 void WPcl::reset()
@@ -1969,10 +1969,13 @@ template<typename SCL> schAcl<SCL>::schAcl(const string& name):name(name)
 
 template<typename SCL> schAcl<SCL>::~schAcl()
 {
+ caus<<violett<<"Loesche schAcl: "<<blau<<name<<schwarz<<endl;
 	for(size_t i=0;i<schl.size();i++) {
-		delete schl[i];
-		schl[i]=0; // falls selbes Element in mehreren Vektoren
+		//delete schl[i];
+		schl[i].reset();
+//		schl[i]=0; // falls selbes Element in mehreren Vektoren
 	}
+ caus<<violett<<"Ende loesche schAcl: "<<blau<<name<<schwarz<<endl;
 	//schl.clear();
 }// template<typename SCL> schAcl<SCL>::~schAcl()
 
@@ -2000,7 +2003,8 @@ template<typename SCL> void schAcl<SCL>::init(vector<SCL*> *sqlvp)
   for(size_t sqli=0;sqli<sqlvp->size();sqli++) {
 //    schl[sqli].name=sqlvp->at(sqli)->name;
 //    schl[sqli].wert=sqlvp->at(sqli)->wert;
-		schl.push_back(sqlvp->at(sqli));
+	shared_ptr<SCL> kopie{sqlvp->at(sqli)};
+		schl.push_back(kopie);
   }
 } // void schAcl::init
 
@@ -4828,7 +4832,7 @@ string holsystemsprache(int obverb/*=0*/)
 		if (!lstat(langdt[lind],&langstat)) {
 			cglangA.init(1, langvr[lind]);
 			confdcl langcd(langdt[lind],obverb);
-			langcd.auswert(&cglangA,obverb);
+			langcd.causwert(&cglangA,obverb);
 			if (!cglangA[0]->wert.empty()) {
 				ret= cglangA[0]->wert[0];
 				//// <<"Sprache gefunden in "<<blau<<langdt[lind]<<schwarz<<": "<<rot<<ret<<schwarz<<endl;
@@ -4923,6 +4927,7 @@ void hcl::parsecl()
 {
 	Log(violetts+Txk[T_parsecl]+schwarz);
 	// (opts[optslsz].pruefpar(&argcmv,&i,&obhilfe))
+	if (obverb) obverb=0; // damit nicht aus -v obverb=2 wird
 	vector<argcl>::iterator ap,apn;
 	for(ap=argcmv.begin();ap!=argcmv.end();ap++) {
 		uchar nichtspeichern=0, gegenteil=0, kurzp=0, langp=0;
@@ -4955,7 +4960,7 @@ void hcl::parsecl()
 				if (langp) omp=&opn.olmap;
 				else if (kurzp) omp=&opn.okmap;
 				if (omp) {
-//					caus<<"acstr: '"<<acstr<<"', omp->size(): "<<omp->size()<<endl;
+////					caus<<"acstr: '"<<acstr<<"', omp->size(): "<<omp->size()<<endl;
 					for(omit=omp->begin();omit!=omp->end();omit++) {
 						//// <<"omit: "<<omit->second->pname<<", "<<omit->first<<endl;
 						// omit ist also jetzt iterator fuer die relevante map auf die aktuelle Option (kurz oder lang)
@@ -5031,7 +5036,7 @@ void hcl::virtlieskonfein()
 	// die Reihenfolge muss der in agcnfA.init (in getcommandl0) sowie der in virtrueckfragen entsprechen
 // afcd.cinit(akonfdt,&agcnfA,obverb,'=',/*mitclear=*/0); // hier werden die Daten aus der Datei eingelesen
 	hccd.lies(akonfdt,obverb);
-	hccd.auswert(&opn,obverb,'=',0);
+	hccd.causwert(&opn,obverb,'=',0);
 	virtlgnzuw();
 	setzlog();
 	if (!hccd.obzuschreib) {
@@ -5105,7 +5110,7 @@ void hcl::lieszaehlerein()
 	confdcl zlzn;
 	zlzn.lies(azaehlerdt,obverb);
 	////<<"azaehlerdt: "<<blau<<azaehlerdt<<schwarz<<endl;
-	zlzn.auswert(&zcnfA);
+	zlzn.causwert(&zcnfA);
 	//// if (&aufrufe) <<blau<<"aufrufe: "<<schwarz<<aufrufe<<endl;
 	if (&laufrtag) {
 		string ldat;
@@ -5301,14 +5306,14 @@ void hcl::virtzeigueberschrift()
 // wird aufgerufen in lauf
 void hcl::virtautokonfschreib()
 {
-	int altobverb=obverb;
-	obverb=1;
+int altobverb=obverb;
+obverb=1;
 	Log(violetts+Txk[T_autokonfschreib]+schwarz+", "+Txk[T_zu_schreiben]+(rzf?Txk[T_ja]:Txk[T_nein])+", "+(hccd.obzuschreib?Txk[T_ja]:Txk[T_nein]),obverb);
 	if (rzf||hccd.obzuschreib) {
 		Log(gruens+Txk[T_schreibe_Konfiguration]+schwarz,obverb);
 		opn.confschreib(akonfdt,ios::out,mpfad,0);
 	} // if (rzf||obzuschreib)
-	obverb=altobverb;
+obverb=altobverb;
 	return;
 	/*
 	schAcl<WPcl> *ggcnfAp[1]={&agcnfA};
@@ -5532,7 +5537,7 @@ void hcl::prueftif(string aktvers)
 {
 	Log(violetts+Txk[T_prueftif]+schwarz+" "+aktvers);
 	//	const string vstr="4.0.8"; //// "4.08001";
-	const int altobverb=obverb;
+const int altobverb=obverb;
 	size_t p1;
 	if ((p1=aktvers.find('\n'))!=string::npos) aktvers.erase(p1);
 	if ((p1=aktvers.rfind(' '))!=string::npos) aktvers.erase(0,p1+1);
@@ -5984,6 +5989,7 @@ optcl::optcl(const string& pname,const void* pptr,const par_t art, const int kur
 	pname(pname),pptr(pptr),art(art),kurzi(kurzi),langi(langi),TxBp(TxBp),Txi(Txi),wi(wi),Txi2(Txi2),rottxt(rottxt),iwert(iwert),
 	obno(iwert!=-1),woher(woher)//,eingetragen(0)
 {
+	caus<<gruen<<"Erstelle optcl, pname: "<<schwarz<<violett<<pname<<endl;
 }
 
 int hcl::Log(const string& text,const bool oberr/*=0*/,const short klobverb/*=0*/) const
@@ -6344,12 +6350,12 @@ void optcl::weisomapzu(schAcl<optcl> *schlp)
 	// interne Berechnungen durchfuehren
 	// Bemerkung erst beim Schreiben setzen
 	// Indices (maps) belegen
-	caus<<"weise omap zu, pname: "<<blau<<pname<<schwarz<<endl;
+	//// caus<<"weise omap zu, pname: "<<blau<<pname<<schwarz<<endl;
 //	schlp->gibomapaus();
 	if (!pname.empty()) {
 		schlp->omap[pname]=this;
 	}
-//	schlp->gibomapaus();
+////	schlp->gibomapaus();
 	for(unsigned akts=0;akts<SprachZahl;akts++) {
 		TxBp->lgn=(Sprache)akts;
 		if (kurzi>-1) schlp->okmap[(*TxBp)[kurzi]]=this;
@@ -6444,28 +6450,28 @@ uchar WPcl::einzutragen(schAcl<WPcl> *schlp,int obverb)
 
 uchar optcl::einzutragen(schAcl<optcl> *schlp,int obverb)
 {
-	const int altobverb=obverb;
+////	const int altobverb=obverb;
 	static size_t nr=0;
 	nr++;
-	obverb=1;
+////	obverb=1;
 	// Log(violetts+Txk[T_einzutragen]+blaus+pname+schwarz+"'",obverb);
 	map<string,optcl*>::iterator omit=schlp->omap.find(pname);
-//	caus<<violett<<">)"; caus<<omit->first<<endl;caus<<omit->second->pname<<endl;omit->second->oausgeb(); caus<<schwarz;
+////	caus<<violett<<">)"; caus<<omit->first<<endl;caus<<omit->second->pname<<endl;omit->second->oausgeb(); caus<<schwarz;
 	if (omit!=schlp->omap.end()) {
 		if (omit->second->eingetragen) {
 			Log(ltoan(nr)+" "+violetts+Txk[T_einzutragen]+Txk[T_schon_eingetragen]+blaus+omit->first+schwarz+"' = '"+blau+omit->second->pname+schwarz+"'",obverb);
-			obverb=altobverb;
+////			obverb=altobverb;
 			return 0;
 		}
 //		optcl* trick=(optcl*)omit->second;
 //		trick->eingetragen=1;
 		Log(ltoan(nr)+" "+violetts+Txk[T_einzutragen]+blaus+Txk[T_wird_jetzt_eingetragen]+blaus+omit->first+schwarz+"' = '"+blau+omit->second->pname+schwarz+"'",obverb);
 		omit->second->eingetragen=1;
-		obverb=altobverb;
+////		obverb=altobverb;
 		return 1;
 	}
 	Log(ltoan(nr)+" "+violetts+Txk[T_einzutragen]+blaus+Txk[T_nicht_gefunden]+": "+blaus+pname+schwarz+"'",obverb);
-	obverb=altobverb;
+////	obverb=altobverb;
 	return 0;
 } // uchar optcl::einzutragen
 
@@ -6473,7 +6479,7 @@ uchar optcl::einzutragen(schAcl<optcl> *schlp,int obverb)
 template<typename SCL> void schAcl<SCL>::schAschreib(mdatei *const f,int obverb)
 {
 //	eintrinit();
-	caus<<"schl.size(): "<<schl.size()<<", omap.size(): "<<omap.size()<<endl;
+////	caus<<"schl.size(): "<<schl.size()<<", omap.size(): "<<omap.size()<<endl;
 	for (size_t i = 0;i<schl.size();i++) {
 		if (!schl[i]->pname.empty()) {
 	//		schl[i]->oausgeb();
@@ -6559,8 +6565,9 @@ template<typename SCL> schAcl<SCL>& schAcl<SCL>::operator<<(SCL& sch)
 */
 
 template<typename SCL> schAcl<SCL>& schAcl<SCL>::operator<<(SCL *schp) 
+// template<typename SCL> schAcl<SCL>& schAcl<SCL>::operator<<(shared_ptr<SCL> schp) 
 { 
-	/*
+	/*//
 	caus<<"neuer Ueberladeoperator, pname: "<<schp->pname<<endl;
 	SCL *sch= (SCL*)::operator new(sizeof *schp);
 	memcpy(sch,schp,sizeof *sch);
@@ -6569,14 +6576,15 @@ template<typename SCL> schAcl<SCL>& schAcl<SCL>::operator<<(SCL *schp)
 	return *this; 
 	*/
 	//return operator<<(*schp); 
-	schl.push_back(schp); 
+	shared_ptr<SCL> kopie{schp};
+	schl.push_back(kopie); 
 	schl[schl.size()-1]->weisomapzu(this); 
 	return *this; 
 }
 
 hcl::~hcl()
 {
-	//	caus<<"hcl-Destruktor"<<endl;
+	////	caus<<"hcl-Destruktor"<<endl;
 }
 
 // damit nicht Template-Klassen-Funktionen in Header-Dateien geschrieben werden muessen

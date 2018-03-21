@@ -33,6 +33,7 @@
 #endif // vector_incl
 #include <sys/wait.h> // fuer waitpid
 #include <map> // fuer Optionen
+#include <memory> // fuer shared_ptr
 
 using namespace std;
 extern const string& instvz; // in kons.cpp, z.B. /root/autofax
@@ -433,7 +434,7 @@ enum Tkons_
 	T_parsecl,
 	T_lies,
 	T_verarbeitkonf,
-	T_auswert,
+	T_causwert,
 	T_optausg,
 	T_einzutragen,
 	T_schon_eingetragen,
@@ -747,19 +748,21 @@ template <typename SCL> class schAcl {
 	string name;
  public:
 // WPcl *schl=0; 
- vector<SCL*> schl; // Schlüsselklasse Schlüssel
+	//vector<SCL*> schl; // Schlüsselklasse Schlüssel
+	vector<shared_ptr<SCL>> schl; // Schlüsselklasse Schlüssel
 //// inline schAcl& operator<<(const SCL& sch) { sch.weisomapzu(this); schl.push_back(sch); return *this; }
 //// schAcl& operator<<(SCL& sch);
 //// inline schAcl& operator<<(SCL *schp) { schp->weisomapzu(this); schl.push_back(*schp); return *this; }
  schAcl& operator<<(SCL *schp);
- inline const SCL* operator[](size_t const& nr) const { return schl[nr]; }
- inline SCL* operator[](size_t const& nr) { return schl[nr]; }
+// schAcl& operator<<(shared_ptr<SCL> schp);
+ inline const SCL* operator[](size_t const& nr) const { return schl[nr].get(); }
+ inline SCL* operator[](size_t const& nr) { return schl[nr].get(); }
  inline size_t size(){return schl.size();}
  schAcl(const string& name);
 // schAcl(const string& name, const char* const* sarr,size_t vzahl);
  // void neu(size_t vzahl=0);
  void init(size_t vzahl, ...);
- void init(vector<SCL*> *sqlvp);
+ void init(vector<SCL> *sqlvp);
 		map<string,SCL*> omap; // map der Optionen
 		map<const char* const,SCL const*> okmap; // map der Optionen, sortiert nach Tx[<kurzi>]
 		map<const char* const,SCL const*> olmap; // map der Optionen, sortiert nach Tx[<langi>]
@@ -868,7 +871,7 @@ struct confdcl {
 	confdcl(const string& fname, int obverb);
 	confdcl();
 	int lies(const string& vfname, int obverb);
-	template <typename SCL> void auswert(schAcl<SCL> *sA, int obverb=0, const char tz='=',const uchar mitclear=1);
+	template <typename SCL> void causwert(schAcl<SCL> *sA, int obverb=0, const char tz='=',const uchar mitclear=1);
 	void Abschn_auswert(int obverb=0, const char tz='=');
 };
 
@@ -911,7 +914,7 @@ struct optcl
     string& machbemerk(Sprache lg,binaer obfarbe=wahr);
     void hilfezeile(Sprache lg);
 		void reset();
-		~optcl(){caus<<"Loesche optcl, pname: "<<blau<<pname<<schwarz<<endl;exit(32);}
+		~optcl(){caus<<"Loesche optcl, pname: "<<blau<<pname<<schwarz<<endl;}
 }; // struct optcl
 
 #endif // kons_H_DRIN

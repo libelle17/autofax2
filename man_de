@@ -2,7 +2,7 @@
 .\" Manual-Seite für ²DPROG²
 .\" Schreiben Sie an geraldschade@gmx.de, wenn Sie Fehler oder Mängel entdeckt haben
 .pc
-.TH man 1 "19.03.18" "Version 0.10411" "Manual-Seite für ²DPROG²"
+.TH man 1 "21.03.18" "Version 0.10431" "Manual-Seite für ²DPROG²"
 .SH NAME
 \fB²DPROG² \- FaxServer-Funktionalität\fR: veranlasst automatischen Faxversand von Dateien, Benennung empfangener Faxe und Protokollierung aller Faxe in einer Datenbank 
 .br
@@ -15,165 +15,169 @@
 .SH OPTIONEN 
 .SH VORAUSSETZUNGEN
 .br
-weise omap zu, pname: \fBSQL_1\fR
+\fBLoesche schAcl: \fBcglangA\fR
 .br
-weise omap zu, pname: \fBSQL_2\fR
+\fBEnde loesche schAcl: \fBcglangA\fR
 .br
-weise omap zu, pname: \fBSQL_3\fR
+\fBErstelle optcl, pname: \fR\fBSQL_1
 .br
-weise omap zu, pname: \fBSQL_4\fR
+\fBErstelle optcl, pname: \fR\fBSQL_2
 .br
-weise omap zu, pname: \fBSQL_5\fR
+\fBErstelle optcl, pname: \fR\fBSQL_3
 .br
-weise omap zu, pname: \fBSQL_6\fR
+\fBErstelle optcl, pname: \fR\fBSQL_4
 .br
-weise omap zu, pname: \fBSQL_7\fR
+\fBErstelle optcl, pname: \fR\fBSQL_5
 .br
-weise omap zu, pname: \fBZMMuster_1\fR
+\fBErstelle optcl, pname: \fR\fBSQL_6
 .br
-weise omap zu, pname: \fBZMZiel_1\fR
+\fBErstelle optcl, pname: \fR\fBSQL_7
 .br
-weise omap zu, pname: \fBZMMuster_2\fR
+\fBErstelle optcl, pname: \fR\fBZMMuster_1
 .br
-weise omap zu, pname: \fBZMZiel_2\fR
+\fBErstelle optcl, pname: \fR\fBZMZiel_1
 .br
-weise omap zu, pname: \fBzufaxenvz\fR
+\fBErstelle optcl, pname: \fR\fBZMMuster_2
 .br
-weise omap zu, pname: \fBwartevz\fR
+\fBErstelle optcl, pname: \fR\fBZMZiel_2
 .br
-weise omap zu, pname: \fBnichtgefaxtvz\fR
+\fBErstelle optcl, pname: \fR\fBzufaxenvz
 .br
-weise omap zu, pname: \fBempfvz\fR
+\fBErstelle optcl, pname: \fR\fBwartevz
 .br
-weise omap zu, pname: \fBobfbox\fR
+\fBErstelle optcl, pname: \fR\fBnichtgefaxtvz
 .br
-weise omap zu, pname: \fBfbankvz\fR
+\fBErstelle optcl, pname: \fR\fBempfvz
 .br
-weise omap zu, pname: \fBobcapi\fR
+\fBErstelle optcl, pname: \fR\fBobfbox
 .br
-weise omap zu, pname: \fBobhyla\fR
+\fBErstelle optcl, pname: \fR\fBfbankvz
 .br
-weise omap zu, pname: \fBhylazuerst\fR
+\fBErstelle optcl, pname: \fR\fBobcapi
 .br
-weise omap zu, pname: \fBhylazuerst\fR
+\fBErstelle optcl, pname: \fR\fBobhyla
 .br
-weise omap zu, pname: \fBhmodem\fR
+\fBErstelle optcl, pname: \fR\fBhylazuerst
 .br
-weise omap zu, pname: \fBmaxcapiv\fR
+\fBErstelle optcl, pname: \fR\fBhylazuerst
 .br
-weise omap zu, pname: \fBmaxhylav\fR
+\fBErstelle optcl, pname: \fR\fBhmodem
 .br
-weise omap zu, pname: \fBcuser\fR
+\fBErstelle optcl, pname: \fR\fBmaxcapiv
 .br
-weise omap zu, pname: \fBcklingelzahl\fR
+\fBErstelle optcl, pname: \fR\fBmaxhylav
 .br
-weise omap zu, pname: \fBhklingelzahl\fR
+\fBErstelle optcl, pname: \fR\fBcuser
 .br
-weise omap zu, pname: \fBmaxdials\fR
+\fBErstelle optcl, pname: \fR\fBcklingelzahl
 .br
-weise omap zu, pname: \fBgleichziel\fR
+\fBErstelle optcl, pname: \fR\fBhklingelzahl
 .br
-weise omap zu, pname: \fBocri\fR
+\fBErstelle optcl, pname: \fR\fBmaxdials
 .br
-weise omap zu, pname: \fBocra\fR
+\fBErstelle optcl, pname: \fR\fBgleichziel
 .br
-weise omap zu, pname: \fBanfaxstr\fR
+\fBErstelle optcl, pname: \fR\fBocri
 .br
-weise omap zu, pname: \fBancfaxstr\fR
+\fBErstelle optcl, pname: \fR\fBocra
 .br
-weise omap zu, pname: \fBanhfaxstr\fR
+\fBErstelle optcl, pname: \fR\fBanfaxstr
 .br
-weise omap zu, pname: \fBanstr\fR
+\fBErstelle optcl, pname: \fR\fBancfaxstr
 .br
-weise omap zu, pname: \fBundstr\fR
+\fBErstelle optcl, pname: \fR\fBanhfaxstr
 .br
-weise omap zu, pname: \fBfindvers\fR
+\fBErstelle optcl, pname: \fR\fBanstr
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fBundstr
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fBfindvers
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fB
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fB
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fB
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fB
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fB
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fB
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fB
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fB
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fB
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fB
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fB
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fB
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fB
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fB
 .br
-weise omap zu, pname: \fBsqlz\fR
+\fBErstelle optcl, pname: \fR\fB
 .br
-weise omap zu, pname: \fBmusterzahl\fR
+\fBErstelle optcl, pname: \fR\fB
 .br
-weise omap zu, pname: \fBhost\fR
+\fBErstelle optcl, pname: \fR\fBsqlz
 .br
-weise omap zu, pname: \fBmuser\fR
+\fBErstelle optcl, pname: \fR\fBmusterzahl
 .br
-weise omap zu, pname: \fBmpwd\fR
+\fBErstelle optcl, pname: \fR\fBhost
 .br
-weise omap zu, pname: \fBdatenbank\fR
+\fBErstelle optcl, pname: \fR\fBmuser
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fBmpwd
 .br
-weise omap zu, pname: \fBlanguage\fR
+\fBErstelle optcl, pname: \fR\fBdatenbank
 .br
-weise omap zu, pname: \fBlanguage\fR
+\fBErstelle optcl, pname: \fR\fB
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fBlanguage
 .br
-weise omap zu, pname: \fBlogvz\fR
+\fBErstelle optcl, pname: \fR\fBlanguage
 .br
-weise omap zu, pname: \fBlogdname\fR
+\fBErstelle optcl, pname: \fR\fB
 .br
-weise omap zu, pname: \fBoblog\fR
+\fBErstelle optcl, pname: \fR\fBlogvz
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fBlogdname
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fBoblog
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fB
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fB
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fB
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fB
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fB
 .br
-weise omap zu, pname: \fBcronminut\fR
+\fBErstelle optcl, pname: \fR\fB
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fB
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fBcronminut
 .br
-weise omap zu, pname: \fBautoupd\fR
+\fBErstelle optcl, pname: \fR\fB
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fB
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fBautoupd
 .br
-weise omap zu, pname: \fB\fR
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBErstelle optcl, pname: \fR\fB
 .br
 \fBOptionen, die nicht gespeichert werden: \fR
 .br

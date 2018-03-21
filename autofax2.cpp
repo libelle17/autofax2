@@ -802,7 +802,7 @@ void hhcl::liescapiconf()
 		pruefverz(dir_name(cfaxconfdt),obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/0);
 		if (cfaxcp) delete cfaxcp;
 		cfaxcp = new confdcl(cfaxconfdt,obverb);
-		cfaxcp->auswert(&cfcnfC);
+		cfaxcp->causwert(&cfcnfC);
 		cfaxcp->Abschn_auswert(obverb);
 #ifdef false
 		cfcnfA.init(10,"spool_dir","fax_user_dir","send_tries","send_delays","outgoing_MSN",
@@ -877,12 +877,12 @@ void hhcl::liescapiconf()
 			pruefverz(dir_name(ccapiconfdt),obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/0);
 			confdcl ccapc(ccapiconfdt,obverb);
 			////<<"azaehlerdt: "<<blau<<azaehlerdt<<schwarz<<endl;
-			ccapc.auswert(&cccnfC);
+			ccapc.causwert(&cccnfC);
 			cczulesen=0;
 			if (!cuser.empty()) {
 				for(size_t j=0;j<sizeof cdn/sizeof *cdn;j++) {
 					if (!cdn[j].empty()) {
-						caus<<"cdn["<<j<<"]: "<<cdn[j]<<endl;
+						//// caus<<"cdn["<<j<<"]: "<<cdn[j]<<endl;
 						struct stat statdat={0};
 						if (!lstat(cdn[j].c_str(),&statdat)) {
 							setfaclggf(cdn[j],obverb>1?obverb-1:0,oblog,/*obunter=*/falsch,/*mod=*/6);
@@ -2024,9 +2024,9 @@ void hhcl::virtschlussanzeige()
 // wird aufgerufen in: main
 void hhcl::virtautokonfschreib()
 {
-	int altobverb=obverb;
-	obverb=1;
-	Log(violetts+Tx[T_autokonfschreib]+schwarz+", "+Tx[T_zu_schreiben]+((rzf||hccd.obzuschreib)?Txk[T_ja]:Txk[T_nein]),obverb);
+int altobverb=obverb;
+obverb=1;
+	Log(violetts+Txk[T_autokonfschreib]+schwarz+", "+Txk[T_zu_schreiben]+((rzf||hccd.obzuschreib)?Txk[T_ja]:Txk[T_nein]));
 	/*//
 		capizukonf und hylazukonf hier immer 0
 		char buf[200];
@@ -2064,19 +2064,22 @@ void hhcl::virtautokonfschreib()
 		multischlschreib(akonfdt, ggcnfAp, sizeof ggcnfAp/sizeof *ggcnfAp, mpfad);
 #endif
 	} // if (rzf||obkschreib) 
-	obverb=altobverb;
+obverb=altobverb;
 } // void hhcl::virtautokonfschreib()
 
 hhcl::~hhcl() //α
 { //ω
-	if (cfaxcp) delete cfaxcp;
+	if (cfaxcp) { 
+		delete cfaxcp; 
+		cfaxcp=0; 
+	}
 } //α
 
 void hhcl::virtlieskonfein()
 {
 	Log(violetts+Txk[T_virtlieskonfein]+schwarz);
 	hcl::virtlieskonfein(); //ω
-	caus<<"sqlzn: "<<sqlzn<<endl;
+	//// caus<<"sqlzn: "<<sqlzn<<endl;
 	sqlp=new string[sqlzn];
 	for(size_t i=0;i<sqlzn;) {
 		++i;
@@ -2085,30 +2088,30 @@ void hhcl::virtlieskonfein()
 		opsql<<new optcl(/*pname*/soptname.str(),/*pptr*/&sqlp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/ltoan(i),/*wert*/-1,/*woher*/1);
 		opn<<opsql[opsql.size()-1];
 	} // 	for(long i=0;i<sqlzn;)
-	hccd.auswert(&opsql,obverb,'=',0);
+	hccd.causwert(&opsql,obverb,'=',0);
 	// wenn in der Konfigurationsdatei keine sql-Befehle stehen, dann die aus den Vorgaben nehmen
 	for(size_t i=0;i<sqlzn;i++) {
-		caus<<"sqlp["<<i+1<<"]: "<<sqlp[i]<<endl;
+		//// caus<<"sqlp["<<i+1<<"]: "<<sqlp[i]<<endl;
 	} // 	for(long i=0;i<sqlzn;i++)
 	if (!sqlzn) {
 		sqlzn=sqlvzn;
 		opn.omap["sqlz"]->woher=1;
 		for(size_t i=0;i<sqlzn;i++) {
-	caus<<"sqlzn: "<<sqlzn<<", sqlvzn: "<<sqlvzn<<endl;
-//			caus<<rot<<"i: "<<violett<<i<<schwarz<<endl;
-//			opn.gibomapaus();
-		caus<<"opn.schl.size(): "<<opn.schl.size()<<", omap.size(): "<<opn.omap.size()<<endl;
-      opsql<<opvsql[i];
-		caus<<"opn.schl.size(): "<<opn.schl.size()<<", omap.size(): "<<opn.omap.size()<<endl;
-//			caus<<"opvsql.size(): "<<opvsql.size()<<endl;
-//			caus<<"opsql.size(): "<<opsql.size()<<endl;
-//opsql.schl.push_back(opvsql.schl[i]); 
-//			opn.gibomapaus();
-//opsql[opsql.size()-1]->weisomapzu(&opsql); 
-//			caus<<"opsql.size(): "<<opsql.size()<<endl;
-//opn.schl.push_back(opvsql.schl[i]); 
-//opn[opn.size()-1]->weisomapzu(&opn); 
-//			caus<<"opn.size(): "<<opn.size()<<endl;
+	//// caus<<"sqlzn: "<<sqlzn<<", sqlvzn: "<<sqlvzn<<endl;
+////			caus<<rot<<"i: "<<violett<<i<<schwarz<<endl;
+////			opn.gibomapaus();
+		//// caus<<"opn.schl.size(): "<<opn.schl.size()<<", omap.size(): "<<opn.omap.size()<<endl;
+      //// opsql<<opvsql[i];
+		//// caus<<"opn.schl.size(): "<<opn.schl.size()<<", omap.size(): "<<opn.omap.size()<<endl;
+////			caus<<"opvsql.size(): "<<opvsql.size()<<endl;
+////			caus<<"opsql.size(): "<<opsql.size()<<endl;
+////opsql.schl.push_back(opvsql.schl[i]); 
+////			opn.gibomapaus();
+////opsql[opsql.size()-1]->weisomapzu(&opsql); 
+////			caus<<"opsql.size(): "<<opsql.size()<<endl;
+////opn.schl.push_back(opvsql.schl[i]); 
+////opn[opn.size()-1]->weisomapzu(&opn); 
+////			caus<<"opn.size(): "<<opn.size()<<endl;
 			opn<<opsql[opsql.size()-1];
 //			opn.gibomapaus();
 //			opn<<opvsql[i];
@@ -2136,20 +2139,20 @@ void hhcl::virtlieskonfein()
 			opn<<opzm[opzm.size()-1];
 			opzm<<new optcl(/*pname*/zmzname.str(),/*pptr*/&zmzp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Ziel_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
 			opn<<opzm[opzm.size()-1];
-			caus<<"opn.schl.size(): "<<opn.schl.size()<<", omap.size(): "<<opn.omap.size()<<endl;
+			//// caus<<"opn.schl.size(): "<<opn.schl.size()<<", omap.size(): "<<opn.omap.size()<<endl;
 		} // 	for(long i=0;i<zmzn;)
-		hccd.auswert(&opzm,obverb,'=',0);
+		hccd.causwert(&opzm,obverb,'=',0);
 		for(size_t i=0;i<zmzn;i++) {
-			caus<<"zmmp["<<i+1<<"]: "<<zmmp[i]<<endl;
-			caus<<"zmzp["<<i+1<<"]: "<<zmzp[i]<<endl;
+			//// caus<<"zmmp["<<i+1<<"]: "<<zmmp[i]<<endl;
+			//// caus<<"zmzp["<<i+1<<"]: "<<zmzp[i]<<endl;
 		} // 	for(long i=0;i<zmzn;i++)
 		zmp=new zielmustercl[zmzn];
 		for(size_t i=0;i<zmzn;i++) {
 			zmp[i]=zielmustercl(zmmp[i],zmzp[i]);
 		}
 	} // 	if (!zmzn)
-	optausg(rot);
-	opn.gibomapaus();
+////	optausg(rot);
+////	opn.gibomapaus();
 	Log(violetts+Txk[T_Ende]+Txk[T_virtlieskonfein]+schwarz);
 //	exit(30);
 } //α
@@ -2160,6 +2163,7 @@ int main(int argc,char** argv) //α
 		} //α
 		hhcl hhi(argc,argv); // hiesige Hauptinstanz, mit lngzuw, setzlog und pruefplatte
 		hhi.lauf(); // Einleitungsteil mit virtuellen Funktionen, 
+		caus<<"Stell 20"<<endl;
 		// mit virtVorgbAllg,pvirtVorgbSpeziell,initopt,parsecl,pvirtmacherkl,zeighilfe,virtlieskonfein,verarbeitkonf,lieszaehlerein,MusterVorgb,dovi,dovs,virtzeigversion
 		// virtautokonfschreib,update,
 } // int main //ω
