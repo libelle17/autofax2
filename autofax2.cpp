@@ -2024,8 +2024,8 @@ void hhcl::virtschlussanzeige()
 // wird aufgerufen in: main
 void hhcl::virtautokonfschreib()
 {
-int altobverb=obverb;
-obverb=1;
+// int altobverb=obverb;
+// obverb=1;
 	Log(violetts+Txk[T_autokonfschreib]+schwarz+", "+Txk[T_zu_schreiben]+((rzf||hccd.obzuschreib)?Txk[T_ja]:Txk[T_nein]));
 	/*//
 		capizukonf und hylazukonf hier immer 0
@@ -2064,7 +2064,7 @@ obverb=1;
 		multischlschreib(akonfdt, ggcnfAp, sizeof ggcnfAp/sizeof *ggcnfAp, mpfad);
 #endif
 	} // if (rzf||obkschreib) 
-obverb=altobverb;
+// obverb=altobverb;
 } // void hhcl::virtautokonfschreib()
 
 hhcl::~hhcl() //α
@@ -2077,6 +2077,8 @@ hhcl::~hhcl() //α
 
 void hhcl::virtlieskonfein()
 {
+	const int altobverb=obverb;
+	obverb=1;
 	Log(violetts+Txk[T_virtlieskonfein]+schwarz);
 	hcl::virtlieskonfein(); //ω
 	//// caus<<"sqlzn: "<<sqlzn<<endl;
@@ -2086,7 +2088,9 @@ void hhcl::virtlieskonfein()
 		stringstream soptname;
 		soptname<<"SQL_"<<i;
 		opsql<<new optcl(/*pname*/soptname.str(),/*pptr*/&sqlp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/ltoan(i),/*wert*/-1,/*woher*/1);
-		opn<<opsql[opsql.size()-1];
+//		shared_ptr<optcl> sptr{opsql[opsql.size()-1]};
+		shared_ptr<optcl> kop2{opsql[opsql.size()-1]};
+		opn<<kop2;
 	} // 	for(long i=0;i<sqlzn;)
 	hccd.causwert(&opsql,obverb,'=',0);
 	// wenn in der Konfigurationsdatei keine sql-Befehle stehen, dann die aus den Vorgaben nehmen
@@ -2112,7 +2116,10 @@ void hhcl::virtlieskonfein()
 ////opn.schl.push_back(opvsql.schl[i]); 
 ////opn[opn.size()-1]->weisomapzu(&opn); 
 ////			caus<<"opn.size(): "<<opn.size()<<endl;
-			opn<<opsql[opsql.size()-1];
+			shared_ptr<optcl> kop2{opvsql[i]};
+			opsql<<kop2;
+			shared_ptr<optcl> kop3{opvsql[i]};
+			opn<<kop3;
 //			opn.gibomapaus();
 //			opn<<opvsql[i];
 		}
@@ -2121,8 +2128,10 @@ void hhcl::virtlieskonfein()
 		zmzn=zmvzn;
 		opn.omap["musterzahl"]->woher=1;
 		for(size_t i=0;i<zmvzn+zmvzn;i++) {
-			opzm<<opvzm[i];
-			opn<<opzm[opzm.size()-1];
+			shared_ptr<optcl> kop2{opvzm[i]};
+			opzm<<kop2;
+			shared_ptr<optcl> kop3{opvzm[i]};
+			opn<<kop3;
 		} // 		for(long i=0;i<zmzn;i++) 
 		zmp=zmvp;
 	} else {
@@ -2136,9 +2145,13 @@ void hhcl::virtlieskonfein()
 			////	  const string *const istrp=new string(ltoan(i));	
 			string istr=ltoan(i);
 			opzm<<new optcl(/*pname*/zmmname.str(),/*pptr*/&zmmp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zielmuster_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
-			opn<<opzm[opzm.size()-1];
+			//opn<<opzm[opzm.size()-1];
+			shared_ptr<optcl> kopie{opzm[opzm.size()-1]};
+			opn<<kopie;
 			opzm<<new optcl(/*pname*/zmzname.str(),/*pptr*/&zmzp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Ziel_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
-			opn<<opzm[opzm.size()-1];
+			//opn<<opzm[opzm.size()-1];
+			shared_ptr<optcl> kop2{opzm[opzm.size()-1]};
+			opn<<kopie;
 			//// caus<<"opn.schl.size(): "<<opn.schl.size()<<", omap.size(): "<<opn.omap.size()<<endl;
 		} // 	for(long i=0;i<zmzn;)
 		hccd.causwert(&opzm,obverb,'=',0);
@@ -2153,6 +2166,7 @@ void hhcl::virtlieskonfein()
 	} // 	if (!zmzn)
 ////	optausg(rot);
 ////	opn.gibomapaus();
+	obverb=altobverb;
 	Log(violetts+Txk[T_Ende]+Txk[T_virtlieskonfein]+schwarz);
 //	exit(30);
 } //α
@@ -2163,7 +2177,6 @@ int main(int argc,char** argv) //α
 		} //α
 		hhcl hhi(argc,argv); // hiesige Hauptinstanz, mit lngzuw, setzlog und pruefplatte
 		hhi.lauf(); // Einleitungsteil mit virtuellen Funktionen, 
-		caus<<"Stell 20"<<endl;
 		// mit virtVorgbAllg,pvirtVorgbSpeziell,initopt,parsecl,pvirtmacherkl,zeighilfe,virtlieskonfein,verarbeitkonf,lieszaehlerein,MusterVorgb,dovi,dovs,virtzeigversion
 		// virtautokonfschreib,update,
 } // int main //ω

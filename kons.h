@@ -670,7 +670,7 @@ struct WPcl { // Wertepaarklasse
     string bemerk;
 		uchar eingetragen=0; // Hilfsvariable zur genau einmaligen Eintragung einer Option mit name=pname in Konfigurationsdatei
 		WPcl(const string& pname,const void* pptr,war_t wart);
-		WPcl(const string& pname); // wird benoetigt in: schAcl::init(size_t vzahl, ...)
+		WPcl(const string& pname); // wird benoetigt in: schAcl::sinit(size_t vzahl, ...)
 		int setzstr(const string& neus,uchar *const obzuschreib=0,const uchar ausDatei=0);
 		int setzstr(const char* const neuw,uchar *const obzuschreib=0,const uchar ausDatei=0);
 		string holstr();
@@ -754,6 +754,7 @@ template <typename SCL> class schAcl {
 //// schAcl& operator<<(SCL& sch);
 //// inline schAcl& operator<<(SCL *schp) { schp->weisomapzu(this); schl.push_back(*schp); return *this; }
  schAcl& operator<<(SCL *schp);
+ schAcl& operator<<(shared_ptr<SCL> schp);
 // schAcl& operator<<(shared_ptr<SCL> schp);
  inline const SCL* operator[](size_t const& nr) const { return schl[nr].get(); }
  inline SCL* operator[](size_t const& nr) { return schl[nr].get(); }
@@ -761,8 +762,8 @@ template <typename SCL> class schAcl {
  schAcl(const string& name);
 // schAcl(const string& name, const char* const* sarr,size_t vzahl);
  // void neu(size_t vzahl=0);
- void init(size_t vzahl, ...);
- void init(vector<SCL> *sqlvp);
+ void sinit(size_t vzahl, ...);
+ void sinit(vector<shared_ptr<SCL>> sqlvp);
 		map<string,SCL*> omap; // map der Optionen
 		map<const char* const,SCL const*> okmap; // map der Optionen, sortiert nach Tx[<kurzi>]
 		map<const char* const,SCL const*> olmap; // map der Optionen, sortiert nach Tx[<langi>]
@@ -782,7 +783,7 @@ template <typename SCL> class schAcl {
  void reset();
  ~schAcl();
 }; // class schAcl
-template <> void schAcl<WPcl>::init(size_t vzahl, ...);
+template <> void schAcl<WPcl>::sinit(size_t vzahl, ...);
 template <> void schAcl<WPcl>::eintrinit();
 template <> void schAcl<optcl>::eintrinit();
 

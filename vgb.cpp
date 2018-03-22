@@ -130,15 +130,14 @@ void hhcl::pvirtVorgbSpeziell()
 		const string istr=ltoan(i);
 		opvsql<<new optcl(/*pname*/soptname.str(),/*pptr*/&sqlvp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
 	} // 	for(long i=0;i<sqlzn;)
-
-  // cpt in VorgbAllg festgelegt
+  // cpt in virtVorgbAllg festgelegt
   if (strstr(cpt,"linux")){
 //  host="localhost"; // 'localhost' schon Vorgabe bei Definition
     if (!strcmp(cpt,"linux2")) {
-      zufaxenvz="/vista/P/zufaxen"; 
-      wvz="/vista/P/warteauffax";
-      ngvz="/vista/P/nichtgefaxt";
-      empfvz="/vista/P";
+      zufaxenvz="/var/autofax/zufaxenvz"; 
+      wvz="/var/autofax/warteauffax";
+      ngvz="/var/autofax/nichtgefaxt";
+      empfvz="/var/autofax";
     } else {
       zufaxenvz="/DATA/Patientendokumente/zufaxen";
       wvz="/DATA/Patientendokumente/warteauffax";

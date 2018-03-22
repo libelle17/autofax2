@@ -1995,18 +1995,21 @@ schAcl::schAcl(size_t zahl): zahl(zahl)
  schl = new WPcl[zahl];
 }
 */
-template<typename SCL> void schAcl<SCL>::init(vector<SCL*> *sqlvp)
+template<typename SCL> void schAcl<SCL>::sinit(vector<shared_ptr<SCL>> sqlvp)
 {
 // if (schl) delete[] schl;
 	schl.clear();
   // schl = new WPcl[zahl];
-  for(size_t sqli=0;sqli<sqlvp->size();sqli++) {
+  for(size_t sqli=0;sqli<sqlvp.size();sqli++) {
 //    schl[sqli].name=sqlvp->at(sqli)->name;
 //    schl[sqli].wert=sqlvp->at(sqli)->wert;
-	shared_ptr<SCL> kopie{sqlvp->at(sqli)};
-		schl.push_back(kopie);
+//		SCL* kl=sqlvp->at(sqli);
+//		shared_ptr<SCL> kopie(kl);
+//		schl.push_back(kopie);
+		schl.push_back(sqlvp.at(sqli));
+
   }
-} // void schAcl::init
+} // void schAcl::sinit
 
 /*
 void schAcl::initd(const char* const* sarr,size_t vzahl)
@@ -2028,15 +2031,15 @@ WPcl::WPcl(const string& pname):pname(pname),pptr(0),wart(wstr),eingetragen(0)
 	 schAcl::schAcl(const char* const* sarr,size_t vzahl)
 	 {
 	 initd(sarr,vzahl);
-	 } // void schAcl:init
+	 } // void schAcl:sinit
  */
 
-template <> void schAcl<optcl>::init(size_t vzahl, ...)
+template <> void schAcl<optcl>::sinit(size_t vzahl, ...)
 {
-} // void schAcl::init(size_t vzahl, ...)
+} // void schAcl::sinit(size_t vzahl, ...)
 
 // wird benoetigt in: holsystemsprache, lieszaehlerein
-template <> void schAcl<WPcl>::init(size_t vzahl, ...)
+template <> void schAcl<WPcl>::sinit(size_t vzahl, ...)
 {
 	va_list list;
 	va_start(list,vzahl);
@@ -2047,7 +2050,7 @@ template <> void schAcl<WPcl>::init(size_t vzahl, ...)
 		//// <<rot<<"schl["<<i<<"].pname: "<<schwarz<<schl[i]->pname<<endl;
 	}
  va_end(list);
-} // void schAcl::init(size_t vzahl, ...)
+} // void schAcl::sinit(size_t vzahl, ...)
 
 /*
 // das Setzen auch der Bemerkung wird bisher nicht benoetigt
@@ -4747,6 +4750,7 @@ void hcl::lauf()
 	} else {
 		virtlieskonfein();
 		verarbeitkonf();
+		opn.gibomapaus();
 //		if (obverb) optausg(gruen);
 	} // if (obhilfe==3)
 //	opn.omapzuw();
@@ -4830,7 +4834,7 @@ string holsystemsprache(int obverb/*=0*/)
 	for (size_t lind=0;lind<sizeof langdt/sizeof *langdt;lind++) {
 		struct stat langstat={0};
 		if (!lstat(langdt[lind],&langstat)) {
-			cglangA.init(1, langvr[lind]);
+			cglangA.sinit(1, langvr[lind]);
 			confdcl langcd(langdt[lind],obverb);
 			langcd.causwert(&cglangA,obverb);
 			if (!cglangA[0]->wert.empty()) {
@@ -6564,6 +6568,15 @@ template<typename SCL> schAcl<SCL>& schAcl<SCL>::operator<<(SCL& sch)
 }
 */
 
+template<typename SCL> schAcl<SCL>& schAcl<SCL>::operator<<(shared_ptr<SCL> schp)
+{
+	caus<<violett<<name<<rot<<"<<"<<gruen<<schp.get()->pname<<endl;
+	shared_ptr<SCL> kopie{schp};
+	schl.push_back(kopie); 
+	schl[schl.size()-1]->weisomapzu(this); 
+	return *this; 
+}
+
 template<typename SCL> schAcl<SCL>& schAcl<SCL>::operator<<(SCL *schp) 
 // template<typename SCL> schAcl<SCL>& schAcl<SCL>::operator<<(shared_ptr<SCL> schp) 
 { 
@@ -6576,6 +6589,7 @@ template<typename SCL> schAcl<SCL>& schAcl<SCL>::operator<<(SCL *schp)
 	return *this; 
 	*/
 	//return operator<<(*schp); 
+	caus<<rot<<name<<rot<<"<<"<<violett<<schp->pname<<endl;
 	shared_ptr<SCL> kopie{schp};
 	schl.push_back(kopie); 
 	schl[schl.size()-1]->weisomapzu(this); 
