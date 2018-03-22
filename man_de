@@ -2,7 +2,7 @@
 .\" Manual-Seite für ²DPROG²
 .\" Schreiben Sie an geraldschade@gmx.de, wenn Sie Fehler oder Mängel entdeckt haben
 .pc
-.TH man 1 "22.03.18" "Version 0.10454" "Manual-Seite für ²DPROG²"
+.TH man 1 "23.03.18" "Version 0.10455" "Manual-Seite für ²DPROG²"
 .SH NAME
 \fB²DPROG² \- FaxServer-Funktionalität\fR: veranlasst automatischen Faxversand von Dateien, Benennung empfangener Faxe und Protokollierung aller Faxe in einer Datenbank 
 .br
@@ -14,3 +14,491 @@
 .SH GEBRAUCH
 .SH OPTIONEN 
 .SH VORAUSSETZUNGEN
+.br
+\fBcglangA\fB<<\fBRC_LANG
+.br
+\fBLoesche schAcl: \fBcglangA\fR
+.br
+\fBEnde loesche schAcl: \fBcglangA\fR
+.br
+\fBcfcnfC\fB<<\fBspool_dir
+.br
+\fBcfcnfC\fB<<\fBfax_user_dir
+.br
+\fBcfcnfC\fB<<\fBsend_tries
+.br
+\fBcfcnfC\fB<<\fBsend_delays
+.br
+\fBcfcnfC\fB<<\fBoutgoing_MSN
+.br
+\fBcfcnfC\fB<<\fBdial_prefix
+.br
+\fBcfcnfC\fB<<\fBfax_stationID
+.br
+\fBcfcnfC\fB<<\fBfax_headline
+.br
+\fBcfcnfC\fB<<\fBfax_email_from
+.br
+\fBcfcnfC\fB<<\fBoutgoing_timeout
+.br
+\fBcccnfC\fB<<\fBincoming_script
+.br
+\fBcccnfC\fB<<\fBlog_file
+.br
+\fBcccnfC\fB<<\fBlog_error
+.br
+\fBcccnfC\fB<<\fBidle_script
+.br
+\fBErstelle optcl, pname: \fR\fBSQL_1
+.br
+\fBopvsql\fB<<\fBSQL_1
+.br
+\fBErstelle optcl, pname: \fR\fBSQL_2
+.br
+\fBopvsql\fB<<\fBSQL_2
+.br
+\fBErstelle optcl, pname: \fR\fBSQL_3
+.br
+\fBopvsql\fB<<\fBSQL_3
+.br
+\fBErstelle optcl, pname: \fR\fBSQL_4
+.br
+\fBopvsql\fB<<\fBSQL_4
+.br
+\fBErstelle optcl, pname: \fR\fBSQL_5
+.br
+\fBopvsql\fB<<\fBSQL_5
+.br
+\fBErstelle optcl, pname: \fR\fBSQL_6
+.br
+\fBopvsql\fB<<\fBSQL_6
+.br
+\fBErstelle optcl, pname: \fR\fBSQL_7
+.br
+\fBopvsql\fB<<\fBSQL_7
+.br
+\fBErstelle optcl, pname: \fR\fBZMMuster_1
+.br
+\fBopvzm\fB<<\fBZMMuster_1
+.br
+\fBErstelle optcl, pname: \fR\fBZMZiel_1
+.br
+\fBopvzm\fB<<\fBZMZiel_1
+.br
+\fBErstelle optcl, pname: \fR\fBZMMuster_2
+.br
+\fBopvzm\fB<<\fBZMMuster_2
+.br
+\fBErstelle optcl, pname: \fR\fBZMZiel_2
+.br
+\fBopvzm\fB<<\fBZMZiel_2
+.br
+\fBErstelle optcl, pname: \fR\fBzufaxenvz
+.br
+\fBopn\fB<<\fBzufaxenvz
+.br
+\fBErstelle optcl, pname: \fR\fBwartevz
+.br
+\fBopn\fB<<\fBwartevz
+.br
+\fBErstelle optcl, pname: \fR\fBnichtgefaxtvz
+.br
+\fBopn\fB<<\fBnichtgefaxtvz
+.br
+\fBErstelle optcl, pname: \fR\fBempfvz
+.br
+\fBopn\fB<<\fBempfvz
+.br
+\fBErstelle optcl, pname: \fR\fBobfbox
+.br
+\fBopn\fB<<\fBobfbox
+.br
+\fBErstelle optcl, pname: \fR\fBfbankvz
+.br
+\fBopn\fB<<\fBfbankvz
+.br
+\fBErstelle optcl, pname: \fR\fBobcapi
+.br
+\fBopn\fB<<\fBobcapi
+.br
+\fBErstelle optcl, pname: \fR\fBobhyla
+.br
+\fBopn\fB<<\fBobhyla
+.br
+\fBErstelle optcl, pname: \fR\fBhylazuerst
+.br
+\fBopn\fB<<\fBhylazuerst
+.br
+\fBErstelle optcl, pname: \fR\fBhylazuerst
+.br
+\fBopn\fB<<\fBhylazuerst
+.br
+\fBErstelle optcl, pname: \fR\fBhmodem
+.br
+\fBopn\fB<<\fBhmodem
+.br
+\fBErstelle optcl, pname: \fR\fBmaxcapiv
+.br
+\fBopn\fB<<\fBmaxcapiv
+.br
+\fBErstelle optcl, pname: \fR\fBmaxhylav
+.br
+\fBopn\fB<<\fBmaxhylav
+.br
+\fBErstelle optcl, pname: \fR\fBcuser
+.br
+\fBopn\fB<<\fBcuser
+.br
+\fBErstelle optcl, pname: \fR\fBcklingelzahl
+.br
+\fBopn\fB<<\fBcklingelzahl
+.br
+\fBErstelle optcl, pname: \fR\fBhklingelzahl
+.br
+\fBopn\fB<<\fBhklingelzahl
+.br
+\fBErstelle optcl, pname: \fR\fBmaxdials
+.br
+\fBopn\fB<<\fBmaxdials
+.br
+\fBErstelle optcl, pname: \fR\fBgleichziel
+.br
+\fBopn\fB<<\fBgleichziel
+.br
+\fBErstelle optcl, pname: \fR\fBocri
+.br
+\fBopn\fB<<\fBocri
+.br
+\fBErstelle optcl, pname: \fR\fBocra
+.br
+\fBopn\fB<<\fBocra
+.br
+\fBErstelle optcl, pname: \fR\fBanfaxstr
+.br
+\fBopn\fB<<\fBanfaxstr
+.br
+\fBErstelle optcl, pname: \fR\fBancfaxstr
+.br
+\fBopn\fB<<\fBancfaxstr
+.br
+\fBErstelle optcl, pname: \fR\fBanhfaxstr
+.br
+\fBopn\fB<<\fBanhfaxstr
+.br
+\fBErstelle optcl, pname: \fR\fBanstr
+.br
+\fBopn\fB<<\fBanstr
+.br
+\fBErstelle optcl, pname: \fR\fBundstr
+.br
+\fBopn\fB<<\fBundstr
+.br
+\fBErstelle optcl, pname: \fR\fBfindvers
+.br
+\fBopn\fB<<\fBfindvers
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fBsqlz
+.br
+\fBopn\fB<<\fBsqlz
+.br
+\fBErstelle optcl, pname: \fR\fBmusterzahl
+.br
+\fBopn\fB<<\fBmusterzahl
+.br
+\fBErstelle optcl, pname: \fR\fBhost
+.br
+\fBopn\fB<<\fBhost
+.br
+\fBErstelle optcl, pname: \fR\fBmuser
+.br
+\fBopn\fB<<\fBmuser
+.br
+\fBErstelle optcl, pname: \fR\fBmpwd
+.br
+\fBopn\fB<<\fBmpwd
+.br
+\fBErstelle optcl, pname: \fR\fBdatenbank
+.br
+\fBopn\fB<<\fBdatenbank
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fBlanguage
+.br
+\fBopn\fB<<\fBlanguage
+.br
+\fBErstelle optcl, pname: \fR\fBlanguage
+.br
+\fBopn\fB<<\fBlanguage
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fBlogvz
+.br
+\fBopn\fB<<\fBlogvz
+.br
+\fBErstelle optcl, pname: \fR\fBlogdname
+.br
+\fBopn\fB<<\fBlogdname
+.br
+\fBErstelle optcl, pname: \fR\fBoblog
+.br
+\fBopn\fB<<\fBoblog
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fBcronminut
+.br
+\fBopn\fB<<\fBcronminut
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fBautoupd
+.br
+\fBopn\fB<<\fBautoupd
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBErstelle optcl, pname: \fR\fB
+.br
+\fBopn\fB<<\fB
+.br
+\fBOptionen, die nicht gespeichert werden: \fR
+.br
+\fB -loef, --loeschefax\fR: ein Fax nach Rueckfrage loeschen\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -loew, --loeschewaise\fR: Eintraege aus `\fBspool\fR` loeschen, zu denen keine Datei im Wartevz.und kein Capi- oder Hylafax nachweisbar ist\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -loea, --loescheallew\fR: alle wartenden Faxe und zugehoerige Eintraege aus `\fBspool\fR` loeschen\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -erneut, --erneutempf\fR: empfangenes Fax erneut bereitstellen\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -uml, --umleiten\fR: ausgehendes Fax vorzeitig auf zweitem Weg schicken\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -kez, --korrerfolgszeichen\fR: in der Datenbanktabelle `\fBouta\fR` wird das Erfolgszeichen korrigiert\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -bvz, --bereinigevz\fR: Dateien aus Wartevz.,Gescheitertenvz.u.Gefaxtvz.gegen `\fBouta\fR` pruefen und ggf. aufraeumen\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -st, --stop\fR: autofax2 anhalten\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -lista, --listausg\fR: listet Datensaetze aus `\fBouta\fR` mit Erfolgskennzeichen auf\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -listf, --listfehlgeschl\fR: listet Datensaetze aus `\fBouta\fR` ohne Erfolgskennzeichen auf\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -liste, --listeing\fR: listet Datensaetze aus `\fBinca\fR` auf\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -listw, --listwartende\fR: listet wartende Faxe auf\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -s, --suche <string>\fR: Suche in verarbeiteten Faxen nach <string>:  ('\fB\fR')
+.br
+\fB -n, --dszahl <string>\fR: Zahl der aufzulistenden Datensaetze = <zahl> statt ('\fB30\fR')
+.br
+\fB -vc, --vc\fR: Capisuite-Konfigurationsdateien bearbeiten (beenden mit ':qa')\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -vh, --vh\fR: Hylafax-Modem-Konfigurationsdatei bearbeiten (beenden mit ':qa')\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -sqlw, --sql-wortreich\fR: Bildschirmausgabe mit SQL-Befehlen (\fB0\fR)
+.br
+\fB -w, --wortreich\fR: Bildschirmausgabe gespraechiger\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -ldn, --logdateineu\fR: logdatei vorher loeschen\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -kd, --konfdatei <string>\fR: verwendet Konfigurationsdatei <string> anstatt ('\fB\fR')
+.br
+\fB -h, --hilfe\fR: Erklaerung haeufiger Optionen\fB oder nicht\fR (\fB3\fR)
+.br
+\fB -lh, --langhilfe\fR: Erklaerung aller Optionen\fB oder nicht\fR (\fB3\fR)
+.br
+\fB -vi, --vi\fR: Konfigurationsdatei , Logdatei usw. bearbeiten/sehen (beenden mit ':qa')\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -vs, --vs\fR: Quelldateien in \fB/home/schade/autofax2\fR bearbeiten/sehen (beenden mit ':qa')\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -rf, --rueckfragen\fR: alle Parameter werden abgefragt (darunter einige hier nicht gezeigte)\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -krf, --keinerueckfragen\fR: keine Rueckfragen, z.B. fuer Aufruf aus cron\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -info, --version\fR: Zeigt die Programmversion an\fB oder nicht\fR (\fB0\fR)
+.br
+\fBOptionen z.Speich. i.Konfigur'datei (vorausg. '1'=doch nicht speichern, 'no'=Gegenteil, z.B. '-noocra','-1noocri'):\fR
+.br
+\fB -zvz, --zufaxenvz <pfad>\fR: faxt die Dateien aus <pfad> anstatt aus ('\fB/var/autofax2/zufaxen\fR')
+.br
+\fB -wvz, --wartevz <pfad>\fR: Dateien warten in <pfad> anstatt ('\fB/var/autofax2/warteauffax\fR')
+.br
+\fB -ngvz, --nichtgefaxtvz <pfad>\fR: Gescheiterte Faxe werden hier gesammelt anstatt in ('\fB/var/autofax2/nichtgefaxt\fR')
+.br
+\fB -evz, --empfvz <pfad>\fR: Empfangsverzeichnis fuer Faxempfang ('\fB/var/autofax2/empfvz\fR')
+.br
+\fB -fbox, --obfbox <zahl>\fR: Fritzbox verwenden\fB oder nicht\fR (\fB1\fR)
+.br
+\fB -fbvz, --fritzboxvz <pfad>\fR: Ankunftsverzeichnis der Fritzbox (ueber CIFS) ('\fB/mnt/diabfb/Generic-FlashDisk-01/FRITZ/faxbox\fR')
+.br
+\fB -capi, --obcapi <zahl>\fR: Capisuite verwenden\fB oder nicht\fR (\fB1\fR)
+.br
+\fB -hyla, --obhyla <zahl>\fR: Hylafax verwenden\fB oder nicht\fR (\fB1\fR)
+.br
+\fB -hz, --hylazuerst <zahl>\fR: versuche faxe zuerst ueber Hylafax wegzuschicken\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -cz, --capizuerst <zahl>\fR: versuche faxe zuerst ueber Capisuite wegzuschicken\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -mod, --hmodem <string>\fR: Fuer Hylafax verwendetes Modem, anstatt  ('\fBttyACM0\fR')
+.br
+\fB -mc, --maxcapiv <string>\fR: nach <zahl> Versuchen Capisuite wird Hylafax versucht, anstatt nach ('\fB3\fR')
+.br
+\fB -mh, --maxhylav <string>\fR: nach <zahl> Versuchen Hylafax wird Capisuite versucht, anstatt nach ('\fB3\fR')
+.br
+\fB -cuser, --cuser <string>\fR: verwendet fuer Capisuite und/oder Samba den Linux-Benutzer <string> anstatt ('\fBschade\fR')
+.br
+\fB -ckzl, --cklingelzahl <string>\fR: Zahl der Klingeltoene, bis Capisuite den Anruf annimmt, anstatt ('\fB1\fR')
+.br
+\fB -hkzl, --hklingelzahl <string>\fR: Zahl der Klingeltoene, bis Hylafax den Anruf annimmt, anstatt ('\fB2\fR')
+.br
+\fB -hmw, --hmaxwahlvers <string>\fR: Zahl der Wahlversuche in Hylafax, anstatt  ('\fB11\fR')
+.br
+\fB -gz, --gleichziel <zahl>\fR: Faxe werden auch ohne Faxerfolg ins Zielverzeichnis kopiert\fB oder nicht\fR (\fB1\fR)
+.br
+\fB -ocre, --ocre <zahl>\fR: Text aus empfangenen Faxen wird ermittelt\fB oder nicht\fR (\fB1\fR)
+.br
+\fB -ocra, --ocra <zahl>\fR: Text aus gesandten Bildern wird ermittelt\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -afs, --anfaxstr <string>\fR: faxnr wird hinter <string> erwartet statt hinter ('\fBan Fax\fR')
+.br
+\fB -acfs, --ancfaxstr <string>\fR: faxnr fuer primaer Capisuite wird hinter <string> erwartet statt hinter ('\fBan cFax\fR')
+.br
+\fB -ahfs, --anhfaxstr <string>\fR: faxnr fuer primaer hylafax wird hinter <string> erwartet statt hinter ('\fBan hFax\fR')
+.br
+\fB -as, --anstr <string>\fR: Adressatenname wird hinter <string> erwartet statt hinter ('\fB an \fR')
+.br
+\fB -us, --undstr <string>\fR: Trennstring <string> fuer mehrere Adressaten/Telefonnummern statt ('\fBund\fR')
+.br
+\fB -fd, --finde <string>\fR: Version 1,2 oder 3 -Dateisuche (variable Performanceunterschiede) anstatt ('\fB3\fR')
+.br
+\fB --1, ---1 <zahl>\fR: Zahl der SQL-Befehle fuer die Absenderermittlung (\fB0\fR)
+.br
+\fB --1, ---1 <zahl>\fR: Zahl der Muster/Verzeichnis-Paare zum Speichern ankommender Faxe (\fB0\fR)
+.br
+\fB -host, --host <string>\fR: verwendet die Datenbank auf Host <string> anstatt auf ('\fBlocalhost\fR')
+.br
+\fB -muser, --muser <string>\fR: verwendet fuer MySQL/MariaDB den Benutzer <string> anstatt ('\fBuser\fR')
+.br
+\fB -mpwd, --mpwd <string>\fR: verwendet fuer MySQL/MariaDB das Passwort <string>
+.br
+\fB -db, --datenbank <string>\fR: verwendet die Datenbank <string> anstatt ('\fBfaxe\fR')
+.br
+\fB -sp, --sprache <string>\fR: Language/Sprache/Lingue/Lingua [\fBd\fReutsch,\fBe\fRnglisch] ('\fBd\fR')
+.br
+\fB -lvz, --logvz <pfad>\fR: waehlt als Logverzeichnis <pfad>, derzeit ('\fB/var/log\fR')
+.br
+\fB -ld, --logdname <string>\fR: logdatei <string> (im Pfad '\fB/var/log\fR') wird verwendet anstatt ('\fBautofax2.log\fR')
+.br
+\fB -l, --log <zahl>\fR: protokolliert ausfuehrlich in Datei '\fB/var/log/autofax2.log\fR' (sonst knapper)\fB oder nicht\fR (\fB0\fR)
+.br
+\fB -cm, --cronminuten <string>\fR: alle wieviel Minuten soll \fBautofax2\fR ueber crontab aufgerufen werden (0=gar nicht), anstatt  ('\fB0\fR')
+.br
+\fB -autoakt, --autoaktual <zahl>\fR: Programm automatisch aktualisieren\fB oder nicht\fR (\fB1\fR)
