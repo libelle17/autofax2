@@ -1877,14 +1877,23 @@ void confdcl::Abschn_auswert(int obverb/*=0*/, const char tz/*='='*/)
 template <typename SCL> void confdcl::causwert(schAcl<SCL> *sA, int obverb, const char tz,const uchar mitclear/*=1*/)
 {
 	Log(violetts+Txk[T_causwert]+schwarz+": "+fname,obverb);
+	caus<<"Stell 0"<<endl;
   richtige=0;
+	caus<<"Stell 1"<<endl;
   if (mitclear) {
+	caus<<"Stell 2"<<endl;
 		sA->reset();
+		sA=0;
+	caus<<"Stell 3"<<endl;
 	}
+	caus<<"Stell 4"<<endl;
   if (obgelesen) {
+	caus<<"Stell 5"<<endl;
     string ibemerk;
 
+	caus<<"Stell 6"<<endl;
 		for(size_t zni=zn.size();zni;) {
+	caus<<"Stell 7"<<endl;
 			--zni;
       string *zeile=&zn[zni];
       size_t pos=zeile->find('#');
@@ -1903,30 +1912,51 @@ template <typename SCL> void confdcl::causwert(schAcl<SCL> *sA, int obverb, cons
 				} // if (!pos)
 				zeile->erase(pos);
 			} // if (pos!=string::npos)
+	caus<<"Stell 8"<<endl;
 			ltrim(zeile);
+	caus<<"Stell 80"<<endl;
 			if (!zeile->empty()) {
+	caus<<"Stell 81"<<endl;
 				if (obverb>1) Log(Txk[T_stern_zeile]+*zeile,obverb);
+	caus<<"Stell 82"<<endl;
 				pos=zeile->find(tz);
+	caus<<"Stell 83"<<endl;
 				if (pos!=string::npos && pos>0) { 
+	caus<<"Stell 84"<<endl;
 					string pname=zeile->substr(0,pos);
+	caus<<"Stell 85"<<endl;
 					rtrim(&pname);
+	caus<<"Stell 86"<<endl;
 					string wert=zeile->substr(pos+1);
+	caus<<"Stell 87"<<endl;
 					gtrim(&wert);
+	caus<<"Stell 88"<<endl;
 					anfzweg(wert);
-          size_t ii=sA->schl.size();
-					//// <<"auswert() "<<pname<<" vor while, wert: "<<wert<<endl;
-					while(ii--) {
-            if (pname==sA->schl[ii]->pname) { // conf[ii].pname muss am Zeilenanfang anfangen, sonst Fehler z.B.: number, faxnumber
-							//// <<"sA->schl[ii]->pname: "<<sA->schl[ii]->pname<<endl;
-							//// <<blau<<"setze!"<<schwarz<<endl;
-							int wiefalsch=sA->schl[ii]->setzstr(wert.c_str(),&obzuschreib,/*ausDatei=*/1);
-							if (!wiefalsch) {
-								sA->setzbemerkwoher(sA->schl[ii].get(),/*bemerk=*/ibemerk,/*woher*/2);
-								++richtige;
-								ibemerk.clear();
-							}
-							break;
-						} // if( !strcmp(sA[i].pname.c_str(),zeile->c_str()) ) 
+	caus<<"Stell 89"<<endl;
+	if (sA) {
+		size_t ii=sA->schl.size();
+		//// <<"auswert() "<<pname<<" vor while, wert: "<<wert<<endl;
+		caus<<"Stell 9"<<endl;
+		while(ii--) {
+			caus<<"Stell 11"<<endl;
+			if (sA->schl[ii]) if (pname==sA->schl[ii]->pname) { // conf[ii].pname muss am Zeilenanfang anfangen, sonst Fehler z.B.: number, faxnumber
+				caus<<"Stell 12"<<endl;
+				//// <<"sA->schl[ii]->pname: "<<sA->schl[ii]->pname<<endl;
+				//// <<blau<<"setze!"<<schwarz<<endl;
+				int wiefalsch=sA->schl[ii]->setzstr(wert.c_str(),&obzuschreib,/*ausDatei=*/1);
+				caus<<"Stell 13"<<endl;
+				if (!wiefalsch) {
+					caus<<"Stell 14"<<endl;
+					sA->setzbemerkwoher(sA->schl[ii].get(),/*bemerk=*/ibemerk,/*woher*/2);
+					caus<<"Stell 15"<<endl;
+					++richtige;
+					caus<<"Stell 16"<<endl;
+					ibemerk.clear();
+					caus<<"Stell 17"<<endl;
+				}
+				break;
+			} // if( !strcmp(sA[i].pname.c_str(),zeile->c_str()) ) 
+		}
 						/*
 							 if (!gef)
 							 Log(rots+Txk[T_Fehler_bei_auswert]+schwarz+sA->schl[ii]->pname+rot+Txk[T_nicht_gefunden],obverb+1);
@@ -1937,6 +1967,7 @@ template <typename SCL> void confdcl::causwert(schAcl<SCL> *sA, int obverb, cons
 		} // for(size_t i=0;i<zn.size();i++) 
 		//// <<violett<<"obzuschreib: "<<rot<<(int)obzuschreib<<schwarz<<endl;
 	} // if (obgelesen) 
+	caus<<"Stell 10"<<endl;
 	/*//	
   if (pname.find("config.tty")!=string::npos) KLA
     for(size_t ii=0;ii<sA->zahl;ii++) KLA
@@ -1959,6 +1990,7 @@ template<typename SCL> void schAcl<SCL>::reset()
 {
   for(size_t i=0;i<schl.size();i++) {
 		schl[i]->reset();
+		schl[i]=0;
   }
 } // void schAcl::reset()
 
@@ -1973,6 +2005,7 @@ template<typename SCL> schAcl<SCL>::~schAcl()
 	for(size_t i=0;i<schl.size();i++) {
 		//delete schl[i];
 		schl[i].reset();
+		schl[i]=0;
 //		schl[i]=0; // falls selbes Element in mehreren Vektoren
 	}
  caus<<violett<<"Ende loesche schAcl: "<<blau<<name<<schwarz<<endl;
@@ -4837,7 +4870,8 @@ string holsystemsprache(int obverb/*=0*/)
 			cglangA.sinit(1, langvr[lind]);
 			confdcl langcd(langdt[lind],obverb);
 			langcd.causwert(&cglangA,obverb);
-			if (!cglangA[0]->wert.empty()) {
+
+			if (cglangA[0]) if (!cglangA[0]->wert.empty()) {
 				ret= cglangA[0]->wert[0];
 				//// <<"Sprache gefunden in "<<blau<<langdt[lind]<<schwarz<<": "<<rot<<ret<<schwarz<<endl;
 				break;
@@ -5040,6 +5074,7 @@ void hcl::virtlieskonfein()
 	// die Reihenfolge muss der in agcnfA.init (in getcommandl0) sowie der in virtrueckfragen entsprechen
 // afcd.cinit(akonfdt,&agcnfA,obverb,'=',/*mitclear=*/0); // hier werden die Daten aus der Datei eingelesen
 	hccd.lies(akonfdt,obverb);
+			caus<<"vor causwert 2"<<endl;
 	hccd.causwert(&opn,obverb,'=',0);
 	virtlgnzuw();
 	setzlog();
@@ -5114,6 +5149,7 @@ void hcl::lieszaehlerein()
 	confdcl zlzn;
 	zlzn.lies(azaehlerdt,obverb);
 	////<<"azaehlerdt: "<<blau<<azaehlerdt<<schwarz<<endl;
+			caus<<"vor causwert 3"<<endl;
 	zlzn.causwert(&zcnfA);
 	//// if (&aufrufe) <<blau<<"aufrufe: "<<schwarz<<aufrufe<<endl;
 	if (&laufrtag) {
