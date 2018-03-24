@@ -1959,6 +1959,7 @@ template <typename SCL> void confdcl::causwert(schAcl<SCL> *sA, int obverb, cons
 
 void WPcl::reset()
 {
+	caus<<violett<<"WPcl::reset"<<blau<<pname<<schwarz<<endl;
 	gelesen=0;
 	wert.clear();
 	bemerk.clear();
@@ -1966,7 +1967,8 @@ void WPcl::reset()
 
 template<typename SCL> void schAcl<SCL>::reset()
 {
-  for(size_t i=0;i<schl.size();i++) {
+	caus<<violett<<"reset schAcl: "<<blau<<name<<schwarz<<endl;
+	for(size_t i=0;i<schl.size();i++) {
 		schl[i]->reset();
 		schl[i]=0;
   }
@@ -5801,6 +5803,7 @@ string& optcl::machbemerk(Sprache lg,binaer obfarbe/*=wahr*/)
 
 void optcl::reset()
 {
+	caus<<violett<<"optcl::reset"<<blau<<pname<<schwarz<<endl;
 	woher=0;
 	gegenteil=0;
 	bemerk.clear();
