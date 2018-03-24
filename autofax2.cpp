@@ -2080,7 +2080,7 @@ hhcl::~hhcl() //α
 void hhcl::virtlieskonfein()
 {
 	const int altobverb=obverb;
-	obverb=1;
+//	obverb=1;
 	Log(violetts+Txk[T_virtlieskonfein]+schwarz);
 	hcl::virtlieskonfein(); //ω
 	//// caus<<"sqlzn: "<<sqlzn<<endl;
@@ -2094,7 +2094,7 @@ void hhcl::virtlieskonfein()
 		shared_ptr<optcl> kop2{opsql[opsql.size()-1]};
 		opn<<kop2;
 	} // 	for(long i=0;i<sqlzn;)
-			caus<<"vor causwert 4"<<endl;
+			caus<<violett<<"vor causwert 4"<<schwarz<<endl;
 	hccd.causwert(&opsql,obverb,'=',0);
 	// wenn in der Konfigurationsdatei keine sql-Befehle stehen, dann die aus den Vorgaben nehmen
 	for(size_t i=0;i<sqlzn;i++) {
@@ -2138,6 +2138,7 @@ void hhcl::virtlieskonfein()
 		} // 		for(long i=0;i<zmzn;i++) 
 		zmp=zmvp;
 	} else {
+		caus<<blau<<"opzm.size(): "<<violett<<opzm.size()<<schwarz<<endl;
 		zmmp=new string[zmzn];
 		zmzp=new string[zmzn];
 		for(size_t i=0;i<zmzn;) {
@@ -2154,11 +2155,13 @@ void hhcl::virtlieskonfein()
 			opzm<<new optcl(/*pname*/zmzname.str(),/*pptr*/&zmzp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Ziel_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
 			//opn<<opzm[opzm.size()-1];
 			shared_ptr<optcl> kop2{opzm[opzm.size()-1]};
-			opn<<kopie;
+		//	opn<<kopie;
+			opn<<kop2;
 			//// caus<<"opn.schl.size(): "<<opn.schl.size()<<", omap.size(): "<<opn.omap.size()<<endl;
 		} // 	for(long i=0;i<zmzn;)
-		caus<<"vor causwert 5"<<endl;
-		hccd.causwert(&opzm,obverb,/*tz*/'=',/*mitclear*/0);
+		caus<<blau<<"opzm.size(): "<<violett<<opzm.size()<<schwarz<<endl;
+		caus<<violett<<"vor causwert 5"<<schwarz<<endl;
+		hccd.causwert(&opzm,/*obverb*/1,/*tz*/'=',/*mitclear*/0);
 		for(size_t i=0;i<zmzn;i++) {
 			//// caus<<"zmmp["<<i+1<<"]: "<<zmmp[i]<<endl;
 			//// caus<<"zmzp["<<i+1<<"]: "<<zmzp[i]<<endl;

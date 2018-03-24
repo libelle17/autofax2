@@ -663,6 +663,7 @@ enum war_t:uchar {wlong,wbin,wstr,wdat}; // Parameterart: Sonstiges, Verzeichnis
 // fuer Wertepaare, die nur aus Datei gezogen werden und nicht zusaetzlich ueber die Befehlszeile eingegeben werden koennen
 struct WPcl { // Wertepaarklasse
     string pname;
+		uchar ausgewertet=0;
 		const void* pptr;
 		war_t wart;
     uchar gelesen=0;
@@ -745,8 +746,8 @@ enum par_t:uchar {psons,pdez,ppwd,pverz,pfile,puchar,pint,plong,pdat}; // Parame
 struct optcl;
 
 template <typename SCL> class schAcl {
-	string name;
  public:
+	string name;
 // WPcl *schl=0; 
 	//vector<SCL*> schl; // Schlüsselklasse Schlüssel
 	vector<shared_ptr<SCL>> schl; // Schlüsselklasse Schlüssel
@@ -881,6 +882,7 @@ struct confdcl {
 struct optcl
 {
 		string pname; // Name des Konfigurationsparameters
+		uchar ausgewertet=0;
     const void *pptr=0; // Zeiger auf Parameter, der hier eingestellt werden kann
     par_t art=psons; // Parameterart
 		const int kurzi=-1;
