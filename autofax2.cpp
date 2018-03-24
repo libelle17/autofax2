@@ -2149,19 +2149,19 @@ void hhcl::virtlieskonfein()
 			////	  const string *const istrp=new string(ltoan(i));	
 			string istr=ltoan(i);
 			opzm<<new optcl(/*pname*/zmmname.str(),/*pptr*/&zmmp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zielmuster_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
-			shared_ptr<optcl> kopie{opzm[opzm.size()-1]};
-			opn<<kopie;
-			//opn<<opzm[opzm.size()-1];
+			opn<<opzm.schl[opzm.size()-1];
 			opzm<<new optcl(/*pname*/zmzname.str(),/*pptr*/&zmzp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Ziel_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
-			//opn<<opzm[opzm.size()-1];
-			shared_ptr<optcl> kop2{opzm[opzm.size()-1]};
-		//	opn<<kopie;
-			opn<<kop2;
+			opn<<opzm.schl[opzm.size()-1];
 			//// caus<<"opn.schl.size(): "<<opn.schl.size()<<", omap.size(): "<<opn.omap.size()<<endl;
 		} // 	for(long i=0;i<zmzn;)
 		caus<<blau<<"opzm.size(): "<<violett<<opzm.size()<<schwarz<<endl;
+		caus<<blau<<"opn.size(): "<<violett<<opn.size()<<schwarz<<endl;
 		caus<<violett<<"vor causwert 5"<<schwarz<<endl;
-		hccd.causwert(&opzm,/*obverb*/1,/*tz*/'=',/*mitclear*/0);
+		hccd.causwert(&opzm,obverb,/*tz*/'=',/*mitclear*/0);
+//		opn.gibaus(1);
+//		opzm.~schAcl();
+		opsql.~schAcl();
+		opn.~schAcl();
 		for(size_t i=0;i<zmzn;i++) {
 			//// caus<<"zmmp["<<i+1<<"]: "<<zmmp[i]<<endl;
 			//// caus<<"zmzp["<<i+1<<"]: "<<zmzp[i]<<endl;
@@ -2173,10 +2173,11 @@ void hhcl::virtlieskonfein()
 	} // 	if (!zmzn)
 ////	optausg(rot);
 ////	opn.gibomapaus();
-	obverb=altobverb;
 	Log(violetts+Txk[T_Ende]+Txk[T_virtlieskonfein]+schwarz);
-//	exit(30);
-} //α
+	obverb=altobverb;
+	caus<<"vor Abbruch"<<endl;
+	exit(30);
+} // void hhcl::virtlieskonfein() //α
 
 int main(int argc,char** argv) //α
 {

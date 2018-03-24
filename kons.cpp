@@ -628,6 +628,8 @@ const char *kons_T[T_konsMAX+1][SprachZahl]=
 	{"schon eingetragen: '","already entered: '"},
 	// T_wird_jetzt_eingetragen
 	{"wird jetzt eingetragen: '","will now be entered: '"},
+	// T_lieszaehlerein
+	{"lieszaehlerein()","readingcounter()"},
 	{"",""}
 }; // const char *Txkonscl::TextC[T_konsMAX+1][SprachZahl]=
 
@@ -1879,8 +1881,7 @@ template <typename SCL> void confdcl::causwert(schAcl<SCL> *sA, int obverb, cons
 	Log(violetts+Txk[T_causwert]+schwarz+": "+fname,obverb);
 	richtige=0;
 	if (mitclear) {
-		sA->reset();
-		sA=0;
+		sA->frisch();
 	}
 	if (obgelesen) {
 		if (sA) {
@@ -1911,7 +1912,7 @@ template <typename SCL> void confdcl::causwert(schAcl<SCL> *sA, int obverb, cons
 				zeile->erase(pos);
 			} // if (pos!=string::npos)
 			ltrim(zeile);
-			if (obverb) caus<<blau<<"Zeile: "<<schwarz<<*zeile<<endl;
+			if (obverb) caus<<zni<<". "<<blau<<"Zeile: "<<schwarz<<*zeile<<endl;
 			if (!zeile->empty()) {
 				if (obverb>1) Log(Txk[T_stern_zeile]+*zeile,obverb);
 				pos=zeile->find(tz);
@@ -1924,24 +1925,25 @@ template <typename SCL> void confdcl::causwert(schAcl<SCL> *sA, int obverb, cons
 					if (sA) {
 						size_t ii=sA->schl.size();
 						//// <<"auswert() "<<pname<<" vor while, wert: "<<wert<<endl;
-						if (obverb) caus<<"Stell 9,sA->name: "<<sA->name<<endl;
+						if (obverb) caus<<"Stell 9, sA->name: "<<sA->name<<endl;
 						while(ii--) {
-							if (obverb) caus<<"Stell 11,fname: "<<fname<<", ii: "<<ii<<endl;
-							if (sA->schl[ii]) if (!sA->schl[ii]->ausgewertet) if (pname==sA->schl[ii]->pname) { // conf[ii].pname muss am Zeilenanfang anfangen, sonst Fehler z.B.: number, faxnumber
-								if (obverb) caus<<"Stell 12"<<endl;
-								sA->schl[ii]->ausgewertet=1;
-								//// <<"sA->schl[ii]->pname: "<<sA->schl[ii]->pname<<endl;
-								//// <<blau<<"setze!"<<schwarz<<endl;
-								int wiefalsch=sA->schl[ii]->setzstr(wert.c_str(),&obzuschreib,/*ausDatei=*/1);
-								if (!wiefalsch) {
-									sA->setzbemerkwoher(sA->schl[ii].get(),/*bemerk=*/ibemerk,/*woher*/2);
-									++richtige;
-									ibemerk.clear();
-								}
-								break;
-							} // if( !strcmp(sA[i].pname.c_str(),zeile->c_str()) ) 
-							if (obverb) caus<<"Stell 12a"<<endl;
-						}
+							if (sA->schl[ii]) if (!sA->schl[ii]->ausgewertet) { 
+								// conf[ii]->pname muss am Zeilenanfang anfangen, sonst Fehler z.B.: number, faxnumber
+								if (obverb) caus<<"Stell 11, sA->schl["<<ii<<"]->pname: "<<sA->schl[ii]->pname<<endl;
+								if (pname==sA->schl[ii]->pname) {
+									sA->schl[ii]->ausgewertet=1;
+									//// <<"sA->schl[ii]->pname: "<<sA->schl[ii]->pname<<endl;
+									//// <<blau<<"setze!"<<schwarz<<endl;
+									const int wiefalsch=sA->schl[ii]->setzstr(wert.c_str(),&obzuschreib,/*ausDatei=*/1);
+									if (!wiefalsch) {
+										sA->setzbemerkwoher(sA->schl[ii].get(),/*bemerk=*/ibemerk,/*woher*/2);
+										++richtige;
+										ibemerk.clear();
+									}
+									break;
+								} // if( !strcmp(sA[i]->pname.c_str(),zeile->c_str()) ) 
+							} // 	if (sA->schl[ii]) if (!sA->schl[ii]->ausgewertet)
+						} // 	while(ii--)
 						/*
 							 if (!gef)
 							 Log(rots+Txk[T_Fehler_bei_auswert]+schwarz+sA->schl[ii]->pname+rot+Txk[T_nicht_gefunden],obverb+1);
@@ -1952,11 +1954,10 @@ template <typename SCL> void confdcl::causwert(schAcl<SCL> *sA, int obverb, cons
 		} // for(size_t i=0;i<zn.size();i++) 
 		//// <<violett<<"obzuschreib: "<<rot<<(int)obzuschreib<<schwarz<<endl;
 	} // if (obgelesen) 
-	if (obverb) caus<<"Stell 10"<<endl;
 	/*//	
 		if (pname.find("config.tty")!=string::npos) KLA
 		for(size_t ii=0;ii<sA->zahl;ii++) KLA
-		<<" pname: "<<schwarz<<(*sA)[ii].pname<<violett<<" wert: '"<<schwarz<<(*sA)[ii].wert<<"'"<<violett<<" bemerk: '"<<(*sA)[ii].bemerk<<"'"<<schwarz<<endl;
+		<<" pname: "<<schwarz<<(*sA)[ii]->pname<<violett<<" wert: '"<<schwarz<<(*sA)[ii].wert<<"'"<<violett<<" bemerk: '"<<(*sA)[ii].bemerk<<"'"<<schwarz<<endl;
 		KLZ
 		KLZ
 	 */
@@ -1964,22 +1965,23 @@ template <typename SCL> void confdcl::causwert(schAcl<SCL> *sA, int obverb, cons
 } // void sAdat::causwert
 
 
-void WPcl::reset()
+void WPcl::frisch()
 {
-	caus<<violett<<"WPcl::reset"<<blau<<pname<<schwarz<<endl;
+	caus<<violett<<"WPcl::frisch "<<blau<<pname<<schwarz<<endl;
 	gelesen=0;
 	wert.clear();
 	bemerk.clear();
+	caus<<violett<<"Ende WPcl::frisch "<<blau<<pname<<schwarz<<endl;
 }
 
-template<typename SCL> void schAcl<SCL>::reset()
+template<typename SCL> void schAcl<SCL>::frisch()
 {
-	caus<<violett<<"reset schAcl: "<<blau<<name<<schwarz<<endl;
+	caus<<violett<<"frisch schAcl: "<<blau<<name<<schwarz<<endl;
 	for(size_t i=0;i<schl.size();i++) {
-		schl[i]->reset();
-		schl[i]=0;
+		schl[i]->frisch();
   }
-} // void schAcl::reset()
+	caus<<violett<<"Ende frisch schAcl: "<<blau<<name<<schwarz<<endl;
+} // void schAcl::frisch()
 
 template<typename SCL> schAcl<SCL>::schAcl(const string& name):name(name)
 {
@@ -1988,13 +1990,17 @@ template<typename SCL> schAcl<SCL>::schAcl(const string& name):name(name)
 
 template<typename SCL> schAcl<SCL>::~schAcl()
 {
- caus<<violett<<"Loesche schAcl: "<<blau<<name<<schwarz<<endl;
+ caus<<violett<<"Loesche schAcl: "<<blau<<name<<schwarz<<" size(): "<<size()<<endl;
+ /*
 	for(size_t i=0;i<schl.size();i++) {
 		//delete schl[i];
+		caus<<"i: "<<i<<" pname: ";
+		caus<<schl[i]->pname<<endl;
 		schl[i].reset();
-		schl[i]=0;
 //		schl[i]=0; // falls selbes Element in mehreren Vektoren
 	}
+	*/
+	schl.clear();
  caus<<violett<<"Ende loesche schAcl: "<<blau<<name<<schwarz<<endl;
 	//schl.clear();
 }// template<typename SCL> schAcl<SCL>::~schAcl()
@@ -4863,8 +4869,11 @@ string holsystemsprache(int obverb/*=0*/)
 				//// <<"Sprache gefunden in "<<blau<<langdt[lind]<<schwarz<<": "<<rot<<ret<<schwarz<<endl;
 				break;
 			} // 			if (!cglangA[0].wert.empty())
+
 		} //     if (!lstat(hylacdt.c_str(),&hstat))
 	} // 	for(size_t lind=0;lind<langdt.size())
+	if (obverb)
+		cout<<violett<<Txk[T_Ende]<<Txk[T_holsystemsprache]<<schwarz<<endl;
 	return ret;
 } // string holsystemsprache
 
@@ -5126,6 +5135,7 @@ int hcl::zeighilfe(const stringstream *const erkl)
 // wird aufgerufen in lauf
 void hcl::lieszaehlerein()
 {
+	Log(violetts+Txk[T_lieszaehlerein]+schwarz);
 	azaehlerdt=aktprogverz()+".zaehl";
 	////<<"0 zcnfA.zahl: "<<zcnfA.size()<<endl;
 	zcnfA<<new WPcl("aufrufe",&aufrufe,wlong);
@@ -5146,6 +5156,7 @@ void hcl::lieszaehlerein()
 	}
 	//// if (&tagesaufr) <<blau<<"tagesaufr: "<<schwarz<<tagesaufr<<endl;
 	//// if (&monatsaufr) <<blau<<"monatsaufr: "<<schwarz<<monatsaufr<<endl;
+	Log(violetts+Txk[T_Ende]+Txk[T_lieszaehlerein]+schwarz);
 } // void hcl::lieszaehlerein
 
 // wird aufgerufen in lauf
@@ -5808,9 +5819,9 @@ string& optcl::machbemerk(Sprache lg,binaer obfarbe/*=wahr*/)
 	return bemerk;
 } // string& optioncl::machbemerk(Sprache lg,binaer obfarbe)
 
-void optcl::reset()
+void optcl::frisch()
 {
-	caus<<violett<<"optcl::reset"<<blau<<pname<<schwarz<<endl;
+	caus<<violett<<"optcl::frisch "<<blau<<pname<<schwarz<<endl;
 	woher=0;
 	gegenteil=0;
 	bemerk.clear();
@@ -5820,13 +5831,15 @@ void optcl::reset()
 			setzstr("0",0); break;
 		default: setzstr("",0);
 	}
-} // void optcl::reset()
+	caus<<violett<<"Ende optcl::frisch "<<blau<<pname<<schwarz<<endl;
+} // void optcl::frisch()
 
 
 // weist einer Option einen c-String zu
 //  aufgerufen in: pzuweis (Befehlszeile) und auswert (Datei)
 int optcl::setzstr(const char* const neuw,uchar *const obzuschreib/*=0*/,const uchar ausDatei/*=0*/)
 {
+	//// caus<<"neuw: '"<<rot<<neuw<<schwarz<<"'"<<endl;
 	int wiefalsch=0;
 	struct tm tmp={0},tmmax={0},neu={0};
 	char *emax=0,*eakt;
@@ -5848,10 +5861,11 @@ int optcl::setzstr(const char* const neuw,uchar *const obzuschreib/*=0*/,const u
 							*obzuschreib=1; 
 						}
 					} else {
-						if (art==pdez && !isnumeric(neuw))
+						if (art==pdez && !isnumeric(neuw)) {
 							wiefalsch=1;
-						else
-							*(string*)pptr=neuw;
+						} else {
+							if (pptr) *(string*)pptr=neuw;
+						}
 					}
 				}
 				break;
@@ -6594,9 +6608,10 @@ template<typename SCL> schAcl<SCL>& schAcl<SCL>::operator<<(SCL& sch)
 
 template<typename SCL> schAcl<SCL>& schAcl<SCL>::operator<<(shared_ptr<SCL> schp)
 {
-	caus<<violett<<name<<rot<<"<<"<<gruen<<schp.get()->pname<<endl;
-	shared_ptr<SCL> kopie{schp};
-	schl.push_back(kopie); 
+////	shared_ptr<SCL> kopie{schp};
+////	schl.push_back(kopie); 
+	caus<<rot<<"Uebertrage nach "<<blau<<name<<rot<<" smart_ptr "<<blau<<schp->pname<<schwarz<<endl;
+	schl.push_back(schp);
 	schl[schl.size()-1]->weisomapzu(this); 
 	return *this; 
 }
@@ -6613,7 +6628,8 @@ template<typename SCL> schAcl<SCL>& schAcl<SCL>::operator<<(SCL *schp)
 	return *this; 
 	*/
 	//return operator<<(*schp); 
-	caus<<rot<<name<<rot<<"<<"<<violett<<schp->pname<<endl;
+//	caus<<rot<<name<<rot<<"<<"<<violett<<schp->pname<<endl;
+	caus<<rot<<"Uebertrage nach "<<blau<<name<<rot<<" Zeiger "<<blau<<schp->pname<<schwarz<<endl;
 	shared_ptr<SCL> kopie{schp};
 	schl.push_back(kopie); 
 	schl[schl.size()-1]->weisomapzu(this); 

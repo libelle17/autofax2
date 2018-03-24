@@ -439,6 +439,7 @@ enum Tkons_
 	T_einzutragen,
 	T_schon_eingetragen,
 	T_wird_jetzt_eingetragen,
+	T_lieszaehlerein,
 	T_konsMAX
 }; // Tkons_
 
@@ -684,7 +685,7 @@ struct WPcl { // Wertepaarklasse
 //    template <typename T> void setze(T *var,string& bem) { wert=ltoan(*var); bemerk=bem;}
 		void hole (struct tm *tmp);
 		void oausgeb();
-		void reset();
+		void frisch();
     string& machbemerk(Sprache lg,binaer obfarbe=wahr);
 }; // class WPcl
 /*
@@ -781,7 +782,7 @@ template <typename SCL> class schAcl {
  void gibaus(const int nr=0);
  void gibomapaus();
  void eintrinit();
- void reset();
+ void frisch();
  ~schAcl();
 }; // class schAcl
 template <> void schAcl<WPcl>::sinit(size_t vzahl, ...);
@@ -916,7 +917,7 @@ struct optcl
 		int pzuweis(const char *nacstr, const uchar vgegenteil=0, const uchar vnichtspeichern=0);
     string& machbemerk(Sprache lg,binaer obfarbe=wahr);
     void hilfezeile(Sprache lg);
-		void reset();
+		void frisch();
 		~optcl(){caus<<"Loesche optcl, pname: "<<blau<<pname<<schwarz<<endl;}
 }; // struct optcl
 
