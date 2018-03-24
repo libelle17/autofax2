@@ -663,6 +663,7 @@ enum war_t:uchar {wlong,wbin,wstr,wdat}; // Parameterart: Sonstiges, Verzeichnis
 // fuer Wertepaare, die nur aus Datei gezogen werden und nicht zusaetzlich ueber die Befehlszeile eingegeben werden koennen
 struct WPcl { // Wertepaarklasse
     string pname;
+		uchar ausgewertet=0;
 		const void* pptr;
 		war_t wart;
     uchar gelesen=0;
@@ -881,6 +882,7 @@ struct confdcl {
 struct optcl
 {
 		string pname; // Name des Konfigurationsparameters
+		uchar ausgewertet=0;
     const void *pptr=0; // Zeiger auf Parameter, der hier eingestellt werden kann
     par_t art=psons; // Parameterart
 		const int kurzi=-1;

@@ -1883,6 +1883,12 @@ template <typename SCL> void confdcl::causwert(schAcl<SCL> *sA, int obverb, cons
 		sA=0;
 	}
 	if (obgelesen) {
+		if (sA) {
+			size_t ii=sA->schl.size();
+			while(ii--) {
+				sA->schl[ii]->ausgewertet=0;
+			}
+		}
 		string ibemerk;
 
 		for(size_t zni=zn.size();zni;) {
@@ -1921,8 +1927,9 @@ template <typename SCL> void confdcl::causwert(schAcl<SCL> *sA, int obverb, cons
 						if (obverb) caus<<"Stell 9,sA->name: "<<sA->name<<endl;
 						while(ii--) {
 							if (obverb) caus<<"Stell 11,fname: "<<fname<<", ii: "<<ii<<endl;
-							if (sA->schl[ii]) if (pname==sA->schl[ii]->pname) { // conf[ii].pname muss am Zeilenanfang anfangen, sonst Fehler z.B.: number, faxnumber
+							if (sA->schl[ii]) if (!sA->schl[ii]->ausgewertet) if (pname==sA->schl[ii]->pname) { // conf[ii].pname muss am Zeilenanfang anfangen, sonst Fehler z.B.: number, faxnumber
 								if (obverb) caus<<"Stell 12"<<endl;
+								sA->schl[ii]->ausgewertet=1;
 								//// <<"sA->schl[ii]->pname: "<<sA->schl[ii]->pname<<endl;
 								//// <<blau<<"setze!"<<schwarz<<endl;
 								int wiefalsch=sA->schl[ii]->setzstr(wert.c_str(),&obzuschreib,/*ausDatei=*/1);

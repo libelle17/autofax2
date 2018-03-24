@@ -2,7 +2,7 @@
 .\" Manual-Seite für ²DPROG²
 .\" Schreiben Sie an geraldschade@gmx.de, wenn Sie Fehler oder Mängel entdeckt haben
 .pc
-.TH man 1 "24.03.18" "Version 0.10471" "Manual-Seite für ²DPROG²"
+.TH man 1 "24.03.18" "Version 0.10476" "Manual-Seite für ²DPROG²"
 .SH NAME
 \fB²DPROG² \- FaxServer-Funktionalität\fR: veranlasst automatischen Faxversand von Dateien, Benennung empfangener Faxe und Protokollierung aller Faxe in einer Datenbank 
 .br
@@ -17,7 +17,15 @@
 .br
 \fBcglangA\fB<<\fBRC_LANG
 .br
+\fBreset schAcl: \fBcglangA\fR
+.br
+\fBWPcl::reset\fBRC_LANG\fR
+.br
 \fBcglangA\fB<<\fBLANG
+.br
+\fBreset schAcl: \fBcglangA\fR
+.br
+\fBWPcl::reset\fBLANG\fR
 .br
 \fBLoesche schAcl: \fBcglangA\fR
 .br
