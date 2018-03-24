@@ -1877,26 +1877,18 @@ void confdcl::Abschn_auswert(int obverb/*=0*/, const char tz/*='='*/)
 template <typename SCL> void confdcl::causwert(schAcl<SCL> *sA, int obverb, const char tz,const uchar mitclear/*=1*/)
 {
 	Log(violetts+Txk[T_causwert]+schwarz+": "+fname,obverb);
-	caus<<"Stell 0"<<endl;
-  richtige=0;
-	caus<<"Stell 1"<<endl;
-  if (mitclear) {
-	caus<<"Stell 2"<<endl;
+	richtige=0;
+	if (mitclear) {
 		sA->reset();
 		sA=0;
-	caus<<"Stell 3"<<endl;
 	}
-	caus<<"Stell 4"<<endl;
-  if (obgelesen) {
-	caus<<"Stell 5"<<endl;
-    string ibemerk;
+	if (obgelesen) {
+		string ibemerk;
 
-	caus<<"Stell 6"<<endl;
 		for(size_t zni=zn.size();zni;) {
-	caus<<"Stell 7"<<endl;
 			--zni;
-      string *zeile=&zn[zni];
-      size_t pos=zeile->find('#');
+			string *zeile=&zn[zni];
+			size_t pos=zeile->find('#');
 			if (!pos||zeile->empty()) {
 				zn.erase(zn.begin()+zni);
 				continue;
@@ -1912,51 +1904,37 @@ template <typename SCL> void confdcl::causwert(schAcl<SCL> *sA, int obverb, cons
 				} // if (!pos)
 				zeile->erase(pos);
 			} // if (pos!=string::npos)
-	caus<<"Stell 8"<<endl;
 			ltrim(zeile);
-	caus<<"Stell 80"<<endl;
+			if (obverb) caus<<blau<<"Zeile: "<<schwarz<<*zeile<<endl;
 			if (!zeile->empty()) {
-	caus<<"Stell 81"<<endl;
 				if (obverb>1) Log(Txk[T_stern_zeile]+*zeile,obverb);
-	caus<<"Stell 82"<<endl;
 				pos=zeile->find(tz);
-	caus<<"Stell 83"<<endl;
 				if (pos!=string::npos && pos>0) { 
-	caus<<"Stell 84"<<endl;
 					string pname=zeile->substr(0,pos);
-	caus<<"Stell 85"<<endl;
 					rtrim(&pname);
-	caus<<"Stell 86"<<endl;
 					string wert=zeile->substr(pos+1);
-	caus<<"Stell 87"<<endl;
 					gtrim(&wert);
-	caus<<"Stell 88"<<endl;
 					anfzweg(wert);
-	caus<<"Stell 89"<<endl;
-	if (sA) {
-		size_t ii=sA->schl.size();
-		//// <<"auswert() "<<pname<<" vor while, wert: "<<wert<<endl;
-		caus<<"Stell 9"<<endl;
-		while(ii--) {
-			caus<<"Stell 11"<<endl;
-			if (sA->schl[ii]) if (pname==sA->schl[ii]->pname) { // conf[ii].pname muss am Zeilenanfang anfangen, sonst Fehler z.B.: number, faxnumber
-				caus<<"Stell 12"<<endl;
-				//// <<"sA->schl[ii]->pname: "<<sA->schl[ii]->pname<<endl;
-				//// <<blau<<"setze!"<<schwarz<<endl;
-				int wiefalsch=sA->schl[ii]->setzstr(wert.c_str(),&obzuschreib,/*ausDatei=*/1);
-				caus<<"Stell 13"<<endl;
-				if (!wiefalsch) {
-					caus<<"Stell 14"<<endl;
-					sA->setzbemerkwoher(sA->schl[ii].get(),/*bemerk=*/ibemerk,/*woher*/2);
-					caus<<"Stell 15"<<endl;
-					++richtige;
-					caus<<"Stell 16"<<endl;
-					ibemerk.clear();
-					caus<<"Stell 17"<<endl;
-				}
-				break;
-			} // if( !strcmp(sA[i].pname.c_str(),zeile->c_str()) ) 
-		}
+					if (sA) {
+						size_t ii=sA->schl.size();
+						//// <<"auswert() "<<pname<<" vor while, wert: "<<wert<<endl;
+						if (obverb) caus<<"Stell 9,sA->name: "<<sA->name<<endl;
+						while(ii--) {
+							if (obverb) caus<<"Stell 11,fname: "<<fname<<", ii: "<<ii<<endl;
+							if (sA->schl[ii]) if (pname==sA->schl[ii]->pname) { // conf[ii].pname muss am Zeilenanfang anfangen, sonst Fehler z.B.: number, faxnumber
+								if (obverb) caus<<"Stell 12"<<endl;
+								//// <<"sA->schl[ii]->pname: "<<sA->schl[ii]->pname<<endl;
+								//// <<blau<<"setze!"<<schwarz<<endl;
+								int wiefalsch=sA->schl[ii]->setzstr(wert.c_str(),&obzuschreib,/*ausDatei=*/1);
+								if (!wiefalsch) {
+									sA->setzbemerkwoher(sA->schl[ii].get(),/*bemerk=*/ibemerk,/*woher*/2);
+									++richtige;
+									ibemerk.clear();
+								}
+								break;
+							} // if( !strcmp(sA[i].pname.c_str(),zeile->c_str()) ) 
+							if (obverb) caus<<"Stell 12a"<<endl;
+						}
 						/*
 							 if (!gef)
 							 Log(rots+Txk[T_Fehler_bei_auswert]+schwarz+sA->schl[ii]->pname+rot+Txk[T_nicht_gefunden],obverb+1);
@@ -1967,14 +1945,14 @@ template <typename SCL> void confdcl::causwert(schAcl<SCL> *sA, int obverb, cons
 		} // for(size_t i=0;i<zn.size();i++) 
 		//// <<violett<<"obzuschreib: "<<rot<<(int)obzuschreib<<schwarz<<endl;
 	} // if (obgelesen) 
-	caus<<"Stell 10"<<endl;
+	if (obverb) caus<<"Stell 10"<<endl;
 	/*//	
-  if (pname.find("config.tty")!=string::npos) KLA
-    for(size_t ii=0;ii<sA->zahl;ii++) KLA
- <<" pname: "<<schwarz<<(*sA)[ii].pname<<violett<<" wert: '"<<schwarz<<(*sA)[ii].wert<<"'"<<violett<<" bemerk: '"<<(*sA)[ii].bemerk<<"'"<<schwarz<<endl;
-    KLZ
-  KLZ
-*/
+		if (pname.find("config.tty")!=string::npos) KLA
+		for(size_t ii=0;ii<sA->zahl;ii++) KLA
+		<<" pname: "<<schwarz<<(*sA)[ii].pname<<violett<<" wert: '"<<schwarz<<(*sA)[ii].wert<<"'"<<violett<<" bemerk: '"<<(*sA)[ii].bemerk<<"'"<<schwarz<<endl;
+		KLZ
+		KLZ
+	 */
 	Log(violetts+Txk[T_Ende]+Txk[T_causwert]+schwarz,obverb);
 } // void sAdat::causwert
 

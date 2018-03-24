@@ -410,6 +410,7 @@ define priv_html
 endef
 
 # Aufruf des Programms mit -sh, um die Optionen in den manpages zu aktualisieren
+# falls hier Berechtigungsfehler, dann z.B. home-Partion ohne exec
 define manges
 $(1).html: $(EXEC) $(1)
 	$(call priv_html, $(1))
@@ -417,7 +418,7 @@ $(1).gz: $(EXEC) $(1)
 	-@printf " aktualisiere/updating %b$(1)%b\n" $(blau) $(reset)
 	-@sed -i "s/\(Version \)[^\"]*/\1$$$$(cat versdt)/;s/\(\.TH[^\"]*\)\"[^\"]*/\1\"$$$$(date +'%d.%m.%y')/" $(1)
 	-@Lang=$(shell echo $(1)|cut -d_ -f2|head -c1);\
-	 TMP=tmp_opt_$$$$Lang;./$(EXEC) -1lg $$$$Lang -sh|sed -e 's/^/.br\n/;s/\[[01];3.m/\\fB/g;s/\[0m/\\fR/g;'|sed ':a;N;$$$$!ba'>$$$$TMP; \
+	 TMP=tmp_opt_$$$$Lang;chmod +x $(EXEC);./$(EXEC) -1lg $$$$Lang -sh|sed -e 's/^/.br\n/;s/\[[01];3.m/\\fB/g;s/\[0m/\\fR/g;'|sed ':a;N;$$$$!ba'>$$$$TMP; \
 	 nlinit=`echo 'nl="'; echo '"'`; eval "$$$$nlinit"; \
 	 von=".SH $$(OPN)"; bis=".SH $$(FKT)"; sed -i.bak "/$$$$von/,/$$$$bis/{/$$$$von/{n;p;r $$$$TMP$$$$nl};/$$$$bis/p;d}" $(1);
 	@sed 's/²gitv²/$(GITV)/g;s/²DPROG²/$(DPROG)/g;s/\\fB/\\fI/g' $(1)|gzip -c >$$@

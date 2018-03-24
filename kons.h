@@ -745,8 +745,8 @@ enum par_t:uchar {psons,pdez,ppwd,pverz,pfile,puchar,pint,plong,pdat}; // Parame
 struct optcl;
 
 template <typename SCL> class schAcl {
-	string name;
  public:
+	string name;
 // WPcl *schl=0; 
 	//vector<SCL*> schl; // Schlüsselklasse Schlüssel
 	vector<shared_ptr<SCL>> schl; // Schlüsselklasse Schlüssel
