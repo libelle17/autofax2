@@ -802,6 +802,7 @@ void hhcl::liescapiconf()
 		pruefverz(dir_name(cfaxconfdt),obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/0);
 		if (cfaxcp) delete cfaxcp;
 		cfaxcp = new confdcl(cfaxconfdt,obverb);
+			caus<<"vor causwert 6"<<endl;
 		cfaxcp->causwert(&cfcnfC);
 		cfaxcp->Abschn_auswert(obverb);
 #ifdef false
@@ -877,6 +878,7 @@ void hhcl::liescapiconf()
 			pruefverz(dir_name(ccapiconfdt),obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/0);
 			confdcl ccapc(ccapiconfdt,obverb);
 			////<<"azaehlerdt: "<<blau<<azaehlerdt<<schwarz<<endl;
+			caus<<"vor causwert 7"<<endl;
 			ccapc.causwert(&cccnfC);
 			cczulesen=0;
 			if (!cuser.empty()) {
@@ -2092,6 +2094,7 @@ void hhcl::virtlieskonfein()
 		shared_ptr<optcl> kop2{opsql[opsql.size()-1]};
 		opn<<kop2;
 	} // 	for(long i=0;i<sqlzn;)
+			caus<<"vor causwert 4"<<endl;
 	hccd.causwert(&opsql,obverb,'=',0);
 	// wenn in der Konfigurationsdatei keine sql-Befehle stehen, dann die aus den Vorgaben nehmen
 	for(size_t i=0;i<sqlzn;i++) {
@@ -2145,16 +2148,17 @@ void hhcl::virtlieskonfein()
 			////	  const string *const istrp=new string(ltoan(i));	
 			string istr=ltoan(i);
 			opzm<<new optcl(/*pname*/zmmname.str(),/*pptr*/&zmmp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zielmuster_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
-			//opn<<opzm[opzm.size()-1];
 			shared_ptr<optcl> kopie{opzm[opzm.size()-1]};
 			opn<<kopie;
+			//opn<<opzm[opzm.size()-1];
 			opzm<<new optcl(/*pname*/zmzname.str(),/*pptr*/&zmzp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Ziel_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
 			//opn<<opzm[opzm.size()-1];
 			shared_ptr<optcl> kop2{opzm[opzm.size()-1]};
 			opn<<kopie;
 			//// caus<<"opn.schl.size(): "<<opn.schl.size()<<", omap.size(): "<<opn.omap.size()<<endl;
 		} // 	for(long i=0;i<zmzn;)
-		hccd.causwert(&opzm,obverb,'=',0);
+		caus<<"vor causwert 5"<<endl;
+		hccd.causwert(&opzm,obverb,/*tz*/'=',/*mitclear*/0);
 		for(size_t i=0;i<zmzn;i++) {
 			//// caus<<"zmmp["<<i+1<<"]: "<<zmmp[i]<<endl;
 			//// caus<<"zmzp["<<i+1<<"]: "<<zmzp[i]<<endl;
