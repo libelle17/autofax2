@@ -1038,7 +1038,7 @@ void hhcl::konfcapi()
 		outgoing_timeout=Tippstr(string("outgoing_timeout: ")+Tx[T_Geduld_bis_zum_Verbindungsaufbau_in_s],&outgoing_timeout);
 		if (obverb>0) {
 			for(unsigned snr=0;snr<cfcnfC.size();snr++) {
-				Log("snr: "+blaus+ltoan(snr)+schwarz+" "+cfcnfC[snr]->pname+", "+cfcnfC[snr]->holstr());
+				Log("snr: "+blaus+ltoan(snr)+schwarz+" "+cfcnfC[snr]->pname+", "+cfcnfC[snr]->virtholstr());
 			}
 		} // if (obverb>0)
 	} // if (rzf || (capicffehlt && !nrzf))
@@ -1082,14 +1082,14 @@ void hhcl::konfcapi()
 									anfzweg(altwert); // Anfuehrungszeichen entfernen
 									if (snr==0 || snr==1) cfcnfC[snr]->setzstr(altwert); // spool_dir und fax_user_dir hier nicht konfigurierbar
 									Log(string("cfcnfC[")+ltoan(snr)+"].name: "+tuerkis+cfcnfC[snr]->pname+schwarz+Tx[T_komma_wert]+
-											(cfcnfC[snr]->holstr()==altwert?blau:rot)+cfcnfC[snr]->holstr()+schwarz+Tx[T_komma_Altwert]+
+											(cfcnfC[snr]->virtholstr()==altwert?blau:rot)+cfcnfC[snr]->virtholstr()+schwarz+Tx[T_komma_Altwert]+
 											blau+altwert+schwarz,obverb+iru,oblog+iru);
-									if (cfcnfC[snr]->holstr()!=altwert) {
+									if (cfcnfC[snr]->virtholstr()!=altwert) {
 										if (!iru) {
 											neuschreiben=1;
 											paramdiff=1;
 										} else {
-											string zschr=cfcnfC[snr]->pname+" = \""+cfcnfC[snr]->holstr()+"\"";
+											string zschr=cfcnfC[snr]->pname+" = \""+cfcnfC[snr]->virtholstr()+"\"";
 											*fneu<<zschr<<endl;
 											geschrieben=1;
 										} //                   if (!iru) else

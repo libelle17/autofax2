@@ -518,10 +518,10 @@ class mdatei: public fstream
 class ztacl {
 	private:
 		const time_t zt;
-		const char* fmt;
+		const char* const fmt;
 	public:
-		explicit ztacl(time_t &pzt,const char* pfmt="%d.%m.%Y %H.%M.%S"):zt(pzt),fmt(pfmt) { }
-		explicit ztacl(struct tm *tm,const char* pfmt="%d.%m.%Y %H.%M.%S"):zt(mktime(tm)),fmt(pfmt) { }
+		explicit ztacl(const time_t &pzt,const char* const pfmt="%d.%m.%Y %H.%M.%S"):zt(pzt),fmt(pfmt) { }
+		explicit ztacl(struct tm *const tm,const char* const pfmt="%d.%m.%Y %H.%M.%S"):zt(mktime(tm)),fmt(pfmt) { }
 		std::ostream &operator()(std::ostream& out) const;
 }; // ztacl
 ostream &operator<<(ostream &out,ztacl ztaus);
@@ -641,22 +641,27 @@ std::string string_to_hex(const std::string& input);
 int dateivgl(const string& d1, const string& d2,uchar obzeit=0);
 void kuerzevtz(string *vzp);
 
-#ifdef notcpp
-class Schluessel {
+class svec: public vector<std::string>
+{
   public:
-    char key[90];
-    char val[100];
-    template <typename T> void hole(T *var) { *var=atol(val); }
-    template <typename T> void setze(T *var) { strncpy(val,ltoan(*var),sizeof val-1);val[sizeof val-1]=0; }
-};
-template <> inline void Schluessel::hole < char* > (char** var) { *var = val; }
-template <> inline void Schluessel::hole < const char* > (const char** var) { *var = val; }
-template <> inline void Schluessel::hole < string > (string *var) { *var = val; }
-template <> inline void Schluessel::hole < binaer > (binaer *var) { *var = (binaer)atoi(val); }
-template <> inline void Schluessel::setze < char* > (char** var) { strncpy(val,*var,sizeof val-1);val[sizeof val-1]=0; }
-template <> inline void Schluessel::setze < const char* > (const char** var) { strncpy(val,*var,sizeof val-1);val[sizeof val-1]=0; }
-template <> inline void Schluessel::setze < string > (string *var) { strncpy(val,var->c_str(),sizeof val-1);val[sizeof val-1]=0;}
-#endif // notcpp
+    inline svec& operator<<(const std::string& str) {
+      this->push_back(str);
+      return *this;
+    }
+}; // class svec: public vector<std::string>
+
+//svec& operator<<(svec& v, const std::string& str);
+template<typename T>
+class tsvec: public vector<T>
+{
+  public:
+    inline tsvec<T>& operator<<(const T& str) {
+      this->push_back(str);
+      ((T&)str).init();
+      return *this;
+    } // inline tsvec
+}; // template<typename T> class tsvec: public vector<T>
+
 
 template <typename SCL> class schAcl;
 
@@ -668,10 +673,20 @@ struct wpgcl
 		string pname;
 		uchar ausgewertet=0;
     const void *pptr=0; // Zeiger auf Parameter, der hier eingestellt werden kann
+    string bemerk;
     par_t part=pstri; // Parameterart
     uchar gelesen=0;
 		uchar eingetragen=0; // Hilfsvariable zur genau einmaligen Eintragung einer Option mit name=pname in Konfigurationsdatei
 		wpgcl(const string& pname,const void* pptr,par_t part);
+		string virtholstr() const;
+    virtual const string& virtmachbemerk(const Sprache lg,const binaer obfarbe=wahr);
+		void virtweisomapzu(void *schlp);
+		int tusetzstr(const char* const neuw,uchar *const tuschreibp,const uchar ausDatei=0,const uchar keineprio=0);
+		virtual int setzstr(const char* const neuw,uchar *const obzuschreib=0,const uchar ausDatei=0)=0;
+		const uchar virteinzutragen(/*schAcl<optcl>**/void *schlp,int obverb);
+    void virttusetzbemerkwoher(const string& ibemerk,const uchar vwoher);
+		void virtfrisch();
+		void virtoausgeb() const;
 };
 
 // fuer Wertepaare, die nur aus Datei gezogen werden und nicht zusaetzlich ueber die Befehlszeile eingegeben werden koennen
@@ -679,23 +694,17 @@ struct wpgcl
 struct WPcl:wpgcl 
 { 
     string wert;
-    string bemerk;
-		WPcl(const string& pname,const void* pptr,par_t part);
-		WPcl(const string& pname); // wird benoetigt in: schAcl::sinit(size_t vzahl, ...)
-		int setzstr(const string& neus,uchar *const obzuschreib=0,const uchar ausDatei=0);
+		WPcl(const string& pname,const void* pptr=0,par_t part=pstri);
 		int setzstr(const char* const neuw,uchar *const obzuschreib=0,const uchar ausDatei=0);
-		string holstr();
-		uchar einzutragen(schAcl<WPcl> *schlp,int obverb);
-    void tusetzbemerkwoher(const string& ibemerk,const uchar vwoher);
-		void weisomapzu(schAcl<WPcl> *schlp);
+		int setzstr(const string& neus,uchar *const obzuschreib=0,const uchar ausDatei=0);
+		string virtholstr() const;
 		//    inline WPcl& operator=(WPcl zuzuw){pname=zuzuw.pname;wert=zuzuw.wert; return *this;} // wird nicht benoetigt
-    template <typename T> void hole(T *var) { *var=atol(wert.c_str()); }
+//    template <typename T> void hole(T *var) { *var=atol(wert.c_str()); }
 //    template <typename T> void setze(T *var) { wert=ltoan(*var); }
 //    template <typename T> void setze(T *var,string& bem) { wert=ltoan(*var); bemerk=bem;}
-		void hole (struct tm *tmp);
-		void oausgeb() const;
-		void frisch();
-    string& machbemerk(Sprache lg,binaer obfarbe=wahr);
+//		void hole(struct tm *tmp);
+		void virtoausgeb() const;
+		void virtfrisch();
 }; // class WPcl
 /*
 template <> inline void WPcl::hole < char* > (char** var) {*var = (char*)wert.c_str(); }
@@ -730,30 +739,45 @@ template <> inline void WPcl::setze < const char* > (const char** var, string& b
 template <> inline void WPcl::setze < string > (string *var, string& bem) {wert=*var;if (!bem.empty()) bemerk=bem;}
 template <> inline void WPcl::setze < const string > (const string *var, string& bem) {wert=*var; if (!bem.empty()) bemerk=bem;}
 */
-class svec: public vector<std::string>
-{
-  public:
-    inline svec& operator<<(const std::string& str) {
-      this->push_back(str);
-      return *this;
-    }
-}; // class svec: public vector<std::string>
 
-//svec& operator<<(svec& v, const std::string& str);
-template<typename T>
-class tsvec: public vector<T>
+// neue Klasse für map
+// fuer Wertepaare, die aus Datei gezogen werden und zusaetzlich ueber die Befehlszeile eingegeben werden koennen
+struct optcl:wpgcl
 {
-  public:
-    inline tsvec<T>& operator<<(const T& str) {
-      this->push_back(str);
-      ((T&)str).init();
-      return *this;
-    } // inline tsvec
-}; // template<typename T> class tsvec: public vector<T>
+		const int kurzi=-1;
+		const int langi=-1;
+    TxB *TxBp=0; // nicht const, da lgn geändert werden muß
+    const long Txi=0;
+		const uchar wi=0; // Wichtigkeit: 1= wird mit -lh oder -h, 0= nur mit -lh, 255 (-1) = gar nicht angezeigt
+    const long Txi2=-1;
+    const string rottxt; // ggf rot zu markierender Text zwischen Txi und Txi2
+//    string oerkl;
+    int iwert; // Wert, der pptr zugewiesen wird, falls dieser Parameter gewaehlt wird; -1= Wert steht im nächsten Parameter, 1=pro Nennung in der Kommandozeile wert um 1 erhöhen
+//    string *zptr=0; // Zeiger auf Zusatzparameter, der hier eingegeben werden kann (z.B. Zahl der Zeilen nach -n (Zeilenzahl)
+//    schAcl<WPcl> *cpA=0; // Konfigurationsarray, das ggf. geschrieben werden muss
+//    uchar ogefunden=0; // braucht man nicht, ist in argcl
+		// ermittelte Optionen:
+    const uchar obno=0; // ob auch die Option mit vorangestelltem 'no' eingefuegt werden soll
+		uchar woher=0; // 1= ueber Vorgaben, 2= ueber Konfigurationsdatei, 3= ueber Befehlszeile gesetzt
+		uchar gegenteil=0;
+		uchar nichtspeichern=0;
+		const uchar virteinzutragen(/*schAcl<optcl>**/void *schlp,int obverb);
+		void virtweisomapzu(/*schAcl<optcl>**/void *schlp);
+		optcl(const string& pname,const void* pptr,const par_t art, const int kurzi, const int langi, TxB* TxBp, const long Txi,
+				         const uchar wi, const long Txi2, const string rottxt, const int iwert,const uchar woher);
+		void setzwert();
+		int setzstr(const char* const neuw,uchar *const obzuschreib=0,const uchar ausDatei=0);
+		void virttusetzbemerkwoher(const string& ibemerk,const uchar vwoher);
+		void virtoausgeb() const;
+		int pzuweis(const char *const nacstr, const uchar vgegenteil=0, const uchar vnichtspeichern=0);
+    virtual const string& virtmachbemerk(const Sprache lg,const binaer obfarbe=wahr);
+    void hilfezeile(Sprache lg);
+		void virtfrisch();
+		~optcl(){caus<<"Loesche optcl, pname: "<<blau<<pname<<schwarz<<endl;}
+}; // struct optcl
 
 // fuer Commandline-Optionen
 // enum par_t:uchar {pstri,pdez,ppwd,pverz,pfile,puchar,pbin,pint,plong,pdat}; // Parameterart: Sonstiges, Verzeichnis, Datei, uchar, int, long, Datum (struct tm)
-struct optcl;
 
 template <typename SCL> class schAcl {
  public:
@@ -761,16 +785,16 @@ template <typename SCL> class schAcl {
 // WPcl *schl=0; 
 	//vector<SCL*> schl; // Schlüsselklasse Schlüssel
 	vector<shared_ptr<SCL>> schl; // Schlüsselklasse Schlüssel
-//// inline schAcl& operator<<(const SCL& sch) { sch.weisomapzu(this); schl.push_back(sch); return *this; }
+//// inline schAcl& operator<<(const SCL& sch) { sch.virtweisomapzu(this); schl.push_back(sch); return *this; }
 //// schAcl& operator<<(SCL& sch);
-//// inline schAcl& operator<<(SCL *schp) { schp->weisomapzu(this); schl.push_back(*schp); return *this; }
+//// inline schAcl& operator<<(SCL *schp) { schp->virtweisomapzu(this); schl.push_back(*schp); return *this; }
  schAcl& operator<<(SCL *schp);
  schAcl& operator<<(shared_ptr<SCL> schp);
-// schAcl& operator<<(shared_ptr<SCL> schp);
+ // schAcl& operator<<(shared_ptr<SCL> schp);
 // inline const SCL* operator[](size_t const& nr) const { return schl[nr].get(); }
 // inline SCL* operator[](size_t const& nr) { return schl[nr].get(); }
  inline const shared_ptr<const SCL> operator[](size_t const& nr) const { return schl[nr];}
- inline shared_ptr<SCL> operator[](size_t const& nr) { return schl[nr];} // fuer hilfezeile, machbemerk
+ inline shared_ptr<SCL> operator[](size_t const& nr) { return schl[nr];} // fuer hilfezeile, virtmachbemerk
  inline size_t size(){return schl.size();}
  inline shared_ptr<SCL> letzter() {return schl[schl.size()-1];} 
  schAcl(const string& name);
@@ -801,8 +825,7 @@ template <> void schAcl<WPcl>::sinit(size_t vzahl, ...);
 template <> void schAcl<WPcl>::eintrinit();
 template <> void schAcl<optcl>::eintrinit();
 
-class abSchl {
- public:
+struct abSchl {
    string pname;
    string wert;
    abSchl(string& vname, string& vwert):pname(vname),wert(vwert) {}
@@ -865,9 +888,8 @@ struct color {
 #endif // _WIN32
 
 // Abschnitt einer Konfigurationsdatei
-class absch
+struct absch
 {
- public:
  string aname;
  vector<abSchl> av;
  const string& suche(const char* const sname);
@@ -890,46 +912,6 @@ struct confdcl {
 	void Abschn_auswert(int obverb=0, const char tz='=');
 };
 
-// neue Klasse für map
-// fuer Wertepaare, die aus Datei gezogen werden und zusaetzlich ueber die Befehlszeile eingegeben werden koennen
-struct optcl:wpgcl
-{
-		const int kurzi=-1;
-		const int langi=-1;
-    TxB *TxBp=0; // nicht const, da lgn geändert werden muß
-    const long Txi=0;
-		const uchar wi=0; // Wichtigkeit: 1= wird mit -lh oder -h, 0= nur mit -lh, 255 (-1) = gar nicht angezeigt
-    const long Txi2=-1;
-    const string rottxt; // ggf rot zu markierender Text zwischen Txi und Txi2
-//    string oerkl;
-    int iwert; // Wert, der pptr zugewiesen wird, falls dieser Parameter gewaehlt wird; -1= Wert steht im nächsten Parameter, 1=pro Nennung in der Kommandozeile wert um 1 erhöhen
-//    string *zptr=0; // Zeiger auf Zusatzparameter, der hier eingegeben werden kann (z.B. Zahl der Zeilen nach -n (Zeilenzahl)
-//    schAcl<WPcl> *cpA=0; // Konfigurationsarray, das ggf. geschrieben werden muss
-//    uchar ogefunden=0; // braucht man nicht, ist in argcl
-		// ermittelte Optionen:
-    const uchar obno=0; // ob auch die Option mit vorangestelltem 'no' eingefuegt werden soll
-    string bemerk;
-		uchar woher=0; // 1= ueber Vorgaben, 2= ueber Konfigurationsdatei, 3= ueber Befehlszeile gesetzt
-		uchar gegenteil=0;
-		uchar nichtspeichern=0;
-		uchar einzutragen(schAcl<optcl> *schlp,int obverb);
-		void weisomapzu(schAcl<optcl> *schlp);
-		optcl(const string& pname,const void* pptr,const par_t art, const int kurzi, const int langi, TxB* TxBp, const long Txi,
-				         const uchar wi, const long Txi2, const string rottxt, const int iwert,const uchar woher);
-		void setzwert();
-		int setzstr(const char* const neuw,uchar *const obzuschreib=0,const uchar ausDatei=0);
-    void tusetzbemerkwoher(const string& ibemerk,const uchar vwoher);
-		string holstr();
-		void oausgeb() const;
-		int pzuweis(const char *nacstr, const uchar vgegenteil=0, const uchar vnichtspeichern=0);
-    string& machbemerk(Sprache lg,binaer obfarbe=wahr);
-    void hilfezeile(Sprache lg);
-		void frisch();
-		~optcl(){caus<<"Loesche optcl, pname: "<<blau<<pname<<schwarz<<endl;}
-}; // struct optcl
-
-#endif // kons_H_DRIN
-
 extern const char *logdt;
 
 int kuerzelogdatei(const char* logdatei,int obverb);
@@ -946,9 +928,6 @@ size_t irfind(const string& wo, const string& was); // suche von hinten und igno
 void getstammext(const string *const ganz, string *stamm, string *exten);
 // int cpplies(string fname,WPcl *conf,size_t csize,vector<string> *rest=0,char tz='=',short obverb=0);
 string XOR(const string& value, const string& key);
-#ifdef notcpp
-int Schschreib(const char *fname, Schluessel *conf, size_t csize);
-#endif // notcpp
 int cppschreib(const string& fname, WPcl *conf, size_t csize);
 // int multicppschreib(const string& fname, WPcl **conf, size_t *csizes, size_t cszahl);
 template <typename SCL> int multischlschreib(const string& fname, schAcl<SCL> *const *const confs, const size_t cszahl,const string& mpfad=nix);
@@ -991,9 +970,8 @@ FILE*
 oeffne(const string& datei, uchar art, uchar* erfolg,uchar faclbak=1,int obverb=0, int oblog=0);
 #endif // falsch
 
-class linst_cl
+struct linst_cl
 {
- public:
  instprog ipr=keinp; // installiertes Program
  string schau; // Befehl zum Pruefen auf Vorhandensein ueber das Installationssystem
  string instp; // Befehl zum Installieren ueber das Installationnssystem
@@ -1060,9 +1038,8 @@ class servc {
 void printBits(size_t const size, void const * const ptr); // Binaerausgabe, fuer Debugging
 
 #ifdef altfind
-class elem2
+struct elem2
 {
-  public:
     string pfad;
     struct stat dst={0};
     int sterg;
@@ -1100,9 +1077,8 @@ class find2cl: elem2
 #ifdef neufind
 #include <ftw.h>
 // Fundelement
-class elem3
+struct elem3
 {
-  public:
     string pfad;
     const struct stat sb={0};
     int tflag;
@@ -1115,9 +1091,8 @@ class elem3
 };
 
 // Wurzelelement
-class wele
+struct wele
 {
-  public:
     const string pfad;
     const long maxd;
     wele(const string& pfad=nix, const long& maxd=-1):pfad(pfad),maxd(maxd){}
@@ -1126,9 +1101,8 @@ class wele
 }; // class wele
 
 // nur eine Instanz der Klasse kann gleichzeitig gefuellt werden wegen der statischen Elemente
-class find3cl
+struct find3cl
 {
-  public:
     int flags = 0;
     long maxdepth=-1;
     static long *maxdepthp;
@@ -1164,18 +1138,16 @@ void findfile(svec *qrueck,uchar findv,int obverb=0,int oblog=0,uchar anteil=0,
 		time_t _mab=0,time_t _mbis=0,int obicase=0,int nurexec=0,int obnoext=0,uchar nureins=0);
 #endif
 
-class pidcl
+struct pidcl
 {
- public:
  pid_t pid;
  string name;
  pidcl(const pid_t pid,const string& name):pid(pid),name(name){}
 }; // pidcl
 
 //Vector von pid- und string-Pärchen
-class pidvec: public vector<pidcl>
+struct pidvec: public vector<pidcl>
 {
- public:
  inline pidvec& operator<<(const pidcl& pd) {
 	 this->push_back(pd);
 	 return *this;
@@ -1354,3 +1326,5 @@ template<typename SCL> void schAcl<SCL>::initv(vector<optcl*> optpv,vector<size_
 	}
 } // void schAcl::initv(vector<optcl*> optpv,vector<size_t> optsv)
 */
+
+#endif // kons_H_DRIN

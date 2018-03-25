@@ -1,5 +1,5 @@
-# Konfiguration fuer '/root/autofax2/autofax2', erstellt automatisch durch dieses am: 25.03.2018 17.09.29
-aufrufe = "30"
-lDatum = "25.03.2018 17.09.29"
-tagesaufr = "5"
-monatsaufr = "13"
+# Konfiguration fuer '/home/schade/autofax2/autofax2', erstellt automatisch durch dieses am: 26.03.2018 01.21.52
+aufrufe = "49"
+lDatum = "26.03.2018 01.21.52"
+tagesaufr = "1"
+monatsaufr = "1"

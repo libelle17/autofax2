@@ -2,7 +2,7 @@
 .\" manual page for ²DPROG²
 .\" write to geraldschade@gmx.de if You discover an error or a deficit in the program
 .pc
-.TH man 1 "25.03.18" "Version 0.10566" "\fB²DPROG²\fR man page"
+.TH man 1 "26.03.18" "Version 0.10587" "\fB²DPROG²\fR man page"
 .SH NAME
 \fB²DPROG² \- Fax server functionality\fR: induces automatic fax transmission of files, naming of received faxes and logging of all of them in a database
 .br
@@ -15,437 +15,351 @@
 .SH OPTIONS 
 .SH PRECONDITIONS
 .br
-\fBUebertrage nach \fBcglangA\fB Zeiger \fBRC_LANG\fR, Adresse: \fB0x9457a0\fR
+\fBUebertrage nach \fBcglangA\fB Zeiger \fBRC_LANG\fR, Adresse: \fB0x7a99d0\fR
 .br
 \fBfrisch schAcl: \fBcglangA\fR
 .br
-\fBWPcl::frisch \fBRC_LANG\fR
+\fBWPcl::virtfrisch \fBRC_LANG\fR
 .br
-\fBEnde WPcl::frisch \fBRC_LANG\fR
+\fBEnde WPcl::virtfrisch \fBRC_LANG\fR
+.br
+\fBEnde frisch schAcl: \fBcglangA\fR
+.br
+\fBUebertrage nach \fBcglangA\fB Zeiger \fBLANG\fR, Adresse: \fB0x7a99d0\fR
+.br
+\fBfrisch schAcl: \fBcglangA\fR
+.br
+\fBWPcl::virtfrisch \fBLANG\fR
+.br
+\fBEnde WPcl::virtfrisch \fBLANG\fR
 .br
 \fBEnde frisch schAcl: \fBcglangA\fR
 .br
 \fBLoesche schAcl: \fBcglangA\fR size(): 1
 .br
-i: 0, schl[i]: 0x9457a0, pname: \fBRC_LANG\fR
+i: 0, schl[i]: 0x7a99d0, pname: \fBLANG\fR
 .br
 \fBEnde loesche schAcl: \fBcglangA\fR
 .br
-\fBUebertrage nach \fBcfcnfC\fB Zeiger \fBspool_dir\fR, Adresse: \fB0x94a6d0\fR
-.br
-\fBUebertrage nach \fBcfcnfC\fB Zeiger \fBfax_user_dir\fR, Adresse: \fB0x94e170\fR
-.br
-\fBUebertrage nach \fBcfcnfC\fB Zeiger \fBsend_tries\fR, Adresse: \fB0x93fbd0\fR
-.br
-\fBUebertrage nach \fBcfcnfC\fB Zeiger \fBsend_delays\fR, Adresse: \fB0x951010\fR
-.br
-\fBUebertrage nach \fBcfcnfC\fB Zeiger \fBoutgoing_MSN\fR, Adresse: \fB0x950f80\fR
-.br
-\fBUebertrage nach \fBcfcnfC\fB Zeiger \fBdial_prefix\fR, Adresse: \fB0x9510e0\fR
-.br
-\fBUebertrage nach \fBcfcnfC\fB Zeiger \fBfax_stationID\fR, Adresse: \fB0x951170\fR
-.br
-\fBUebertrage nach \fBcfcnfC\fB Zeiger \fBfax_headline\fR, Adresse: \fB0x951200\fR
-.br
-\fBUebertrage nach \fBcfcnfC\fB Zeiger \fBfax_email_from\fR, Adresse: \fB0x95ebb0\fR
-.br
-\fBUebertrage nach \fBcfcnfC\fB Zeiger \fBoutgoing_timeout\fR, Adresse: \fB0x951090\fR
-.br
-vor causwert 6
-.br
-\fBfrisch schAcl: \fBcfcnfC\fR
-.br
-\fBWPcl::frisch \fBspool_dir\fR
-.br
-\fBEnde WPcl::frisch \fBspool_dir\fR
-.br
-\fBWPcl::frisch \fBfax_user_dir\fR
-.br
-\fBEnde WPcl::frisch \fBfax_user_dir\fR
-.br
-\fBWPcl::frisch \fBsend_tries\fR
-.br
-\fBEnde WPcl::frisch \fBsend_tries\fR
-.br
-\fBWPcl::frisch \fBsend_delays\fR
-.br
-\fBEnde WPcl::frisch \fBsend_delays\fR
-.br
-\fBWPcl::frisch \fBoutgoing_MSN\fR
-.br
-\fBEnde WPcl::frisch \fBoutgoing_MSN\fR
-.br
-\fBWPcl::frisch \fBdial_prefix\fR
-.br
-\fBEnde WPcl::frisch \fBdial_prefix\fR
-.br
-\fBWPcl::frisch \fBfax_stationID\fR
-.br
-\fBEnde WPcl::frisch \fBfax_stationID\fR
-.br
-\fBWPcl::frisch \fBfax_headline\fR
-.br
-\fBEnde WPcl::frisch \fBfax_headline\fR
-.br
-\fBWPcl::frisch \fBfax_email_from\fR
-.br
-\fBEnde WPcl::frisch \fBfax_email_from\fR
-.br
-\fBWPcl::frisch \fBoutgoing_timeout\fR
-.br
-\fBEnde WPcl::frisch \fBoutgoing_timeout\fR
-.br
-\fBEnde frisch schAcl: \fBcfcnfC\fR
-.br
-\fBUebertrage nach \fBcccnfC\fB Zeiger \fBincoming_script\fR, Adresse: \fB0x9611b0\fR
-.br
-\fBUebertrage nach \fBcccnfC\fB Zeiger \fBlog_file\fR, Adresse: \fB0x9521c0\fR
-.br
-\fBUebertrage nach \fBcccnfC\fB Zeiger \fBlog_error\fR, Adresse: \fB0x952270\fR
-.br
-\fBUebertrage nach \fBcccnfC\fB Zeiger \fBidle_script\fR, Adresse: \fB0x952230\fR
-.br
-vor causwert 7
-.br
-\fBfrisch schAcl: \fBcccnfC\fR
-.br
-\fBWPcl::frisch \fBincoming_script\fR
-.br
-\fBEnde WPcl::frisch \fBincoming_script\fR
-.br
-\fBWPcl::frisch \fBlog_file\fR
-.br
-\fBEnde WPcl::frisch \fBlog_file\fR
-.br
-\fBWPcl::frisch \fBlog_error\fR
-.br
-\fBEnde WPcl::frisch \fBlog_error\fR
-.br
-\fBWPcl::frisch \fBidle_script\fR
-.br
-\fBEnde WPcl::frisch \fBidle_script\fR
-.br
-\fBEnde frisch schAcl: \fBcccnfC\fR
-.br
 \fBErstelle optcl, pname: \fR\fBSQL_1
 .br
-\fBUebertrage nach \fBopvsql\fB Zeiger \fBSQL_1\fR, Adresse: \fB0x955800\fR
+\fBUebertrage nach \fBopvsql\fB Zeiger \fBSQL_1\fR, Adresse: \fB0x7af310\fR
 .br
 \fBErstelle optcl, pname: \fR\fBSQL_2
 .br
-\fBUebertrage nach \fBopvsql\fB Zeiger \fBSQL_2\fR, Adresse: \fB0x94e090\fR
+\fBUebertrage nach \fBopvsql\fB Zeiger \fBSQL_2\fR, Adresse: \fB0x7af3d0\fR
 .br
 \fBErstelle optcl, pname: \fR\fBSQL_3
 .br
-\fBUebertrage nach \fBopvsql\fB Zeiger \fBSQL_3\fR, Adresse: \fB0x951870\fR
+\fBUebertrage nach \fBopvsql\fB Zeiger \fBSQL_3\fR, Adresse: \fB0x7b0270\fR
 .br
 \fBErstelle optcl, pname: \fR\fBSQL_4
 .br
-\fBUebertrage nach \fBopvsql\fB Zeiger \fBSQL_4\fR, Adresse: \fB0x95f6e0\fR
+\fBUebertrage nach \fBopvsql\fB Zeiger \fBSQL_4\fR, Adresse: \fB0x7b0330\fR
 .br
 \fBErstelle optcl, pname: \fR\fBSQL_5
 .br
-\fBUebertrage nach \fBopvsql\fB Zeiger \fBSQL_5\fR, Adresse: \fB0x95f660\fR
+\fBUebertrage nach \fBopvsql\fB Zeiger \fBSQL_5\fR, Adresse: \fB0x7b0d70\fR
 .br
 \fBErstelle optcl, pname: \fR\fBSQL_6
 .br
-\fBUebertrage nach \fBopvsql\fB Zeiger \fBSQL_6\fR, Adresse: \fB0x95a150\fR
+\fBUebertrage nach \fBopvsql\fB Zeiger \fBSQL_6\fR, Adresse: \fB0x7b0e50\fR
 .br
 \fBErstelle optcl, pname: \fR\fBSQL_7
 .br
-\fBUebertrage nach \fBopvsql\fB Zeiger \fBSQL_7\fR, Adresse: \fB0x95a220\fR
+\fBUebertrage nach \fBopvsql\fB Zeiger \fBSQL_7\fR, Adresse: \fB0x7b1360\fR
 .br
 \fBErstelle optcl, pname: \fR\fBZMMuster_1
 .br
-\fBUebertrage nach \fBopvzm\fB Zeiger \fBZMMuster_1\fR, Adresse: \fB0x9649b0\fR
+\fBUebertrage nach \fBopvzm\fB Zeiger \fBZMMuster_1\fR, Adresse: \fB0x7b2490\fR
 .br
 \fBErstelle optcl, pname: \fR\fBZMZiel_1
 .br
-\fBUebertrage nach \fBopvzm\fB Zeiger \fBZMZiel_1\fR, Adresse: \fB0x964a90\fR
+\fBUebertrage nach \fBopvzm\fB Zeiger \fBZMZiel_1\fR, Adresse: \fB0x7b2550\fR
 .br
 \fBErstelle optcl, pname: \fR\fBZMMuster_2
 .br
-\fBUebertrage nach \fBopvzm\fB Zeiger \fBZMMuster_2\fR, Adresse: \fB0x963fb0\fR
+\fBUebertrage nach \fBopvzm\fB Zeiger \fBZMMuster_2\fR, Adresse: \fB0x7b2680\fR
 .br
 \fBErstelle optcl, pname: \fR\fBZMZiel_2
 .br
-\fBUebertrage nach \fBopvzm\fB Zeiger \fBZMZiel_2\fR, Adresse: \fB0x964060\fR
+\fBUebertrage nach \fBopvzm\fB Zeiger \fBZMZiel_2\fR, Adresse: \fB0x7b27e0\fR
 .br
 \fBErstelle optcl, pname: \fR\fBzufaxenvz
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBzufaxenvz\fR, Adresse: \fB0x963da0\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBzufaxenvz\fR, Adresse: \fB0x7b2910\fR
 .br
 \fBErstelle optcl, pname: \fR\fBwartevz
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBwartevz\fR, Adresse: \fB0x964790\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBwartevz\fR, Adresse: \fB0x7b2b20\fR
 .br
 \fBErstelle optcl, pname: \fR\fBnichtgefaxtvz
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBnichtgefaxtvz\fR, Adresse: \fB0x964c00\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBnichtgefaxtvz\fR, Adresse: \fB0x7b2d50\fR
 .br
 \fBErstelle optcl, pname: \fR\fBempfvz
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBempfvz\fR, Adresse: \fB0x964db0\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBempfvz\fR, Adresse: \fB0x7b2fb0\fR
 .br
 \fBErstelle optcl, pname: \fR\fBobfbox
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBobfbox\fR, Adresse: \fB0x965080\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBobfbox\fR, Adresse: \fB0x7b31e0\fR
 .br
 \fBErstelle optcl, pname: \fR\fBfbankvz
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBfbankvz\fR, Adresse: \fB0x9652b0\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBfbankvz\fR, Adresse: \fB0x7b3380\fR
 .br
 \fBErstelle optcl, pname: \fR\fBobcapi
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBobcapi\fR, Adresse: \fB0x9654b0\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBobcapi\fR, Adresse: \fB0x7b35b0\fR
 .br
 \fBErstelle optcl, pname: \fR\fBobhyla
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBobhyla\fR, Adresse: \fB0x965670\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBobhyla\fR, Adresse: \fB0x7b37a0\fR
 .br
 \fBErstelle optcl, pname: \fR\fBhylazuerst
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBhylazuerst\fR, Adresse: \fB0x965830\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBhylazuerst\fR, Adresse: \fB0x7b3990\fR
 .br
 \fBErstelle optcl, pname: \fR\fBhylazuerst
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBhylazuerst\fR, Adresse: \fB0x965ac0\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBhylazuerst\fR, Adresse: \fB0x7b3cd0\fR
 .br
 \fBErstelle optcl, pname: \fR\fBhmodem
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBhmodem\fR, Adresse: \fB0x965c80\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBhmodem\fR, Adresse: \fB0x7b3eb0\fR
 .br
 \fBErstelle optcl, pname: \fR\fBmaxcapiv
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBmaxcapiv\fR, Adresse: \fB0x965e00\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBmaxcapiv\fR, Adresse: \fB0x7b4060\fR
 .br
 \fBErstelle optcl, pname: \fR\fBmaxhylav
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBmaxhylav\fR, Adresse: \fB0x965fc0\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBmaxhylav\fR, Adresse: \fB0x7b4250\fR
 .br
 \fBErstelle optcl, pname: \fR\fBcuser
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBcuser\fR, Adresse: \fB0x966180\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBcuser\fR, Adresse: \fB0x7b4440\fR
 .br
 \fBErstelle optcl, pname: \fR\fBcklingelzahl
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBcklingelzahl\fR, Adresse: \fB0x966300\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBcklingelzahl\fR, Adresse: \fB0x7b45f0\fR
 .br
 \fBErstelle optcl, pname: \fR\fBhklingelzahl
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBhklingelzahl\fR, Adresse: \fB0x966500\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBhklingelzahl\fR, Adresse: \fB0x7b4820\fR
 .br
 \fBErstelle optcl, pname: \fR\fBmaxdials
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBmaxdials\fR, Adresse: \fB0x966700\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBmaxdials\fR, Adresse: \fB0x7b4a50\fR
 .br
 \fBErstelle optcl, pname: \fR\fBgleichziel
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBgleichziel\fR, Adresse: \fB0x966a10\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBgleichziel\fR, Adresse: \fB0x7b4c80\fR
 .br
 \fBErstelle optcl, pname: \fR\fBocri
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBocri\fR, Adresse: \fB0x966c10\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBocri\fR, Adresse: \fB0x7b4eb0\fR
 .br
 \fBErstelle optcl, pname: \fR\fBocra
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBocra\fR, Adresse: \fB0x966e10\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBocra\fR, Adresse: \fB0x7b50e0\fR
 .br
 \fBErstelle optcl, pname: \fR\fBanfaxstr
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBanfaxstr\fR, Adresse: \fB0x967010\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBanfaxstr\fR, Adresse: \fB0x7b5310\fR
 .br
 \fBErstelle optcl, pname: \fR\fBancfaxstr
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBancfaxstr\fR, Adresse: \fB0x967210\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBancfaxstr\fR, Adresse: \fB0x7b5540\fR
 .br
 \fBErstelle optcl, pname: \fR\fBanhfaxstr
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBanhfaxstr\fR, Adresse: \fB0x967410\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBanhfaxstr\fR, Adresse: \fB0x7b5770\fR
 .br
 \fBErstelle optcl, pname: \fR\fBanstr
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBanstr\fR, Adresse: \fB0x967610\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBanstr\fR, Adresse: \fB0x7b59a0\fR
 .br
 \fBErstelle optcl, pname: \fR\fBundstr
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBundstr\fR, Adresse: \fB0x967810\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBundstr\fR, Adresse: \fB0x7b5bd0\fR
 .br
 \fBErstelle optcl, pname: \fR\fBfindvers
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBfindvers\fR, Adresse: \fB0x967a10\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBfindvers\fR, Adresse: \fB0x7b5e00\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x967ba0\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7b5ff0\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x967d30\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7b61d0\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x967ec0\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7b63b0\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x968050\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7b6590\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x9681e0\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7b6770\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x968370\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7b6950\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x968500\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7b6b30\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x966850\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7b6d10\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x9689a0\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7b6e70\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x968af0\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7b7050\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x968c40\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7b71f0\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x968dd0\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7b73d0\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x968f20\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7b7570\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x969070\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7b7710\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x9691c0\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7b78b0\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x9692d0\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7b7a10\fR
 .br
 \fBErstelle optcl, pname: \fR\fBsqlz
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBsqlz\fR, Adresse: \fB0x969410\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBsqlz\fR, Adresse: \fB0x7b7b70\fR
 .br
 \fBErstelle optcl, pname: \fR\fBmusterzahl
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBmusterzahl\fR, Adresse: \fB0x969510\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBmusterzahl\fR, Adresse: \fB0x7b7ca0\fR
 .br
 \fBErstelle optcl, pname: \fR\fBhost
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBhost\fR, Adresse: \fB0x969610\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBhost\fR, Adresse: \fB0x7b7dd0\fR
 .br
 \fBErstelle optcl, pname: \fR\fBmuser
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBmuser\fR, Adresse: \fB0x969790\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBmuser\fR, Adresse: \fB0x7b7f80\fR
 .br
 \fBErstelle optcl, pname: \fR\fBmpwd
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBmpwd\fR, Adresse: \fB0x969910\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBmpwd\fR, Adresse: \fB0x7b8130\fR
 .br
 \fBErstelle optcl, pname: \fR\fBdatenbank
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBdatenbank\fR, Adresse: \fB0x969a90\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBdatenbank\fR, Adresse: \fB0x7b82e0\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x969c20\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7b84d0\fR
 .br
 \fBErstelle optcl, pname: \fR\fBlanguage
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBlanguage\fR, Adresse: \fB0x969de0\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBlanguage\fR, Adresse: \fB0x7b86b0\fR
 .br
 \fBErstelle optcl, pname: \fR\fBlanguage
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBlanguage\fR, Adresse: \fB0x969fe0\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBlanguage\fR, Adresse: \fB0x7b88e0\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x96a170\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7b8ac0\fR
 .br
 \fBErstelle optcl, pname: \fR\fBlogvz
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBlogvz\fR, Adresse: \fB0x96a330\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBlogvz\fR, Adresse: \fB0x7b8ca0\fR
 .br
 \fBErstelle optcl, pname: \fR\fBlogdname
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBlogdname\fR, Adresse: \fB0x96a530\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBlogdname\fR, Adresse: \fB0x7b8ed0\fR
 .br
 \fBErstelle optcl, pname: \fR\fBoblog
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBoblog\fR, Adresse: \fB0x96a770\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBoblog\fR, Adresse: \fB0x7b9120\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x96a8c0\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7b92f0\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x96aa50\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7b94b0\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x96d460\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7b9690\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x96d590\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7b9830\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x96d6e0\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7b99d0\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x96d7f0\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7b9b30\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x96d940\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7b9cd0\fR
 .br
 \fBErstelle optcl, pname: \fR\fBcronminut
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBcronminut\fR, Adresse: \fB0x96da80\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBcronminut\fR, Adresse: \fB0x7b9e30\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x96dc10\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7ba020\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x96dd20\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7ba1a0\fR
 .br
 \fBErstelle optcl, pname: \fR\fBautoupd
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fBautoupd\fR, Adresse: \fB0x968640\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fBautoupd\fR, Adresse: \fB0x7baaf0\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x968810\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7bad00\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x96e5c0\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7baee0\fR
 .br
 \fBErstelle optcl, pname: \fR\fB
 .br
-\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x96e750\fR
+\fBUebertrage nach \fBopn\fB Zeiger \fB\fR, Adresse: \fB0x7bb0c0\fR
 .br
 \fBOptions which are not saved: \fR
 .br
