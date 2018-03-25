@@ -660,19 +660,27 @@ template <> inline void Schluessel::setze < string > (string *var) { strncpy(val
 
 template <typename SCL> class schAcl;
 
-enum par_t:uchar {psons,pdez,ppwd,pverz,pfile,puchar,pint,plong,pdat}; // Parameterart: Sonstiges, Verzeichnis, Datei, uchar, int, long, Datum (struct tm)
-enum war_t:uchar {wlong,wbin,wstr,wdat}; // Parameterart: Sonstiges, Verzeichnis, Zahl, binär
-// fuer Wertepaare, die nur aus Datei gezogen werden und nicht zusaetzlich ueber die Befehlszeile eingegeben werden koennen
-struct WPcl { // Wertepaarklasse
-    string pname;
+enum par_t:uchar {pstri,pdez,ppwd,pverz,pfile,puchar,pbin,pint,plong,pdat}; // Parameterart: Sonstiges, Verzeichnis, Datei, uchar, int, long, Datum (struct tm)
+////enum war_t:uchar {wlong,wbin,wstr,wdat}; // Parameterart: Sonstiges, Verzeichnis, Zahl, binär
+// Wertepaargrundklasse, für WPcl und optcl
+struct wpgcl 
+{ 
+		string pname;
 		uchar ausgewertet=0;
-		const void* pptr;
-		war_t wart;
+    const void *pptr=0; // Zeiger auf Parameter, der hier eingestellt werden kann
+    par_t part=pstri; // Parameterart
     uchar gelesen=0;
+		uchar eingetragen=0; // Hilfsvariable zur genau einmaligen Eintragung einer Option mit name=pname in Konfigurationsdatei
+		wpgcl(const string& pname,const void* pptr,par_t part);
+};
+
+// fuer Wertepaare, die nur aus Datei gezogen werden und nicht zusaetzlich ueber die Befehlszeile eingegeben werden koennen
+// Wertepaarklasse
+struct WPcl:wpgcl 
+{ 
     string wert;
     string bemerk;
-		uchar eingetragen=0; // Hilfsvariable zur genau einmaligen Eintragung einer Option mit name=pname in Konfigurationsdatei
-		WPcl(const string& pname,const void* pptr,war_t wart);
+		WPcl(const string& pname,const void* pptr,par_t part);
 		WPcl(const string& pname); // wird benoetigt in: schAcl::sinit(size_t vzahl, ...)
 		int setzstr(const string& neus,uchar *const obzuschreib=0,const uchar ausDatei=0);
 		int setzstr(const char* const neuw,uchar *const obzuschreib=0,const uchar ausDatei=0);
@@ -744,7 +752,7 @@ class tsvec: public vector<T>
 }; // template<typename T> class tsvec: public vector<T>
 
 // fuer Commandline-Optionen
-//enum par_t:uchar {psons,pdez,ppwd,pverz,pfile,puchar,pint,plong,pdat}; // Parameterart: Sonstiges, Verzeichnis, Datei, uchar, int, long, Datum (struct tm)
+// enum par_t:uchar {pstri,pdez,ppwd,pverz,pfile,puchar,pbin,pint,plong,pdat}; // Parameterart: Sonstiges, Verzeichnis, Datei, uchar, int, long, Datum (struct tm)
 struct optcl;
 
 template <typename SCL> class schAcl {
@@ -884,12 +892,8 @@ struct confdcl {
 
 // neue Klasse für map
 // fuer Wertepaare, die aus Datei gezogen werden und zusaetzlich ueber die Befehlszeile eingegeben werden koennen
-struct optcl
+struct optcl:wpgcl
 {
-		string pname; // Name des Konfigurationsparameters
-		uchar ausgewertet=0;
-    const void *pptr=0; // Zeiger auf Parameter, der hier eingestellt werden kann
-    par_t art=psons; // Parameterart
 		const int kurzi=-1;
 		const int langi=-1;
     TxB *TxBp=0; // nicht const, da lgn geändert werden muß
@@ -908,7 +912,6 @@ struct optcl
 		uchar woher=0; // 1= ueber Vorgaben, 2= ueber Konfigurationsdatei, 3= ueber Befehlszeile gesetzt
 		uchar gegenteil=0;
 		uchar nichtspeichern=0;
-		uchar eingetragen=0; // Hilfsvariable zur genau einmaligen Eintragung einer Option mit name=pname in Konfigurationsdatei
 		uchar einzutragen(schAcl<optcl> *schlp,int obverb);
 		void weisomapzu(schAcl<optcl> *schlp);
 		optcl(const string& pname,const void* pptr,const par_t art, const int kurzi, const int langi, TxB* TxBp, const long Txi,

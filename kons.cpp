@@ -1044,20 +1044,20 @@ fstream*
 #else // obfstream
 FILE*
 #endif // obfstream 
-oeffne(const string& datei, uchar art, uchar* erfolg,int obverb/*=0*/, int oblog/*=0*/,uchar faclbak/*=1*/)
+oeffne(const string& datei, uchar oart, uchar* erfolg,int obverb/*=0*/, int oblog/*=0*/,uchar faclbak/*=1*/)
 {
 #ifdef obfstream
 	ios_base::openmode mode;
-	switch (art) {
+	switch (oart) {
 		case 0: mode=ios_base::in; break;
 		case 1: mode=ios_base::out; break;
 		case 2: mode=ios_base::out | ios_base::app; break;
 		case 3: mode=ios_base::out; break; // text mode, default
-	} // 	switch (art)
+	} // 	switch (oart)
 	fstream *sdat;
 #else // obfstream
 	const char *mode;
-	switch (art) {
+	switch (oart) {
 		case 0: mode="r"; break;
 		case 1: mode="w"; break;
 		case 2: mode="a"; break;
@@ -1074,7 +1074,7 @@ oeffne(const string& datei, uchar art, uchar* erfolg,int obverb/*=0*/, int oblog
 #endif // obfstream else
 		if (sdat) {
 			*erfolg=1;
-			setfaclggf(datei,obverb>1?obverb-1:0,oblog,/*obunter=*/falsch,/*mod=*/art?6:4,/*obimmer=*/0,faclbak);
+			setfaclggf(datei,obverb>1?obverb-1:0,oblog,/*obunter=*/falsch,/*mod=*/oart?6:4,/*obimmer=*/0,faclbak);
 			break;
 		}  // 				if ((sdat= fopen(datei.c_str(),mode)))
 		if (!*erfolg) {
@@ -2047,7 +2047,7 @@ void schAcl::initd(const char* const* sarr,size_t vzahl)
 } // schAcl::initd(const char* const* sarr,size_t vzahl)
 */
 
-WPcl::WPcl(const string& pname):pname(pname),pptr(0),wart(wstr),eingetragen(0)
+WPcl::WPcl(const string& pname):wpgcl(pname,/*pptr*/0,/*part*/pstri)
 {
 }
 
@@ -3120,22 +3120,26 @@ void WPcl::oausgeb() const
 {
 	cout<<"pname:"<<blau<<setw(13)<<pname<<schwarz;
 	cout<<",pptr:"<<blau<<setw(45);
-	if (1) {
 	if (pptr) {
-		if (wart==wlong) {
-//			cout<<*(long*)pptr;
-		} else if (wart==wstr) {
+		if (part==puchar||part==pbin) {
+			cout<<(int)*(uchar*)pptr;
+		} else if (part==pint) {
+			cout<<*(int*)pptr;
+		} else if (part==plong) {
+			cout<<*(long*)pptr;
+		} else if (part==pdat) {
+			cout<<ztacl((struct tm*)pptr,"%F %T");
+		} else {
 			cout<<*(string*)pptr;
 		}
 	} // 	if (pptr)
-	}
 	cout<<schwarz;
-	cout<<",wa:"<<blau<<wart<<schwarz;
+	cout<<",wa:"<<blau<<part<<schwarz;
 	cout<<",we:"<<blau<<wert<<schwarz;
 	cout<<",gel:"<<blau<<setw(1)<<(int)gelesen<<schwarz;
 	cout<<",eing:"<<blau<<(int)eingetragen<<schwarz;
 	cout<<endl;
-}
+} // void WPcl::oausgeb
 
 void optcl::oausgeb() const
 {
@@ -3143,12 +3147,14 @@ void optcl::oausgeb() const
 	cout<<pname<<schwarz;
 	cout<<",pptr:"<<blau<<setw(45);
 	if (pptr) {
-		if (art==puchar) {
+		if (part==puchar||part==pbin) {
 			cout<<(int)*(uchar*)pptr;
-		} else if (art==pint) {
+		} else if (part==pint) {
 			cout<<*(int*)pptr;
-		} else if (art==plong) {
+		} else if (part==plong) {
 			cout<<*(long*)pptr;
+		} else if (part==pdat) {
+			cout<<ztacl((struct tm*)pptr,"%F %T");
 		} else {
 			cout<<*(string*)pptr;
 		}
@@ -3161,7 +3167,7 @@ void optcl::oausgeb() const
 	cout<<",rt:"<<blau<<setw(22)<<rottxt<<schwarz;
 	cout<<",Tx2:"<<blau<<setw(3)<<Txi2<<schwarz;
 	cout<<",iw:"<<blau<<setw(2)<<iwert<<schwarz;
-	cout<<",pa:"<<blau<<art<<schwarz;
+	cout<<",pa:"<<blau<<part<<schwarz;
 	cout<<",obno:"<<blau<<(int)obno<<schwarz;
 	cout<</*endl<<setw(22)<<*/",bemkg:"<<blau<<bemerk<<schwarz;
 	cout<<",woh:"<<blau<<(int)woher<<schwarz;
@@ -3178,7 +3184,7 @@ void optcl::hilfezeile(Sprache lg)
 		if (Txi!=-1) {
 			if (TxBp->TCp[Txi][lg]) {
 				cout<<drot<<" -"<<(kurzi<0?ltoan(kurzi):(*TxBp)[kurzi])<<", --"<<(langi<0?ltoan(langi):(*TxBp)[langi]);
-				if (pptr) {if (art==psons||art==pdez||art==ppwd||art==pfile) cout<<" <string>"; else if (art==pverz) cout<<" <"<<Txk[T_pfad]<<">"; else if (art!=puchar) cout<<" <zahl>";}
+				if (pptr) {if (part==pstri||part==pdez||part==ppwd||part==pfile) cout<<" <string>"; else if (part==pverz) cout<<" <"<<Txk[T_pfad]<<">"; else if (part!=puchar) cout<<" <zahl>";}
 				cout<<schwarz<<": "<< machbemerk(lg)<<endl;
 			} // if (TxBp->TCp[Txi][lg])
 		} // if (Txi!=-1)
@@ -4929,11 +4935,11 @@ void hcl::virtVorgbAllg()
 // wird aufgerufen in lauf
 void hcl::virtinitopt()
 {
-	opn<<new optcl(/*pname*/"language",/*pptr*/&langu,/*art*/psons,T_lg_k,T_language_l,/*TxBp*/&Txk,/*Txi*/T_sprachstr,/*wi*/1,/*Txi2*/-1,/*rottxt*/nix,/*wert*/-1,/*woher*/1);
-	opn<<new optcl(/*pname*/"language",/*pptr*/&langu,/*art*/psons,T_lang_k,T_lingue_l,/*TxBp*/&Txk,/*Txi*/-1,/*wi*/1,/*Txi2*/-1,/*rottxt*/nix,/*wert*/-1,/*woher*/1);
+	opn<<new optcl(/*pname*/"language",/*pptr*/&langu,/*art*/pstri,T_lg_k,T_language_l,/*TxBp*/&Txk,/*Txi*/T_sprachstr,/*wi*/1,/*Txi2*/-1,/*rottxt*/nix,/*wert*/-1,/*woher*/1);
+	opn<<new optcl(/*pname*/"language",/*pptr*/&langu,/*art*/pstri,T_lang_k,T_lingue_l,/*TxBp*/&Txk,/*Txi*/-1,/*wi*/1,/*Txi2*/-1,/*rottxt*/nix,/*wert*/-1,/*woher*/1);
 	opn<<new optcl(/*pname*/"",/*pptr*/&obverb,/*art*/puchar,T_v_k,T_verbose_l,/*TxBp*/&Txk,/*Txi*/T_Bildschirmausgabe_gespraechiger,/*wi*/1,/*Txi2*/-1,/*rottxt*/nix,/*wert*/1,/*woher*/1);
 	opn<<new optcl(/*pname*/"logvz",/*pptr*/&logvz,/*art*/pverz,T_lvz_k,T_logvz_l,/*TxBp*/&Txk,/*Txi*/T_waehlt_als_Logverzeichnis_pfad_derzeit,/*wi*/0,/*Txi2*/-1,/*rottxt*/nix,/*wert*/-1,/*woher*/!logvz.empty());
-	opn<<new optcl(/*pname*/"logdname",/*pptr*/&logdname,/*art*/psons,T_ld_k,T_logdname_l,/*TxBp*/&Txk,/*Txi*/T_logdatei_string_im_Pfad,/*wi*/0,/*Txi2*/T_wird_verwendet_anstatt,/*rottxt*/logvz,/*wert*/-1,/*woher*/!logdname.empty());
+	opn<<new optcl(/*pname*/"logdname",/*pptr*/&logdname,/*art*/pstri,T_ld_k,T_logdname_l,/*TxBp*/&Txk,/*Txi*/T_logdatei_string_im_Pfad,/*wi*/0,/*Txi2*/T_wird_verwendet_anstatt,/*rottxt*/logvz,/*wert*/-1,/*woher*/!logdname.empty());
 	opn<<new optcl(/*pname*/"oblog",/*pptr*/&oblog,/*art*/pint,T_l_k,T_log_l,/*TxBp*/&Txk,/*Txi*/T_protokolliert_ausfuehrlich_in_Datei,/*wi*/1,/*Txi2*/T_sonst_knapper,/*rottxt*/loggespfad,/*wert*/1,/*woher*/1);
 	opn<<new optcl(/*pname*/"",/*pptr*/&logdateineu,/*art*/puchar,T_ldn_k,T_logdateineu_l,/*TxBp*/&Txk,/*Txi*/T_logdatei_vorher_loeschen,/*wi*/0,/*Txi2*/-1,/*rottxt*/nix,/*wert*/1,/*woher*/1);
 	opn<<new optcl(/*pname*/"",/*pptr*/&akonfdt,/*art*/pfile,T_kd_k,T_konfdatei_l,/*TxBp*/&Txk,/*Txi*/T_verwendet_Konfigurationsdatei_string_anstatt,/*wi*/0,/*Txi2*/-1,/*rottxt*/nix,/*wert*/-1,/*woher*/1);
@@ -5136,10 +5142,10 @@ void hcl::lieszaehlerein()
 	Log(violetts+Txk[T_lieszaehlerein]+schwarz);
 	azaehlerdt=aktprogverz()+".zaehl";
 	////<<"0 zcnfA.zahl: "<<zcnfA.size()<<endl;
-	zcnfA<<new WPcl("aufrufe",&aufrufe,wlong);
-	zcnfA<<new WPcl("lDatum",&laufrtag,wdat);
-	zcnfA<<new WPcl("tagesaufr",&tagesaufr,wlong);
-	zcnfA<<new WPcl("monatsaufr",&monatsaufr,wlong);
+	zcnfA<<new WPcl("aufrufe",&aufrufe,plong);
+	zcnfA<<new WPcl("lDatum",&laufrtag,pdat);
+	zcnfA<<new WPcl("tagesaufr",&tagesaufr,plong);
+	zcnfA<<new WPcl("monatsaufr",&monatsaufr,plong);
 	////<<"1 zcnfA.zahl: "<<zcnfA.size()<<endl;
 	confdcl zlzn;
 	zlzn.lies(azaehlerdt,obverb);
@@ -5657,12 +5663,16 @@ void hcl::zeigkonf()
 } // void hcl::zeigkonf()
 // augerufen in: anhalten(), zeigkonf()
 
+wpgcl::wpgcl(const string& pname,const void* pptr,par_t part):pname(pname),pptr(pptr),part(part),eingetragen(0)
+{
+}
+
 // weist einer Option eine Zahl zu
 void optcl::setzwert()
 {
  long zahl=gegenteil?!iwert:iwert;
  if (zahl==1) zahl=*(long*)pptr+1;
- switch (art) {
+ switch (part) {
 	 case puchar: *(uchar*)pptr=zahl; break;
 	 case pint:   *(int*)  pptr=zahl; break;
 	 default: /*case plong:*/ *(long*)pptr=zahl;
@@ -5675,35 +5685,89 @@ int WPcl::setzstr(const string& neus,uchar *const obzuschreib/*=0*/,const uchar 
 
 int WPcl::setzstr(const char* const neuw,uchar *const obzuschreib/*=0*/,const uchar ausDatei/*=0*/)
 {
+	int wiefalsch=0;
 	struct tm tmp={0},tmmax={0},neu={0};
 	char *emax=0,*eakt;
+	struct stat entryarg={0};
 	//// <<"in setzstr(), ";
 	long neul;
+	int neui;
 	binaer neub;
+	uchar neuu;
 	string neus;
+	string neuws;
 	if (pptr) {
-		switch (wart) {
-			case wlong: 
-				neul=atol(neuw);
-				if (*(long*)pptr!=neul) {
-					*(long*)pptr=neul; 
-				}
-				break;
-				//// <<"mit wlong, neuw: "<<neuw<<", atol(neuw): "<<atol(neuw)<<", pptr: "<<*(long*)pptr<<endl;
-			case wbin:
+		switch (part) {
+			case pbin:
 				neub=(binaer)atoi(neuw);
 				if (*(binaer*)pptr!=neub) {
 					*(binaer*)pptr=neub; 
 				}
 				break;
-			case wstr: 
-				neus=string(neuw);
-				if (*(string*)pptr!=neus) {
-					*(string*)pptr=neus; 
+			case puchar: case pint: case plong:
+				// und tatsaechlich numerisch ist ...
+				if (!isnumeric(neuw)) wiefalsch=1;
+				// dann zuweisen
+				else {
+					switch (part) {
+							//// <<"mit plong, neuw: "<<neuw<<", atol(neuw): "<<atol(neuw)<<", pptr: "<<*(long*)pptr<<endl;
+						case pint:
+							neui=atol(neuw);
+							if (*(int*)pptr!=neui) {
+								*(int*)pptr=neui;
+							}
+							break;
+						case puchar:
+							neuu=atol(neuw);
+							if (*(uchar*)pptr!=neuu) {
+								*(uchar*)pptr=neuu; 
+							}
+							break;
+						default: /*case plong: */
+							neul=atol(neuw);
+							if (*(long*)pptr!=neul) {
+								*(long*)pptr=neul; 
+							}
+							break;
+					}
 				}
 				break;
-			case wdat:  
-				 //// <<"Datum neuw: '"<<neuw<<"' ";
+			case pstri: case pdez:
+//				neus=string(neuw);
+				if (*(string*)pptr!=neuw) {
+						if (part==pdez && !isnumeric(neuw)) {
+							wiefalsch=1;
+						} else {
+							*(string*)pptr=neuw;
+						}
+				}
+				break;
+			case ppwd:
+				neuws=neuw;
+				// ... dann zuweisen
+				if (*(string*)pptr!=XOR(neuws,pwk)) {
+					if (ausDatei) {
+						*(string*)pptr=XOR(neuws,pwk);
+					} else {
+						*(string*)pptr=neuw;
+					}
+				}
+				break;
+			case pverz: case pfile:
+				// ... die also nicht mit '-' anfaengt
+				// ... und sie bestimmte existentielle Bedingungen erfuellt ...
+				if (stat(neuw,&entryarg)) wiefalsch=1;  // wenn inexistent
+				else if ((part==pverz)^(S_ISDIR(entryarg.st_mode))) wiefalsch=2; // Datei fuer Verzeichnis o.u.
+				// ... dann zuweisen
+				else {
+					if (*(string*)pptr!=neuw) {
+							*(string*)pptr=neuw;
+					}
+				}
+				break;
+				// oder wenn es eine Zahl sein soll ...
+			case pdat:  
+				//// <<"Datum neuw: '"<<neuw<<"' ";
 				for(unsigned im=0;im<sizeof tmmoegl/sizeof *tmmoegl;im++) {
 					memcpy(&tmp,&neu,sizeof tmp);
 					eakt=strptime(neuw, tmmoegl[im], &tmp);
@@ -5719,13 +5783,13 @@ int WPcl::setzstr(const char* const neuw,uchar *const obzuschreib/*=0*/,const uc
 				}
 				break;
 			default: break;
-		} // 		switch (wart) 
+		} // 		switch (part) 
 	} else {
 		wert=neuw;
 	} // 	if (pptr)
 	gelesen=1;
-	return gelesen;
-} // void WPcl::hole (struct tm *tmp)
+	return wiefalsch;
+} // int WPcl::setzstr(const char* const neuw,uchar *const obzuschreib/*=0*/,const uchar ausDatei/*=0*/)
 
 size_t thr_strftime(const struct tm* timeptr,string *ziel,const char* format/*="%d.%m.%Y %H.%M.%S"*/)
 {
@@ -5743,19 +5807,28 @@ string WPcl::holstr()
 {
 	string rstr;
 	if (pptr) {
-		switch (wart) {
-			case wlong:
+		switch (part) {
+			case plong:
 				rstr=ltoan(*(long*)pptr);
 				break;
-			case wbin:
+			case pint:
+				rstr=ltoan(*(int*)pptr);
+				break;
+			case pbin:
 				rstr=ltoan(*(binaer*)pptr);
 				break;
-			case wstr:
+			case puchar:
+				rstr=ltoan(*(uchar*)pptr);
+				break;
+			case pstri: case pdez: case pverz: case pfile:
 				rstr=*(string*)pptr;
 				break;
-			case wdat:
+			case ppwd:
+				rstr=XOR(*(string*)pptr,pwk);
+				break;
+			case pdat:
 				thr_strftime((struct tm*)pptr,&rstr);
-		} // 	 switch (wart)
+		} // 	 switch (part)
 	} //  if (pptr)
 	return rstr;
 } // string WPcl::holstr()
@@ -5765,17 +5838,20 @@ string optcl::holstr()
 {
 	string rstr;
 	if (pptr) {
-		switch (art) {
+		switch (part) {
 			case plong:
 				rstr=ltoan(*(long*)pptr);
 				break;
 			case pint:
 				rstr=ltoan(*(int*)pptr);
 				break;
+			case pbin:
+				rstr=ltoan(*(binaer*)pptr);
+				break;
 			case puchar:
 				rstr=ltoan(*(uchar*)pptr);
 				break;
-			case psons: case pdez: case pverz: case pfile:
+			case pstri: case pdez: case pverz: case pfile:
 				rstr=*(string*)pptr;
 				break;
 			case ppwd:
@@ -5783,7 +5859,7 @@ string optcl::holstr()
 				break;
 			case pdat:
 				thr_strftime((struct tm*)pptr,&rstr);
-		} // 		switch (art)
+		} // 		switch (part)
 	} // 	if (pptr)
 	return rstr;
 } // string optcl::holstr()
@@ -5797,8 +5873,8 @@ string& WPcl::machbemerk(Sprache lg,binaer obfarbe/*=wahr*/)
 string& optcl::machbemerk(Sprache lg,binaer obfarbe/*=wahr*/)
 {
 	static const string nix; // =""
-	const uchar obnum=(art==plong||art==pint||art==puchar);
-	const uchar geheim=(art==ppwd);
+	const uchar obnum=(part==plong||part==pint||part==puchar);
+	const uchar geheim=(part==ppwd);
 	bemerk.clear();
 	if (TxBp) {
 		if (Txi!=-1) {
@@ -5810,7 +5886,7 @@ string& optcl::machbemerk(Sprache lg,binaer obfarbe/*=wahr*/)
 				////        if (zptr && !strstr(pname,"pwd")) bemerk+=" '"+(obfarbe?blaus:nix)+*zptr+(obfarbe?schwarz:nix)+"'"; // pname==0
 				if (obno) bemerk+=(obfarbe?violetts:nix)+Txk[T_oder_nicht]+(obfarbe?schwarz:nix);
 				if (!geheim && pptr/*&&bemerk.find("assw")==string::npos*/) 
-					bemerk+=string(" (")+(obnum?"":"'")+(obfarbe?blaus:nix)+(obnum?ltoan(art==plong?*(long*)pptr:art==pint?*(int*)pptr:*(uchar*)pptr):*(string*)pptr)+(obfarbe?schwarz:nix)+(obnum?"":"'")+")";
+					bemerk+=string(" (")+(obnum?"":"'")+(obfarbe?blaus:nix)+(obnum?ltoan(part==plong?*(long*)pptr:part==pint?*(int*)pptr:*(uchar*)pptr):*(string*)pptr)+(obfarbe?schwarz:nix)+(obnum?"":"'")+")";
 			} // if (TxBp->TCp[Txi][lg])
 		} // if (Txi!=-1)
 	} // if (TxBp)
@@ -5824,7 +5900,7 @@ void optcl::frisch()
 	gegenteil=0;
 	bemerk.clear();
   nichtspeichern=0;	
-	switch (art) {
+	switch (part) {
 		case puchar: case pint: case plong:
 			setzstr("0",0); break;
 		default: setzstr("",0);
@@ -5837,19 +5913,19 @@ void optcl::frisch()
 //  aufgerufen in: pzuweis (Befehlszeile) und auswert (Datei)
 int optcl::setzstr(const char* const neuw,uchar *const obzuschreib/*=0*/,const uchar ausDatei/*=0*/)
 {
-	//// caus<<"neuw: '"<<rot<<neuw<<schwarz<<"'"<<endl;
 	int wiefalsch=0;
 	struct tm tmp={0},tmmax={0},neu={0};
 	char *emax=0,*eakt;
 	if (pptr) {
 		struct stat entryarg={0};
+		long neul;
+		binaer neub;
 		uchar neuu;
 		string neuws;
 		int neui;
-		long neul;
-		switch (art) {
+		switch (part) {
 			// und das ein "sonstiger Parameter" ist, ...
-			case psons: case pdez:
+			case pstri: case pdez:
 				//// <<"*(string*)pptr: "<<*(string*)pptr<<", neuw: "<<neuw<<endl;
 				// ... dann zuweisen
 				if (*(string*)pptr!=neuw) {
@@ -5859,7 +5935,7 @@ int optcl::setzstr(const char* const neuw,uchar *const obzuschreib/*=0*/,const u
 							*obzuschreib=1; 
 						}
 					} else {
-						if (art==pdez && !isnumeric(neuw)) {
+						if (part==pdez && !isnumeric(neuw)) {
 							wiefalsch=1;
 						} else {
 							if (pptr) *(string*)pptr=neuw;
@@ -5886,12 +5962,11 @@ int optcl::setzstr(const char* const neuw,uchar *const obzuschreib/*=0*/,const u
 				}
 				break;
 				// wenn es ein Verzeichnis oder eine Datei sein soll ...
-			case pverz:
-			case pfile:
+			case pverz: case pfile:
 				// ... die also nicht mit '-' anfaengt
 				// ... und sie bestimmte existentielle Bedingungen erfuellt ...
 				if (stat(neuw,&entryarg)) wiefalsch=1;  // wenn inexistent
-				else if ((art==pverz)^(S_ISDIR(entryarg.st_mode))) wiefalsch=2; // Datei fuer Verzeichnis o.u.
+				else if ((part==pverz)^(S_ISDIR(entryarg.st_mode))) wiefalsch=2; // Datei fuer Verzeichnis o.u.
 				// ... dann zuweisen
 				else {
 					if (*(string*)pptr!=neuw) {
@@ -5905,13 +5980,25 @@ int optcl::setzstr(const char* const neuw,uchar *const obzuschreib/*=0*/,const u
 					}
 				}
 				break;
+			case pbin:
+				neub=(binaer)atoi(neuw);
+				if (*(binaer*)pptr!=neub) {
+					if (woher>1) {
+						if (obzuschreib) if (!*obzuschreib) if (!nichtspeichern) { 
+							*obzuschreib=1; 
+						}
+					} else {
+						*(binaer*)pptr=neub; 
+					}
+				}
+				break;
 				// oder wenn es eine Zahl sein soll ...
 			case puchar: case pint: case plong:
 				// und tatsaechlich numerisch ist ...
 				if (!isnumeric(neuw)) wiefalsch=1;
 				// dann zuweisen
 				else {
-					switch (art) {
+					switch (part) {
 						case puchar:
 							neuu=atol(neuw);
 							if (*(uchar*)pptr!=neuu) {
@@ -5973,7 +6060,7 @@ int optcl::setzstr(const char* const neuw,uchar *const obzuschreib/*=0*/,const u
 					}
 				}
 				break;
-		} // switch (art) 
+		} // switch (part) 
 	} // 	if (!woher>1)
 	return wiefalsch;
 } // void optcl::setzstr
@@ -5997,11 +6084,11 @@ int optcl::pzuweis(const char *nacstr, const uchar vgegenteil/*=0*/, const uchar
 		}
 		if (wiefalsch) {
 			// wenn kein Zusatzparameter erkennbar, dann melden
-			switch (art) {
+			switch (part) {
 				case pdat:
 					Log(drots+Txk[T_Fehlender_Parameter_Datum_zu]+(kurzi<0?ltoan(kurzi):(*TxBp)[kurzi])+Txk[T_oder]+(langi<0?ltoan(langi):(*TxBp)[langi])+"!"+schwarz,1,1);
 					break;
-				case psons:
+				case pstri:
 				case pdez:
 				case ppwd:
 					Log(drots+Txk[T_Fehlender_Parameter_string_zu]+(kurzi<0?ltoan(kurzi):(*TxBp)[kurzi])+Txk[T_oder]+(langi<0?ltoan(langi):(*TxBp)[langi])+"!"+schwarz,1,1);
@@ -6011,11 +6098,11 @@ int optcl::pzuweis(const char *nacstr, const uchar vgegenteil/*=0*/, const uchar
 					Log(drots+Txk[T_Fehler_Parameter]+(kurzi<0?ltoan(kurzi):(*TxBp)[kurzi])+Txk[T_oder]+(langi<0?ltoan(langi):(*TxBp)[langi])+" "+
 							(wiefalsch==1?Txk[T_ohne_gueltigen]:wiefalsch==2?Txk[T_mit_Datei_als]:Txk[T_mit_falschem])+Txk[T_Pfad_angegeben]+schwarz,1,1);
 					break;
-				case puchar: case pint: case plong:
+				case puchar: case pint: case plong: case pbin:
 					Log(drots+(wiefalsch==1?Txk[T_Nicht_numerischer]:Txk[T_Fehlender])+Txk[T_Parameter_nr_zu]
 							+(kurzi<0?ltoan(kurzi):(*TxBp)[kurzi])+Txk[T_oder]+(langi<0?ltoan(langi):(*TxBp)[langi])+"!"+schwarz,1,1);
 					break;
-			} // switch (art)
+			} // switch (part)
 		} // 										if (wiefalsch)
 		if (!wiefalsch) {
 			return -1;
@@ -6024,9 +6111,9 @@ int optcl::pzuweis(const char *nacstr, const uchar vgegenteil/*=0*/, const uchar
 	return wiefalsch;
 } // int optcl::pzuweis
 
-optcl::optcl(const string& pname,const void* pptr,const par_t art, const int kurzi, const int langi, TxB* TxBp, const long Txi,
-		const uchar wi, const long Txi2, const string rottxt, const int iwert,const uchar woher):
-	pname(pname),pptr(pptr),art(art),kurzi(kurzi),langi(langi),TxBp(TxBp),Txi(Txi),wi(wi),Txi2(Txi2),rottxt(rottxt),iwert(iwert),
+optcl::optcl(const string& pname,const void* pptr,const par_t part, const int kurzi, const int langi, TxB* TxBp, const long Txi,
+		const uchar wi, const long Txi2, const string rottxt, const int iwert,const uchar woher):wpgcl(pname,pptr,part),
+	kurzi(kurzi),langi(langi),TxBp(TxBp),Txi(Txi),wi(wi),Txi2(Txi2),rottxt(rottxt),iwert(iwert),
 	obno(iwert!=-1),woher(woher)//,eingetragen(0)
 {
 	caus<<gruen<<"Erstelle optcl, pname: "<<schwarz<<violett<<pname<<endl;
@@ -6225,9 +6312,9 @@ void hcl::pruefsamba(const vector<const string*>& vzn,const svec& abschni,const 
 					const string susefw="/etc/sysconfig/SuSEfirewall2";
 					struct stat fstat={0};
 					if (!lstat(susefw.c_str(),&fstat)) {
-						string part="server";
+						string prart="server";
 						for(int i=1;i<3;i++) {
-							int nichtfrei=systemrueck("grep '^FW_CONFIGURATIONS_EXT=\\\".*samba-"+part+"' "+susefw,obverb,oblog,0,/*obsudc=*/0,/*verbergen=*/2);
+							int nichtfrei=systemrueck("grep '^FW_CONFIGURATIONS_EXT=\\\".*samba-"+prart+"' "+susefw,obverb,oblog,0,/*obsudc=*/0,/*verbergen=*/2);
 							if (nichtfrei && !nrzf && !obfw) {
 								obfw=Tippob(Txk[T_Soll_die_SuSEfirewall_bearbeitet_werden],Txk[T_j_af]);
 								if (!obfw) break;
@@ -6237,12 +6324,12 @@ void hcl::pruefsamba(const vector<const string*>& vzn,const svec& abschni,const 
 								struct stat lbak={0};
 								int fehlt=lstat((susefw+"."+bak).c_str(),&lbak);
 								const string bef="sed -i"+(fehlt?"."+bak:"")+
-									" 's/\\(FW_CONFIGURATIONS_EXT=\\\".*\\)\\(\\\".*$\\)/\\1 samba-"+part+"\\2/g' "+susefw+
+									" 's/\\(FW_CONFIGURATIONS_EXT=\\\".*\\)\\(\\\".*$\\)/\\1 samba-"+prart+"\\2/g' "+susefw+
 									"&&"+sudc+"systemctl restart SuSEfirewall2 smb nmb";
 								systemrueck(bef,obverb,oblog,/*rueck=*/0,/*obsudc=*/1); 
 								anfgg(unindt,sudc+"sh -c 'cp -a \""+susefw+"."+bak+"\" \""+susefw+"\"'&&systemctl restart SuSEfirewall2 smb nmb",bef,obverb,oblog);
 							} // 					if (nichtfrei && obfw)
-							part="client";
+							prart="client";
 						} // for(int i=1;i<3;i++) 
 					} // if (!lstat(susefw,&fstat)) 
 				} // 			  if (system==fed) else 
@@ -6251,7 +6338,7 @@ void hcl::pruefsamba(const vector<const string*>& vzn,const svec& abschni,const 
 	} //   if (!(conffehlt=lstat(smbdt,&sstat)))
 } // pruefsamba
 
-WPcl::WPcl(const string& pname,const void* pptr,war_t wart):pname(pname),pptr(pptr),wart(wart)
+WPcl::WPcl(const string& pname,const void* pptr,par_t part):wpgcl(pname,pptr,part)
 {
 }
 
