@@ -758,9 +758,12 @@ template <typename SCL> class schAcl {
  schAcl& operator<<(SCL *schp);
  schAcl& operator<<(shared_ptr<SCL> schp);
 // schAcl& operator<<(shared_ptr<SCL> schp);
- inline const SCL* operator[](size_t const& nr) const { return schl[nr].get(); }
- inline SCL* operator[](size_t const& nr) { return schl[nr].get(); }
+// inline const SCL* operator[](size_t const& nr) const { return schl[nr].get(); }
+// inline SCL* operator[](size_t const& nr) { return schl[nr].get(); }
+ inline shared_ptr<const SCL> operator[](size_t const& nr) const { return schl[nr];}
+ inline shared_ptr<SCL> operator[](size_t const& nr) { return schl[nr];}
  inline size_t size(){return schl.size();}
+ inline shared_ptr<SCL> letzter() {return schl[schl.size()-1];} 
  schAcl(const string& name);
 // schAcl(const string& name, const char* const* sarr,size_t vzahl);
  // void neu(size_t vzahl=0);

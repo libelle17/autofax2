@@ -1991,16 +1991,14 @@ template<typename SCL> schAcl<SCL>::schAcl(const string& name):name(name)
 template<typename SCL> schAcl<SCL>::~schAcl()
 {
  caus<<violett<<"Loesche schAcl: "<<blau<<name<<schwarz<<" size(): "<<size()<<endl;
- /*
 	for(size_t i=0;i<schl.size();i++) {
 		//delete schl[i];
-		caus<<"i: "<<i<<" pname: ";
-		caus<<schl[i]->pname<<endl;
+		caus<<"i: "<<i<<", schl[i]: "<<schl[i]<<", pname: ";
+		caus<<blau<<schl[i]->pname<<schwarz<<endl;
 		schl[i].reset();
 //		schl[i]=0; // falls selbes Element in mehreren Vektoren
 	}
-	*/
-	schl.clear();
+	//schl.clear();
  caus<<violett<<"Ende loesche schAcl: "<<blau<<name<<schwarz<<endl;
 	//schl.clear();
 }// template<typename SCL> schAcl<SCL>::~schAcl()
@@ -5744,22 +5742,22 @@ size_t thr_strftime(const struct tm* timeptr,string *ziel,const char* format/*="
 string WPcl::holstr()
 {
 	string rstr;
- if (pptr) {
-	 switch (wart) {
-		 case wlong:
-			 rstr=ltoan(*(long*)pptr);
-			 break;
-		 case wbin:
-			 rstr=ltoan(*(binaer*)pptr);
-			 break;
-		 case wstr:
-			 rstr=*(string*)pptr;
-			 break;
-		 case wdat:
-			 thr_strftime((struct tm*)pptr,&rstr);
-	 } // 	 switch (wart)
- } //  if (pptr)
- return rstr;
+	if (pptr) {
+		switch (wart) {
+			case wlong:
+				rstr=ltoan(*(long*)pptr);
+				break;
+			case wbin:
+				rstr=ltoan(*(binaer*)pptr);
+				break;
+			case wstr:
+				rstr=*(string*)pptr;
+				break;
+			case wdat:
+				thr_strftime((struct tm*)pptr,&rstr);
+		} // 	 switch (wart)
+	} //  if (pptr)
+	return rstr;
 } // string WPcl::holstr()
 
 
@@ -6539,9 +6537,9 @@ template<typename SCL> void schAcl<SCL>::schAschreib(mdatei *const f,int obverb)
 // kann aufgerufen werden
 template<typename SCL> void schAcl<SCL>::gibaus(const int nr/*=0*/)
 {
-	cout<<"gibaus("<<nr<<")"<<endl;
+	cout<<"gibaus(Nr."<<nr<<",name:"<<name<<")"<<endl;
 	for(size_t i=0;i<schl.size();i++) {
-   cout<<"i: "<<gruen<<i<<schwarz<<" pname: "<<blau<<schl[i]->pname<<schwarz<<Txk[T_Wert]<<blau<<schl[i]->holstr()<<schwarz<<endl;
+   cout<<"i: "<<gruen<<i<<schwarz<<",schl:"<<schl[i]<<",pname: "<<blau<<schl[i]->pname<<schwarz<<Txk[T_Wert]<<blau<<schl[i]->holstr()<<schwarz<<endl;
   }
 } // template<typename SCL> void schAcl
 
@@ -6610,8 +6608,9 @@ template<typename SCL> schAcl<SCL>& schAcl<SCL>::operator<<(shared_ptr<SCL> schp
 {
 ////	shared_ptr<SCL> kopie{schp};
 ////	schl.push_back(kopie); 
-	caus<<rot<<"Uebertrage nach "<<blau<<name<<rot<<" smart_ptr "<<blau<<schp->pname<<schwarz<<endl;
+	caus<<rot<<"Uebertrage nach "<<blau<<name<<rot<<" smart_ptr "<<blau<<schp->pname<<schwarz;
 	schl.push_back(schp);
+	caus<<", Adresse: "<<blau<<schl[schl.size()-1]<<schwarz<<endl;
 	schl[schl.size()-1]->weisomapzu(this); 
 	return *this; 
 }
@@ -6629,9 +6628,10 @@ template<typename SCL> schAcl<SCL>& schAcl<SCL>::operator<<(SCL *schp)
 	*/
 	//return operator<<(*schp); 
 //	caus<<rot<<name<<rot<<"<<"<<violett<<schp->pname<<endl;
-	caus<<rot<<"Uebertrage nach "<<blau<<name<<rot<<" Zeiger "<<blau<<schp->pname<<schwarz<<endl;
+	caus<<rot<<"Uebertrage nach "<<blau<<name<<rot<<" Zeiger "<<blau<<schp->pname<<schwarz;
 	shared_ptr<SCL> kopie{schp};
 	schl.push_back(kopie); 
+	caus<<", Adresse: "<<blau<<schl[schl.size()-1]<<schwarz<<endl;
 	schl[schl.size()-1]->weisomapzu(this); 
 	return *this; 
 }

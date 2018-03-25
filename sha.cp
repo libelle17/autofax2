@@ -52,28 +52,31 @@ struct contcl
 main(int argc, char** argv)
 {
   vector<shared_ptr<scl>> v1, v2;
-  contcl c1("c1"), c2("c2");
-  scl *sptr=new scl("fuer vector");
+  contcl z1("c1"), z2("z2");
+  z1<<new scl("1. fuer vector");
+  z1<<new scl("2. fuer vector");
+  z2<<z1.ve[0];
+  z2<<z1.ve[1];
+  z2.ausgeb();
+  z1.~contcl();
+  z2.ausgeb();
+  z2.~contcl();
+  z2.ausgeb();
+	exit(0);
+#ifdef var1
+  scl *sptr=new scl("fuer 1. vector");
   shared_ptr<scl> ssptr{sptr};
-  c1<<ssptr;
+  z1<<ssptr;
   ssptr.reset();
   if (ssptr) caus<<"ssptr gibts noch"<<endl;
   else caus<<"ssptr geloescht"<<endl;
-  if (c1.ve[0]) caus<<"c1.ve[0] gibts noch"<<endl;
-  else caus<<"c1.ve[0] geloescht"<<endl;
-  c1.ve[0].reset();
-  if (c1.ve[0]) caus<<"c1.ve[0] gibts noch"<<endl;
-  else caus<<"c1.ve[0] geloescht"<<endl;
+  if (z1.ve[0]) caus<<"z1.ve[0] gibts noch"<<endl;
+  else caus<<"z1.ve[0] geloescht"<<endl;
+  z1.ve[0].reset();
+  if (z1.ve[0]) caus<<"z1.ve[0] gibts noch"<<endl;
+  else caus<<"z1.ve[0] geloescht"<<endl;
+#endif
   
-  exit(0);
-  c1<<new scl("2. fuer vector");
-  c2<<c1.ve[0];
-  c2<<c1.ve[1];
-  c2.ausgeb();
-  c1.~contcl();
-  c2.ausgeb();
-  c2.~contcl();
-  c2.ausgeb();
   /*
   v1.push_back(ssptr);
   v2.push_back(v1[0]);

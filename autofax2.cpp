@@ -2080,7 +2080,7 @@ hhcl::~hhcl() //α
 void hhcl::virtlieskonfein()
 {
 	const int altobverb=obverb;
-//	obverb=1;
+	//	obverb=1;
 	Log(violetts+Txk[T_virtlieskonfein]+schwarz);
 	hcl::virtlieskonfein(); //ω
 	//// caus<<"sqlzn: "<<sqlzn<<endl;
@@ -2090,51 +2090,27 @@ void hhcl::virtlieskonfein()
 		stringstream soptname;
 		soptname<<"SQL_"<<i;
 		opsql<<new optcl(/*pname*/soptname.str(),/*pptr*/&sqlp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/ltoan(i),/*wert*/-1,/*woher*/1);
-//		shared_ptr<optcl> sptr{opsql[opsql.size()-1]};
-		shared_ptr<optcl> kop2{opsql[opsql.size()-1]};
-		opn<<kop2;
+//// folgendes wuerde zum Absturz fuehren (der shared_ptr muss derselbe sein, damit er und sein Inhalt nur einmal versucht wird zu destruieren):
+////		shared_ptr<optcl> kop2{opsql[opsql.size()-1]};
+////		opn<<kop2;
+		opn<<opsql.letzter();
 	} // 	for(long i=0;i<sqlzn;)
-			caus<<violett<<"vor causwert 4"<<schwarz<<endl;
 	hccd.causwert(&opsql,obverb,'=',0);
 	// wenn in der Konfigurationsdatei keine sql-Befehle stehen, dann die aus den Vorgaben nehmen
-	for(size_t i=0;i<sqlzn;i++) {
-		//// caus<<"sqlp["<<i+1<<"]: "<<sqlp[i]<<endl;
-	} // 	for(long i=0;i<sqlzn;i++)
 	if (!sqlzn) {
 		sqlzn=sqlvzn;
 		opn.omap["sqlz"]->woher=1;
 		for(size_t i=0;i<sqlzn;i++) {
-	//// caus<<"sqlzn: "<<sqlzn<<", sqlvzn: "<<sqlvzn<<endl;
-////			caus<<rot<<"i: "<<violett<<i<<schwarz<<endl;
-////			opn.gibomapaus();
-		//// caus<<"opn.schl.size(): "<<opn.schl.size()<<", omap.size(): "<<opn.omap.size()<<endl;
-      //// opsql<<opvsql[i];
-		//// caus<<"opn.schl.size(): "<<opn.schl.size()<<", omap.size(): "<<opn.omap.size()<<endl;
-////			caus<<"opvsql.size(): "<<opvsql.size()<<endl;
-////			caus<<"opsql.size(): "<<opsql.size()<<endl;
-////opsql.schl.push_back(opvsql.schl[i]); 
-////			opn.gibomapaus();
-////opsql[opsql.size()-1]->weisomapzu(&opsql); 
-////			caus<<"opsql.size(): "<<opsql.size()<<endl;
-////opn.schl.push_back(opvsql.schl[i]); 
-////opn[opn.size()-1]->weisomapzu(&opn); 
-////			caus<<"opn.size(): "<<opn.size()<<endl;
-			shared_ptr<optcl> kop2{opvsql[i]};
-			opsql<<kop2;
-			shared_ptr<optcl> kop3{opvsql[i]};
-			opn<<kop3;
-//			opn.gibomapaus();
-//			opn<<opvsql[i];
+			opsql<<opvsql[i];
+			opn<<opsql.letzter();
 		}
 	} // 	if (!sqlzn)
 	if (!zmzn) {
 		zmzn=zmvzn;
 		opn.omap["musterzahl"]->woher=1;
 		for(size_t i=0;i<zmvzn+zmvzn;i++) {
-			shared_ptr<optcl> kop2{opvzm[i]};
-			opzm<<kop2;
-			shared_ptr<optcl> kop3{opvzm[i]};
-			opn<<kop3;
+			opzm<<opvzm[i];
+			opn<<opzm.letzter();
 		} // 		for(long i=0;i<zmzn;i++) 
 		zmp=zmvp;
 	} else {
@@ -2149,9 +2125,9 @@ void hhcl::virtlieskonfein()
 			////	  const string *const istrp=new string(ltoan(i));	
 			string istr=ltoan(i);
 			opzm<<new optcl(/*pname*/zmmname.str(),/*pptr*/&zmmp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zielmuster_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
-			opn<<opzm.schl[opzm.size()-1];
+			opn<<opzm.letzter();
 			opzm<<new optcl(/*pname*/zmzname.str(),/*pptr*/&zmzp[i-1],/*art*/psons,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Ziel_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
-			opn<<opzm.schl[opzm.size()-1];
+			opn<<opzm.letzter();
 			//// caus<<"opn.schl.size(): "<<opn.schl.size()<<", omap.size(): "<<opn.omap.size()<<endl;
 		} // 	for(long i=0;i<zmzn;)
 		caus<<blau<<"opzm.size(): "<<violett<<opzm.size()<<schwarz<<endl;
@@ -2160,8 +2136,6 @@ void hhcl::virtlieskonfein()
 		hccd.causwert(&opzm,obverb,/*tz*/'=',/*mitclear*/0);
 //		opn.gibaus(1);
 //		opzm.~schAcl();
-		opsql.~schAcl();
-		opn.~schAcl();
 		for(size_t i=0;i<zmzn;i++) {
 			//// caus<<"zmmp["<<i+1<<"]: "<<zmmp[i]<<endl;
 			//// caus<<"zmzp["<<i+1<<"]: "<<zmzp[i]<<endl;
@@ -2175,8 +2149,6 @@ void hhcl::virtlieskonfein()
 ////	opn.gibomapaus();
 	Log(violetts+Txk[T_Ende]+Txk[T_virtlieskonfein]+schwarz);
 	obverb=altobverb;
-	caus<<"vor Abbruch"<<endl;
-	exit(30);
 } // void hhcl::virtlieskonfein() //α
 
 int main(int argc,char** argv) //α
