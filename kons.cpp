@@ -3116,7 +3116,7 @@ uchar VerzeichnisGibts(const char* vname)
 	return 0;
 } // VerzeichnisGibts
 
-void WPcl::oausgeb()
+void WPcl::oausgeb() const
 {
 	cout<<"pname:"<<blau<<setw(13)<<pname<<schwarz;
 	cout<<",pptr:"<<blau<<setw(45);
@@ -3137,7 +3137,7 @@ void WPcl::oausgeb()
 	cout<<endl;
 }
 
-void optcl::oausgeb()
+void optcl::oausgeb() const
 {
 	cout<<"pname:"<<blau<<setw(13);
 	cout<<pname<<schwarz;
@@ -5789,7 +5789,7 @@ string optcl::holstr()
 } // string optcl::holstr()
 
 
-string& WPcl::machbemerk(Sprache lg,binaer obfarbe/*=wahr*/) 
+string& WPcl::machbemerk(Sprache lg,binaer obfarbe/*=wahr*/)
 {
 	return bemerk;
 }

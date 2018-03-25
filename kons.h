@@ -660,6 +660,7 @@ template <> inline void Schluessel::setze < string > (string *var) { strncpy(val
 
 template <typename SCL> class schAcl;
 
+enum par_t:uchar {psons,pdez,ppwd,pverz,pfile,puchar,pint,plong,pdat}; // Parameterart: Sonstiges, Verzeichnis, Datei, uchar, int, long, Datum (struct tm)
 enum war_t:uchar {wlong,wbin,wstr,wdat}; // Parameterart: Sonstiges, Verzeichnis, Zahl, binär
 // fuer Wertepaare, die nur aus Datei gezogen werden und nicht zusaetzlich ueber die Befehlszeile eingegeben werden koennen
 struct WPcl { // Wertepaarklasse
@@ -684,7 +685,7 @@ struct WPcl { // Wertepaarklasse
 //    template <typename T> void setze(T *var) { wert=ltoan(*var); }
 //    template <typename T> void setze(T *var,string& bem) { wert=ltoan(*var); bemerk=bem;}
 		void hole (struct tm *tmp);
-		void oausgeb();
+		void oausgeb() const;
 		void frisch();
     string& machbemerk(Sprache lg,binaer obfarbe=wahr);
 }; // class WPcl
@@ -743,7 +744,7 @@ class tsvec: public vector<T>
 }; // template<typename T> class tsvec: public vector<T>
 
 // fuer Commandline-Optionen
-enum par_t:uchar {psons,pdez,ppwd,pverz,pfile,puchar,pint,plong,pdat}; // Parameterart: Sonstiges, Verzeichnis, Datei, uchar, int, long, Datum (struct tm)
+//enum par_t:uchar {psons,pdez,ppwd,pverz,pfile,puchar,pint,plong,pdat}; // Parameterart: Sonstiges, Verzeichnis, Datei, uchar, int, long, Datum (struct tm)
 struct optcl;
 
 template <typename SCL> class schAcl {
@@ -760,8 +761,8 @@ template <typename SCL> class schAcl {
 // schAcl& operator<<(shared_ptr<SCL> schp);
 // inline const SCL* operator[](size_t const& nr) const { return schl[nr].get(); }
 // inline SCL* operator[](size_t const& nr) { return schl[nr].get(); }
- inline shared_ptr<const SCL> operator[](size_t const& nr) const { return schl[nr];}
- inline shared_ptr<SCL> operator[](size_t const& nr) { return schl[nr];}
+ inline const shared_ptr<const SCL> operator[](size_t const& nr) const { return schl[nr];}
+ inline shared_ptr<SCL> operator[](size_t const& nr) { return schl[nr];} // fuer hilfezeile, machbemerk
  inline size_t size(){return schl.size();}
  inline shared_ptr<SCL> letzter() {return schl[schl.size()-1];} 
  schAcl(const string& name);
@@ -916,7 +917,7 @@ struct optcl
 		int setzstr(const char* const neuw,uchar *const obzuschreib=0,const uchar ausDatei=0);
     void tusetzbemerkwoher(const string& ibemerk,const uchar vwoher);
 		string holstr();
-		void oausgeb();
+		void oausgeb() const;
 		int pzuweis(const char *nacstr, const uchar vgegenteil=0, const uchar vnichtspeichern=0);
     string& machbemerk(Sprache lg,binaer obfarbe=wahr);
     void hilfezeile(Sprache lg);
