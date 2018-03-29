@@ -456,6 +456,22 @@ char const *DPROG_T[T_MAX+1][SprachZahl]={
 	{"Ziel Nr. ","Target no. "},
 	// T_Zahl_der_Muster_Verzeichnis_Paare_zum_Speichern_ankommender_Faxe
 	{"Zahl der Muster/Verzeichnis-Paare zum Speichern ankommender Faxe","No of pairs of patterns/directories for saving received faxes"},
+	// T_Verzeichnis_mit_zu_faxenden_Dateien
+	{"Verzeichnis mit zu faxenden Dateien","Directory with files to fax"},
+	// T_Verzeichnis_mit_wartenden_Dateien
+	{"Verzeichnis mit wartenden Dateien","Directory with waiting files"},
+	// T_Verzeichnis_mit_gescheiterten_Dateien
+	{"Verzeichnis mit gescheiterten Dateien","Directory with failed files"},
+	// T_Verzeichnis_fuer_empfangene_Faxe
+	{"Verzeichnis fuer empfangene Faxe","Directory for received faxes"},
+	// T_Soll_die_FritzBox_verwendet_werden
+	{"Soll die Fritzbox verwendet werden","Shall the fritzbox be used"},
+	// T_Mit_CIFS_gemountetes_Verzeichnis_mit_ankommenden_Faxen_der_Fritzbox
+	{"Mit CIFS gemountetes Verzeichnis mit ankommenden Faxen der Fritzbox", "Via CIFS mounted directory with received faxes at the fritzbox"},
+	// T_Soll_die_Capisuite_verwendet_werden
+	{"Soll die Capisuite verwendet werden","Shall Capisuite be used"},
+	// 	T_pruefisdn
+	{"T_pruefisdn()","checkisdn()"},
 	{"",""} //α
 }; // char const *DPROG_T[T_MAX+1][SprachZahl]=
 
@@ -802,8 +818,7 @@ void hhcl::liescapiconf()
 		pruefverz(dir_name(cfaxconfdt),obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/0);
 		if (cfaxcp) delete cfaxcp;
 		cfaxcp = new confdcl(cfaxconfdt,obverb);
-			caus<<"vor causwert 6"<<endl;
-		cfaxcp->causwert(&cfcnfC);
+		cfaxcp->kauswert(&cfcnfC);
 		cfaxcp->Abschn_auswert(obverb);
 #ifdef false
 		cfcnfA.init(10,"spool_dir","fax_user_dir","send_tries","send_delays","outgoing_MSN",
@@ -878,8 +893,7 @@ void hhcl::liescapiconf()
 			pruefverz(dir_name(ccapiconfdt),obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/0);
 			confdcl ccapc(ccapiconfdt,obverb);
 			////<<"azaehlerdt: "<<blau<<azaehlerdt<<schwarz<<endl;
-			caus<<"vor causwert 7"<<endl;
-			ccapc.causwert(&cccnfC);
+			ccapc.kauswert(&cccnfC);
 			cczulesen=0;
 			if (!cuser.empty()) {
 				for(size_t j=0;j<sizeof cdn/sizeof *cdn;j++) {
@@ -1990,12 +2004,107 @@ void hhcl::pvirtvorrueckfragen()
   } //α
 } // void hhcl::pvirtvorrueckfragen
 
+// wird aufgerufen in: rueckfragen, main
+void hhcl::pruefisdn()
+{
+	Log(violetts+Tx[T_pruefisdn]+schwarz);
+	svec rueck;
+////	cmd="{ lspci 2>/dev/null || "+sudc+"lspci 2>/dev/null;}|grep -i 'isdn'"; systemrueck(cmd, obverb,oblog,&rueck);
+	for(int iru=0;iru<2;iru++) {
+		if (systemrueck("lspci 2>/dev/null|grep -i 'isdn'",obverb,oblog,&rueck,/*obsudc=*/iru)) break;
+	}
+	// <<"pruefmodem 1 vor  obcapi: "<<(int)obcapi<<endl;
+	if (rueck.size()) {
+		Log(blaus+Tx[T_ISDN_Karte_gefunden]+schwarz+rueck[0]+blau+Tx[T_Setze]+Tx[T_mitCapi]+schwarz+Tx[T_aauf]+blau+"1.");
+		obfcard=1;
+	} else {
+		Log(rots+Tx[T_Keine_ISDN_Karte_gefunden]+schwarz+Tx[T_mitCapi]+rot+Tx[T_aauf]+schwarz+"0.");
+		obcapi=obfcard=0;
+	} // 	if (rueck.size())
+	if (obverb) Log("obfcard: "+blaus+ltoan(obfcard)+schwarz);
+	obfcgeprueft=1;
+	// wenn zum Konfigurationszeitpunkt keine Fritzcard drinstak, aber jetzt, dann rueckfragen
+	if (obfcard && agcnfA.hole("obfcard")=="0") {
+		rzf=1;
+	} // 	if (obfcard && agcnfA.hole("obfcard")=="0")
+	// wenn nur obkschreib, dann noch nicht auf neu eingesteckte Fritzcard reagieren
+	if (rzf) {
+		agcnfA.setze("obfcard",obfcard?"1":"0");
+	} // 	if (rzf)
+	/*//
+		string bemst; 
+		svec bemv;
+		Sprache altSpr=Tx.lgn;
+		for(int akts=0;akts<SprachZahl;akts++) KLA
+		Tx.lgn=(Sprache)akts;
+		bemst=Tx[T_ob_ein_Modem_drinstak];
+		bemv<<bemst;
+		KLZ //         for(int akts=0;akts<SprachZahl;akts++)
+		Tx.lgn=altSpr;
+	 */
+	agcnfA.setzbemv("obfcard",&Tx,T_ob_eine_Fritzcard_drinstak);
+} // void hhcl::pruefisdn()
+
+
 // wird aufgerufen in lauf
 void hhcl::virtrueckfragen()
 {
 	Log(violetts+Tx[T_virtrueckfragen]+schwarz);
 	if (rzf) { //ω
-  } //α
+		zufaxenvz=Tippverz(Tx[T_Verzeichnis_mit_zu_faxenden_Dateien],&zufaxenvz);
+		wvz=Tippverz(Tx[T_Verzeichnis_mit_wartenden_Dateien],&wvz);
+		ngvz=Tippverz(Tx[T_Verzeichnis_mit_gescheiterten_Dateien],&ngvz);
+		empfvz=Tippverz(Tx[T_Verzeichnis_fuer_empfangene_Faxe],&empfvz);
+		svec fbip;
+		const uchar fbfehlt=systemrueck("ping fritz.box -c1",obverb,oblog,&fbip);
+		// PING fritz.box (192.168.178.1) 56(84) bytes of data.
+		if (fbfehlt) {
+			obfbox=0;
+		} else {
+			if (rzf) {
+				if (obfcard) {
+					obfbox=Tippob(Tx[T_Soll_die_FritzBox_verwendet_werden],obfbox?Txk[T_j_af]:"n");
+				} else {
+					obfbox=0;
+				}
+			} //     if (agcnfA[++lfd].wert.empty() || rzf)
+		} // 		if (fbfehlt) else
+		if (obfbox) {
+			if (rzf) {
+				if (fbip.size()) {
+					const string *const ipp=&fbip[0];
+					if (const size_t p1=ipp->find("(")+1) {
+						const size_t p2=ipp->find(")",p1);
+						// 192.168.178.1
+						svec mounts;
+						if (!systemrueck("mount|grep '"+ipp->substr(p1,p2-p1)+"'",obverb,oblog,&mounts)&&mounts.size()) {
+							// //192.168.178.1/DiabFB on /mnt/diabfb type cifs (rw,relatime,vers=1.0,cache=strict,username=ftpuser,domain=DIABFB,uid=0,noforceuid,gid=0,noforcegid,addr=192.168.178.1,unix,posixpaths,mapposix,acl,rsize=61440,wsize=65536,actimeo=1)
+							vector<string> tok;
+							aufSplit(&tok,mounts[0],' ');
+							if (tok.size()>2) {
+								svec datei;
+								// die jüngste pdf-Datei auf dem CIFS-Verzeichnis suchen
+								systemrueck("find '"+tok[2]+"' -type f -iname '*pdf' -print0|/usr/bin/xargs -0 -r ls -l --time-style=full-iso|sort -nrk 6,7", obverb,oblog,&datei);
+								if (datei.size()) {
+									// -rwxrwxrwx 1 root root   10061 2017-11-01 10:03:52.000000000 +0100 /mnt/diabfb/Generic-FlashDisk-01/FRITZ/faxbox/01.11.17_10.03_Telefax.081316150166.pdf
+									if (const size_t p1=datei[0].find(" "+tok[2])+1) {
+										fbankvz=dir_name(datei[0].substr(p1));
+									} // 									if (const size_t p1=datei[0].find(" "+tok[2])+1)
+								} // 								if (datei.size())
+							} // 							if (tok.size()>2)
+						} // 						if (!systemrueck("mount|grep "+ipp->substr(p1,p2-p1),obverb,oblog,&mounts)&&mounts.size())
+					} // 					if (const size_t p1=ipp->find("(")+1)
+				} // 				if (fbip.size())
+				fbankvz=Tippstr(Tx[T_Mit_CIFS_gemountetes_Verzeichnis_mit_ankommenden_Faxen_der_Fritzbox],&fbankvz);
+			} // 		if (agcnfA[++lfd].wert.empty() || rzf)
+		} // 		if (obfbox)
+		if (!obfcgeprueft) pruefisdn();
+		if (obfcard) {
+			obcapi=Tippob(Tx[T_Soll_die_Capisuite_verwendet_werden],obcapi?Txk[T_j_af]:"n");
+		} else {
+			obcapi=0;
+		}
+	} //α
 	dhcl::virtrueckfragen();
 } // void hhcl::virtrueckfragen()
 
@@ -2095,7 +2204,7 @@ void hhcl::virtlieskonfein()
 ////		opn<<kop2;
 		opn<<opsql.letzter();
 	} // 	for(long i=0;i<sqlzn;)
-	hccd.causwert(&opsql,obverb,'=',0);
+	hccd.kauswert(&opsql,obverb,'=',0);
 	// wenn in der Konfigurationsdatei keine sql-Befehle stehen, dann die aus den Vorgaben nehmen
 	if (!sqlzn) {
 		sqlzn=sqlvzn;
@@ -2132,7 +2241,7 @@ void hhcl::virtlieskonfein()
 		} // 	for(long i=0;i<zmzn;)
 ////		caus<<blau<<"opzm.size(): "<<violett<<opzm.size()<<schwarz<<endl;
 ////		caus<<blau<<"opn.size(): "<<violett<<opn.size()<<schwarz<<endl;
-		hccd.causwert(&opzm,obverb,/*tz*/'=',/*mitclear*/0);
+		hccd.kauswert(&opzm,obverb,/*tz*/'=',/*mitclear*/0);
 //		opn.gibaus(1);
 //		opzm.~schAcl();
 		for(size_t i=0;i<zmzn;i++) {

@@ -223,6 +223,14 @@ enum T_
 	T_Zielmuster_Nr,
 	T_Ziel_Nr,
 	T_Zahl_der_Muster_Verzeichnis_Paare_zum_Speichern_ankommender_Faxe,
+	T_Verzeichnis_mit_zu_faxenden_Dateien,
+	T_Verzeichnis_mit_wartenden_Dateien,
+	T_Verzeichnis_mit_gescheiterten_Dateien,
+	T_Verzeichnis_fuer_empfangene_Faxe,
+	T_Soll_die_FritzBox_verwendet_werden,
+	T_Mit_CIFS_gemountetes_Verzeichnis_mit_ankommenden_Faxen_der_Fritzbox,
+	T_Soll_die_Capisuite_verwendet_werden,
+	T_pruefisdn,
 	T_MAX //α
 }; // enum T_ //ω
 
@@ -408,6 +416,7 @@ class hhcl:public dhcl
 
  public: //α //ω
  private: //α //ω
+	void pruefisdn();
 	void cfcnfCfuell();
 	void cccnfCfuell();
 	void liescapiconf();

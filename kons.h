@@ -385,6 +385,7 @@ enum Tkons_
 	T_Optionen_die_in_der_Konfigurationsdatei_gespeichert_werden,
 	T_autokonfschreib,
 	T_zu_schreiben,
+	T_rueckzufragen,
 	T_schreibe_Konfiguration,
 	T_h_k,
 	T_lh_k,
@@ -434,7 +435,7 @@ enum Tkons_
 	T_parsecl,
 	T_lies,
 	T_verarbeitkonf,
-	T_causwert,
+	T_kauswert,
 	T_optausg,
 	T_einzutragen,
 	T_schon_eingetragen,
@@ -908,7 +909,7 @@ struct confdcl {
 	confdcl(const string& fname, int obverb);
 	confdcl();
 	int lies(const string& vfname, int obverb);
-	template <typename SCL> void causwert(schAcl<SCL> *sA, int obverb=0, const char tz='=',const uchar mitclear=1);
+	template <typename SCL> void kauswert(schAcl<SCL> *sA, int obverb=0, const char tz='=',const uchar mitclear=1);
 	void Abschn_auswert(int obverb=0, const char tz='=');
 };
 

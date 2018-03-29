@@ -520,6 +520,8 @@ const char *kons_T[T_konsMAX+1][SprachZahl]=
 	{"virtautokonfschreib()","virtautoconfwrite()"},
 	// T_zu_schreiben
 	{"zu schreiben: ","must write: "},
+	// T_rueckzufragen
+	{"rueckzufragen: ","ask for options: "},
 	// T_schreibe_Konfiguration
 	{"schreibe Konfiguration!","writing configuration!"},
 	// T_h_k
@@ -618,8 +620,8 @@ const char *kons_T[T_konsMAX+1][SprachZahl]=
 	{"lies()","read()"},
 	// T_verarbeitkonf,
 	{"verarbeitkonf()","processconf()"},
-	// T_causwert,
-	{"causwert()","cexploit()"},
+	// T_kauswert,
+	{"kauswert()","cexploit()"},
 	// T_optausg,
 	{"optausg()","optprintout()"},
 	// T_einzutragen
@@ -1876,9 +1878,9 @@ void confdcl::Abschn_auswert(int obverb/*=0*/, const char tz/*='='*/)
 } // void confdcl::Abschn_auswert(int obverb, char tz)
 
 // setzt die Werte aus der Datei in der Optionenschaar *sA
-template <typename SCL> void confdcl::causwert(schAcl<SCL> *sA, int obverb, const char tz,const uchar mitclear/*=1*/)
+template <typename SCL> void confdcl::kauswert(schAcl<SCL> *sA, int obverb, const char tz,const uchar mitclear/*=1*/)
 {
-	Log(violetts+Txk[T_causwert]+schwarz+": "+fname,obverb);
+	Log(violetts+Txk[T_kauswert]+schwarz+": "+fname,obverb);
 	richtige=0;
 	if (mitclear) {
 		sA->frisch();
@@ -1912,7 +1914,7 @@ template <typename SCL> void confdcl::causwert(schAcl<SCL> *sA, int obverb, cons
 				zeile->erase(pos);
 			} // if (pos!=string::npos)
 			ltrim(zeile);
-			if (obverb) caus<<zni<<". "<<blau<<"Zeile: "<<schwarz<<*zeile<<endl;
+////			if (obverb) caus<<zni<<". "<<blau<<"Zeile: "<<schwarz<<*zeile<<endl;
 			if (!zeile->empty()) {
 				if (obverb>1) Log(Txk[T_stern_zeile]+*zeile,obverb);
 				pos=zeile->find(tz);
@@ -1925,11 +1927,11 @@ template <typename SCL> void confdcl::causwert(schAcl<SCL> *sA, int obverb, cons
 					if (sA) {
 						size_t ii=sA->schl.size();
 						//// <<"auswert() "<<pname<<" vor while, wert: "<<wert<<endl;
-						if (obverb) caus<<"Stell 9, sA->name: "<<sA->name<<endl;
+////						if (obverb) caus<<"Stell 9, sA->name: "<<sA->name<<endl;
 						while(ii--) {
 							if (sA->schl[ii]) if (!sA->schl[ii]->ausgewertet) { 
 								// conf[ii]->pname muss am Zeilenanfang anfangen, sonst Fehler z.B.: number, faxnumber
-								if (obverb) caus<<"Stell 11, sA->schl["<<ii<<"]->pname: "<<sA->schl[ii]->pname<<endl;
+////								if (obverb) caus<<"Stell 11, sA->schl["<<ii<<"]->pname: "<<sA->schl[ii]->pname<<endl;
 								if (pname==sA->schl[ii]->pname) {
 									sA->schl[ii]->ausgewertet=1;
 									//// <<"sA->schl[ii]->pname: "<<sA->schl[ii]->pname<<endl;
@@ -1961,8 +1963,8 @@ template <typename SCL> void confdcl::causwert(schAcl<SCL> *sA, int obverb, cons
 		KLZ
 		KLZ
 	 */
-	Log(violetts+Txk[T_Ende]+Txk[T_causwert]+schwarz,obverb);
-} // void sAdat::causwert
+	Log(violetts+Txk[T_Ende]+Txk[T_kauswert]+schwarz,obverb);
+} // void sAdat::kauswert
 
 void wpgcl::virtfrisch()
 {
@@ -1985,7 +1987,7 @@ void WPcl::virtfrisch()
 
 optcl::~optcl()
 {
-//	caus<<"Loesche optcl, pname: "<<blau<<pname<<schwarz<<endl;
+////	caus<<"Loesche optcl, pname: "<<blau<<pname<<schwarz<<endl;
 }
 
 void optcl::virtfrisch()
@@ -4878,7 +4880,7 @@ string holsystemsprache(int obverb/*=0*/)
 		if (!lstat(langdt[lind],&langstat)) {
 			cglangA.sinit(1, langvr[lind]);
 			confdcl langcd(langdt[lind],obverb);
-			langcd.causwert(&cglangA,obverb);
+			langcd.kauswert(&cglangA,obverb);
 
 			if (cglangA[0]) if (!cglangA[0]->wert.empty()) {
 				ret= cglangA[0]->wert[0];
@@ -5086,8 +5088,7 @@ void hcl::virtlieskonfein()
 	// die Reihenfolge muss der in agcnfA.init (in getcommandl0) sowie der in virtrueckfragen entsprechen
 // afcd.cinit(akonfdt,&agcnfA,obverb,'=',/*mitclear=*/0); // hier werden die Daten aus der Datei eingelesen
 	hccd.lies(akonfdt,obverb);
-			caus<<"vor causwert 2"<<endl;
-	hccd.causwert(&opn,obverb,'=',0);
+	hccd.kauswert(&opn,obverb,'=',0);
 	virtlgnzuw();
 	setzlog();
 	if (!hccd.obzuschreib) {
@@ -5162,8 +5163,7 @@ void hcl::lieszaehlerein()
 	confdcl zlzn;
 	zlzn.lies(azaehlerdt,obverb);
 	////<<"azaehlerdt: "<<blau<<azaehlerdt<<schwarz<<endl;
-////			caus<<"vor causwert 3"<<endl;
-	zlzn.causwert(&zcnfA);
+	zlzn.kauswert(&zcnfA);
 	//// if (&aufrufe) <<blau<<"aufrufe: "<<schwarz<<aufrufe<<endl;
 	if (&laufrtag) {
 		string ldat;
@@ -5360,14 +5360,11 @@ void hcl::virtzeigueberschrift()
 // wird aufgerufen in lauf
 void hcl::virtautokonfschreib()
 {
-int altobverb=obverb;
-obverb=1;
-	Log(violetts+Txk[T_autokonfschreib]+schwarz+", "+Txk[T_zu_schreiben]+(rzf?Txk[T_ja]:Txk[T_nein])+", "+(hccd.obzuschreib?Txk[T_ja]:Txk[T_nein]),obverb);
+	Log(violetts+Txk[T_autokonfschreib]+schwarz+", "+Txk[T_rueckzufragen]+blau+(rzf?Txk[T_ja]:Txk[T_nein])+schwarz+", "+Txk[T_zu_schreiben]+blau+(hccd.obzuschreib?Txk[T_ja]:Txk[T_nein])+schwarz,obverb);
 	if (rzf||hccd.obzuschreib) {
 		Log(gruens+Txk[T_schreibe_Konfiguration]+schwarz,obverb);
 		opn.confschreib(akonfdt,ios::out,mpfad,0);
 	} // if (rzf||obzuschreib)
-obverb=altobverb;
 	return;
 	/*
 	schAcl<WPcl> *ggcnfAp[1]={&agcnfA};
