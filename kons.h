@@ -773,7 +773,7 @@ struct optcl:wpgcl
     virtual const string& virtmachbemerk(const Sprache lg,const binaer obfarbe=wahr);
     void hilfezeile(Sprache lg);
 		void virtfrisch();
-		~optcl(){caus<<"Loesche optcl, pname: "<<blau<<pname<<schwarz<<endl;}
+		~optcl();
 }; // struct optcl
 
 // fuer Commandline-Optionen

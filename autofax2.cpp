@@ -2114,7 +2114,7 @@ void hhcl::virtlieskonfein()
 		} // 		for(long i=0;i<zmzn;i++) 
 		zmp=zmvp;
 	} else {
-		caus<<blau<<"opzm.size(): "<<violett<<opzm.size()<<schwarz<<endl;
+////		caus<<blau<<"opzm.size(): "<<violett<<opzm.size()<<schwarz<<endl;
 		zmmp=new string[zmzn];
 		zmzp=new string[zmzn];
 		for(size_t i=0;i<zmzn;) {
@@ -2130,9 +2130,8 @@ void hhcl::virtlieskonfein()
 			opn<<opzm.letzter();
 			//// caus<<"opn.schl.size(): "<<opn.schl.size()<<", omap.size(): "<<opn.omap.size()<<endl;
 		} // 	for(long i=0;i<zmzn;)
-		caus<<blau<<"opzm.size(): "<<violett<<opzm.size()<<schwarz<<endl;
-		caus<<blau<<"opn.size(): "<<violett<<opn.size()<<schwarz<<endl;
-		caus<<violett<<"vor causwert 5"<<schwarz<<endl;
+////		caus<<blau<<"opzm.size(): "<<violett<<opzm.size()<<schwarz<<endl;
+////		caus<<blau<<"opn.size(): "<<violett<<opn.size()<<schwarz<<endl;
 		hccd.causwert(&opzm,obverb,/*tz*/'=',/*mitclear*/0);
 //		opn.gibaus(1);
 //		opzm.~schAcl();
