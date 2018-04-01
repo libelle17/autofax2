@@ -472,6 +472,18 @@ char const *DPROG_T[T_MAX+1][SprachZahl]={
 	{"Soll die Capisuite verwendet werden","Shall Capisuite be used"},
 	// 	T_pruefisdn
 	{"T_pruefisdn()","checkisdn()"},
+	// T_ISDN_Karte_gefunden
+	{"ISDN-Karte gefunden: ","ISDN-Card found: "},
+	// T_Keine_ISDN_Karte_gefunden
+	{"Keine ISDN-Karte gefunden. Setze ","No ISDN-Card found. Setting "},
+	// T_mitCapi
+	{"mitCapi","withCapi"},
+	// T_aauf
+	{" auf "," to "},
+	// T_Setze
+	{". Setze ",". Setting "},
+	// T_ob_eine_Fritzcard_drinstak
+	{"ob eine Fritzcard drinstak, als die Konfigurationsdatei geschrieben wurde","if a fritzcard was present when the configuration file was written"},
 	{"",""} //α
 }; // char const *DPROG_T[T_MAX+1][SprachZahl]=
 
@@ -768,7 +780,7 @@ hhcl::hhcl(const int argc, const char *const *const argv):dhcl(argc,argv,DPROG) 
 {
  // mitcron=0; //ω
 } // hhcl::hhcl //α
-//ω
+// Hier neue Funktionen speichern: //ω
 
 // aufgerufen in liescapiconf
 void hhcl::cfcnfCfuell()
@@ -1842,6 +1854,32 @@ schluss: // sonst eine sonst sinnlose for-Schleife mehr oder return mitten aus d
 	return erg;
 } // pruefcapi()
 
+// wird aufgerufen in: rueckfragen, main
+void hhcl::pruefisdn()
+{
+	Log(violetts+Tx[T_pruefisdn]+schwarz);
+	svec rueck;
+////	cmd="{ lspci 2>/dev/null || "+sudc+"lspci 2>/dev/null;}|grep -i 'isdn'"; systemrueck(cmd, obverb,oblog,&rueck);
+	for(int iru=0;iru<2;iru++) {
+		if (systemrueck("lspci 2>/dev/null|grep -i 'isdn'",obverb,oblog,&rueck,/*obsudc=*/iru)) break;
+	}
+	// <<"pruefmodem 1 vor  obcapi: "<<(int)obcapi<<endl;
+	if (rueck.size()) {
+		Log(blaus+Tx[T_ISDN_Karte_gefunden]+schwarz+rueck[0]+blau+Tx[T_Setze]+Tx[T_mitCapi]+schwarz+Tx[T_aauf]+blau+"1.");
+	// wenn zum Konfigurationszeitpunkt keine Fritzcard drinstak, aber jetzt, dann rueckfragen
+		if (!obfcard) {
+			rzf=1;
+			obfcard=1;
+		}
+	} else {
+		Log(rots+Tx[T_Keine_ISDN_Karte_gefunden]+schwarz+Tx[T_mitCapi]+rot+Tx[T_aauf]+schwarz+"0.");
+		obcapi=obfcard=0;
+	} // 	if (rueck.size())
+	if (obverb) Log("obfcard: "+blaus+ltoan(obfcard)+schwarz);
+	obfcgeprueft=1;
+} // void hhcl::pruefisdn()
+
+
 void hhcl::dovc()
 {
 	pruefcapi();
@@ -2004,47 +2042,6 @@ void hhcl::pvirtvorrueckfragen()
   } //α
 } // void hhcl::pvirtvorrueckfragen
 
-// wird aufgerufen in: rueckfragen, main
-void hhcl::pruefisdn()
-{
-	Log(violetts+Tx[T_pruefisdn]+schwarz);
-	svec rueck;
-////	cmd="{ lspci 2>/dev/null || "+sudc+"lspci 2>/dev/null;}|grep -i 'isdn'"; systemrueck(cmd, obverb,oblog,&rueck);
-	for(int iru=0;iru<2;iru++) {
-		if (systemrueck("lspci 2>/dev/null|grep -i 'isdn'",obverb,oblog,&rueck,/*obsudc=*/iru)) break;
-	}
-	// <<"pruefmodem 1 vor  obcapi: "<<(int)obcapi<<endl;
-	if (rueck.size()) {
-		Log(blaus+Tx[T_ISDN_Karte_gefunden]+schwarz+rueck[0]+blau+Tx[T_Setze]+Tx[T_mitCapi]+schwarz+Tx[T_aauf]+blau+"1.");
-		obfcard=1;
-	} else {
-		Log(rots+Tx[T_Keine_ISDN_Karte_gefunden]+schwarz+Tx[T_mitCapi]+rot+Tx[T_aauf]+schwarz+"0.");
-		obcapi=obfcard=0;
-	} // 	if (rueck.size())
-	if (obverb) Log("obfcard: "+blaus+ltoan(obfcard)+schwarz);
-	obfcgeprueft=1;
-	// wenn zum Konfigurationszeitpunkt keine Fritzcard drinstak, aber jetzt, dann rueckfragen
-	if (obfcard && agcnfA.hole("obfcard")=="0") {
-		rzf=1;
-	} // 	if (obfcard && agcnfA.hole("obfcard")=="0")
-	// wenn nur obkschreib, dann noch nicht auf neu eingesteckte Fritzcard reagieren
-	if (rzf) {
-		agcnfA.setze("obfcard",obfcard?"1":"0");
-	} // 	if (rzf)
-	/*//
-		string bemst; 
-		svec bemv;
-		Sprache altSpr=Tx.lgn;
-		for(int akts=0;akts<SprachZahl;akts++) KLA
-		Tx.lgn=(Sprache)akts;
-		bemst=Tx[T_ob_ein_Modem_drinstak];
-		bemv<<bemst;
-		KLZ //         for(int akts=0;akts<SprachZahl;akts++)
-		Tx.lgn=altSpr;
-	 */
-	agcnfA.setzbemv("obfcard",&Tx,T_ob_eine_Fritzcard_drinstak);
-} // void hhcl::pruefisdn()
-
 
 // wird aufgerufen in lauf
 void hhcl::virtrueckfragen()
@@ -2131,7 +2128,7 @@ void hhcl::virtschlussanzeige()
 {   //ω
 	dhcl::virtschlussanzeige(); //α
 } // void hhcl::virtschlussanzeige
- //ω
+ 
 // wird aufgerufen in: main
 void hhcl::virtautokonfschreib()
 {
@@ -2151,7 +2148,7 @@ void hhcl::virtautokonfschreib()
 		Log(gruens+Tx[T_schreibe_Konfiguration]+schwarz,obverb);
 		// restliche Erklaerungen festlegen
 		////    agcnfA.setzbem("language",sprachstr);
-		hcl::virtautokonfschreib();
+		hcl::virtautokonfschreib(); //ω
 // falsch:		cfcnfC.confschreib(cfaxconfdt,ios::out,mpfad,/*faclbak=*/0);
 		/*
 		cfcnfC.confschreib(akonfdt,ios::out,mpfad);
@@ -2174,11 +2171,11 @@ void hhcl::virtautokonfschreib()
 		schlArr *ggcnfAp[3]={&agcnfA,&sqlcnfA,&zmcnfA};
 		multischlschreib(akonfdt, ggcnfAp, sizeof ggcnfAp/sizeof *ggcnfAp, mpfad);
 #endif
-	} // if (rzf||obkschreib) 
+	} // if (rzf||obkschreib) //α
 // obverb=altobverb;
-} // void hhcl::virtautokonfschreib()
+} // void hhcl::virtautokonfschreib
 
-hhcl::~hhcl() //α
+hhcl::~hhcl() 
 { //ω
 	if (cfaxcp) { 
 		delete cfaxcp; 
@@ -2255,11 +2252,11 @@ void hhcl::virtlieskonfein()
 	} // 	if (!zmzn)
 ////	optausg(rot);
 ////	opn.gibomapaus();
-	Log(violetts+Txk[T_Ende]+Txk[T_virtlieskonfein]+schwarz);
+	Log(violetts+Txk[T_Ende]+Txk[T_virtlieskonfein]+schwarz); //α
 	obverb=altobverb;
-} // void hhcl::virtlieskonfein() //α
+} // void hhcl::virtlieskonfein()
 
-int main(int argc,char** argv) //α
+int main(int argc,char** argv)
 {
 		if (argc>1) { //ω
 		} //α
@@ -2267,8 +2264,9 @@ int main(int argc,char** argv) //α
 		hhi.lauf(); // Einleitungsteil mit virtuellen Funktionen, 
 		// mit virtVorgbAllg,pvirtVorgbSpeziell,initopt,parsecl,pvirtmacherkl,zeighilfe,virtlieskonfein,verarbeitkonf,lieszaehlerein,MusterVorgb,dovi,dovs,virtzeigversion
 		// virtautokonfschreib,update,
-} // int main //ω
+} // int main 
 
 void hhcl::virttesterg()
 {
-}
+} //ω
+

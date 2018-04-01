@@ -7,37 +7,40 @@
 #  ;
 # auch in den c(++)-Quellcode eingebaut werden kann
 
-# Aufrufvarianten:
-# "mitpg=1 make <..>" => es wird mit/fuer postgres kompiliert und gelinkt, die Praeprozessordirektive "mitpostgres" wird dem Compiler uebergeben
-# "make glei" => der Compiler wird vorher nicht ueberprueft
-# "make opt" => optimiere mit -O; kompiliere alles neu
-# "make opt2" => optimiere mit -O2; kompiliere alles neu
-# "make opt3" => optimiere mit -O3; kompiliere alles neu
-# "make opts" => optimiere mit -Os, nach Groesse; kompiliere alles neu
-# "make optfast" => optimiere mit -Ofast, nach Ausfuerungsgeschwindigkeit; kompiliere alles neu
-# "make optg" => optimiere mit -Og, zum Debuggen; kompiliere alles neu
-# "make debug" => erstelle mit -g;
-# "make debugnew" oder "make debugneu" => erstelle alles neu mit -g;
-# "make new" oder "make neu" => kompiliere alles neu
-# "make distclean" => loesche Objekt- und ausfuehrbare Dateien im Kompilierverzeichnis
-# "make fernclean" => loesche installierte Objekt- und ausfuehrbare Dateien
-# "make clean" => loesche Objekt- und ausfuehrbare Dateien einschliesslich installierter Version
-# "make confclean" => loescht die Konfigurationsdatei $(INSTEXEC).conf nach Rueckfrage, falls vorhanden
-# "make altc" => kompiliere mit -std=gnu++11
-# "make anzeig" => zeige Informationen zu Programm, Quelldateien und Compiler an
-# "make install" => installiere die erstellte Datei in den kuerzesten Pfad aus $PATH, der '/usr/' enthaelt,
-#                   installiert man-Seiten aus man_de und man_en, ferner *.html-Dateien und eine README.md-Datei fuer den git-Server
-# "make stumm und make stumminst" => zum Aufruf aus vim
-# "make git" => aktualisiert die Datei auf dem zugeordneten git-Server
-# "make giterlaub" => speichert die Daten zum Hochladen auf den git-Server
-# "make version" => kompilieren mit opts, installieren und aktualisieren auf git-Server mit einheitlicher Dateiversion
-# "make transfer <zielvz>" => kopieren der Programmdateien abzüglich bestimmter Kommentare in Zielverzeichnis <zielvz>
-# "make verschieb" => wie transfer, mit ../<DPROG>rein als Zielverzeichnis
-# "make vsneu" => wie verschieb, löscht vorher das als Zielverzeichnis (geht nur, wenn das github-Repository vorher gelöscht ist)
-# "make ruf" => ruft das Programm auf
-# "make uninstall" => deinstalliert alles, frägt noch manchmal rücke
-# "make allesweg" => deinstalliert alles, beantwortet Rückfragen mit 'y'
-# "make neuproj" => kopiert Dateien für neues Projekt in Verzeichnis fuer neues Projekt
+define hilfe
+@printf 'Aufrufvarianten: \n\
+"make hilfe" oder "make help" => zeige diese Hilfe an \n\
+"make glei" => der Compiler wird vorher nicht ueberprueft \n\
+"make opt" => optimiere mit -O; kompiliere alles neu \n\
+"make opt2" => optimiere mit -O2; kompiliere alles neu \n\
+"make opt3" => optimiere mit -O3; kompiliere alles neu \n\
+"make opts" => optimiere mit -Os, nach Groesse; kompiliere alles neu \n\
+"make optfast" => optimiere mit -Ofast, nach Ausfuerungsgeschwindigkeit; kompiliere alles neu \n\
+"make optg" => optimiere mit -Og, zum Debuggen; kompiliere alles neu \n\
+"make debug" => erstelle mit -g; \n\
+"make debugnew" oder "make debugneu" => erstelle alles neu mit -g; \n\
+"make new" oder "make neu" => kompiliere alles neu \n\
+"make distclean" => loesche Objekt- und ausfuehrbare Dateien im Kompilierverzeichnis \n\
+"make fernclean" => loesche installierte Objekt- und ausfuehrbare Dateien \n\
+"make clean" => loesche Objekt- und ausfuehrbare Dateien einschliesslich installierter Version \n\
+"make confclean" => loescht die Konfigurationsdatei $$(INSTEXEC).conf ($(INSTEXEC).conf) nach Rueckfrage, falls vorhanden \n\
+"make altc" => kompiliere mit -std=gnu++11 \n\
+"make anzeig" => zeige Informationen zu Programm, Quelldateien und Compiler an \n\
+"make install" => installiere die erstellte Datei in den kuerzesten Pfad aus $$(PATH) (\n\t$(PATH)), der "usr" enthaelt,  \n\t\
+     							installiert man-Seiten aus man_de und man_en, ferner *.html-Dateien und eine README.md-Datei fuer den git-Server \n\
+"make stumm und make stumminst" => zum Aufruf aus vim \n\
+"make git" => aktualisiert die Datei auf dem zugeordneten git-Server \n\
+"make giterlaub" => speichert die Daten zum Hochladen auf den git-Server \n\
+"make version" => kompilieren mit opts, installieren und aktualisieren auf git-Server mit einheitlicher Dateiversion \n\
+"make transfer <zielvz>" => kopieren der Programmdateien abzüglich bestimmter Kommentare in Zielverzeichnis <zielvz> \n\
+"make verschieb" => wie transfer, mit ../<DPROG>rein als Zielverzeichnis \n\
+"make vsneu" => wie verschieb, löscht vorher das als Zielverzeichnis (geht nur, wenn das github-Repository vorher gelöscht ist) \n\
+"make ruf" => ruft das Programm auf \n\
+"make uninstall" => deinstalliert alles, frägt noch manchmal rücke \n\
+"make allesweg" => deinstalliert alles, beantwortet Rückfragen mit "y" \n\
+"mitpg=1 make <..>" => es wird mit/fuer postgres kompiliert und gelinkt, die Praeprozessordirektive "mitpostgres" wird dem Compiler uebergeben \n\
+"make neuproj" => kopiert Dateien für neues Projekt in Verzeichnis fuer neues Projekt\n'
+endef
 
 ICH::=$(firstword $(MAKEFILE_LIST))
 SRCS::=$(wildcard *.cpp)
@@ -186,6 +189,13 @@ GZS::=$(patsubst %,%.gz,$(MANS))
 
 .PHONY: all
 all: anzeig weiter
+
+.PHONY: help
+help: hilfe
+
+.PHONY: hilfe
+hilfe:
+	$(call hilfe,".")
 
 .PHONY: glei
 glei: anzeig $(EXEC) $(GZS) 

@@ -231,6 +231,12 @@ enum T_
 	T_Mit_CIFS_gemountetes_Verzeichnis_mit_ankommenden_Faxen_der_Fritzbox,
 	T_Soll_die_Capisuite_verwendet_werden,
 	T_pruefisdn,
+	T_ISDN_Karte_gefunden,
+	T_Keine_ISDN_Karte_gefunden,
+	T_mitCapi,
+	T_aauf,
+	T_Setze,
+	T_ob_eine_Fritzcard_drinstak,
 	T_MAX //α
 }; // enum T_ //ω
 
@@ -275,7 +281,6 @@ class hhcl:public dhcl
     int hylazuerst=-1;  // ob ein Fax zuerst ueber Hylafax versucht werden soll zu faxen
     //    string hmodemstr; // Erkennung des Faxgeraetes nach /dev/tty, Standard ACM
     string maxcapiv; // maximale Versuchnr in Capi, bis Hyla versucht wird
-		void virttesterg();
     string maxhylav; // maixmale Versuchsnr in Hylafax, bis Capi versucht wird
     string maxhdials;     // Zahl der Wahlversuche in Hylafax
 		string maxcdials;    // Zahl der Wahlversuche in Capisuite
@@ -416,13 +421,13 @@ class hhcl:public dhcl
 
  public: //α //ω
  private: //α //ω
-	void pruefisdn();
 	void cfcnfCfuell();
 	void cccnfCfuell();
 	void liescapiconf();
 	void konfcapi(); // aufgerufen in pruefcapi
 	void capisv();
 	int pruefcapi();
+	void pruefisdn();
 	int cservice();
 	void clieskonf();
 	void pruefcvz();
@@ -431,9 +436,10 @@ class hhcl:public dhcl
 	void nextnum();
 	void pruefmodcron();
 	void dovc();
+	void virttesterg(); //α
 	void virtlieskonfein();
 	void virtautokonfschreib();
- protected: //α
+ protected: 
 	// void virtlgnzuw(); // wird aufgerufen in: virtrueckfragen, parsecl, lieskonfein, hcl::hcl nach holsystemsprache
 	void virtVorgbAllg();
 	void pvirtVorgbSpeziell()
