@@ -36,6 +36,7 @@ define hilfe
 "make verschieb" => wie transfer, mit ../<DPROG>rein als Zielverzeichnis \n\
 "make vsneu" => wie verschieb, löscht vorher das als Zielverzeichnis (geht nur, wenn das github-Repository vorher gelöscht ist) \n\
 "make ruf" => ruft das Programm auf \n\
+"make rufv" => ruft das Programm mit Parameter -v auf \n\
 "make uninstall" => deinstalliert alles, frägt noch manchmal rücke \n\
 "make allesweg" => deinstalliert alles, beantwortet Rückfragen mit "y" \n\
 "mitpg=1 make <..>" => es wird mit/fuer postgres kompiliert und gelinkt, die Praeprozessordirektive "mitpostgres" wird dem Compiler uebergeben \n\
@@ -44,6 +45,7 @@ endef
 
 ICH::=$(firstword $(MAKEFILE_LIST))
 SRCS::=$(wildcard *.cpp)
+WRZ::=$(SRCS:.cpp=)
 OBJ::=$(SRCS:.cpp=.o)
 # wenn aus vi aufgerufen, kein unnoetigen Ausgaben, BA=bedingte Ausgabe, BFA=bedingte Fehlerausgabe
 BA::=&1
@@ -55,7 +57,7 @@ endif
 #EXPFAD=/usr/local/sbin
 EXPFAD::=$(shell echo $(PATH) | tr -s ':' '\n' | grep /usr/ | head -n 1)
 EXPFAD::=$(shell echo $(PATH) | tr -s ':' '\n' | grep /usr/ | awk '{ print length, $$0 }' | sort -n -s | cut -d" " -f2- | head -n1)
-
+LAUF::=0
 #// ifneq ($(shell g++-6 --version >$(KR); echo $$?),0)
 #//  CCName::=g++
 #//  CFLAGS::=$(CFLAGS) -std=gnu++11 # 7.8.17 nicht nötig für opensuse42, hinderlich für fedora; 5.9.17: geht nicht mehr (wg. auto)
@@ -107,7 +109,7 @@ ifneq ($(LT),)
 	LDFLAGS::=$(LDFLAGS) -ltiff
 endif
 ifneq ($(LBOOST),)
-	LDFLAGS::=$(LDFLAGS) -lboost_iostreams -lboost_locale
+	LDFLAGS::=$(LDFLAGS) -lboost_iostreams -lboost_locale # -lboost_system -lboost_filesystem
 endif
 ifneq ($(LACL),)
 	LDFLAGS::=$(LDFLAGS) -lacl
@@ -159,6 +161,7 @@ slc::=$(SUDC)/sbin/ldconfig
 # si_unins=$(SPR)$(1)>$(KR)||{ $(call i_unins,$(1),$(2))};
 # GROFFCHECK::=$(call i1siund,$(PGROFF)):
 
+# nach: http://make.mad-scientist.net/papers/advanced-auto-dependency-generation/
 DEPDIR ::= .d
 $(shell mkdir -p $(DEPDIR)>$(KR))
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
@@ -255,6 +258,7 @@ endef
 # ssh-add ~/.ssh/id_rsa_git
 # xclip -sel clip < ~/.ssh/id_rsa_git.pub
 # auf http://github.com -> view profile and more -> settings -> SSH and GPG keys -> New SSH key <Titel> <key> einfuegen
+.PHONY: git
 git: # README.md
 #	@git config --global user.name "Gerald Schade"
 #	@git config --global user.email "gerald.schade@gmx.de"
@@ -309,18 +313,21 @@ $(EXEC): $(OBJ)
 	-@printf " Fertig mit/Finished with %b$(ICH)%b, Target: %b$@%b:, nachher/afterwords:\n" $(blau) $(reset) $(blau) $(reset)
 	-@printf " '%b%s%b'\n" $(blau) "$$(ls -l --time-style=+' %d.%m.%Y %H:%M:%S' --color=always $(EXEC))" $(reset)
 
-%.o : %.cpp
-%.o : %.cpp $(DEPDIR)/%.d
+%.o: %.cpp
+%.o: %.cpp $(DEPDIR)/%.d
+	-@$(eval LAUF=$(shell echo $$(($(LAUF)+1))))
+	-@[ $(LAUF) = 1 ]&& rm -f fehler.txt;:
 	@[ $@ = $(DPROG).o ]&&{ $(call machvers);if test -f entwickeln; then awk "BEGIN {print `cat versdt`+0.00001}">versdt;\
 	else printf " %bFile '%bentwickeln%b' missing, keeping the version number stable/ Datei '%bentwickeln%b' fehlt, lasse die Version gleich%b\n" \
 	$(schwarz) $(grau) $(schwarz) $(grau) $(schwarz) $(reset) >$(BA); fi;}; :;
 	@printf " kompiliere %b%s%b: " $(blau) "$<" $(reset) >$(BA);
 #	-@if ! test -f instvz; then printf \"$$(getent passwd $$(logname)|cut -d: -f6)\">instvz; fi;
 	-@if ! test -f instvz; then printf \"$$(pwd)\">instvz; fi; # wird in kons.cpp verwendet
-	-$(CC) $(DEBUG)$(DEPFLAGS) $(CFLAGS) -c $< $(BFA);
+	-$(CC) $(DEBUG)$(DEPFLAGS) $(CFLAGS) $< $(BFA);
 	-@sed -i 's/versdt //g;s/gitvdt //g' $(DEPDIR)/*.Td
 	-@if test -s fehler.txt; then vi +0/error fehler.txt; else rm -f fehler.txt; fi;
 #	-@$(shell $(POSTCOMPILE))
+	@if test -s fehler.txt; then echo Fehler!!!!!!; fi;
 	@if test -s fehler.txt; then false; fi;
 
 $(DEPDIR)/%.d: ;
@@ -505,6 +512,10 @@ vsneu: verschieb
 .PHONY: ruf
 ruf:
 	@$(EXPFAD)/$(EXEC)
+
+.PHONY: rufv
+rufv:
+	@$(EXPFAD)/$(EXEC) -v
 
 .PHONY: version
 version: dovers
