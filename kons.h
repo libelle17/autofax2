@@ -42,8 +42,8 @@ extern const int sfeh[]; // T_Dienst_laeuft, T_Dienst_inexistent, ...
 extern const double& versnr; // Programmversion
 extern const string& spath; // PATH-Variable für root
 string* loeschefarbenaus(string *zwi);
-int Log(const short screen,const short file, const bool oberr,const short klobverb, const char *format, ...);
-int Log(const string& text,const short screen=1,const short file=1,const bool oberr=0,const short klobverb=0);
+int yLog(const short screen,const short file, const bool oberr,const short klobverb, const char *format, ...);
+int fLog(const string& text,const short screen=1,const short file=1,const bool oberr=0,const short klobverb=0);
 
 #ifdef _MSC_VER
 #define fileno _fileno // sonst Warnung posix deprecated
@@ -95,7 +95,7 @@ extern const char *const tmmoegl[];
 // extern const char *rot, *weinrot, *schwarz, *blau, *gelb; // muss spaeter kompilerunabhaengig
 extern const char *const schwarz, *const dgrau, *const drot, *const rot, *const gruen, *const hgruen, *const braun, *const gelb,
 			 *const blau, *const dblau, *const violett, *const hviolett, *const tuerkis, *const htuerkis, *const hgrau, *const weiss, *const umgek;
-extern const string drots,rots,schwarzs,blaus,dblaus,gelbs,tuerkiss,hgraus,violetts,gruens;
+extern const string drots,rots,schwarzs,blaus,dblaus,gelbs,tuerkiss,hgraus,violetts,hvioletts,gruens;
 #ifdef linux
 extern const char *_rot, *_hrot, *_schwarz, *_blau, *_gelb, *_tuerkis, *_hgrau;
 #endif // linux
@@ -104,6 +104,7 @@ extern const char *_rot, *_hrot, *_schwarz, *_blau, *_gelb, *_tuerkis, *_hgrau;
 #include <regex.h> // regex_t, regex, regcomp, regexec
 #include <chrono> // fuer sleep_for 
 #include <thread> // fuer sleep_for
+#include <iconv.h> // fuer ic_cl (Konversion von Dos-Dateien in utf-8)
 
 #define neufind
 #define altfind
@@ -150,7 +151,7 @@ extern el2set::iterator it2;
 class elem3;
 extern set<elem3>::iterator it3;
 
-extern const string nix/*=""*/;
+extern const string nix/*=string()*/;
 extern const string eins/*="1"*/;
 extern const string sudc/*="sudo "*/;
 extern const string sudhc/*="sudo -H "*/;
@@ -441,6 +442,8 @@ enum Tkons_
 	T_schon_eingetragen,
 	T_wird_jetzt_eingetragen,
 	T_lieszaehlerein,
+	T_Parameter,
+	T_gefunden,
 	T_konsMAX
 }; // Tkons_
 
@@ -490,6 +493,22 @@ class argcl
  argcl(const int i, const char *const *const argv);
 };
 
+// Gebrauch, z.B.: ic_cl ic("UTF8","CP850");
+//			caus<<ic.convert(inh)<<endl;
+class ic_cl 
+{
+	iconv_t ict;
+	static const size_t grenze=500, 
+							 reserve=4*grenze;
+	char ergcont[reserve],
+			 *ergdyn=0;
+	public:
+	char *ergebnis;
+	ic_cl(const char* nach, const char* von); 
+	~ic_cl();
+	char *convert(string& eing,size_t ab=0);
+};
+
 class perfcl
 {
  public:
@@ -518,11 +537,14 @@ class mdatei: public fstream
 // Zeitausgabeklasse, um time_t-Variablen formatiert in ostream-Objekte ausgeben zu koennen, z.B. <<ztacl(zt,"%F %T")<<
 class ztacl {
 	private:
+		tm tmloc;
 		const time_t zt;
 		const char* const fmt;
 	public:
-		explicit ztacl(const time_t &pzt,const char* const pfmt="%d.%m.%Y %H.%M.%S"):zt(pzt),fmt(pfmt) { }
-		explicit ztacl(struct tm *const tm,const char* const pfmt="%d.%m.%Y %H.%M.%S"):zt(mktime(tm)),fmt(pfmt) { }
+		explicit ztacl(const time_t &pzt,const char* const pfmt="%d.%m.%Y %H.%M.%S");
+		// folgendes würde die Werte fuer nachfolgenden Wertvergleich mit memcmp verfälschen:
+		// explicit ztacl(tm *const tm,const char* const pfmt="%d.%m.%Y %H.%M.%S %z %Z");
+		explicit ztacl(const tm *const tm,const char* const pfmt="%d.%m.%Y %H.%M.%S %z %Z");
 		std::ostream &operator()(std::ostream& out) const;
 }; // ztacl
 ostream &operator<<(ostream &out,ztacl ztaus);
@@ -579,6 +601,8 @@ inline int isnumeric(const char* str)
   }
   return 1;
 } // inline int isnumeric(char* str)
+
+string zuzahl(const string& q);
  
 string* anfzweg(string& quel);
 char ers(const char roh);
@@ -658,7 +682,7 @@ class tsvec: public vector<T>
   public:
     inline tsvec<T>& operator<<(const T& str) {
       this->push_back(str);
-      ((T&)str).init();
+//      ((T&)str).init();
       return *this;
     } // inline tsvec
 }; // template<typename T> class tsvec: public vector<T>
@@ -934,15 +958,15 @@ int cppschreib(const string& fname, WPcl *conf, size_t csize);
 template <typename SCL> int multischlschreib(const string& fname, schAcl<SCL> *const *const confs, const size_t cszahl,const string& mpfad=nix);
 std::string base_name(const std::string& path); // Dateiname ohne Pfad
 std::string dir_name(const std::string& path);  // Pfadname einer Datei
-int systemrueck(const string& cmd, char obverb=0, int oblog=0, vector<string> *rueck=0, const uchar obsudc=0,
+int systemrueck(const string& cmd, int obverb=0, int oblog=0, vector<string> *rueck=0, const uchar obsudc=0,
                 const int verbergen=0, int obergebnisanzeig=wahr, const string& ueberschr=nix,vector<errmsgcl> *errm=0,uchar obincron=0,
 								stringstream *ausgp=0,uchar obdirekt=0);
 void pruefplatte();
 void pruefmehrfach(const string& wen=nix,int obverb=0,uchar obstumm=0);
 void setfaclggf(const string& datei,int obverb=0,int oblog=0,const binaer obunter=falsch,int mod=4,uchar obimmer=0,
-                uchar faclbak=0,const string& user=nix,uchar fake=0,stringstream *ausgp=0);
+                uchar faclbak=0,const string& user=string(),uchar fake=0,stringstream *ausgp=0,const uchar obprot=1);
 int pruefverz(const string& verz,int obverb=0,int oblog=0, uchar obmitfacl=0, uchar obmitcon=0,
-              const string& besitzer=nix, const string& benutzer=nix, const uchar obmachen=1);
+              const string& besitzer=string(), const string& benutzer=string(), const uchar obmachen=1,const uchar obprot=1);
 string aktprogverz();
 char Tippbuchst(const string& frage, const string& moegl,const char *berkl[], const char* erlaubt=0, const char *vorgabe=0);
 // vorgabe fur vorgabe = T_j_k; alternativ='n'
@@ -1188,14 +1212,19 @@ class hcl
 		static const string passwddt, groupdt, sudoersdt;
 		static const char* const smbdt;// "/etc/samba/smb.conf"
 		int autoupd=-1;  // 1=Programm automatisch updadaten
-		string host="localhost";  // fuer MySQL/MariaDB
-		string dbq="faxe"; // Datenbank
 //		string tabl  //ω
 //			;  //α
 		string muser; // Benutzer fuer Mysql/MariaDB
 		string mpwd;  // Passwort fuer Mysql/MariaDB //ω
 		stringstream uebers; // Ueberschrift fuer Verarbeitungslauf
-		uchar mitcron; // ob Programm auch in Cron eingetragen werden kann
+		const uchar mitcron; // ob Programm auch in Cron eingetragen werden kann; kann im Konstruktor angegeben werden
+#ifdef _WIN32
+    char cpt[255];
+    DWORD dcpt;
+#elif linux // _WIN32
+    char cpt[MAXHOSTNAMELEN]; 
+    size_t cptlen;
+#endif // _WIN32 else
 	public:
 		int obverb=0; // verbose
 		int oblog=0;  // mehr Protokollieren
@@ -1282,10 +1311,10 @@ class hcl
 	public:
 		void optausg(const char *farbe); // Optionen ausgeben
 		void pruefcl(); // commandline mit omap und mit argcmv parsen
-		hcl(const int argc, const char *const *const argv,const char* const DPROG);
+		hcl(const int argc, const char *const *const argv,const char* const DPROG,const uchar mitcron);
 		~hcl();
 		void lauf();
-		int Log(const string& text,const bool oberr=0,const short klobverb=0) const;
+		int hLog(const string& text,const bool oberr=0,const short klobverb=0) const;
 		void pruefsamba(const vector<const string*>& vzn,const svec& abschni,const svec& suchs,const char* DPROG,const string& cuser);
 		int holvomnetz(const string& datei,const string& vors=defvors,const string& nachs=defnachs);
 		int kompilbase(const string& was,const string& endg);

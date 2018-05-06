@@ -28,7 +28,7 @@ class TxB Txv((const char* const* const* const*)vgb_T);
 
 void hhcl::pvirtVorgbSpeziell()
 {
-  Log(violetts+Txv[T_VorgbSpeziell_Ueberlad]+schwarz);
+  hLog(violetts+Txv[T_VorgbSpeziell_Ueberlad]+schwarz);
   //  langu="d"; lgnzuw();
   dbq="faxeinp";
   citycode="8131";
@@ -167,6 +167,6 @@ void hhcl::pvirtVorgbSpeziell()
 		}
 	} else {
 	}
-  Log(violetts+Txk[T_Ende]+Txv[T_VorgbSpeziell_Ueberlad]+schwarz);
+  hLog(violetts+Txk[T_Ende]+Txv[T_VorgbSpeziell_Ueberlad]+schwarz);
 } // void hhcl::VorgbSpeziell()
 

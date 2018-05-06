@@ -503,7 +503,7 @@ void dorename(const string& quelle, const string& ziel, const string& cuser/*=ni
 {
 	const string meld=Tx[T_Verschiebe]+tuerkiss+quelle+schwarz+"'\n         -> '"+gruen+ziel+schwarz+"'";
 	unsigned fehler=0;
-	if (ausgp&&obverb) *ausgp<<meld<<endl; else Log(meld,obverb,oblog);
+	if (ausgp&&obverb) *ausgp<<meld<<endl; else fLog(meld,obverb,oblog);
 	string *zielp=(string*)&ziel,ersatzziel;
 	struct stat zstat={0};
 	// wenn das Ziel ein Verzeichnis ist, Dateinamen anhaengen
@@ -565,13 +565,13 @@ string kopiere(const string& qdatei, const string& zield, uint *kfehler, const u
 	uchar obgleich=0;
 	if (!base.empty() && !dir.empty()) {
 		ziel=zielname(base,dir,wieweiterzaehl,/*zieldatei=*/0,&obgleich,obverb,oblog);
-		Log(Tx[T_Kopiere_Doppelpunkt]+rots+qdatei+schwarz+"'\n         -> '"+rot+ziel+schwarz+"'",obverb,oblog);
+		fLog(Tx[T_Kopiere_Doppelpunkt]+rots+qdatei+schwarz+"'\n         -> '"+rot+ziel+schwarz+"'",obverb,oblog);
 		if ((efeh=kopier(qdatei,ziel,obverb,oblog))) {
 			fehler+=efeh;
-			Log(rots+Tx[T_Fehler_beim_Kopieren]+Tx[T_Dateiname]+blau+zield+schwarz,1,1);
+			fLog(rots+Tx[T_Fehler_beim_Kopieren]+Tx[T_Dateiname]+blau+zield+schwarz,1,1);
 		} // if (efeh=kopier(qdatei,ziel,obverb,oblog))
 	} else {
-		Log(rots+Tx[T_Fehler_beim_Kopieren]+Tx[T_Dateiname]+blau+zield+schwarz+Tx[T_schlechtgeformt],1,1);
+		fLog(rots+Tx[T_Fehler_beim_Kopieren]+Tx[T_Dateiname]+blau+zield+schwarz+Tx[T_schlechtgeformt],1,1);
 	} // if (!base.empty() && !dir.empty())  else 
 	if (kfehler) *kfehler=fehler;
 	return ziel;
@@ -600,7 +600,7 @@ string zielname(const string& qdatei, const string& rzielvz, uchar wieweiterzaeh
 	// auf Gleichheit testen
 	if (obgleichp) *obgleichp=!dateivgl(qdatei,ziel);
 	string meld=Tx[T_zielname_erstes_Ziel]+rots+ziel+schwarz+"'"+(obgleichp&&*obgleichp?Tx[T_Quelle_und_Ziel_gleich]:"");
-	if (ausgp&&obverb) *ausgp<<meld<<endl; else Log(meld,obverb,oblog);
+	if (ausgp&&obverb) *ausgp<<meld<<endl; else fLog(meld,obverb,oblog);
 	if (!(obgleichp&&*obgleichp)) {
 		if (wieweiterzaehl<2) {
 			ulong ausweich=0;
@@ -631,7 +631,7 @@ string zielname(const string& qdatei, const string& rzielvz, uchar wieweiterzaeh
 			} // for(;1;) 
 			if (ausgewichen) {
 				meld=Tx[T_zielname_Ausweichziel]+rots+ziel+schwarz+"'";
-				if (ausgp&&obverb) *ausgp<<meld<<endl; else Log(meld,obverb,oblog);
+				if (ausgp&&obverb) *ausgp<<meld<<endl; else fLog(meld,obverb,oblog);
 			}
 		} // if (wieweiterzaehl<2) 
 	} // 	if (obgleichp&&*obgleichp)
@@ -648,7 +648,7 @@ string zielname(const string& qdatei, const zielmustercl& zmp, uchar wieweiterza
 		int reti=regexec(&(zmakt->regex),qdatei.c_str(),0,NULL,0);
 		const string meld=Txk[T_datei]+rots+qdatei+schwarz+Tx[T_entspricht]+(reti?Tx[T_entsprichtnicht]:Tx[T_entsprichtdoch])+
 			Tx[T_Muster_Doppelpunkt]+rot+zmakt->holmuster()+schwarz+"'";
-		if (ausgp&&obverb) *ausgp<<meld<<endl; else Log(meld,obverb,oblog);
+		if (ausgp&&obverb) *ausgp<<meld<<endl; else fLog(meld,obverb,oblog);
 		if (!reti){
 			return zielname(qdatei,zmakt->ziel,wieweiterzaehl,zieldatei,obgleichp,obverb,oblog,ausgp);
 		} //     if (!reti)
@@ -662,7 +662,7 @@ const char * const rulesdt="/etc/udev/rules.d/46-FKN_isdn_capi.rules";
 // wird aufgerufen in: hhcl::pruefcapi
 void pruefrules(int obverb, int oblog) 
 {
-	Log(violetts+Tx[T_pruefrules]+schwarz,obverb?obverb-1:0,oblog);
+	fLog(violetts+Tx[T_pruefrules]+schwarz,obverb?obverb-1:0,oblog);
 	struct stat entrybuf={0};
 	if (lstat(rulesdt, &entrybuf)) { 
 		mdatei rules(rulesdt,ios::out);
@@ -678,7 +678,7 @@ const string blackdt="/etc/modprobe.d/50-blacklist.conf";
 // wird aufgerufen in: pruefcapi
 void pruefblack(int obverb, int oblog) 
 {
-	Log(violetts+Tx[T_pruefblack]+schwarz,obverb?obverb-1:0,oblog);
+	fLog(violetts+Tx[T_pruefblack]+schwarz,obverb?obverb-1:0,oblog);
 	const char* vgl[]={"blacklist avmfritz", "blacklist mISDNipac"};
 	uchar obda[]={0}, obeinsfehlt=0;
 	mdatei blacki(blackdt,ios::in);
@@ -698,7 +698,7 @@ void pruefblack(int obverb, int oblog)
 			if (blacka.is_open()) {
 				for(unsigned i=0;i<sizeof vgl/sizeof *vgl;i++) {
 					if (!obda[i]) {
-						Log(Tx[T_haengean]+blaus+blackdt+schwarz+Tx[T_an_mdpp]+gruen+vgl[i]+schwarz,obverb,oblog);
+						fLog(Tx[T_haengean]+blaus+blackdt+schwarz+Tx[T_an_mdpp]+gruen+vgl[i]+schwarz,obverb,oblog);
 						blacka<<vgl[i]<<endl;
 					}
 				} // for(unsigned i=0;i<sizeof vgl/sizeof *vgl;i++) 
@@ -753,7 +753,7 @@ int zielmustercl::kompilier(const uchar obext/*=1*/)
 		const int MAX_ERROR_MSG=0x1000;
 		char error_message[MAX_ERROR_MSG];
 		regerror (reti, &regex, error_message, MAX_ERROR_MSG);
-		Log(Tx[T_Der_regulaere_Ausdruck]+drots+muster+schwarz+Tx[T_konnte_nicht_kompiliert_werden_Fehler]+error_message,1,0);
+		fLog(Tx[T_Der_regulaere_Ausdruck]+drots+muster+schwarz+Tx[T_konnte_nicht_kompiliert_werden_Fehler]+error_message,1,0);
 		return 1;
 	} //   if (reti)
 	return 0;
@@ -776,7 +776,7 @@ const string& zielmustercl::holmuster () const
 } // const string& zielmustercl::holmuster()
 
 
-hhcl::hhcl(const int argc, const char *const *const argv):dhcl(argc,argv,DPROG) //α
+hhcl::hhcl(const int argc, const char *const *const argv):dhcl(argc,argv,DPROG,/*mitcron*/1) //α
 {
  // mitcron=0; //ω
 } // hhcl::hhcl //α
@@ -817,7 +817,7 @@ void hhcl::cccnfCfuell()
 // in virtVorgbAllg, pruefcapi
 void hhcl::liescapiconf()
 {
-	Log(violetts+Tx[T_liescapiconf]+schwarz);
+	hLog(violetts+Tx[T_liescapiconf]+schwarz);
 	svec qrueck;
 	const string wo="/etc/capisuite /usr/local/etc/capisuite";
 	const string moegl="find "+wo+" -type f -name ";
@@ -948,7 +948,7 @@ void hhcl::liescapiconf()
 // wird  aufgerufen in: pruefcapi
 void hhcl::konfcapi()
 {
-	Log(violetts+Tx[T_konfcapi]+schwarz+", ccapiconfdt: "+violett+ccapiconfdt+schwarz);
+	hLog(violetts+Tx[T_konfcapi]+schwarz+", ccapiconfdt: "+violett+ccapiconfdt+schwarz);
 	// Zahl der Klingeltoene in capisuite einstellen
 	/*//
 		cppSchluess cccnfA[]={{"incoming_script"}};
@@ -1020,7 +1020,7 @@ void hhcl::konfcapi()
 		////    if (cfax_stationID.find("000 0000")!=string::npos) 
 		////    ::Log(string("Capisuite ist offenbar noch nicht konfiguriert(")+blau+"fax_stationID"+schwarz+" enthaelt '000 0000').\n"
 		////        "Die Einstellung koennen spaeter in "+blau+cfaxconfdt+schwarz+" geaendert werden.",1,0);
-		::Log(Tx[T_Capisuite_ist_offenbar_noch_nicht_richtig_konfiguriert]+blaus+"'fax_stationID'"+schwarz+Tx[T_ist_Apostroph]+blau+
+		::fLog(Tx[T_Capisuite_ist_offenbar_noch_nicht_richtig_konfiguriert]+blaus+"'fax_stationID'"+schwarz+Tx[T_ist_Apostroph]+blau+
 				fax_stationID+schwarz+"')."+ Tx[T_Die_Einstellungen_koennen_spaeter_in]+blau+cfaxconfdt+schwarz+Tx[T_geaendert_werden],1,1);
 		// fax_stationID
 		capicffehlt=1;
@@ -1064,7 +1064,7 @@ void hhcl::konfcapi()
 		outgoing_timeout=Tippstr(string("outgoing_timeout: ")+Tx[T_Geduld_bis_zum_Verbindungsaufbau_in_s],&outgoing_timeout);
 		if (obverb>0) {
 			for(unsigned snr=0;snr<cfcnfC.size();snr++) {
-				Log("snr: "+blaus+ltoan(snr)+schwarz+" "+cfcnfC[snr]->pname+", "+cfcnfC[snr]->virtholstr());
+				hLog("snr: "+blaus+ltoan(snr)+schwarz+" "+cfcnfC[snr]->pname+", "+cfcnfC[snr]->virtholstr());
 			}
 		} // if (obverb>0)
 	} // if (rzf || (capicffehlt && !nrzf))
@@ -1107,7 +1107,7 @@ void hhcl::konfcapi()
 									gtrim(&altwert);
 									anfzweg(altwert); // Anfuehrungszeichen entfernen
 									if (snr==0 || snr==1) cfcnfC[snr]->setzstr(altwert); // spool_dir und fax_user_dir hier nicht konfigurierbar
-									Log(string("cfcnfC[")+ltoan(snr)+"].name: "+tuerkis+cfcnfC[snr]->pname+schwarz+Tx[T_komma_wert]+
+									fLog(string("cfcnfC[")+ltoan(snr)+"].name: "+tuerkis+cfcnfC[snr]->pname+schwarz+Tx[T_komma_wert]+
 											(cfcnfC[snr]->virtholstr()==altwert?blau:rot)+cfcnfC[snr]->virtholstr()+schwarz+Tx[T_komma_Altwert]+
 											blau+altwert+schwarz,obverb+iru,oblog+iru);
 									if (cfcnfC[snr]->virtholstr()!=altwert) {
@@ -1167,14 +1167,14 @@ void hhcl::konfcapi()
 	} // 	if (tuumben)
 	pruefcvz();
 	nextnum();
-	Log(violetts+Txk[T_Ende]+Tx[T_konfcapi]+schwarz+"ccapiconfdt: "+violett+ccapiconfdt+schwarz);
+	hLog(violetts+Txk[T_Ende]+Tx[T_konfcapi]+schwarz+"ccapiconfdt: "+violett+ccapiconfdt+schwarz);
 } // void hhcl::konfcapi
 
 // wird aufgerufen in: konfcapi, verzeichnisse
 void hhcl::pruefcvz()
 {
 	//// <<rot<<"cfaxuservz in pruefcvz: "<<cfaxuservz<<schwarz<<endl;
-	Log(violetts+Tx[T_pruefcvz]+schwarz+" ccfaxuservz: "+violett+cfaxuservz+schwarz);
+	hLog(violetts+Tx[T_pruefcvz]+schwarz+" ccfaxuservz: "+violett+cfaxuservz+schwarz);
 	kuerzevtz(&cfaxuservz);
 	pruefverz(cfaxuservz,obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/0,/*besitzer=*/"",/*benutzer=*/cuser,/*obmachen=*/0);
 	cfaxusersqvz=cfaxuservz+vtz+cuser+"/sendq"; //  "/var/spool/capisuite/users/<user>/sendq";
@@ -1188,7 +1188,7 @@ void hhcl::pruefcvz()
 // in empfcapi() und pruefcapi(), rueckfragen()
 void hhcl::pruefsfftobmp()
 {
-	Log(violetts+Tx[T_pruefsfftobmp]+schwarz);
+	hLog(violetts+Tx[T_pruefsfftobmp]+schwarz);
 	lsysen system=lsys.getsys(obverb,oblog);
 	if (system==fed) {
 		//// P=hylafax_copy; T=$P.tar.gz; wget https://github.com/libelle17/$P/archive/master.tar.gz -O $T && tar xpvf $T && rm -f $T && mv ${P}-master/* . && rmdir ${P}-master
@@ -1226,7 +1226,7 @@ void hhcl::pruefsfftobmp()
 	} else {
 		linstp->doggfinst("sfftobmp",obverb,oblog);
 	} // if (system==fed) else
-	Log(violetts+Txk[T_Ende]+Tx[T_pruefsfftobmp]+schwarz);
+	hLog(violetts+Txk[T_Ende]+Tx[T_pruefsfftobmp]+schwarz);
 } // pruefsfftobmp
 
 
@@ -1288,7 +1288,7 @@ void hhcl::capisv()
 // setzt csfehler, wenn Dienst nicht laeuft
 int hhcl::cservice()
 {
-	Log(violetts+"cservice()"+schwarz);
+	hLog(violetts+"cservice()"+schwarz);
 	int csfehler=0;
 	int erg=-1;
 	string cspfad;
@@ -1311,7 +1311,7 @@ int hhcl::cservice()
 		} // 		if (findv==1)
 		// entweder Type=forking oder Parameter -d weglassen; was besser ist, weiss ich nicht
 		csfehler+=!scapis->spruef("Capisuite",0,meinname,cspfad/*+" -d"*/,"","",linstp,obverb,oblog);
-		if (obverb) Log("csfehler: "+gruens+ltoan(csfehler)+schwarz);
+		if (obverb) hLog("csfehler: "+gruens+ltoan(csfehler)+schwarz);
 		////    return csfehler;
 	} // if (obprogda("capisuite",obverb,oblog,&cspfad)) 
 	return erg;
@@ -1320,7 +1320,7 @@ int hhcl::cservice()
 // in pruefcapi
 void hhcl::clieskonf()
 {
-	Log(violetts+Tx[T_clieskonf]+schwarz+", cfaxcp->name: "+violett+(cfaxcp?cfaxcp->fname:"0")+schwarz);
+	hLog(violetts+Tx[T_clieskonf]+schwarz+", cfaxcp->name: "+violett+(cfaxcp?cfaxcp->fname:"0")+schwarz);
 	if (fax_stationID!="+"+countrycode+" "+citycode+" "+msn  
 			|| outgoing_MSN!=msn  
 			|| fax_headline!=cFaxUeberschrift  
@@ -1364,7 +1364,7 @@ void hhcl::clieskonf()
 void hhcl::pruefmodcron()
 {
 	//  ::Log(violetts+Tx[T_pruefmodcron]+schwarz,obverb?obverb-1:0,oblog);
-	Log(violetts+Tx[T_pruefmodcron]+schwarz);
+	hLog(violetts+Tx[T_pruefmodcron]+schwarz);
 	const string mp="@reboot /sbin/modprobe ";
 	const string mps[]={mp+"capi",mp+"fcpci"};
 	setztmpcron();
@@ -1387,7 +1387,7 @@ void hhcl::pruefmodcron()
 // rueckgabe: wie obcapi eingestellt sein sollte
 int hhcl::pruefcapi()
 {
-	Log(violetts+Tx[T_pruefcapi]+schwarz+" obcapi: "+(obcapi?"1":"0"));
+	hLog(violetts+Tx[T_pruefcapi]+schwarz+" obcapi: "+(obcapi?"1":"0"));
 	static uchar capiloggekuerzt=0;
 	static uchar capischonerfolgreichinstalliert=0;
 	int capilaeuft=0;
@@ -1404,7 +1404,7 @@ int hhcl::pruefcapi()
 			//// #endif
 			////    capilaeuft=(PIDausName("capisuite")>=0);
 			capilaeuft=this->scapis->machfit(obverb?obverb-1:0,oblog,wahr)&&!ccapiconfdt.empty()&&!cfaxconfdt.empty();
-			Log(violetts+Tx[T_capilaeuft]+schwarz+ltoan(capilaeuft)+schwarz);
+			hLog(violetts+Tx[T_capilaeuft]+schwarz+ltoan(capilaeuft)+schwarz);
 			if (capilaeuft) {
 				capischonerfolgreichinstalliert=1;
 			} else {
@@ -1420,13 +1420,13 @@ int hhcl::pruefcapi()
 				} // for(size_t i=0;i<rueck.size();i++)
 				lsysen system=lsys.getsys(obverb,oblog);
 				if (!fcpcida || !capida || !capidrvda) {
-					::Log(blaus+Tx[T_Module_geladen]+schwarz+" fcpci: "+blau+(fcpcida?"1":"0")+schwarz+", capi: "+blau+(capida?"1":"0")+schwarz+
+					::fLog(blaus+Tx[T_Module_geladen]+schwarz+" fcpci: "+blau+(fcpcida?"1":"0")+schwarz+", capi: "+blau+(capida?"1":"0")+schwarz+
 							", capidrv: "+blau+(capidrvda?"1":"0")+schwarz+Tx[T_Lade_Capi_Module],obverb,0);
 					systemrueck("modprobe -rf avmfritz mISDNipac hisax_fcpcipnp hisax_isac hisax",obverb,oblog,/*rueck=*/0,/*obsudc=*/1,1);
 					utsname unbuf;
 					if (!fcpcida) {
 						uname(&unbuf);
-						Log(Tx[T_Kernelversion]+blaus+unbuf.release+schwarz);
+						hLog(Tx[T_Kernelversion]+blaus+unbuf.release+schwarz);
 					}
 					for(uchar ivers=0;ivers<3;ivers++) {
 						if (!fcpcida)
@@ -1437,14 +1437,14 @@ int hhcl::pruefcapi()
 										tuloeschen(fcpciko,cuser,obverb,oblog);
 										break;
 									case 2:
-										::Log(rots+Tx[T_KannFcpciNInstVerwCapiNicht]+blau+linstp->ersetzeprog("kernel-source")+rots+
+										::fLog(rots+Tx[T_KannFcpciNInstVerwCapiNicht]+blau+linstp->ersetzeprog("kernel-source")+rots+
 												Tx[T_eine_neuere_Version_als_die_des_aktuellen_Kernels_installiert_worden_sein_dann_bitte_erneutes_Systemupdate]+schwarz,1,1);
 										erg=1;
 										goto schluss;
 								} // 								switch (ivers)
 								struct stat entryfc={0};
 								if (lstat(fcpciko.c_str(), &entryfc)) {
-									::Log(Txk[T_datei]+blaus+fcpciko+schwarz+Tx[T_nichtgefFcpciMfdKinstallierwerden],obverb,1);
+									::fLog(Txk[T_datei]+blaus+fcpciko+schwarz+Tx[T_nichtgefFcpciMfdKinstallierwerden],obverb,1);
 									int altobverb=obverb;
 									obverb=obverb<2?2:obverb;
 									linstp->doinst("kernel-source",1+obverb,oblog);
@@ -1556,7 +1556,7 @@ int hhcl::pruefcapi()
 							// sollte nach Korrektur von kernel-modules-extra zu kernel-modules-extra-$(uname -r) kaum mehr vorkommen
 							if (v1!=v2) {
 								virtautokonfschreib();
-								::Log(blaus+Tx[T_Zur_Inbetriebnahme_der_Capisuite_muss_das_Modul_capi_geladen_werten]+schwarz+v1+blau+" -> "
+								::fLog(blaus+Tx[T_Zur_Inbetriebnahme_der_Capisuite_muss_das_Modul_capi_geladen_werten]+schwarz+v1+blau+" -> "
 										+schwarz+v2+blau+").\n"+blau+Tx[T_Bitte_zu_dessen_Verwendung_den_Rechner_neu_starten]+schwarz+mpfad+blau+Tx[T_aufrufen]
 										+schwarz,1,1);
 								exit(9);
@@ -1577,7 +1577,7 @@ int hhcl::pruefcapi()
 							svec krue;
 							systemrueck("find "+instvz+" -name kernel-$(uname -r|rev|cut -d. -f2-|rev).src.rpm",obverb,oblog,&krue,/*obsudc=*/1);
 							if (!krue.size()) {
-								::Log(Tx[T_Moment_muss_Kernel_herunterladen],-1,oblog);
+								::fLog(Tx[T_Moment_muss_Kernel_herunterladen],-1,oblog);
 								systemrueck("cd "+instvz+" && dnf download --source kernel-$(uname -r)",obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
 							} // 							if (!krue.size())
 							svec rueck;
@@ -1593,7 +1593,7 @@ int hhcl::pruefcapi()
 								const string release=unbuf.release;
 								const string relev=release.substr(0,release.find(unbuf.machine)-1);
 								if (kernel.find(relev)) {
-									::Log(Tx[T_Der_Kernel_hat_sich_offenbar_seit_dem_Einloggen_von]+blaus+relev+schwarz+Tx[T_nach_]+blau+kernel+schwarz+
+									::fLog(Tx[T_Der_Kernel_hat_sich_offenbar_seit_dem_Einloggen_von]+blaus+relev+schwarz+Tx[T_nach_]+blau+kernel+schwarz+
 											Tx[T_verjuengt_Bitte_den_Rechner_neu_starten_und_dann_mich_nochmal_aufrufen],1,1);
 									exit(10);
 								} // 							if (kernel.find(relev))
@@ -1639,13 +1639,13 @@ int hhcl::pruefcapi()
 				}
 				//// <<rot<<"capischonerfolgreichinstalliert 0: "<<(int)capischonerfolgreichinstalliert<<schwarz<<endl;
 				if (!capischonerfolgreichinstalliert) {
-					::Log(Tx[T_Konnte]+blaus+"capisuite"+schwarz+Tx[T_nichtstarten],1,oblog);
+					::fLog(Tx[T_Konnte]+blaus+"capisuite"+schwarz+Tx[T_nichtstarten],1,oblog);
 					linstp->doinst("ghostscript",obverb+1,oblog,"gs");
 					//// if (systemrueck("which zypper",-1,-1)) KLA
 					////        if (linstp->checkinst(-1,-1)!=zyp) KLA
 					/*//
 						if (linstp->ipr!=zypper) {
-						::Log(rots+Tx[T_Kann_Capisuite_nicht_installieren_verwende_Capi_nicht],1,1);
+						::fLog(rots+Tx[T_Kann_Capisuite_nicht_installieren_verwende_Capi_nicht],1,1);
 						this->obcapi=0;
 						erg=1;
 						goto schluss;
@@ -1821,14 +1821,14 @@ int hhcl::pruefcapi()
 					servc::daemon_reload();
 					systemrueck("systemctl stop isdn",obverb>0?obverb:-1,oblog,0,/*obsudc=*/1,1);
 					////      systemrueck(sudc+"systemctl start isdn",obverb,oblog);
-					::Log(Tx[T_StarteCapisuite],-1,oblog);
+					::fLog(Tx[T_StarteCapisuite],-1,oblog);
 					scapis->stop(-1,oblog);
 					capilaeuft=scapis->startundenable(-1,oblog);
 					if (capilaeuft) {
-						::Log(Tx[T_Capisuite_gestartet],1,oblog);
+						::fLog(Tx[T_Capisuite_gestartet],1,oblog);
 						break;
 					} else {
-						////       ::Log("Capisuite konnte nicht gestartet werden.",1,1);
+						////       ::fLog("Capisuite konnte nicht gestartet werden.",1,1);
 					} // 					if (capilaeuft)
 				} //       if (capilaeuft) else
 			} // if (capischonerfolgreichinstalliert) 
@@ -1841,7 +1841,7 @@ int hhcl::pruefcapi()
 			if (!kez&& !bvz && !anhl && !lista && !listi && !listw && suchstr.empty())
 				/*//if (this->obcapi) */pruefmodcron();
 		} else {
-			::Log(rots+Tx[T_konntecapisuiteservice]+gruen+ltoan(versuch)+rot+Tx[T_malnichtstartenverwN]+schwarz,1,1);
+			::fLog(rots+Tx[T_konntecapisuiteservice]+gruen+ltoan(versuch)+rot+Tx[T_malnichtstartenverwN]+schwarz,1,1);
 			erg=1;
 		} //   if (capilaeuft)
 		//// if (obcapi)
@@ -1850,14 +1850,14 @@ int hhcl::pruefcapi()
 		erg=1;
 	} // 	if (obcapi) else
 schluss: // sonst eine sonst sinnlose for-Schleife mehr oder return mitten aus der Funktion ...
-	Log(violetts+Txk[T_Ende]+Tx[T_pruefcapi]+schwarz+" obcapi: "+(obcapi?"1":"0"));
+	hLog(violetts+Txk[T_Ende]+Tx[T_pruefcapi]+schwarz+" obcapi: "+(obcapi?"1":"0"));
 	return erg;
 } // pruefcapi()
 
 // wird aufgerufen in: rueckfragen, main
 void hhcl::pruefisdn()
 {
-	Log(violetts+Tx[T_pruefisdn]+schwarz);
+	hLog(violetts+Tx[T_pruefisdn]+schwarz);
 	svec rueck;
 ////	cmd="{ lspci 2>/dev/null || "+sudc+"lspci 2>/dev/null;}|grep -i 'isdn'"; systemrueck(cmd, obverb,oblog,&rueck);
 	for(int iru=0;iru<2;iru++) {
@@ -1865,17 +1865,17 @@ void hhcl::pruefisdn()
 	}
 	// <<"pruefmodem 1 vor  obcapi: "<<(int)obcapi<<endl;
 	if (rueck.size()) {
-		Log(blaus+Tx[T_ISDN_Karte_gefunden]+schwarz+rueck[0]+blau+Tx[T_Setze]+Tx[T_mitCapi]+schwarz+Tx[T_aauf]+blau+"1.");
+		hLog(blaus+Tx[T_ISDN_Karte_gefunden]+schwarz+rueck[0]+blau+Tx[T_Setze]+Tx[T_mitCapi]+schwarz+Tx[T_aauf]+blau+"1.");
 	// wenn zum Konfigurationszeitpunkt keine Fritzcard drinstak, aber jetzt, dann rueckfragen
 		if (!obfcard) {
 			rzf=1;
 			obfcard=1;
 		}
 	} else {
-		Log(rots+Tx[T_Keine_ISDN_Karte_gefunden]+schwarz+Tx[T_mitCapi]+rot+Tx[T_aauf]+schwarz+"0.");
+		hLog(rots+Tx[T_Keine_ISDN_Karte_gefunden]+schwarz+Tx[T_mitCapi]+rot+Tx[T_aauf]+schwarz+"0.");
 		obcapi=obfcard=0;
 	} // 	if (rueck.size())
-	if (obverb) Log("obfcard: "+blaus+ltoan(obfcard)+schwarz);
+	if (obverb) hLog("obfcard: "+blaus+ltoan(obfcard)+schwarz);
 	obfcgeprueft=1;
 } // void hhcl::pruefisdn()
 
@@ -1903,7 +1903,7 @@ void hhcl::dovc()
 // wird aufgerufen in lauf
 void hhcl::virtVorgbAllg()
 {
-	Log(violetts+Tx[T_virtVorgbAllg]+schwarz); //ω
+	hLog(violetts+Tx[T_virtVorgbAllg]+schwarz); //ω
 	liescapiconf();
 	hylazuerst=0;
 	//// hmodemstr="ACM";
@@ -1940,7 +1940,7 @@ void hhcl::virtVorgbAllg()
 // wird aufgerufen in lauf
 void hhcl::pvirtVorgbSpeziell()
 {
-	Log(violetts+Tx[T_pvirtVorgbSpeziell]+schwarz); //ω
+	hLog(violetts+Tx[T_pvirtVorgbSpeziell]+schwarz); //ω
 	dhcl::pvirtVorgbSpeziell(); //α
 	virtMusterVorgb();
 } // void hhcl::pvirtVorgbSpeziell
@@ -2005,7 +2005,7 @@ void hhcl::pvirtmacherkl()
 // wird aufgerufen in lauf
 void hhcl::virtMusterVorgb()
 {
-	Log(violetts+Tx[T_virtMusterVorgb]+schwarz); //ω
+	hLog(violetts+Tx[T_virtMusterVorgb]+schwarz); //ω
 	dbq=DPROG;
 	findvers="3";
 	ifindv=findv=atol(findvers.c_str());
@@ -2037,7 +2037,7 @@ void hhcl::virtzeigversion(const string& ltiffv/*=nix*/)
 // wird aufgerufen in lauf
 void hhcl::pvirtvorrueckfragen()
 {
-	Log(violetts+Tx[T_pvirtvorrueckfragen]+schwarz);
+	hLog(violetts+Tx[T_pvirtvorrueckfragen]+schwarz);
 	if (rzf) { //ω
   } //α
 } // void hhcl::pvirtvorrueckfragen
@@ -2046,7 +2046,7 @@ void hhcl::pvirtvorrueckfragen()
 // wird aufgerufen in lauf
 void hhcl::virtrueckfragen()
 {
-	Log(violetts+Tx[T_virtrueckfragen]+schwarz);
+	hLog(violetts+Tx[T_virtrueckfragen]+schwarz);
 	if (rzf) { //ω
 		zufaxenvz=Tippverz(Tx[T_Verzeichnis_mit_zu_faxenden_Dateien],&zufaxenvz);
 		wvz=Tippverz(Tx[T_Verzeichnis_mit_wartenden_Dateien],&wvz);
@@ -2134,18 +2134,18 @@ void hhcl::virtautokonfschreib()
 {
 // int altobverb=obverb;
 // obverb=1;
-	Log(violetts+Txk[T_autokonfschreib]+schwarz+", "+Txk[T_zu_schreiben]+((rzf||hccd.obzuschreib)?Txk[T_ja]:Txk[T_nein]));
+	hLog(violetts+Txk[T_autokonfschreib]+schwarz+", "+Txk[T_zu_schreiben]+((rzf||hccd.obzuschreib)?Txk[T_ja]:Txk[T_nein]));
 	/*//
 		capizukonf und hylazukonf hier immer 0
 		char buf[200];
 		sprintf(buf,"rzf: %d, capizukonf: %d, hylazukonf: %d, obkschreib: %d",(int)rzf, (int)capizukonf, (int)hylazukonf, (int)obkschreib);
-		Log(blaus+buf+schwarz);
+		hLog(blaus+buf+schwarz);
 	 */
 	struct stat kstat={0};
 	if (lstat(akonfdt.c_str(),&kstat))
 		hccd.obzuschreib=1;
 	if (rzf||hccd.obzuschreib) {
-		Log(gruens+Tx[T_schreibe_Konfiguration]+schwarz,obverb);
+		fLog(gruens+Tx[T_schreibe_Konfiguration]+schwarz,obverb);
 		// restliche Erklaerungen festlegen
 		////    agcnfA.setzbem("language",sprachstr);
 		hcl::virtautokonfschreib(); //ω
@@ -2187,7 +2187,7 @@ void hhcl::virtlieskonfein()
 {
 	const int altobverb=obverb;
 	//	obverb=1;
-	Log(violetts+Txk[T_virtlieskonfein]+schwarz);
+	hLog(violetts+Txk[T_virtlieskonfein]+schwarz);
 	hcl::virtlieskonfein(); //ω
 	//// caus<<"sqlzn: "<<sqlzn<<endl;
 	sqlp=new string[sqlzn];
@@ -2252,7 +2252,7 @@ void hhcl::virtlieskonfein()
 	} // 	if (!zmzn)
 ////	optausg(rot);
 ////	opn.gibomapaus();
-	Log(violetts+Txk[T_Ende]+Txk[T_virtlieskonfein]+schwarz); //α
+	hLog(violetts+Txk[T_Ende]+Txk[T_virtlieskonfein]+schwarz); //α
 	obverb=altobverb;
 } // void hhcl::virtlieskonfein()
 
