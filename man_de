@@ -2,7 +2,7 @@
 .\" Manual-Seite für ²DPROG²
 .\" Schreiben Sie an geraldschade@gmx.de, wenn Sie Fehler oder Mängel entdeckt haben
 .pc
-.TH man 1 "06.05.18" "Version 0.10616" "Manual-Seite für ²DPROG²"
+.TH man 1 "06.05.18" "Version 0.1062" "Manual-Seite für ²DPROG²"
 .SH NAME
 \fB²DPROG² \- FaxServer-Funktionalität\fR: veranlasst automatischen Faxversand von Dateien, Benennung empfangener Faxe und Protokollierung aller Faxe in einer Datenbank 
 .br
@@ -15,63 +15,63 @@
 .SH OPTIONEN 
 .SH VORAUSSETZUNGEN
 .br
-\fRProgramm: \fB/root/autofax2/autofax2\fR, V: \fB0.10614\fR
+\fRProgramm: \fB/root/autofax2/autofax2\fR, V: \fB0.10620\fR
 .br
 \fBOptionen, die nicht gespeichert werden: \fR
 .br
-\fB -loef, --loeschefax\fR: ein Fax nach Rueckfrage loeschen\fB oder nicht\fR (\fB0\fR)
+\fB -loef, --loeschefax\fR: ein Fax nach Rueckfrage loeschen (\fB0\fR)
 .br
-\fB -loew, --loeschewaise\fR: Eintraege aus `\fBspool\fR` loeschen, zu denen keine Datei im Wartevz.und kein Capi- oder Hylafax nachweisbar ist\fB oder nicht\fR (\fB0\fR)
+\fB -loew, --loeschewaise\fR: Eintraege aus `\fBspool\fR` loeschen, zu denen keine Datei im Wartevz.und kein Capi- oder Hylafax nachweisbar ist (\fB0\fR)
 .br
-\fB -loea, --loescheallew\fR: alle wartenden Faxe und zugehoerige Eintraege aus `\fBspool\fR` loeschen\fB oder nicht\fR (\fB0\fR)
+\fB -loea, --loescheallew\fR: alle wartenden Faxe und zugehoerige Eintraege aus `\fBspool\fR` loeschen (\fB0\fR)
 .br
-\fB -erneut, --erneutempf\fR: empfangenes Fax erneut bereitstellen\fB oder nicht\fR (\fB0\fR)
+\fB -erneut, --erneutempf\fR: empfangenes Fax erneut bereitstellen (\fB0\fR)
 .br
-\fB -uml, --umleiten\fR: ausgehendes Fax vorzeitig auf zweitem Weg schicken\fB oder nicht\fR (\fB0\fR)
+\fB -uml, --umleiten\fR: ausgehendes Fax vorzeitig auf zweitem Weg schicken (\fB0\fR)
 .br
-\fB -kez, --korrerfolgszeichen\fR: in der Datenbanktabelle `\fBouta\fR` wird das Erfolgszeichen korrigiert\fB oder nicht\fR (\fB0\fR)
+\fB -kez, --korrerfolgszeichen\fR: in der Datenbanktabelle `\fBouta\fR` wird das Erfolgszeichen korrigiert (\fB0\fR)
 .br
-\fB -bvz, --bereinigevz\fR: Dateien aus Wartevz.,Gescheitertenvz.u.Gefaxtvz.gegen `\fBouta\fR` pruefen und ggf. aufraeumen\fB oder nicht\fR (\fB0\fR)
+\fB -bvz, --bereinigevz\fR: Dateien aus Wartevz.,Gescheitertenvz.u.Gefaxtvz.gegen `\fBouta\fR` pruefen und ggf. aufraeumen (\fB0\fR)
 .br
-\fB -st, --stop\fR: autofax2 anhalten\fB oder nicht\fR (\fB0\fR)
+\fB -st, --stop\fR: autofax2 anhalten (\fB0\fR)
 .br
-\fB -lista, --listausg\fR: listet Datensaetze aus `\fBouta\fR` mit Erfolgskennzeichen auf\fB oder nicht\fR (\fB0\fR)
+\fB -lista, --listausg\fR: listet Datensaetze aus `\fBouta\fR` mit Erfolgskennzeichen auf (\fB0\fR)
 .br
-\fB -listf, --listfehlgeschl\fR: listet Datensaetze aus `\fBouta\fR` ohne Erfolgskennzeichen auf\fB oder nicht\fR (\fB0\fR)
+\fB -listf, --listfehlgeschl\fR: listet Datensaetze aus `\fBouta\fR` ohne Erfolgskennzeichen auf (\fB0\fR)
 .br
-\fB -liste, --listeing\fR: listet Datensaetze aus `\fBinca\fR` auf\fB oder nicht\fR (\fB0\fR)
+\fB -liste, --listeing\fR: listet Datensaetze aus `\fBinca\fR` auf (\fB0\fR)
 .br
-\fB -listw, --listwartende\fR: listet wartende Faxe auf\fB oder nicht\fR (\fB0\fR)
+\fB -listw, --listwartende\fR: listet wartende Faxe auf (\fB0\fR)
 .br
 \fB -s, --suche <string>\fR: Suche in verarbeiteten Faxen nach <string>:  ('\fB\fR')
 .br
 \fB -n, --dszahl <string>\fR: Zahl der aufzulistenden Datensaetze = <zahl> statt ('\fB30\fR')
 .br
-\fB -vc, --vc\fR: Capisuite-Konfigurationsdateien bearbeiten (beenden mit ':qa')\fB oder nicht\fR (\fB0\fR)
+\fB -vc, --vc\fR: Capisuite-Konfigurationsdateien bearbeiten (beenden mit ':qa') (\fB0\fR)
 .br
-\fB -vh, --vh\fR: Hylafax-Modem-Konfigurationsdatei bearbeiten (beenden mit ':qa')\fB oder nicht\fR (\fB0\fR)
+\fB -vh, --vh\fR: Hylafax-Modem-Konfigurationsdatei bearbeiten (beenden mit ':qa') (\fB0\fR)
 .br
 \fB -sqlw, --sql-wortreich\fR: Bildschirmausgabe mit SQL-Befehlen (\fB0\fR)
 .br
-\fB -w, --wortreich\fR: Bildschirmausgabe gespraechiger\fB oder nicht\fR (\fB0\fR)
+\fB -w, --wortreich\fR: Bildschirmausgabe gespraechiger (\fB0\fR)
 .br
-\fB -ldn, --logdateineu\fR: logdatei vorher loeschen\fB oder nicht\fR (\fB0\fR)
+\fB -ldn, --logdateineu\fR: logdatei vorher loeschen (\fB0\fR)
 .br
 \fB -kd, --konfdatei <string>\fR: verwendet Konfigurationsdatei <string> anstatt ('\fB\fR')
 .br
-\fB -h, --hilfe\fR: Erklaerung haeufiger Optionen\fB oder nicht\fR (\fB3\fR)
+\fB -h, --hilfe\fR: Erklaerung haeufiger Optionen (\fB3\fR)
 .br
-\fB -lh, --langhilfe\fR: Erklaerung aller Optionen\fB oder nicht\fR (\fB3\fR)
+\fB -lh, --langhilfe\fR: Erklaerung aller Optionen (\fB3\fR)
 .br
-\fB -vi, --vi\fR: Konfigurationsdatei , Logdatei usw. bearbeiten/sehen (beenden mit ':qa')\fB oder nicht\fR (\fB0\fR)
+\fB -vi, --vi\fR: Konfigurationsdatei , Logdatei usw. bearbeiten/sehen (beenden mit ':qa') (\fB0\fR)
 .br
-\fB -vs, --vs\fR: Quelldateien in \fB/home/schade/autofax2\fR bearbeiten/sehen (beenden mit ':qa')\fB oder nicht\fR (\fB0\fR)
+\fB -vs, --vs\fR: Quelldateien in \fB/home/schade/autofax2\fR bearbeiten/sehen (beenden mit ':qa') (\fB0\fR)
 .br
-\fB -rf, --rueckfragen\fR: alle Parameter werden abgefragt (darunter einige hier nicht gezeigte)\fB oder nicht\fR (\fB0\fR)
+\fB -rf, --rueckfragen\fR: alle Parameter werden abgefragt (darunter einige hier nicht gezeigte) (\fB0\fR)
 .br
-\fB -krf, --keinerueckfragen\fR: keine Rueckfragen, z.B. fuer Aufruf aus cron\fB oder nicht\fR (\fB0\fR)
+\fB -krf, --keinerueckfragen\fR: keine Rueckfragen, z.B. fuer Aufruf aus cron (\fB0\fR)
 .br
-\fB -info, --version\fR: Zeigt die Programmversion an\fB oder nicht\fR (\fB0\fR)
+\fB -info, --version\fR: Zeigt die Programmversion an (\fB0\fR)
 .br
 \fBOptionen z.Speich. i.Konfigur'datei (vorausg. '1'=doch nicht speichern, 'no'=Gegenteil, z.B. '-noocra','-1noocri'):\fR
 .br
@@ -91,9 +91,9 @@
 .br
 \fB -hyla, --obhyla <zahl>\fR: Hylafax verwenden\fB oder nicht\fR (\fB1\fR)
 .br
-\fB -hz, --hylazuerst <zahl>\fR: versuche faxe zuerst ueber Hylafax wegzuschicken\fB oder nicht\fR (\fB0\fR)
+\fB -hz, --hylazuerst <zahl>\fR: versuche faxe zuerst ueber Hylafax wegzuschicken (\fB0\fR)
 .br
-\fB -cz, --capizuerst <zahl>\fR: versuche faxe zuerst ueber Capisuite wegzuschicken\fB oder nicht\fR (\fB0\fR)
+\fB -cz, --capizuerst <zahl>\fR: versuche faxe zuerst ueber Capisuite wegzuschicken (\fB0\fR)
 .br
 \fB -mod, --hmodem <string>\fR: Fuer Hylafax verwendetes Modem, anstatt  ('\fBttyACM0\fR')
 .br
@@ -109,11 +109,11 @@
 .br
 \fB -hmw, --hmaxwahlvers <string>\fR: Zahl der Wahlversuche in Hylafax, anstatt  ('\fB11\fR')
 .br
-\fB -gz, --gleichziel <zahl>\fR: Faxe werden auch ohne Faxerfolg ins Zielverzeichnis kopiert\fB oder nicht\fR (\fB1\fR)
+\fB -gz, --gleichziel <zahl>\fR: Faxe werden auch ohne Faxerfolg ins Zielverzeichnis kopiert (\fB1\fR)
 .br
-\fB -ocre, --ocre <zahl>\fR: Text aus empfangenen Faxen wird ermittelt\fB oder nicht\fR (\fB1\fR)
+\fB -ocre, --ocre <zahl>\fR: Text aus empfangenen Faxen wird ermittelt (\fB1\fR)
 .br
-\fB -ocra, --ocra <zahl>\fR: Text aus gesandten Bildern wird ermittelt\fB oder nicht\fR (\fB0\fR)
+\fB -ocra, --ocra <zahl>\fR: Text aus gesandten Bildern wird ermittelt (\fB0\fR)
 .br
 \fB -afs, --anfaxstr <string>\fR: faxnr wird hinter <string> erwartet statt hinter ('\fBan Fax\fR')
 .br
@@ -145,8 +145,8 @@
 .br
 \fB -ld, --logdname <string>\fR: logdatei <string> (im Pfad '\fB/var/log\fR') wird verwendet anstatt ('\fBautofax2.log\fR')
 .br
-\fB -l, --log <zahl>\fR: protokolliert ausfuehrlich in Datei '\fB/var/log/autofax2.log\fR' (sonst knapper)\fB oder nicht\fR (\fB0\fR)
+\fB -l, --log <zahl>\fR: protokolliert ausfuehrlich in Datei '\fB/var/log/autofax2.log\fR' (sonst knapper) (\fB0\fR)
 .br
 \fB -cm, --cronminuten <string>\fR: alle wieviel Minuten soll \fBautofax2\fR ueber crontab aufgerufen werden (0=gar nicht), anstatt  ('\fB0\fR')
 .br
-\fB -autoakt, --autoaktual <zahl>\fR: Programm automatisch aktualisieren\fB oder nicht\fR (\fB1\fR)
+\fB -autoakt, --autoaktual <zahl>\fR: Programm automatisch aktualisieren (\fB1\fR)
