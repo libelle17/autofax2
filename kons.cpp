@@ -512,7 +512,7 @@ const char *kons_T[T_konsMAX+1][SprachZahl]=
 	// T_Gebrauch
 	{"Gebrauch: ","Usage: "},
 	// T_Optionen_die_nicht_gespeichert_werden
-	{"Optionen, die nicht gespeichert werden: ","Options which are not saved: "},
+	{"Optionen, die nicht gespeichert werden (aktueller Wert in Klammern): ","Options which are not saved (current value in parentheses): "},
 	// T_Optionen_die_in_der_Konfigurationsdatei_gespeichert_werden,
 	{"Optionen z.Speich. i.Konfigur'datei (vorausg. '1'=doch nicht speichern, 'no'=Gegenteil, z.B. '-noocra','-1noocri'):",
 		"Options to be saved in the configuration file: (preced. '1'=don't save, 'no'=contrary, e.g. '-noocra','-1noocri'):"},
@@ -636,6 +636,8 @@ const char *kons_T[T_konsMAX+1][SprachZahl]=
 	{"Parameter: ","Parameter: "},
 	// T_gefunden
 	{" gefunden, "," found, "},
+	// T_rueckzufragen_wegen
+	{"rueckzufragen wegen","interaction because of"},
 	{"",""}
 }; // const char *Txkonscl::TextC[T_konsMAX+1][SprachZahl]=
 
@@ -5209,7 +5211,7 @@ void hcl::verarbeitkonf()
 	if (!nrzf&&obhilfe<=2) {
 		for (size_t i = 0;i<opn.size();i++) {
 			if (!opn[i]->pname.empty() && !opn[i]->woher) {
-				fLog("rueckzufragen wegen: "+rots+opn[i]->pname+schwarz,1,0);
+				fLog(Txk[T_rueckzufragen_wegen]+rots+opn[i]->pname+schwarz,1,0);
 				rzf=1;
 			}
 		} // 		for (size_t i = 0;i<opn.size();i++)
@@ -5228,21 +5230,22 @@ int hcl::zeighilfe(const stringstream *const erkl)
 			cout<<meinname<<": "<<blau<<Txk[T_Testaufruf_wegen_Programmbibliotheken]<<schwarz<<endl;
 		} else {
 			// nicht standardhilfe
-		if (obhilfe<3) {
-			cout<<blau<<Txk[T_Gebrauch]<<drot<<meinname<<" [-<opt>|--<longopt> [<content>]] ..."<<schwarz<<endl; 
-			cout<<erkl->str()<<endl;
-		}
-		cout<<blau<<Txk[T_Optionen_die_nicht_gespeichert_werden]<<schwarz<<endl;
-		for(size_t j=0;j<opn.size();j++) {
-			if (opn[j]->pname.empty() && (obhilfe>1 || opn[j]->wi)) {
-				opn[j]->hilfezeile(Txk.lgn);
+			if (obhilfe<3) {
+				cout<<blau<<Txk[T_Gebrauch]<<drot<<meinname<<" [-<opt>|--<longopt> [<content>]] ..."<<schwarz<<endl; 
+				cout<<erkl->str()<<endl;
 			}
-		} //     for(size_t j=0;j<opn.size();j++)
-		cout<<blau<<Txk[T_Optionen_die_in_der_Konfigurationsdatei_gespeichert_werden]<<schwarz<<endl;
-		for(size_t j=0;j<opn.size();j++) {
-			if (!opn[j]->pname.empty() && (obhilfe>1 || opn[j]->wi))
-				opn[j]->hilfezeile(Txk.lgn);
-		} //     for(size_t j=0;j<opn.size();j++)
+			cout<<blau<<Txk[T_Optionen_die_nicht_gespeichert_werden]<<schwarz<<endl;
+			for(size_t j=0;j<opn.size();j++) {
+				if (opn[j]->pname.empty() && (obhilfe>1 || opn[j]->wi)) {
+					opn[j]->hilfezeile(Txk.lgn);
+				}
+			} //     for(size_t j=0;j<opn.size();j++)
+			cout<<blau<<Txk[T_Optionen_die_in_der_Konfigurationsdatei_gespeichert_werden]<<schwarz<<endl;
+			for(size_t j=0;j<opn.size();j++) {
+				if (!opn[j]->pname.empty() && (obhilfe>1 || opn[j]->wi) &&(opn[j]->kurzi!=-1 || opn[j]->langi!=-1))
+					opn[j]->hilfezeile(Txk.lgn);
+			} //     for(size_t j=0;j<opn.size();j++)
+////			optausg(violett);
 		} // if (obhilfe==4) else
 		return 1;
 	} // if (obhilfe)

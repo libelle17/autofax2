@@ -2,7 +2,7 @@
 .\" Manual-Seite für ²DPROG²
 .\" Schreiben Sie an geraldschade@gmx.de, wenn Sie Fehler oder Mängel entdeckt haben
 .pc
-.TH man 1 "06.05.18" "Version 0.1062" "Manual-Seite für ²DPROG²"
+.TH man 1 "21.05.18" "Version 0.10621" "Manual-Seite für ²DPROG²"
 .SH NAME
 \fB²DPROG² \- FaxServer-Funktionalität\fR: veranlasst automatischen Faxversand von Dateien, Benennung empfangener Faxe und Protokollierung aller Faxe in einer Datenbank 
 .br
@@ -15,9 +15,9 @@
 .SH OPTIONEN 
 .SH VORAUSSETZUNGEN
 .br
-\fRProgramm: \fB/root/autofax2/autofax2\fR, V: \fB0.10620\fR
+\fRProgramm: \fB/root/autofax2/autofax2\fR, V: \fB0.10621\fR
 .br
-\fBOptionen, die nicht gespeichert werden: \fR
+\fBOptionen, die nicht gespeichert werden (aktueller Wert in Klammern): \fR
 .br
 \fB -loef, --loeschefax\fR: ein Fax nach Rueckfrage loeschen (\fB0\fR)
 .br
@@ -126,10 +126,6 @@
 \fB -us, --undstr <string>\fR: Trennstring <string> fuer mehrere Adressaten/Telefonnummern statt ('\fBund\fR')
 .br
 \fB -fd, --finde <string>\fR: Version 1,2 oder 3 -Dateisuche (variable Performanceunterschiede) anstatt ('\fB3\fR')
-.br
-\fB --1, ---1 <zahl>\fR: Zahl der SQL-Befehle fuer die Absenderermittlung (\fB0\fR)
-.br
-\fB --1, ---1 <zahl>\fR: Zahl der Muster/Verzeichnis-Paare zum Speichern ankommender Faxe (\fB0\fR)
 .br
 \fB -host, --host <string>\fR: verwendet die Datenbank auf Host <string> anstatt auf ('\fBlocalhost\fR')
 .br

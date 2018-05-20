@@ -444,6 +444,7 @@ enum Tkons_
 	T_lieszaehlerein,
 	T_Parameter,
 	T_gefunden,
+	T_rueckzufragen_wegen,
 	T_konsMAX
 }; // Tkons_
 

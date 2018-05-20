@@ -2,7 +2,7 @@
 .\" manual page for ²DPROG²
 .\" write to geraldschade@gmx.de if You discover an error or a deficit in the program
 .pc
-.TH man 1 "06.05.18" "Version 0.1062" "\fB²DPROG²\fR man page"
+.TH man 1 "21.05.18" "Version 0.10621" "\fB²DPROG²\fR man page"
 .SH NAME
 \fB²DPROG² \- Fax server functionality\fR: induces automatic fax transmission of files, naming of received faxes and logging of all of them in a database
 .br
@@ -15,9 +15,9 @@
 .SH OPTIONS 
 .SH PRECONDITIONS
 .br
-\fRProgramm: \fB/root/autofax2/autofax2\fR, V: \fB0.10620\fR
+\fRProgramm: \fB/root/autofax2/autofax2\fR, V: \fB0.10621\fR
 .br
-\fBOptions which are not saved: \fR
+\fBOptions which are not saved (current value in parentheses): \fR
 .br
 \fB -delf, --deletefax\fR: delete a fax with query (\fB0\fR)
 .br
@@ -126,10 +126,6 @@
 \fB -ands, --andstr <string>\fR: separating string <string> for multiple addressees/tel'numbers, instead of ('\fBund\fR')
 .br
 \fB -fd, --find <string>\fR: version 1,2 or 3 of filefind (variable performance differences instead of ('\fB3\fR')
-.br
-\fB --1, ---1 <zahl>\fR: No.of the sql-commands for finding out senders (\fB0\fR)
-.br
-\fB --1, ---1 <zahl>\fR: No of pairs of patterns/directories for saving received faxes (\fB0\fR)
 .br
 \fB -host, --host <string>\fR: takes the database on host <string> instead of ('\fBlocalhost\fR')
 .br
