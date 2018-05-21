@@ -57,19 +57,21 @@ getIPR() {
 		} 
 	} || 
 	{ still which dnf &&
-		{ fed=1;
+		{ 
+			fed=1;
 			IdPR="dnf -y install ";
 			UPR="${SUDC}dnf remove ";
 		} 
 	} || 
 	{ still which yum &&
-		{ fed=1;
+		{ 
 			IdPR="yum -y install ";
 			UPR="${SUDC}yum remove ";
 		} 
 	} || 
 	{ still which urpmi.update &&
-		{ mag=1;
+		{ 
+			mag=1;
 			IdPR="urpmi --auto --force ";
 			IP_R="${SUDC}$IdPR";
 			UPR="${SUDC}urpme ";
@@ -80,7 +82,8 @@ getIPR() {
 		} 
 	} || 
 	{ still which pacman &&
-		{ maj=1; 
+		{ 
+			maj=1; 
 			IdPR="pacman -S ";
 			IP_R="${SUDC}$IdPR";
 			dev=devel;
@@ -104,14 +107,7 @@ getIPR() {
 		LT="${_LT} ${_LT}-${dev}";
 		LT5="";
 	}
-	{ still which rpm &&
-		{ 
-			SPR="rpm -q ";
-			LACL=libacl-${dev};
-			LCURL=libcurl-${dev};
-			UDPR="${SUDC}rpm -e --nodeps ";
-		};
-	} || 
+	// rpm kam schon auf ubuntu vor, dpkg auf opensuse eher nicht
 	{ still which dpkg &&
 		{ 
 			SPR="dpkg -s ";
@@ -122,6 +118,14 @@ getIPR() {
 			LACL=libacl1-${dev};
 			LCURL=libcurl4-openssl-${dev};
 			UDPR="${SUDC}apt-get -f install; ${SUDC}dpkg -r --force-depends ";
+		};
+	}||
+	{ still which rpm &&
+		{ 
+			SPR="rpm -q ";
+			LACL=libacl-${dev};
+			LCURL=libcurl-${dev};
+			UDPR="${SUDC}rpm -e --nodeps ";
 		};
 	}
 	for A in $(ls|grep "\.cpp$\|\.h$");do [ -f "$A" ]&& grep -q "^#include[ ]*<mysql.h>" "$A" &&break;done ||libmac=;

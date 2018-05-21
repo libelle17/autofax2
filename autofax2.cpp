@@ -540,6 +540,29 @@ char const *DPROG_T[T_MAX+1][SprachZahl]={
 	{"Buchstabenfolge vor erstem Adressaten","Letter-sequence before the first addressee"},
 	// T_Buchstabenfolge_vor_weiterem_Adressaten_sowie_weiterer_Faxnummer,
 	{"Buchstabenfolge vor weiterem Adressaten sowie weiterer Faxnummer","Letter-sequence before further addressee or fax number"},
+	// T_faxnr_wird_ersetzt_mit_der_Faxnr
+	{" (bitte ggf. SQL-Befehl mit 2 Ergebnisfeldern, '&&faxnr&&' wird ersetzt mit der Faxnr)",
+		" (if wanted type sql-command with 2 result fields, '&&faxnr&&' will be replaces with the fax-no.)"},
+	// T_Strich_ist_SQL_Befehl_loeschen_faxnr_wird_ersetzt_mit_der_Faxnr
+	{" ('-'=SQL-Befehl loeschen, 2 Ergebnisfelder, '&&faxnr&&' wird ersetzt mit der Faxnr, s.man -Lde " DPROG ")",
+		" ('-'=delete this sql command, 2 result fields, '&&faxnr&&' will be replaces with the fax-no., see man " DPROG ")"},
+	// T_In
+	{"In '","In '"},
+	// T_keine_Datenbank_gefunden_Wollen_Sie_den_SQL_Befehl_neu_eingeben
+	{"' keine Datenbank gefunden. Wollen Sie den SQL-Befehl neu eingeben?",
+		"' no database found. Do You want to reenter the sql command?"},
+	// T_Datenbank
+	{"Datenbank '","Database '"},
+	// T_nicht_ermittelbar_Wollen_Sie_den_SQL_Befehl_neu_eingeben
+	{"' nicht ermittelbar. Wollen Sie den SQL-Befehl neu eingeben?","' not found. Do You want to reenter the sql command?"},
+	// T_keinmal_faxnr_gefunden_Wollen_Sie_den_SQL_Befehl_neu_eingeben
+	{"' keinmal '&&faxnr&&' gefunden. Wollen Sie den SQL-Befehl neu eingeben?",
+		"' no occurance of '&&faxnr&&' found. Do You want to reenter the sql command?"},
+	// T_koennte_ein_SQL_Fehler_sein_Wollen_Sie_den_SQL_Befehl_neu_eingeben
+	{"' koennte ein SQL-Fehler sein. Wollen Sie den SQL-Befehl neu eingeben?",
+		"' could be an sql error. Do You want to reenter the sql command?"},
+	// T_Wolle_Sie_noch_einen_SQL_Befehl_eingeben,
+	{"Wollen Sie noch einen SQL-Befehl eingeben?","Do You want to enter another sql command?"},
 	{"",""} //α
 }; // char const *DPROG_T[T_MAX+1][SprachZahl]=
 
@@ -2293,6 +2316,7 @@ void hhcl::pvirtvorrueckfragen()
 // wird aufgerufen in lauf
 void hhcl::virtrueckfragen()
 {
+	const size_t aktc=0;
 	hLog(violetts+Tx[T_virtrueckfragen]+schwarz);
 	if (rzf) { //ω
 	// Rueckfragen koennen auftauchen in: virtrueckfragen, konfcapi (<- pruefcapi), aenderefax, rufpruefsamba
@@ -2384,6 +2408,81 @@ void hhcl::virtrueckfragen()
 		anstr=Tippstr(Tx[T_Buchstabenfolge_vor_erstem_Adressaten],&anstr);
 		undstr=Tippstr(Tx[T_Buchstabenfolge_vor_weiterem_Adressaten_sowie_weiterer_Faxnummer],&undstr);
 		// sql abfragen, eintragen, sql aus opn loeschen, maps loeschen, maps neu erstellen
+		schAcl<optcl> oprsql=schAcl<optcl>("oprsql"); // Optionen
+		svec sqls;
+		caus<<"sqlzn: "<<sqlzn<<endl;
+	  optausg(rot);
+		sqlrp.clear();
+		for(size_t akt=0;akt<sqlzn;akt++) {
+			stringstream soptname;
+			soptname<<"SQL_"<<(akt+1);
+			// caus<<"akt: "<<(akt+1)<<" "<<*(string*)opn.omap[soptname.str()]->pptr<<endl;
+			//			opn.omap[soptname.str()]->virtoausgeb();
+			caus<<"akt: "<<akt<<" "<<sqlp[akt]<<endl;
+			const string *const vorgabe=(akt<sqlzn?&sqlp[akt]:&nix);
+				string zwi;
+				while (1) {
+					zwi=Tippstr(string(Tx[T_SQL_Befehl_Nr])+ltoan(akt+1)+(vorgabe->empty()?
+								Tx[T_faxnr_wird_ersetzt_mit_der_Faxnr]:
+								Tx[T_Strich_ist_SQL_Befehl_loeschen_faxnr_wird_ersetzt_mit_der_Faxnr]),
+							vorgabe,/*obnichtleer=*/0);
+					if (zwi=="-") zwi.clear();
+					if (zwi.empty()) {
+						break;
+					} else {
+						svec dben=holdbaussql(zwi);
+						//// <<"dben.size(): "<<(int)dben.size()<<endl;
+						uchar dbda=1;
+						if (!dben.size()) {
+							if (Tippob(Tx[T_In]+rots+zwi+blau+Tx[T_keine_Datenbank_gefunden_Wollen_Sie_den_SQL_Befehl_neu_eingeben])) continue;
+							dbda=0;
+						} else { // if (!dben.size()) 
+							uchar nochmal=0;
+							for(size_t i=0;i<dben.size();i++) {
+								//// <<"i: "<<blau<<i<<rot<<": "<<dben[i]<<schwarz<<endl;
+								if (pruefDB(dben[i])) {
+									dbda=0;
+									if (Tippob(Tx[T_Datenbank]+rots+dben[i]+blau+Tx[T_nicht_ermittelbar_Wollen_Sie_den_SQL_Befehl_neu_eingeben])) {
+										nochmal=1;
+										break;
+									} // if (strchr("jyJYoOsS",(int)erg)) 
+								} // if (pruefDB(dben[i])) 
+							} // for(size_t i=0;i<dben.size();i++) 
+							if (nochmal) continue;     
+						} // if (!dben.size()) 
+						if (dbda) {
+							if (zwi.find("&&faxnr&&")==string::npos) {
+								if (Tippob(Tx[T_In]+rots+zwi+blau+Tx[T_keinmal_faxnr_gefunden_Wollen_Sie_den_SQL_Befehl_neu_eingeben])) continue;
+							} else {
+								RS rtest(this->My,ersetzAllezu(zwi,"&&faxnr&&","9999"),aktc,ZDB); //// (const char*)trimfaxnr));
+								if (rtest.obfehl) {
+									if (Tippob(Tx[T_In]+rots+zwi+blau+Tx[T_koennte_ein_SQL_Fehler_sein_Wollen_Sie_den_SQL_Befehl_neu_eingeben])) continue;
+								} // if (rtest.obfehl)
+							} // if (zwi.find("&&faxnr&&")==string::npos) 
+						} // if (dbda)
+					} // if (zwi.empty()) else
+					break;
+				} // while (1)
+				if (zwi.empty()) {
+					if (akt>sqlzn && akt >sqlvzn) akt--;
+				} else {
+					// hier Sql-Dateien pruefen
+					/*
+					cppSchluess* neuS=new cppSchluess;
+					neuS->name=string("SQL_")+ltoan(++aktsp);
+					neuS->wert=zwi;
+					sqlv.push_back(neuS);
+					nsqlzn++;
+					*/
+					sqlrp<<zwi;
+					string istr=ltoan(akt+1);
+					oprsql<<new optcl(/*pname*/soptname.str(),/*pptr*/&sqlrp[sqlrp.size()-1],/*art*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
+				} // if (zwi.empty()) else
+				if (akt>=sqlzn && akt>=sqlvzn) {
+					if (!Tippob(Tx[T_Wolle_Sie_noch_einen_SQL_Befehl_eingeben],Txk[T_j_af])) break;
+				}
+		}
+	  optausg(violett);
 	} //α
 	dhcl::virtrueckfragen();
 } // void hhcl::virtrueckfragen()

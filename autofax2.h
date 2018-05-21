@@ -260,6 +260,15 @@ enum T_
 	T_Buchstabenfolge_vor_erster_Fax_Nummer_primaer_fuer_Hylafax,
 	T_Buchstabenfolge_vor_erstem_Adressaten,
 	T_Buchstabenfolge_vor_weiterem_Adressaten_sowie_weiterer_Faxnummer,
+	T_faxnr_wird_ersetzt_mit_der_Faxnr,
+	T_Strich_ist_SQL_Befehl_loeschen_faxnr_wird_ersetzt_mit_der_Faxnr,
+	T_In,
+	T_keine_Datenbank_gefunden_Wollen_Sie_den_SQL_Befehl_neu_eingeben,
+	T_Datenbank,
+	T_nicht_ermittelbar_Wollen_Sie_den_SQL_Befehl_neu_eingeben,
+	T_keinmal_faxnr_gefunden_Wollen_Sie_den_SQL_Befehl_neu_eingeben,
+	T_koennte_ein_SQL_Fehler_sein_Wollen_Sie_den_SQL_Befehl_neu_eingeben,
+	T_Wolle_Sie_noch_einen_SQL_Befehl_eingeben,
 	T_MAX //α
 }; // enum T_ //ω
 
@@ -427,6 +436,7 @@ class hhcl:public dhcl
 	string sqlvz;  // Zahl der SQL-Befehle aus Vorgaben
 	size_t sqlvzn=0; // Zahl der SQL-Befehle aus Vorgaben numerisch
 	string* sqlvp; // Array der Vorgabe-SQL-Befehle
+	svec sqlrp; // vector der rueckfrage-SQL-Befehle
 
 	size_t zmzn=0; // Zahl der Zielmusterpaare numerisch
 	string *zmmp; // Array der Zielmuster

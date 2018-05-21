@@ -28,8 +28,6 @@ class TxB Txv((const char* const* const* const*)vgb_T);
 
 void hhcl::pvirtVorgbSpeziell()
 {
-	int altobverb=obverb;
-	obverb=1;
   hLog(violetts+Txv[T_VorgbSpeziell_Ueberlad]+schwarz);
   //  langu="d"; lgnzuw();
   dbq="faxeinp";
@@ -62,7 +60,7 @@ void hhcl::pvirtVorgbSpeziell()
 	for(size_t i=0;i<sqlvzn;) {
 		switch (i) {
         case 0:
-          sqlvp[i] = string("")+"select if(isnull(arzt),bsname,arzt) getName,bsname from (select bsname, FaxZahl, "
+          sqlvp[i] = string()+"select if(isnull(arzt),bsname,arzt) getName,bsname from (select bsname, FaxZahl, "
             "concat(group_concat(distinct Arzt separator ', '), ', ',ort,';') Arzt "
             "from (SELECT bs.name bsname, f.faxzahl, concat(if(instr(Titel,'.')<>0,concat(left(titel,instr(titel,'.')),' '),Titel), "
             "left(a.Vorname,1), '.', a.Nachname, if(count(a.nachname)>6,'',concat(' (',group_concat(distinct "
@@ -86,26 +84,26 @@ void hhcl::pvirtVorgbSpeziell()
             "group by faxzahl, nachname, vorname) i) i group by FaxZahl";
           break;
         case 1:
-          sqlvp[i] = string("")+"select concat(titel,if(titel='','',' '),vorname,' ',nvorsatz,if(nvorsatz='','',' '),nachname,', g.',"
+          sqlvp[i] = string()+"select concat(titel,if(titel='','',' '),vorname,' ',nvorsatz,if(nvorsatz='','',' '),nachname,', g.',"
             "date_format(gebdat,'%d.%m.%y'),', ',ort) name,concat('Pid ',pat_id) bsname from "+quelltab+".namen n where "
             "concat(if(instr('12345678',mid(privatfax,1,1)) and not (length(privatfax)>8),'08131',''),"
 						"replace(replace(replace(replace(privatfax,' ',''),'-',''),'/',''),"
             "'\\'','')) = '&&faxnr&&'";;
           break;
         case 2:
-          sqlvp[i] = string("")+"select concat(haname,', ',ort,', ',kvnu) name, zulg,fax1k from "+kvaetab+".hae where "
+          sqlvp[i] = string()+"select concat(haname,', ',ort,', ',kvnu) name, zulg,fax1k from "+kvaetab+".hae where "
             "concat(if(instr('12345678',mid(fax1k,1,1)) and not (length(fax1k)>8),'08131',''),"
 						"replace(replace(replace(replace(fax1k,' ',''),'-',''),'/',''),'\\'','')) = " 
             "'&&faxnr&&'";
           break;
         case 3:
-          sqlvp[i] = string("")+"select concat(titel,if(titel='','',' '),vorname,' ',name,', ',ort) name, zusatzfeld5 from "+
+          sqlvp[i] = string()+"select concat(titel,if(titel='','',' '),vorname,' ',name,', ',ort) name, zusatzfeld5 from "+
             officetab+".adresse where concat(if(instr('12345678',mid(faxk,1,1)) and not (length(faxk)>8),'08131',''),"
 						"replace(replace(replace(replace(faxk,' ',''),'-',''),'/',''),'\\'',''))"
             " = '&&faxnr&&' order by zusatzfeld5 desc";
           break;
         case 4:
-          sqlvp[i] = string("")+"SELECT concat(if(isnull(name),'',concat(titel,if(titel='','',' '),vorname,' ',name,', ',ort, ', ')),"
+          sqlvp[i] = string()+"SELECT concat(if(isnull(name),'',concat(titel,if(titel='','',' '),vorname,' ',name,', ',ort, ', ')),"
             "if(isnull(i.firma),'',i.firma)) name, i.abteilung FROM "+officetab+".telefon t left join "+officetab+".kontakte k "
             "on t.knr  = k.knr left join "+officetab+".pers p on k.knr = p.knr left join "+officetab+".inst i on k.knr = i.knr left join "+
             officetab+".anschr a on a.knr = p.knr where concat(if(instr('12345678',mid(num,1,1)) and not (length(num)>8),'08131',''),"
@@ -113,14 +111,14 @@ void hhcl::pvirtVorgbSpeziell()
             "or not isnull(firma) or not isnull(vorname)) order by name desc, vorname desc, firma desc";
           break;
         case 5:
-          sqlvp[i] = string("")+"select concat(titel,if(titel='','',' '),vorname,' ',nvorsatz,if(nvorsatz='','',' '),"
+          sqlvp[i] = string()+"select concat(titel,if(titel='','',' '),vorname,' ',nvorsatz,if(nvorsatz='','',' '),"
             "nachname,', g.',date_format(gebdat,'%d.%m.%y'),', ',ort) name,concat('Pid ',pat_id) bsname from "+quelltab+".namen n where "
             "concat(if(instr('12345678',mid(privattel,1,1)) and not (length(privattel)>8),'08131',''),"
 						"replace(replace(replace(replace(privattel,' ',''),'-',''),'/',''),'\\'','')) = "
             "'&&faxnr&&'";
           break;
         case 6:
-          sqlvp[i] = string("")+"select concat(titel,if(titel='','',' '),vorname,' ',name) name,fachgruppe from "+quelltab+
+          sqlvp[i] = string()+"select concat(titel,if(titel='','',' '),vorname,' ',name) name,fachgruppe from "+quelltab+
             ".listenausgabeuew where concat(if(instr('12345678',mid(fax,1,1)) and not (length(fax)>8),'08131',''),"
 						"replace(replace(replace(replace(fax,' ',''),'-',''),'/',''),'\\'','')) "
             "= '&&faxnr&&'";
@@ -169,7 +167,6 @@ void hhcl::pvirtVorgbSpeziell()
 		}
 	} else {
 	}
-	obverb=altobverb;
   hLog(violetts+Txk[T_Ende]+Txv[T_VorgbSpeziell_Ueberlad]+schwarz);
 } // void hhcl::VorgbSpeziell()
 
