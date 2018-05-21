@@ -540,37 +540,37 @@ struct insv
 
 class dhcl:public hcl
 {
- private:
- protected:
+	private:
+	protected:
 		string host;  // fuer MySQL/MariaDB
 		string dbq; // Datenbank
- public:
-	 uchar ZDB{0}; // fuer Zusatz-Debugging (SQL): ZDB 1, sonst: 0
-	 DB* My{0};
-	const size_t maxconz{12};//aktc: 0=... //α
- private:
- protected:
-	void virtlgnzuw(); // wird aufgerufen in: virtrueckfragen, parsecl, virtlieskonfein, hcl::hcl nach holsystemsprache
-	void virtVorgbAllg();
-	void pvirtVorgbSpeziell();
-	void virtinitopt(); // (programm-)spezifische Optionen
-	//		void pvirtmacherkl();
-	void virtMusterVorgb();
-	void virtzeigversion(const string& ltiffv=nix);
-	//	void pvirtvorrueckfragen();
-	void virtrueckfragen();
-	//	void virtpruefweiteres();
-	//	void virtzeigueberschrift();
-	//  void pvirtfuehraus();
-	void virtschlussanzeige();
- public:
-	dhcl(const int argc, const char *const *const argv,const char* const DPROG,const uchar mitcron);
-	~dhcl();
-	int  initDB();
-	int  pruefDB(const string& db);
+	public:
+		uchar ZDB{0}; // fuer Zusatz-Debugging (SQL): ZDB 1, sonst: 0
+		DB* My{0};
+		const size_t maxconz{12};//aktc: 0=... //α
+	private:
+	protected:
+		void virtlgnzuw(); // wird aufgerufen in: virtrueckfragen, parsecl, virtlieskonfein, hcl::hcl nach holsystemsprache
+		void virtVorgbAllg();
+		void pvirtVorgbSpeziell();
+		void virtinitopt(); // (programm-)spezifische Optionen
+		//		void pvirtmacherkl();
+		void virtMusterVorgb();
+		void virtzeigversion(const string& ltiffv=nix);
+		//	void pvirtvorrueckfragen();
+		void virtrueckfragen();
+		//	void virtpruefweiteres();
+		//	void virtzeigueberschrift();
+		//  void pvirtfuehraus();
+		void virtschlussanzeige();
+	public:
+		dhcl(const int argc, const char *const *const argv,const char* const DPROG,const uchar mitcron);
+		~dhcl();
+		int  initDB();
+		int  pruefDB(const string& db);
 #ifdef VOMHAUPTCODE
-	__attribute__((weak)) // implementationsspezifische Vorgaben, Modul vgb.cpp)
+		__attribute__((weak)) // implementationsspezifische Vorgaben, Modul vgb.cpp)
 #endif
-		;
+			;
 
 }; // class hhcl //ω

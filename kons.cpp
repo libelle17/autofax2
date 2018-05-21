@@ -641,7 +641,7 @@ const char *kons_T[T_konsMAX+1][SprachZahl]=
 	// T_gefunden
 	{" gefunden, "," found, "},
 	// T_rueckzufragen_wegen
-	{"rueckzufragen wegen","interaction because of"},
+	{"rueckzufragen wegen ","interaction because of "},
 	// T_virtlgnzuw_langu
 	{"virtlgnzuw, langu: ","virtlgnassign, langu: "},
 	// T_Bitte_rufen_Sie_dies_mit_w_auf_um_die_aktuellen_Optionen_zu_sehen
@@ -1963,7 +1963,7 @@ void confdcl::Abschn_auswert(int obverb/*=0*/, const char tz/*='='*/)
 */
 } // void confdcl::Abschn_auswert(int obverb, char tz)
 
-// setzt die Werte aus der Datei in der Optionenschaar *sA
+// setzt die Werte aus der Datei in der Optionenschar *sA
 template <typename SCL> void confdcl::kauswert(schAcl<SCL> *sA, int obverb, const char tz,const uchar mitclear/*=1*/)
 {
 	fLog(violetts+Txk[T_kauswert]+schwarz+": "+fname,obverb,0);
@@ -4834,10 +4834,6 @@ void kuerzevtz(string *vzp)
 	} //   if (!vzp->empty())
 } // kuerzevtz
 
-// aktuelle Programmversion
-const double& versnr=
-#include "versdt"
-;
 // Verzeichnis auf Github
 const string& gitv=
 #include "gitvdt"
@@ -5344,6 +5340,7 @@ void hcl::virtrueckfragen()
 		logdname=Tippstr(Txk[T_Logdateiname],&logdname);
 		setzlog();
 		oblog=Tippzahl(Txk[T_Oblog_ausf_Protok],oblog);
+		findv=3;
 	} // 	if (rzf)
 } // 		void hcl::virtrueckfragen
 
@@ -6469,6 +6466,24 @@ void optcl::virtweisomapzu(void *schlp)
 	} // 		for(unsigned akts=0;akts<SprachZahl;akts++)
 	TxBp->lgn=altlgn;
 } // void optcl::virtweisomapzu
+
+void optcl::virtloeschomaps(void *schlp)
+{
+	// Indices (maps) loeschen
+	//// caus<<"loesche omap, pname: "<<blau<<pname<<schwarz<<endl;
+//	((schAcl<optcl>*)schlp)->gibomapaus();
+	if (!pname.empty()) {
+		((schAcl<optcl>*)schlp)->omap.erase(pname);
+	}
+////	schlp->gibomapaus();
+	Sprache altlgn=TxBp->lgn;
+	for(unsigned akts=0;akts<SprachZahl;akts++) {
+		TxBp->lgn=(Sprache)akts;
+		if (kurzi>-1) ((schAcl<optcl>*)schlp)->okmap.erase((*TxBp)[kurzi]);
+		if (langi>-1) ((schAcl<optcl>*)schlp)->olmap.erase((*TxBp)[langi]);
+	} // 		for(unsigned akts=0;akts<SprachZahl;akts++)
+	TxBp->lgn=altlgn;
+} // void optcl::virtloeschomaps
 
 void wpgcl::virtweisomapzu(void *optp)
 {

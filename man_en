@@ -2,7 +2,7 @@
 .\" manual page for ²DPROG²
 .\" write to geraldschade@gmx.de if You discover an error or a deficit in the program
 .pc
-.TH man 1 "21.05.18" "Version 0.10671" "\fB²DPROG²\fR man page"
+.TH man 1 "21.05.18" "Version 0.10681" "\fB²DPROG²\fR man page"
 .SH NAME
 \fB²DPROG² \- Fax server functionality\fR: induces automatic fax transmission of files, naming of received faxes and logging of all of them in a database
 .br
@@ -15,7 +15,9 @@
 .SH OPTIONS 
 .SH PRECONDITIONS
 .br
-\fRProgramm: \fB/root/autofax2/autofax2\fR, V: \fB0.10644\fR
+\fRProgramm: \fB/root/autofax2/autofax2\fR, V: \fB0.10681\fR
+.br
+\fBVorgbSpeziell_Ueberlad()\fR
 .br
 \fBOptions which are not saved (current value in parentheses): \fR
 .br
@@ -133,7 +135,7 @@
 .br
 \fB -mpwd, --mpwd <string>\fR: takes the password <string> for MySQL/MariaDB
 .br
-\fB -db, --database <string>\fR: uses the database <string> instead of ('\fB\fR')
+\fB -db, --database <string>\fR: uses the database <string> instead of ('\fBautofax2\fR')
 .br
 \fB -lg, --language <string>\fR: Language/Sprache/Lingue/Lingua [\fBd\fReutsch,\fBe\fRnglisch] ('\fBe\fR')
 .br

@@ -28,6 +28,8 @@ class TxB Txv((const char* const* const* const*)vgb_T);
 
 void hhcl::pvirtVorgbSpeziell()
 {
+	int altobverb=obverb;
+	obverb=1;
   hLog(violetts+Txv[T_VorgbSpeziell_Ueberlad]+schwarz);
   //  langu="d"; lgnzuw();
   dbq="faxeinp";
@@ -167,6 +169,7 @@ void hhcl::pvirtVorgbSpeziell()
 		}
 	} else {
 	}
+	obverb=altobverb;
   hLog(violetts+Txk[T_Ende]+Txv[T_VorgbSpeziell_Ueberlad]+schwarz);
 } // void hhcl::VorgbSpeziell()
 

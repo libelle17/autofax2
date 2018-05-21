@@ -1,7 +1,11 @@
 // '//α' oder '//ω' als Kommentar sind nur fuer die Verwendung dieses Programms als Programmvorlage wichtig
 // sed -n '/\/\/α/,/\/\/ω/p;/\/\/ω/a\\' test
 // sed -n '/\/\/α/,/\/\/ω/p' test
-#include "kons.h" //α
+// aktuelle Programmversion
+const double& versnr= //α
+#include "versdt"
+;
+#include "kons.h"
 #include "DB.h" 
 #include <tiffio.h>
 #define VOMHAUPTCODE // um Funktionsdefinition manchmal mit "__attribute__((weak)) " versehen zu können //ω
@@ -507,6 +511,35 @@ char const *DPROG_T[T_MAX+1][SprachZahl]={
 	{" nicht"," not"},
 	// T_Kein_Modem_gefunden
 	{"Kein Modem gefunden.","No modem found."},
+	// T_Soll_Hylafax_verwendet_werden
+	{"Soll hylafax verwendet werden","Shall hylafax be used"},
+	// T_Soll_vorrangig_capisuite_statt_hylafax_gewaehlt_werden
+	{"Soll vorrangig die Capisuite statt hylafax gewaehlt werden","Shall capisuite instead of hylafax bei chosen preferentially"},
+	// T_Zahl_der_Versuche_in_Capisuite_bis_hylafax_eingeschaltet_wird
+	{"Zahl der Versuche in Capisuite, bis hylafax eingeschaltet wird","Number of tries in Capisuite, until hylafax is started"},
+	// T_Zahl_der_Versuche_in_hylafax_bis_Capisuite_eingeschaltet_wird
+	{"Zahl der Versuche in hylafax, bis Capisuite eingeschaltet wird","Number of tries in hylafax, until Capisuite is started"},
+	// T_Zahl_der_Klingeltoene_bis_Hylafax_den_Anruf_annimmt
+	{"Zahl der Klingeltoene, bis Hylafax den Anruf annimmt","Number of ring bells, until hylafax accepts call"},
+	// T_Sollen_die_Dateien_unabhaengig_vom_Faxerfolg_im_Zielverzeichnis_gespeichert_werden
+	{"Sollen die Dateien unabhaengig vom Faxerfolg im Zielverzeichnis gespeichert werden",
+		"Shall files be stored in target directory irrespective of fax success"},
+	// T_soll_Text_in_empfangenen_Faxen_mit_OCR_gesucht_werden
+	{"Soll Text in empfangenen Faxen (mit \"OCR\") gesucht werden?",
+		"Shall text from received faxes be searched (with \"ocr\")?"},
+	// T_soll_Text_in_gesandten_Bildern_mit_OCR_gesucht_werden
+	{"Soll Text in gesandten Bildern (mit \"OCR\") gesucht werden?",
+		"Shall text from sent pictures be searched (with \"ocr\")?"},
+	// T_Buchstabenfolge_vor_erster_Faxnummer
+	{"Buchstabenfolge vor erster Fax-Nummer","Letter-sequence before the first fax number"},
+	// T_Buchstabenfolge_vor_erster_Fax_Nummer_primaer_fuer_Capisuite
+	{"Buchstabenfolge vor erster Fax-Nummer primaer fuer Capisuite","Letter-sequence before the first fax number primarily for Capisuite"},
+	// T_Buchstabenfolge_vor_erster_Fax_Nummer_primaer_fuer_Hylafax
+	{"Buchstabenfolge vor erster Fax-Nummer fuer Hylafax","Letter-sequence before the first fax number primarily for hylafax"},
+	// T_Buchstabenfolge_vor_erstem_Adressaten
+	{"Buchstabenfolge vor erstem Adressaten","Letter-sequence before the first addressee"},
+	// T_Buchstabenfolge_vor_weiterem_Adressaten_sowie_weiterer_Faxnummer,
+	{"Buchstabenfolge vor weiterem Adressaten sowie weiterer Faxnummer","Letter-sequence before further addressee or fax number"},
 	{"",""} //α
 }; // char const *DPROG_T[T_MAX+1][SprachZahl]=
 
@@ -1208,7 +1241,7 @@ void hhcl::pruefcvz()
 	pruefverz(cfaxuserrcvz,obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/0,/*besitzer=*/"",/*benutzer=*/cuser,/*obmachen=*/0);
 } // hhcl::pruefcvz
 
-// in empfcapi() und pruefcapi(), rueckfragen()
+// in empfcapi() und pruefcapi(), virtrueckfragen()
 void hhcl::pruefsfftobmp()
 {
 	hLog(violetts+Tx[T_pruefsfftobmp]+schwarz);
@@ -1877,7 +1910,7 @@ schluss: // sonst eine sonst sinnlose for-Schleife mehr oder return mitten aus d
 	return erg;
 } // pruefcapi()
 
-// wird aufgerufen in: rueckfragen, main
+// wird aufgerufen in: virtrueckfragen, main
 void hhcl::pruefisdn()
 {
 	hLog(violetts+Tx[T_pruefisdn]+schwarz);
@@ -1886,7 +1919,6 @@ void hhcl::pruefisdn()
 	for(int iru=0;iru<2;iru++) {
 		if (systemrueck("lspci 2>/dev/null|grep -i 'isdn'",obverb,oblog,&rueck,/*obsudc=*/iru)) break;
 	}
-	// <<"pruefmodem 1 vor  obcapi: "<<(int)obcapi<<endl;
 	if (rueck.size()) {
 		hLog(blaus+Tx[T_ISDN_Karte_gefunden]+schwarz+rueck[0]+blau+Tx[T_Setze]+Tx[T_mitCapi]+schwarz+Tx[T_aauf]+blau+"1.");
 	// wenn zum Konfigurationszeitpunkt keine Fritzcard drinstak, aber jetzt, dann rueckfragen
@@ -2141,7 +2173,7 @@ int ttytest(const string& tty)
 	return erg;
 } // int ttytest(const string& tty)
 
-// wird aufgerufen in: main, rueckfragen
+// wird aufgerufen in: main, virtrueckfragen
 void hhcl::pruefmodem()
 {
 	hLog(violetts+Tx[T_pruefmodem]+schwarz);
@@ -2235,10 +2267,6 @@ void hhcl::pruefmodem()
 		fLog(rots+Tx[T_Kein_Modem_gefunden]+schwarz,obhyla?1:obverb,oblog);
 		obhyla=0;
 	}
-	for(auto aktm:modems) {
-		caus<<"modem: '"<<aktm<<"'"<<endl;
-	}
-	caus<<"2 obmodem: "<<(int)obmodem<<", obmdgeprueft: "<<(int)obmdgeprueft<<",hmodem: "<<hmodem<<endl;
 	// wenn zum Konfigurationszeitpunkt kein Modem drinstak, aber jetzt, dann rueckfragen
 	if (!schonda /*//obmodem && agcnfA.hole("obmodem")=="0"*/) {
 		rzf=1;
@@ -2267,7 +2295,7 @@ void hhcl::virtrueckfragen()
 {
 	hLog(violetts+Tx[T_virtrueckfragen]+schwarz);
 	if (rzf) { //ω
-	// Rueckfragen koennen auftauchen in: rueckfragen, konfcapi (<- pruefcapi), aenderefax, rufpruefsamba
+	// Rueckfragen koennen auftauchen in: virtrueckfragen, konfcapi (<- pruefcapi), aenderefax, rufpruefsamba
 		zufaxenvz=Tippverz(Tx[T_Verzeichnis_mit_zu_faxenden_Dateien],&zufaxenvz);
 		wvz=Tippverz(Tx[T_Verzeichnis_mit_wartenden_Dateien],&wvz);
 		ngvz=Tippverz(Tx[T_Verzeichnis_mit_gescheiterten_Dateien],&ngvz);
@@ -2321,6 +2349,41 @@ void hhcl::virtrueckfragen()
 		} else {
 			obcapi=0;
 		}
+		if (!obmdgeprueft) pruefmodem();
+		if (obmodem) {
+			obhyla=Tippob(Tx[T_Soll_Hylafax_verwendet_werden],obhyla?Txk[T_j_af]:"n");
+		} else {
+			obhyla=0;
+		}
+		if (obcapi) {
+			if (obhyla) {
+				hylazuerst=!Tippob(Tx[T_Soll_vorrangig_capisuite_statt_hylafax_gewaehlt_werden],hylazuerst?"n":Txk[T_j_af]);
+				maxcapiv=Tippzahl(Tx[T_Zahl_der_Versuche_in_Capisuite_bis_hylafax_eingeschaltet_wird],maxcapiv.c_str());
+				maxhylav=Tippzahl(Tx[T_Zahl_der_Versuche_in_hylafax_bis_Capisuite_eingeschaltet_wird],maxhylav.c_str());
+				// also: obcapi, aber nicht obhyla
+			} else {
+				hylazuerst=0;
+			} // 			if (obhyla) else
+		} else {
+			hylazuerst=1;
+		} // if (obcapi) else
+		if (obhyla) {
+			if (hmodem.empty()) hmodem=modems[0];
+			hmodem=Tippstrs(Tx[T_Fuer_Hylafax_verwendetes_Modem],&modems,&hmodem);
+			hklingelzahl=Tippzahl(Tx[T_Zahl_der_Klingeltoene_bis_Hylafax_den_Anruf_annimmt],hklingelzahl.c_str());
+			maxhdials=Tippzahl(Tx[T_Zahl_der_Wahlversuche_in_Hylafax],maxhdials.c_str());
+		}
+		gleichziel=Tippob(Tx[T_Sollen_die_Dateien_unabhaengig_vom_Faxerfolg_im_Zielverzeichnis_gespeichert_werden],gleichziel?Txk[T_j_af]:"n");
+		obocri=Tippob(Tx[T_soll_Text_in_empfangenen_Faxen_mit_OCR_gesucht_werden],obocri?Txk[T_j_af]:"j");
+		obocra=Tippob(Tx[T_soll_Text_in_gesandten_Bildern_mit_OCR_gesucht_werden],obocra?Txk[T_j_af]:"n");
+		anfaxstr=Tippstr(Tx[T_Buchstabenfolge_vor_erster_Faxnummer],&anfaxstr);
+		if (obcapi && obhyla) {
+			ancfaxstr=Tippstr(Tx[T_Buchstabenfolge_vor_erster_Fax_Nummer_primaer_fuer_Capisuite],&ancfaxstr);
+			anhfaxstr=Tippstr(Tx[T_Buchstabenfolge_vor_erster_Fax_Nummer_primaer_fuer_Hylafax],&anhfaxstr);
+		}
+		anstr=Tippstr(Tx[T_Buchstabenfolge_vor_erstem_Adressaten],&anstr);
+		undstr=Tippstr(Tx[T_Buchstabenfolge_vor_weiterem_Adressaten_sowie_weiterer_Faxnummer],&undstr);
+		// sql abfragen, eintragen, sql aus opn loeschen, maps loeschen, maps neu erstellen
 	} //α
 	dhcl::virtrueckfragen();
 } // void hhcl::virtrueckfragen()

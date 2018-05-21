@@ -247,6 +247,19 @@ enum T_
 	T_gibts,
 	T_nicht,
 	T_Kein_Modem_gefunden,
+	T_Soll_Hylafax_verwendet_werden,
+	T_Soll_vorrangig_capisuite_statt_hylafax_gewaehlt_werden,
+	T_Zahl_der_Versuche_in_Capisuite_bis_hylafax_eingeschaltet_wird,
+	T_Zahl_der_Versuche_in_hylafax_bis_Capisuite_eingeschaltet_wird,
+	T_Zahl_der_Klingeltoene_bis_Hylafax_den_Anruf_annimmt,
+	T_Sollen_die_Dateien_unabhaengig_vom_Faxerfolg_im_Zielverzeichnis_gespeichert_werden,
+	T_soll_Text_in_empfangenen_Faxen_mit_OCR_gesucht_werden,
+	T_soll_Text_in_gesandten_Bildern_mit_OCR_gesucht_werden,
+	T_Buchstabenfolge_vor_erster_Faxnummer,
+	T_Buchstabenfolge_vor_erster_Fax_Nummer_primaer_fuer_Capisuite,
+	T_Buchstabenfolge_vor_erster_Fax_Nummer_primaer_fuer_Hylafax,
+	T_Buchstabenfolge_vor_erstem_Adressaten,
+	T_Buchstabenfolge_vor_weiterem_Adressaten_sowie_weiterer_Faxnummer,
 	T_MAX //α
 }; // enum T_ //ω
 
@@ -307,7 +320,6 @@ class hhcl:public dhcl
     uchar hylazukonf=0; // hyla zu konfigurieren
 		string findvers; // find-Version (1=linux find, 2=intern mit readdir, 3=intern mit nftw 
 		int ifindv; // integer-Variante der find-Version
-    string dbq; // Datenbank
 
     servc *sfaxq=0, *shfaxd=0, *shylafaxd=0, *sfaxgetty=0, *scapis=0;
     confdcl *cfaxcp=0; // Zeiger auf ausgelesene /etc/capisuite/fax.conf

@@ -791,15 +791,16 @@ struct optcl:wpgcl
 		uchar nichtspeichern=0;
 		const uchar virteinzutragen(/*schAcl<optcl>**/void *schlp,int obverb);
 		void virtweisomapzu(/*schAcl<optcl>**/void *schlp);
+		void virtloeschomaps(/*schAcl<optcl>**/void *schlp);
 		optcl(const string& pname,const void* pptr,const par_t art, const int kurzi, const int langi, TxB* TxBp, const long Txi,
-				         const uchar wi, const long Txi2, const string rottxt, const int iwert,const uchar woher,const uchar obno=0);
+				const uchar wi, const long Txi2, const string rottxt, const int iwert,const uchar woher,const uchar obno=0);
 		void setzwert();
 		int setzstr(const char* const neuw,uchar *const obzuschreib=0,const uchar ausDatei=0);
 		void virttusetzbemerkwoher(const string& ibemerk,const uchar vwoher);
 		void virtoausgeb() const;
 		int pzuweis(const char *const nacstr, const uchar vgegenteil=0, const uchar vnichtspeichern=0);
-    virtual const string& virtmachbemerk(const Sprache lg,const binaer obfarbe=wahr);
-    void hilfezeile(Sprache lg);
+		virtual const string& virtmachbemerk(const Sprache lg,const binaer obfarbe=wahr);
+		void hilfezeile(Sprache lg);
 		void virtfrisch();
 		~optcl();
 }; // struct optcl
@@ -830,15 +831,15 @@ template <typename SCL> class schAcl {
  // void neu(size_t vzahl=0);
  void sinit(size_t vzahl, ...);
  void sinit(vector<shared_ptr<SCL>> sqlvp);
-		map<string,SCL*> omap; // map der Optionen
-		map<const char* const,SCL const*> okmap; // map der Optionen, sortiert nach Tx[<kurzi>]
-		map<const char* const,SCL const*> olmap; // map der Optionen, sortiert nach Tx[<langi>]
-		typename map<string,SCL*>::iterator omit; // Optionen-Iterator
-//		void omapzuw(); // Optionen an omap zuweisen
-		// void initd(const char* const* sarr,size_t vzahl);
-// void initv(vector<optcl*> optpv,vector<size_t> optsv);
-// int setze(const string& pname, const string& wert/*, const string& bem=nix*/);
-// const string& hole(const string& pname);
+ map<string,SCL*> omap; // map der Optionen
+ map<const char* const,SCL const*> okmap; // map der Optionen, sortiert nach Tx[<kurzi>]
+ map<const char* const,SCL const*> olmap; // map der Optionen, sortiert nach Tx[<langi>]
+ typename map<string,SCL*>::iterator omit; // Optionen-Iterator
+ //		void omapzuw(); // Optionen an omap zuweisen
+ // void initd(const char* const* sarr,size_t vzahl);
+ // void initv(vector<optcl*> optpv,vector<size_t> optsv);
+ // int setze(const string& pname, const string& wert/*, const string& bem=nix*/);
+ // const string& hole(const string& pname);
  void setzbemv(const string& pname,TxB *TxBp,size_t Tind,uchar obfarbe=0,svec *fertige=0);
  void setzbemerkwoher(SCL *optp,const string& ibemerk,const uchar vwoher);
  void schAschreib(mdatei *const f,int obverb); // Schluessel-Array-schreib

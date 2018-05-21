@@ -2479,7 +2479,7 @@ void dhcl::virtrueckfragen()
 		} while (mpwd!=mpw2);
 		const string pwdstr=XOR(mpwd,pwk);
 		dbq=Tippstr(string(Txd[T_Datenbankname_fuer_MySQL_MariaDB_auf])+dblau+host+schwarz+"'",&dbq);
-//		tabl=Tippstr(string(Txd[T_Tabellenname_in])+dblau+dbq+schwarz+"'",&tabl);
+		//		tabl=Tippstr(string(Txd[T_Tabellenname_in])+dblau+dbq+schwarz+"'",&tabl);
 	} // if (rzf)
 	hcl::virtrueckfragen();
 } // void hhcl::virtrueckfragen()

@@ -2,7 +2,7 @@
 .\" Manual-Seite für ²DPROG²
 .\" Schreiben Sie an geraldschade@gmx.de, wenn Sie Fehler oder Mängel entdeckt haben
 .pc
-.TH man 1 "21.05.18" "Version 0.10671" "Manual-Seite für ²DPROG²"
+.TH man 1 "21.05.18" "Version 0.10681" "Manual-Seite für ²DPROG²"
 .SH NAME
 \fB²DPROG² \- FaxServer-Funktionalität\fR: veranlasst automatischen Faxversand von Dateien, Benennung empfangener Faxe und Protokollierung aller Faxe in einer Datenbank 
 .br
@@ -15,7 +15,9 @@
 .SH OPTIONEN 
 .SH VORAUSSETZUNGEN
 .br
-\fRProgramm: \fB/root/autofax2/autofax2\fR, V: \fB0.10644\fR
+\fRProgramm: \fB/root/autofax2/autofax2\fR, V: \fB0.10681\fR
+.br
+\fBVorgbSpeziell_Ueberlad()\fR
 .br
 \fBOptionen, die nicht gespeichert werden (aktueller Wert in Klammern): \fR
 .br
@@ -133,7 +135,7 @@
 .br
 \fB -mpwd, --mpwd <string>\fR: verwendet fuer MySQL/MariaDB das Passwort <string>
 .br
-\fB -db, --datenbank <string>\fR: verwendet die Datenbank <string> anstatt ('\fB\fR')
+\fB -db, --datenbank <string>\fR: verwendet die Datenbank <string> anstatt ('\fBautofax2\fR')
 .br
 \fB -sp, --sprache <string>\fR: Language/Sprache/Lingue/Lingua [\fBd\fReutsch,\fBe\fRnglisch] ('\fBd\fR')
 .br
