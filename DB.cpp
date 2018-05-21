@@ -158,6 +158,12 @@ const char *DB_T[T_dbMAX+1][SprachZahl]={
 	{"Zeige: ","showing: "},
 	// T_an_Position
 	{"an Position: ","at position: "},
+	// T_Feld
+	{"Feld: '","Field: '"},
+	// T_Wertma
+	{"', Wert: '","', value: '"},
+	// T_Tabelle
+	{"Tabelle: ","Table: "},
 	{"",""}
 };
 // Txdbcl::Txdbcl() {TCp=(const char* const * const * const *)&TextC;}
@@ -1002,17 +1008,17 @@ int Tabelle::machind(const size_t aktc, int obverb/*=0*/, int oblog/*=0*/)
 			sql<<(indx->unique?"UNIQUE ":"")<<"INDEX `"<<indx->name<<"` ON `"<<tbname<<"`(";
 			for(unsigned j=0;j<indx->feldzahl;j++) {
 				sql<<"`"<<indx->felder[j].name<<"`";
-				// caus<<"`"<<indx->felder[j].name<<"`"<<endl;
-				// caus<<"spalt->num_rows: "<<spalt->num_rows<<endl;
+				//// caus<<"`"<<indx->felder[j].name<<"`"<<endl;
+				//// caus<<"spalt->num_rows: "<<spalt->num_rows<<endl;
 				for(unsigned spnr=0;spnr<spalt->num_rows;spnr++) { // reale Spalten
-					// caus<<"spnr: "<<spnr<<", spnamen: "<<spnamen[spnr]<<endl;
+					//// caus<<"spnr: "<<spnr<<", spnamen: "<<spnamen[spnr]<<endl;
 					if (!strcasecmp(indx->felder[j].name.c_str(),spnamen[spnr])) { // Feldnamen identisch
-						// caus<<rot<<indx->felder[j].name<<schwarz<<", spnamen: "<<spnamen[spnr]<<", spnr: "<<spnr<<schwarz<<endl;
+						//// caus<<rot<<indx->felder[j].name<<schwarz<<", spnamen: "<<spnamen[spnr]<<", spnr: "<<spnr<<schwarz<<endl;
 						//						if (indx->felder[j].lenge.empty()) indx->felder[j].lenge=splenge[spnr];
 						const long numsplen=atol(splenge[spnr]);
 						const long numinlen=indx->felder[j].lenge.empty()?0:atol(indx->felder[j].lenge.c_str());
 						if (strcasecmp(sptyp[spnr],"DATE") && strcasecmp(sptyp[spnr],"DATETIME")) {
-							// caus<<rot<<indx->felder[j].name<<violett<<", numinlen: "<<rot<<numinlen<<violett<<", numsplen: "<<rot<<numsplen<<schwarz<<endl;
+							//// caus<<rot<<indx->felder[j].name<<violett<<", numinlen: "<<rot<<numinlen<<violett<<", numsplen: "<<rot<<numsplen<<schwarz<<endl;
 							if (!numinlen || !numsplen) { // numsplen ist 0 z.B. bei varbinary
 								// das sollte reichen
 								if (indx->felder[j].typ=="LONGTEXT") {
@@ -1528,7 +1534,7 @@ sqlft::sqlft(DBSTyp eDBS, const chrono::system_clock::time_point* const tp): str
 	pthread_mutex_unlock(&timemutex);
 	druckeein(eDBS,&zt);
 #endif // altzeit
-////caus<<rot<<c_str()<<schwarz<<" "<<string_to_hex(c_str())<<" "<<length()<<" "<<size()<<endl;
+//// caus<<rot<<c_str()<<schwarz<<" "<<string_to_hex(c_str())<<" "<<length()<<" "<<size()<<endl;
 }
 
 void stmax(int *zahl,int stellen=2)
@@ -2488,7 +2494,6 @@ void dhcl::virtVorgbAllg()
 // wird aufgerufen in lauf
 void dhcl::pvirtVorgbSpeziell()
 {
-
 } // void hhcl::pvirtVorgbSpeziell
 
 // wird aufgerufen in lauf
@@ -2511,16 +2516,16 @@ void dhcl::virtschlussanzeige()
 
 void instyp::ausgeb()
 {
-	caus<<"Feld: '"<<blau<<feld<<schwarz<<"', Wert: '"<<blau<<wert<<"'"<<schwarz<<endl;
+	cout<<Txd[T_Feld]<<blau<<feld<<schwarz<<Txd[T_Wertma]<<blau<<wert<<"'"<<schwarz<<endl;
 }
 
 void insv::ausgeb()
 {
-	caus<<"Tabelle: "<<blau<<*itabp<<schwarz<<endl;
+	cout<<Txd[T_Tabelle]<<blau<<*itabp<<schwarz<<endl;
 	for(instyp i:ivec) {
 		i.ausgeb();
 	}
-}
+} // void insv::ausgeb()
 
 insv::insv(DB *My,const string& itab,const size_t aktc,const uchar eindeutig,const svec& eindfeld,const uchar asy,svec *csets):My(My),itabp(&itab),aktc(aktc),eindeutig(eindeutig),eindfeld(eindfeld),asy(asy),csets(csets)
 {

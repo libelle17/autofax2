@@ -115,6 +115,9 @@ enum Txdb_
 	T_erstelle_Tabelle,
 	T_Zeige,
 	T_an_Position,
+	T_Feld,
+	T_Wertma,
+	T_Tabelle,
 	T_dbMAX,
 }; // enum Txdb_ 
 

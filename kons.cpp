@@ -75,6 +75,10 @@ const string devtty=" >/dev/tty";
 const string hcl::edit="$(which vim 2>/dev/null || which vi) ";
 			//	             view="$(which view 2>/dev/null || which vi) + ",
 
+TxB::TxB(const char* const* const* const *TCp):TCp(TCp)
+{
+}
+
 cuscl::cuscl()
 {
  cuid=getuid();
@@ -601,7 +605,7 @@ const char *kons_T[T_konsMAX+1][SprachZahl]=
 	// T_Logdateiname
 	{"Logdateiname","log file name"},
 	// T_Oblog_ausf_Protok,
-	{"Oblog (ausführliche Protokollierung): ","Log (detailled logging): "},
+	{"Oblog (ausfuehrliche Protokollierung): ","Log (detailled logging): "},
 	// T_Aufrufintervall
 	{"; Aufrufintervall: ","; (cron) call interval: "},
 	// T_kein_Aufruf
@@ -638,6 +642,10 @@ const char *kons_T[T_konsMAX+1][SprachZahl]=
 	{" gefunden, "," found, "},
 	// T_rueckzufragen_wegen
 	{"rueckzufragen wegen","interaction because of"},
+	// T_virtlgnzuw_langu
+	{"virtlgnzuw, langu: ","virtlgnassign, langu: "},
+	// T_Bitte_rufen_Sie_dies_mit_w_auf_um_die_aktuellen_Optionen_zu_sehen
+	{" (bitte rufen Sie dies mit -w auf, um die aktuellen Optionen zu sehen)"," (please call this with -v to see the current options)"},
 	{"",""}
 }; // const char *Txkonscl::TextC[T_konsMAX+1][SprachZahl]=
 
@@ -3228,7 +3236,7 @@ uchar VerzeichnisGibts(const char* vname)
 void wpgcl::virtoausgeb() const
 {
 	cout<<"pname:"<<blau<<setw(13)<<pname<<schwarz;
-	cout<<",pptr:"<<blau<<setw(45);
+	cout<<",pptr:"<<gruen<<setw(45);
 	if (pptr) {
 		if (part==puchar||part==pbin) {
 			cout<<(int)*(uchar*)pptr;
@@ -4878,7 +4886,6 @@ void hcl::lauf()
 	pvirtVorgbSpeziell(); // die Vorgaben, die in einer zusaetzlichen Datei mit einer weiteren Funktion "void hhcl::pvirtVorgbSpeziell()" ueberladbar sind
 	virtinitopt();
 	parsecl();
-	pvirtmacherkl();
 	if (obhilfe==3) { // Standardausgabe gewaehrleisten
 		virtMusterVorgb();
 	} else {
@@ -4888,10 +4895,12 @@ void hcl::lauf()
 //		if (obverb) optausg(gruen);
 	} // if (obhilfe==3)
 //	opn.omapzuw();
+	pvirtmacherkl();
 	if (zeighilfe(&erkl)) {
 		virttesterg();
 		exit(1);
 	}
+	pvirtvorzaehler();
 	lieszaehlerein();
 	if (obvi) dovi(); 
 	else if (obvs) {
@@ -4901,7 +4910,7 @@ void hcl::lauf()
 	}
 	else if (zeigvers) {
 		virtzeigversion();
-		hLog(violetts+Txk[T_Ende]+Tx[T_zeigvers]+schwarz);
+		hLog(violetts+Txk[T_Ende]+Txk[T_zeigvers]+schwarz);
 		exit(7);
 	} // if (zeigvers)
 	else if (!keineverarbeitung) {
@@ -4987,6 +4996,10 @@ string holsystemsprache(int obverb/*=0*/)
 // wird aufgerufen in: virtrueckfragen, parsecl, virtlieskonfein, hcl::hcl nach holsystemsprache
 void hcl::virtlgnzuw()
 {
+	//// int altobverb=obverb;
+	//// obverb=1;
+	fLog(violetts+Txk[T_virtlgnzuw_langu]+schwarzs+": "+langu,obverb,oblog);
+	//// obverb=altobverb;
 	if (langu=="d" || langu=="D" || langu=="deutsch" || langu=="Deutsch") {
 		Txk.lgn=deutsch;
 	} else if (langu=="e" || langu=="E" || langu=="english" || langu=="english" || langu=="English" || langu=="Englisch") {
@@ -5134,9 +5147,9 @@ void hcl::parsecl()
 								if (wiefalsch<=0) { // erfolgreich zugewiesen
 									if (omit->second->pptr==&langu) {
 										virtlgnzuw();
-									} else if (omit->second->pptr==&logvz || omit->second->pptr==&logdname) 
+									} else if (omit->second->pptr==&logvz || omit->second->pptr==&logdname) {
 										setzlog();
-									else if (omit->second->pptr==&cronminut) {
+									} else if (omit->second->pptr==&cronminut) {
 										keineverarbeitung=1;
 										cmeingegeben=1;
 									}
@@ -5171,7 +5184,7 @@ void hcl::virtMusterVorgb()
 {
 } // void hhcl::MusterVorgb
 
-// wird aufgerufen in lauf
+// wird aufgerufen in lauf; liest die Konfiguration ein
 void hcl::virtlieskonfein()
 {
 	hLog(violetts+Txk[T_virtlieskonfein]+schwarz);
@@ -5197,9 +5210,9 @@ void hcl::virtlieskonfein()
 			if (omit->second->woher<2) {
 				hccd.obzuschreib=1;
 				break;
-			}
-		}
-	}
+			} // 			if (omit->second->woher<2)
+		} // 		for (map<string,optcl*>::iterator omit=opn.omap.begin();omit!=opn.omap.end();omit++)
+	} // 	if (!hccd.obzuschreib)
 	hLog(violetts+Txk[T_Ende]+Txk[T_virtlieskonfein]+schwarz);
 	// <<violett<<"Ende virtlieskonfein, obzuschreib: "<<rot<<(int)hccd.obzuschreib<<schwarz<<endl;
 } // void hcl::virtlieskonfein
@@ -5770,8 +5783,8 @@ void hcl::zeigkonf()
 		//// pthread_mutex_unlock(&timemutex);
 		//// strftime(buf, sizeof(buf), "%d.%m.%Y %H.%M.%S", &tm);
 	} //   if (!lstat(akonfdt.c_str(),&kstat))
-	cout<<"):"<<endl;
-	if (obverb) optausg(blau);
+	cout<<")"<<(obverb?":":Txk[T_Bitte_rufen_Sie_dies_mit_w_auf_um_die_aktuellen_Optionen_zu_sehen])<<endl;
+	if (obverb) optausg(dblau);
 } // void hcl::zeigkonf()
 // augerufen in: anhalten(), zeigkonf()
 
@@ -6448,11 +6461,13 @@ void optcl::virtweisomapzu(void *schlp)
 		((schAcl<optcl>*)schlp)->omap[pname]=this;
 	}
 ////	schlp->gibomapaus();
+	Sprache altlgn=TxBp->lgn;
 	for(unsigned akts=0;akts<SprachZahl;akts++) {
 		TxBp->lgn=(Sprache)akts;
 		if (kurzi>-1) ((schAcl<optcl>*)schlp)->okmap[(*TxBp)[kurzi]]=this;
 		if (langi>-1) ((schAcl<optcl>*)schlp)->olmap[(*TxBp)[langi]]=this;
 	} // 		for(unsigned akts=0;akts<SprachZahl;akts++)
+	TxBp->lgn=altlgn;
 } // void optcl::virtweisomapzu
 
 void wpgcl::virtweisomapzu(void *optp)
@@ -6679,7 +6694,7 @@ template<typename SCL> schAcl<SCL>& schAcl<SCL>::operator<<(SCL *schp)
 	return *this; 
 	*/
 	//return operator<<(*schp); 
-//	caus<<rot<<name<<rot<<"<<"<<violett<<schp->pname<<endl;
+////	caus<<rot<<name<<rot<<"<<"<<violett<<schp->pname<<endl;
 ////	caus<<rot<<"Uebertrage nach "<<blau<<name<<rot<<" Zeiger "<<blau<<schp->pname<<schwarz;
 	shared_ptr<SCL> kopie{schp};
 	schl.push_back(kopie); 

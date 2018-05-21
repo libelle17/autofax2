@@ -163,7 +163,7 @@ class TxB // Text-Basisklasse
   Sprache lgn; // Sprache numerisch
 //  TCtp* TCp;
   const char * const * const * const *TCp;
-	TxB(const char* const* const* const *TCp):TCp(TCp){}
+	TxB(const char* const* const* const *TCp);
   inline const char* operator[](long const& nr) const {
     TCtp *hilf = reinterpret_cast<TCtp*>(TCp);
     return (const char*)hilf[nr][lgn];
@@ -445,6 +445,8 @@ enum Tkons_
 	T_Parameter,
 	T_gefunden,
 	T_rueckzufragen_wegen,
+	T_virtlgnzuw_langu,
+	T_Bitte_rufen_Sie_dies_mit_w_auf_um_die_aktuellen_Optionen_zu_sehen,
 	T_konsMAX
 }; // Tkons_
 
@@ -495,7 +497,7 @@ class argcl
 };
 
 // Gebrauch, z.B.: ic_cl ic("UTF8","CP850");
-//			caus<<ic.convert(inh)<<endl;
+////			caus<<ic.convert(inh)<<endl;
 class ic_cl 
 {
 	iconv_t ict;
@@ -1294,6 +1296,7 @@ class hcl
     void verarbeitkonf();
 		int zeighilfe(const stringstream *const erkl);
 		virtual void virttesterg()=0;
+		virtual void pvirtvorzaehler()=0;
 		void lieszaehlerein();
 		void setzzaehler();
 		void schreibzaehler();

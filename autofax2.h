@@ -237,6 +237,16 @@ enum T_
 	T_aauf,
 	T_Setze,
 	T_ob_eine_Fritzcard_drinstak,
+	T_Faxt_Dateien_aus_Verzeichnis_pfad_die,
+	T_faxnr_enthalten_und_durch_soffice_in_pdf_konvertierbar_sind_und_traegt_sie,
+	T_Tabellen,
+	T_aein,
+	T_virtmacherkl_Tx_lgn,
+	T_Zustand_der_Dienste,
+	T_pruefmodem,
+	T_gibts,
+	T_nicht,
+	T_Kein_Modem_gefunden,
 	T_MAX //α
 }; // enum T_ //ω
 
@@ -278,6 +288,8 @@ class zielmustercl
 class hhcl:public dhcl
 {
  private: //ω
+    svec modems;       // gefundene Modems
+    uchar modemgeaendert=0; // hmodem neu gesetzt
     int hylazuerst=-1;  // ob ein Fax zuerst ueber Hylafax versucht werden soll zu faxen
     //    string hmodemstr; // Erkennung des Faxgeraetes nach /dev/tty, Standard ACM
     string maxcapiv; // maximale Versuchnr in Capi, bis Hyla versucht wird
@@ -442,6 +454,7 @@ class hhcl:public dhcl
 	void virtinitopt(); // (programm-)spezifische Optionen
 	void pvirtmacherkl();
 	void virtMusterVorgb();
+	void pvirtvorzaehler();
 	void virtzeigversion(const string& ltiffv=nix);
 	void pvirtvorrueckfragen();
 	void virtrueckfragen();
@@ -449,6 +462,10 @@ class hhcl:public dhcl
 	void virtzeigueberschrift();
 	void pvirtfuehraus();
 	void virtschlussanzeige(); //ω
+	void hylasv1();
+	void hylasv2(hyinst hyinstart);
+	void zeigdienste();
+	void pruefmodem();
  public: //α
   hhcl(const int argc, const char *const *const argv);
 	~hhcl();

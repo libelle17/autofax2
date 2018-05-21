@@ -58,7 +58,7 @@ void hhcl::pvirtVorgbSpeziell()
   sqlvzn=atol(sqlvz.c_str());
 	sqlvp=new string[sqlvzn];
 	for(size_t i=0;i<sqlvzn;) {
-      switch (i) {
+		switch (i) {
         case 0:
           sqlvp[i] = string("")+"select if(isnull(arzt),bsname,arzt) getName,bsname from (select bsname, FaxZahl, "
             "concat(group_concat(distinct Arzt separator ', '), ', ',ort,';') Arzt "

@@ -6,6 +6,8 @@
 #include <tiffio.h>
 #define VOMHAUPTCODE // um Funktionsdefinition manchmal mit "__attribute__((weak)) " versehen zu können //ω
 #include "autofax2.h"
+#include <fcntl.h> // fuer fd_reopen, O_RDONLY usw.
+#include <termios.h> // fuer tcgetattr, termios
 // fuer verschiedene Sprachen //α
 char const *DPROG_T[T_MAX+1][SprachZahl]={
 	// T_virtVorgbAllg
@@ -484,6 +486,27 @@ char const *DPROG_T[T_MAX+1][SprachZahl]={
 	{". Setze ",". Setting "},
 	// T_ob_eine_Fritzcard_drinstak
 	{"ob eine Fritzcard drinstak, als die Konfigurationsdatei geschrieben wurde","if a fritzcard was present when the configuration file was written"},
+	// T_Faxt_Dateien_aus_Verzeichnis_pfad_die
+	{"Faxt Dateien aus Verzeichns <pfad>, die '","Faxes files from directory <path>, which contain '"},
+	// T_faxnr_enthalten_und_durch_soffice_in_pdf_konvertierbar_sind_und_traegt_sie
+	{" <faxnr>' enthalten und durch soffice in pdf konvertierbar sind \nund traegt sie in MariaDB-Datenbank '",
+		" <faxno>' and are convertible into pdf, \nand logs this in the the mariadb database '"}, 
+	// T_Tabellen,
+	{"' (Tabellen: `","' (tables: `"},
+	// T_aein
+	{"`) ein.","`)."},
+	// T_virtmacherkl_Tx_lgn
+	{"pvirtmacherkl, Tx.lgn: ","pvirtmakeexpl, Tx.lgn: "},
+	// T_Zustand_der_Dienste
+	{"Zustand der Dienste: ","State of the services: "},
+	// T_pruefmodem
+	{"pruefmodem()","checkmodem()"},
+	// T_gibts
+	{" gibts"," exists"},
+	// T_nicht
+	{" nicht"," not"},
+	// T_Kein_Modem_gefunden
+	{"Kein Modem gefunden.","No modem found."},
 	{"",""} //α
 }; // char const *DPROG_T[T_MAX+1][SprachZahl]=
 
@@ -1998,9 +2021,12 @@ void hhcl::virtinitopt()
 // wird aufgerufen in lauf
 void hhcl::pvirtmacherkl()
 {
-	erkl<<blau<<Txk[T_Program]<<violett<<DPROG //ω
-		<<blau<<" ist etwas ganz Spezielles"<<schwarz; //α
-} // void hhcl::pvirtmacherkl
+	hLog(violetts+Tx[T_virtmacherkl_Tx_lgn]+schwarz+ltoan(Tx.lgn));
+//	erkl<<violett<<DPROG<<blau<<Txk[T_tut_dieses_und_jenes]<<schwarz; //ω 
+	erkl<<blau<<Tx[T_Faxt_Dateien_aus_Verzeichnis_pfad_die]<<anfaxstr<<
+		Tx[T_faxnr_enthalten_und_durch_soffice_in_pdf_konvertierbar_sind_und_traegt_sie]
+		<<drot<<dbq<<blau<<Tx[T_Tabellen]<<drot<<touta<<blau<<"`,`"<<drot<<spooltab<<blau<<Tx[T_aein]<<schwarz;
+} // void hhcl::pvirtmacherkl //α
 
 // wird aufgerufen in lauf
 void hhcl::virtMusterVorgb()
@@ -2029,18 +2055,211 @@ void hhcl::virtMusterVorgb()
 } // void hhcl::MusterVorgb
 
 // wird aufgerufen in lauf
-void hhcl::virtzeigversion(const string& ltiffv/*=nix*/)
+void hhcl::pvirtvorzaehler()
 { //ω
-	dhcl::virtzeigversion(ltiffv); //α
-} // void hhcl::virtzeigversion
+	if (obvc) dovc();
+} // void hhcl::virtvorzaehler() //α
+//ω
 
+void hhcl::zeigdienste()
+{
+	cout<<Tx[T_Zustand_der_Dienste]<<endl;
+	servc *svp[4]={scapis,sfaxq,shfaxd,sfaxgetty};
+	for(int i=0;i<4;i++) {
+		if (svp[i]) {
+			svp[i]->obsvfeh();
+			cout<<" "<<setw(25)<<svp[i]->sname<<": "<<blau<<Txk[sfeh[svp[i]->svfeh]]<<schwarz<<endl;
+		} // 		if (svp[i])
+	} // 	for(int i=0;i<4;i++)
+} // void hhcl::zeigdienste()
+
+// augerufen in: pruefhyla, zeigkonf, loeschehyla, anhalten
+void hhcl::hylasv1()
+{
+	if (!this->sfaxgetty) this->sfaxgetty=new servc("hylafax-faxgetty-"+this->hmodem,"faxgetty");
+} // void hhcl::hylasv1()
+
+// augerufen in: pruefhyla, zeigkonf, loeschehyla, anhalten
+void hhcl::hylasv2(hyinst hyinstart)
+{
+	if (hyinstart==hysrc || hyinstart==hyppk) {
+		if (!sfaxq) sfaxq=new servc("hylafax-faxq","faxq");
+		if (!shfaxd) shfaxd=new servc("hylafax-hfaxd","hfaxd");
+		// => hyinstart==hypak
+	} else {
+		if (!sfaxq) sfaxq=new servc("","faxq");
+		if (!shfaxd) shfaxd=new servc("","hfaxd");
+	} // if (hyinstart==hysrc || hyinstart==hyppk) else
+	if (!shylafaxd) shylafaxd=new servc("hylafax","faxq hfaxd");
+} // void hhcl::hylasv2()
+
+// wird aufgerufen in lauf //α
+void hhcl::virtzeigversion(const string& ltiffv/*=nix*/)
+{
+	dhcl::virtzeigversion(ltiffv);  //ω
+	zeigkonf();
+	capisv();
+	hylasv1();
+	hylasv2(hysrc);
+	zeigdienste();
+} // void hhcl::virtzeigversion //α
+//ω
+
+// aus: coreutils
+int fd_reopen(int desired_fd, char const *file, int flags, mode_t mode)
+{
+	int fd = open (file, flags, mode);
+	if (fd==desired_fd||fd<0) {
+		return fd;
+	} else {
+		int fd2 = dup2 (fd, desired_fd);
+		int saved_errno = errno;
+		close (fd);
+		errno = saved_errno;
+		return fd2;
+	} // 	if (fd == desired_fd || fd < 0) else
+} // fd_reopen (int desired_fd, char const *file, int flags, mode_t mode)
+
+// mit strace usw. aus coreutils; in pruefmodem
+int ttytest(const string& tty)
+{
+	int fd,erg=0,fdflags=0;
+	int defin;
+	if ((defin=dup(STDIN_FILENO))>=0) {
+		static struct termios mode{0};
+		if ((fd=fd_reopen (STDIN_FILENO, ("/dev/"+tty).c_str(), O_RDONLY | O_NONBLOCK, 0))>=0) {
+			if ((fdflags = fcntl (STDIN_FILENO, F_GETFL)) != -1 && fcntl (STDIN_FILENO, F_SETFL, fdflags & ~O_NONBLOCK) >= 0) {
+				if (!tcgetattr (STDIN_FILENO, &mode)) {
+					erg=1;
+				} // 				if (!tcgetattr (STDIN_FILENO, &mode))
+			} // 			if ((fdflags = fcntl (STDIN_FILENO, F_GETFL)) != -1 && fcntl (STDIN_FILENO, F_SETFL, fdflags & ~O_NONBLOCK) >= 0)
+			close(fd);
+		} // 		if ((fd=fd_reopen (STDIN_FILENO, ("/dev/"+tty).c_str(), O_RDONLY | O_NONBLOCK, 0))>=0)
+		dup2(defin,STDIN_FILENO);
+		close(defin);
+	} // 	if ((defin=dup(STDIN_FILENO))>=0)
+	return erg;
+} // int ttytest(const string& tty)
+
+// wird aufgerufen in: main, rueckfragen
+void hhcl::pruefmodem()
+{
+	hLog(violetts+Tx[T_pruefmodem]+schwarz);
+	obmodem=0;
+	string althmodem(hmodem);
+	const string svz="/sys/class/tty/";
+	svec qrueck;
+	//// <<"pruefmodem 1 nach obcapi: "<<(int)obcapi<<endl;
+	// 19.2.17: evtl. besser mit: dmesg|grep '[^t]*tty[^] 0\t:.$]'|sed 's/[^t]*\(tty[^] \t:.$]*\).*/\1/'
+	// 25.2.17: geht leider nicht nach "<DPROG> -nohyla"
+	// #define mitdmesg
+#ifdef mitdmesg
+	systemrueck("dmesg|grep tty",obverb,oblog,&qrueck,/*obsudc=*/0);
+#else // mitdmesg
+	if (findv==1) {
+		systemrueck("cd "+svz+";find */device/driver", obverb,oblog,&qrueck,/*obsudc=*/0);
+	} else {
+		findfile(&qrueck,findv,obverb,oblog,0,svz,/*muster=*/"",1,127,0);
+		for(size_t i=qrueck.size();i;) {
+			i--;
+			struct stat st={0};
+			if (lstat((qrueck[i]+"/device/driver").c_str(),&st)) {
+				qrueck.erase(qrueck.begin()+i);
+			} // 				if (lstat((qrueck[i]+"/device/driver").c_str(),&st))
+		} // 			for(size_t i=qrueck.size();i;)
+	} // 		if (findv==1)
+#endif // mitdmesg else
+	for(size_t i=0;i<qrueck.size();i++) {
+#ifdef mitdmesg
+		size_t pos=qrueck[i].find("tty");
+		if (pos==string::npos) continue;
+		size_t p2=qrueck[i].find_first_of("] \t:.,;-",pos);
+		if (p2==string::npos) continue;
+		const string tty=qrueck[i].substr(pos,p2-pos);
+		if (tty=="tty"||tty=="tty0") continue;
+		////	modem=svz+modem;
+		//// <<rot<<svz+modem<<schwarz<<endl;
+#else // mitdmesg
+		const string tty=findv==1?qrueck[i].substr(0,qrueck[i].find('/')):base_name(qrueck[i]);
+		////			struct stat entrydriv=KLA 0 KLZ;
+		////			if (!lstat((modem+"/device/driver").c_str(),&entrydriv)) KLA
+		////				const string tty=base_name(modem);
+#endif // mitdmesg else
+		// ttyS0 erscheint auf Opensuse und Ubuntu konfiguriert, auch wenn kein Modem da ist
+		if (tty!="ttyS0") {
+			int terg;
+			if (cus.cuid) {
+				svec rue2;
+				vector<errmsgcl> errv;
+				const string f0=schwarzs+"Modem "+blau+tty+schwarz+Tx[T_gibts];
+				const string f1=f0+Tx[T_nicht];
+				errv.push_back(errmsgcl(0,f0));
+				errv.push_back(errmsgcl(1,f1));
+				//// aus coreutils; ' time 10 ' geht nicht, '{ { sudo stty -F /dev/ttyS1 1>&3;kill 0;}|{ sleep 10;kill 0;} } 3>&1' auch nicht
+				// stty auch aus crontab aufrufbar (Pfad: /usr/bin:/bin)
+				terg=!systemrueck("timeout 10 "+sudc+"stty -F /dev/"+tty/*//+" time 10" wirkt nicht*/,
+						              obverb,oblog,&rue2,/*obsudc=*/0,/*verbergen=*/2,/*obergebnisanzeig=*/wahr,/*ueberschr=*/"",/*errm=*/&errv);
+			} else {
+				terg=ttytest(tty);
+			} // 				if (cus.cuid) else
+			if (terg) {
+				obmodem=1;
+				modems<<tty;
+				hLog("Modem: "+blaus+tty+schwarz+Txk[T_gefunden]);
+			} // if (terg)
+		} // if (tty!="ttyS0") 
+		// KLA // if (!lstat(((qrueck[i])+"/device/driver").c_str(),&entrydriv)) 
+	} // for(size_t i=0;i<qrueck.size();i++) 
+	////  uchar modemsumgesteckt=0;
+	uchar schonda=0;
+	if (!hmodem.empty()) {
+		for(size_t j=0;j<modems.size();j++) {
+			if (modems[j]==hmodem) {
+				schonda=1;
+				break;
+			}
+		} // for(size_t j=0;j<modems.size();j++) 
+		if (!schonda) hmodem.clear();
+	} // if (!hmodem.empty()) 
+	if (hmodem.empty()) {
+		if (modems.size()) if (!modems[0].empty()) {
+			if (obverb>1) {
+				hLog("modems[0]: "+blaus+modems[0]+schwarz);
+			} // 				if (obverb)
+			hmodem=modems[0];/*//modemsumgesteckt=1;*/ 
+			modemgeaendert=1;
+		} //   if (modems.size()) if (!modems[0].empty()) if (modems[0]!=hmodem) 
+	} // if (hmodem.empty()) 
+	obmdgeprueft=1;
+	if (!obmodem) {
+		fLog(rots+Tx[T_Kein_Modem_gefunden]+schwarz,obhyla?1:obverb,oblog);
+		obhyla=0;
+	}
+	for(auto aktm:modems) {
+		caus<<"modem: '"<<aktm<<"'"<<endl;
+	}
+	caus<<"2 obmodem: "<<(int)obmodem<<", obmdgeprueft: "<<(int)obmdgeprueft<<",hmodem: "<<hmodem<<endl;
+	// wenn zum Konfigurationszeitpunkt kein Modem drinstak, aber jetzt, dann rueckfragen
+	if (!schonda /*//obmodem && agcnfA.hole("obmodem")=="0"*/) {
+		rzf=1;
+	}
+	// wenn nur obkschreib, dann noch nicht auf neu eingestecktes Modem reagieren
+////	if (rzf) agcnfA.setze("obmodem",obmodem?"1":"0");
+#if false
+	agcnfA.setzbemv("obmodem",&Tx,T_ob_ein_Modem_drinstak);
+#endif
+	hLog(violetts+Txk[T_Ende]+Tx[T_pruefmodem]+schwarz);
+	// wvdialconf oder schneller: setserial -a /dev/tty*, mit baud_base: <!=0>  als Kriterium
+} // void hhcl::pruefmodem()
+
+//α
 // wird aufgerufen in lauf
 void hhcl::pvirtvorrueckfragen()
 {
-	hLog(violetts+Tx[T_pvirtvorrueckfragen]+schwarz);
-	if (rzf) { //ω
-  } //α
-} // void hhcl::pvirtvorrueckfragen
+	hLog(violetts+Tx[T_pvirtvorrueckfragen]+schwarz); //ω
+		if (obhyla) pruefmodem();
+		if (obcapi) pruefisdn();
+} // void hhcl::pvirtvorrueckfragen //α
 
 
 // wird aufgerufen in lauf
@@ -2048,6 +2267,7 @@ void hhcl::virtrueckfragen()
 {
 	hLog(violetts+Tx[T_virtrueckfragen]+schwarz);
 	if (rzf) { //ω
+	// Rueckfragen koennen auftauchen in: rueckfragen, konfcapi (<- pruefcapi), aenderefax, rufpruefsamba
 		zufaxenvz=Tippverz(Tx[T_Verzeichnis_mit_zu_faxenden_Dateien],&zufaxenvz);
 		wvz=Tippverz(Tx[T_Verzeichnis_mit_wartenden_Dateien],&wvz);
 		ngvz=Tippverz(Tx[T_Verzeichnis_mit_gescheiterten_Dateien],&ngvz);
