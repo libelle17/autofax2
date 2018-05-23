@@ -2409,8 +2409,7 @@ void hhcl::virtrueckfragen()
 		undstr=Tippstr(Tx[T_Buchstabenfolge_vor_weiterem_Adressaten_sowie_weiterer_Faxnummer],&undstr);
 		// sql abfragen, eintragen, sql aus opn loeschen, maps loeschen, maps neu erstellen
 		schAcl<optcl> oprsql=schAcl<optcl>("oprsql"); // Optionen
-		caus<<"sqlzn: "<<sqlzn<<endl;
-		optausg(rot);
+//		optausg(rot);
 		sqlrp.clear();
 		unsigned neunr{1}; // Nr. des SQL-Befehles nach neuer Zaehlung
 		for(size_t akt=0;akt<sqlzn;akt++) {
@@ -2450,6 +2449,7 @@ void hhcl::virtrueckfragen()
 						if (zwi.find("&&faxnr&&")==string::npos) {
 							if (Tippob(Tx[T_In]+rots+zwi+blau+Tx[T_keinmal_faxnr_gefunden_Wollen_Sie_den_SQL_Befehl_neu_eingeben])) continue;
 						} else {
+							if (Tippob(Tx[T_In]+rots+zwi+blau+Tx[T_keinmal_faxnr_gefunden_Wollen_Sie_den_SQL_Befehl_neu_eingeben])) continue;
 							RS rtest(this->My,ersetzAllezu(zwi,"&&faxnr&&","9999"),aktc,ZDB); //// (const char*)trimfaxnr));
 							if (rtest.obfehl) {
 								if (Tippob(Tx[T_In]+rots+zwi+blau+Tx[T_koennte_ein_SQL_Fehler_sein_Wollen_Sie_den_SQL_Befehl_neu_eingeben])) continue;
@@ -2498,7 +2498,6 @@ void hhcl::virtrueckfragen()
 		for(auto omit=oprsql.schl.begin();omit!=oprsql.schl.end();omit++) {
 			opn<<(*omit);
 		}
-
 	} // if (rzf) //α
 	dhcl::virtrueckfragen();
 } // void hhcl::virtrueckfragen()
@@ -2587,7 +2586,6 @@ void hhcl::virtlieskonfein()
 	//	obverb=1;
 	hLog(violetts+Txk[T_virtlieskonfein]+schwarz);
 	hcl::virtlieskonfein(); //ω
-	//// caus<<"sqlzn: "<<sqlzn<<endl;
 	sqlp=new string[sqlzn];
 	for(size_t i=0;i<sqlzn;) {
 		++i;
@@ -2603,8 +2601,12 @@ void hhcl::virtlieskonfein()
 	// wenn in der Konfigurationsdatei keine sql-Befehle stehen, dann die aus den Vorgaben nehmen
 	if (!sqlzn) {
 		sqlzn=sqlvzn;
+		delete [] sqlp;
+		sqlp=new string[sqlzn];
 		opn.omap["sqlz"]->woher=1;
 		for(size_t i=0;i<sqlzn;i++) {
+			sqlp[i]=*(string*)opvsql[i]->pptr;
+			caus<<"opvsql["<<i<<"]: "<<*(string*)opvsql[i]->pptr<<endl;
 			opsql<<opvsql[i];
 			opn<<opsql.letzter();
 		}
