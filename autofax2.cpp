@@ -2474,101 +2474,28 @@ void hhcl::virtrueckfragen()
 					 sqlv.push_back(neuS);
 					 nsqlzn++;
 				 */
-				caus<<rot<<"sqlrp.size(): "<<sqlrp.size()<<schwarz<<endl;
-				caus<<rot<<"oprsql.size(): "<<oprsql.size()<<schwarz<<endl;
-        if (sqlrp.size()) caus<<rot<<"&sqlrp[0]: "<<&sqlrp[0]<<schwarz<<endl;
 				sqlrp.push_back(shared_ptr<string>(new string(zwi)));
-        if (sqlrp.size()) caus<<rot<<"&sqlrp[0]: "<<&sqlrp[0]<<schwarz<<endl;
-				caus<<"&sqlrp[0]: "<<gruen<<&sqlrp[0]<<schwarz<<endl;
-				caus<<" sqlrp[0]: "<<gruen<<sqlrp[0]<<schwarz<<endl;
-				caus<<"*sqlrp[0]: "<<gruen<<*sqlrp[0]<<schwarz<<endl;
-//				caus<<gruen<<*reinterpret_cast<string*>(&sqlrp[0])<<schwarz<<endl;
-				caus<<"zwi: "<<hgrau<<zwi<<schwarz<<endl;
-				caus<<rot<<"sqlrp.size(): "<<sqlrp.size()<<schwarz<<endl;
-				caus<<"sqlrp[sqlrp.size()-1]: ";
-				caus<<hgrau<<sqlrp[sqlrp.size()-1]<<schwarz<<endl;
-				caus<<"sqlrp[0]: ";
-				caus<<hgrau<<sqlrp[0]<<schwarz<<endl;
-				caus<<"Stell 1"<<endl;
 				string istr=ltoan(akt+1);
-				caus<<"Stell 2"<<endl;
-				for(unsigned i=0;i<oprsql.schl.size();i++) {
-					caus<<"1 i: "<<i<<" "<<(void*)&oprsql.schl[i]<<" "<<(void*)&oprsql.schl[i]->pptr<<endl;
-				}
-				caus<<(void*)&sqlrp[sqlrp.size()-1]<<" "<<sqlrp[sqlrp.size()-1]<<endl;
 				optcl *opp=new optcl(/*pname*/soptname.str(),/*pptr*/sqlrp[sqlrp.size()-1].get(),/*art*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
-				caus<<"(void*)opp->pptr: "<<(void*)opp->pptr<<endl;
 				oprsql<<opp;
-				caus<<"(void*)opp->pptr: "<<(void*)opp->pptr<<endl;
-				caus<<"(void*)oprsql[oprsql.size()-1]->pptr: "<<(void*)oprsql[oprsql.size()-1]->pptr<<endl;
-				caus<<"(void*)oprsql.schl[oprsql.schl.size()-1]->pptr: "<<(void*)oprsql.schl[oprsql.schl.size()-1]->pptr<<endl;
-				caus<<"(void*)&sqlrp[sqlrp.size()-1]: "<<(void*)&sqlrp[sqlrp.size()-1]<<" "<<sqlrp[sqlrp.size()-1]<<endl;
-				caus<<"Stell 3, oprsql.size(): "<<oprsql.size()<<endl;
-				for(unsigned i=0;i<oprsql.schl.size();i++) {
-					caus<<"2 i: "<<i<<" "<<(void*)&oprsql.schl[i]<<" "<<(void*)&oprsql.schl[i]->pptr<<", &sqlrp[0]: "<<&sqlrp[0]<<schwarz<<endl;
-					caus<<"*pptr: "<<*(shared_ptr<string>*)oprsql.schl[i]->pptr<<endl;
-//					caus<<"*pptr: "<<**(shared_ptr<string>*)oprsql.schl[i]->pptr<<endl;
-				}
-				caus<<"Stell 4"<<endl;
-				auto runde=0;
-				for(auto op:oprsql.schl) {
-					caus<<" Stell 5"<<endl;
-					caus<<"runde: "<<++runde<<endl;
-					caus<<" Stell 6"<<endl;
-					caus<<dgrau<<"(void*)op->pptr: "<<(void*)op->pptr<<endl;
-					caus<<op->holpptrstr()<<schwarz<<endl;
-					caus<<" Stell 7"<<endl;
-				}
-				caus<<" Stell 8"<<endl;
-				caus<<", pptr: "<<dgrau<<*(string*)oprsql[oprsql.size()-1]->pptr<<schwarz<<endl;
 			} // if (zwi.empty()) else
-			caus<<blau<<"1 pptr: ";
-			caus<<gruen<<*(string*)oprsql[oprsql.size()-1]->pptr<<schwarz<<endl;
 			if (akt>=sqlzn && akt>=sqlvzn) {
 				if (!Tippob(Tx[T_Wolle_Sie_noch_einen_SQL_Befehl_eingeben],Txk[T_j_af])) break;
 			}
 			//			map<const char* const,optcl const*>::iterator omit;
 			//			shared_ptr<optcl> omit;
 		} // 		for(size_t akt=0;akt<sqlzn;akt++)
-		auto runde=0;
-		for(auto op:oprsql.schl) {
-					caus<<"runde: "<<++runde<<", pptr: "<<dgrau;
-					caus<<op->holpptrstr()<<schwarz<<endl;
-		}
-		for(size_t iru=oprsql.size();iru;) {
-			iru--;
-			cout<<rot<<setw(3)<<iru<<schwarz<<" ";
-			if (oprsql[iru]->pptr) 
-				caus<<"iru: "<<iru<<", pptr: "<<dgrau<<*(string*)oprsql[iru]->pptr<<schwarz<<endl;
-			//			oprsql[iru]->virtoausgeb();
-		}
-		caus<<blau<<"2 pptr: ";
-		caus<<gruen<<*(string*)oprsql[oprsql.size()-1]->pptr<<schwarz<<endl;
-		optausg(rot);
-		if (0) { // hilft nix
-			for(auto omit=opn.schl.end();omit!=opn.schl.begin();) {
-				omit--;
-				if (!(*omit)->pname.find("SQL_")) {
-					(*omit)->virtloeschomaps(&opn);
-					opn.schl.erase(omit);
-				}
+		//// optausg(rot);
+		for(auto omit=opn.schl.end();omit!=opn.schl.begin();) {
+			omit--;
+			if (!(*omit)->pname.find("SQL_")) {
+				(*omit)->virtloeschomaps(&opn);
+				opn.schl.erase(omit);
 			}
 		}
-		caus<<blau<<"3 pptr: ";
-		caus<<gruen<<*(string*)oprsql[oprsql.size()-1]->pptr<<schwarz<<endl;
-		optausg(violett);
 		for(auto omit=oprsql.schl.begin();omit!=oprsql.schl.end();omit++) {
 			opn<<(*omit);
 		}
-		caus<<blau<<"4 Ende pptr: ";
-		caus<<gruen<<*(string*)oprsql[oprsql.size()-1]->pptr<<schwarz<<endl;
-		caus<<"oprsql.size(): "<<oprsql.size()<<endl;
-//		for(size_t iru=5;iru<oprsql.size();iru++) {
-		caus<<blau<<"5 Ende pptr: ";
-		caus<<gruen<<*(string*)oprsql[oprsql.size()-1]->pptr<<schwarz<<endl;
-		caus<<blau<<"5 Anfang pptr: ";
-		caus<<gruen<<*(string*)oprsql[0]->pptr<<schwarz<<endl;
-		optausg(dblau);
 	} // if (rzf) //α
 	dhcl::virtrueckfragen();
 } // void hhcl::virtrueckfragen()
