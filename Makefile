@@ -7,40 +7,45 @@
 #  ;
 # auch in den c(++)-Quellcode eingebaut werden kann
 
-# Aufrufvarianten:
-# "mitpg=1 make <..>" => es wird mit/fuer postgres kompiliert und gelinkt, die Praeprozessordirektive "mitpostgres" wird dem Compiler uebergeben
-# "make glei" => der Compiler wird vorher nicht ueberprueft
-# "make opt" => optimiere mit -O; kompiliere alles neu
-# "make opt2" => optimiere mit -O2; kompiliere alles neu
-# "make opt3" => optimiere mit -O3; kompiliere alles neu
-# "make opts" => optimiere mit -Os, nach Groesse; kompiliere alles neu
-# "make optfast" => optimiere mit -Ofast, nach Ausfuerungsgeschwindigkeit; kompiliere alles neu
-# "make optg" => optimiere mit -Og, zum Debuggen; kompiliere alles neu
-# "make debug" => erstelle mit -g;
-# "make debugnew" oder "make debugneu" => erstelle alles neu mit -g;
-# "make new" oder "make neu" => kompiliere alles neu
-# "make distclean" => loesche Objekt- und ausfuehrbare Dateien im Kompilierverzeichnis
-# "make fernclean" => loesche installierte Objekt- und ausfuehrbare Dateien
-# "make clean" => loesche Objekt- und ausfuehrbare Dateien einschliesslich installierter Version
-# "make confclean" => loescht die Konfigurationsdatei $(INSTEXEC).conf nach Rueckfrage, falls vorhanden
-# "make altc" => kompiliere mit -std=gnu++11
-# "make anzeig" => zeige Informationen zu Programm, Quelldateien und Compiler an
-# "make install" => installiere die erstellte Datei in den kuerzesten Pfad aus $PATH, der '/usr/' enthaelt,
-#                   installiert man-Seiten aus man_de und man_en, ferner *.html-Dateien und eine README.md-Datei fuer den git-Server
-# "make stumm und make stumminst" => zum Aufruf aus vim
-# "make git" => aktualisiert die Datei auf dem zugeordneten git-Server
-# "make giterlaub" => speichert die Daten zum Hochladen auf den git-Server
-# "make version" => kompilieren mit opts, installieren und aktualisieren auf git-Server mit einheitlicher Dateiversion
-# "make transfer <zielvz>" => kopieren der Programmdateien abzüglich bestimmter Kommentare in Zielverzeichnis <zielvz>
-# "make verschieb" => wie transfer, mit ../<DPROG>rein als Zielverzeichnis
-# "make vsneu" => wie verschieb, löscht vorher das als Zielverzeichnis (geht nur, wenn das github-Repository vorher gelöscht ist)
-# "make ruf" => ruft das Programm auf
-# "make uninstall" => deinstalliert alles, frägt noch manchmal rücke
-# "make allesweg" => deinstalliert alles, beantwortet Rückfragen mit 'y'
-# "make neuproj" => kopiert Dateien für neues Projekt in Verzeichnis fuer neues Projekt
+define hilfe
+@printf 'Aufrufvarianten: \n\
+"make hilfe" oder "make help" => zeige diese Hilfe an \n\
+"make glei" => der Compiler wird vorher nicht ueberprueft \n\
+"make opt" => optimiere mit -O; kompiliere alles neu \n\
+"make opt2" => optimiere mit -O2; kompiliere alles neu \n\
+"make opt3" => optimiere mit -O3; kompiliere alles neu \n\
+"make opts" => optimiere mit -Os, nach Groesse; kompiliere alles neu \n\
+"make optfast" => optimiere mit -Ofast, nach Ausfuerungsgeschwindigkeit; kompiliere alles neu \n\
+"make optg" => optimiere mit -Og, zum Debuggen; kompiliere alles neu \n\
+"make debug" => erstelle mit -g; \n\
+"make debugnew" oder "make debugneu" => erstelle alles neu mit -g; \n\
+"make new" oder "make neu" => kompiliere alles neu \n\
+"make distclean" => loesche Objekt- und ausfuehrbare Dateien im Kompilierverzeichnis \n\
+"make fernclean" => loesche installierte Objekt- und ausfuehrbare Dateien \n\
+"make clean" => loesche Objekt- und ausfuehrbare Dateien einschliesslich installierter Version \n\
+"make confclean" => loescht die Konfigurationsdatei $$(INSTEXEC).conf ($(INSTEXEC).conf) nach Rueckfrage, falls vorhanden \n\
+"make altc" => kompiliere mit -std=gnu++11 \n\
+"make anzeig" => zeige Informationen zu Programm, Quelldateien und Compiler an \n\
+"make install" => installiere die erstellte Datei in den kuerzesten Pfad aus $$(PATH) (\n\t$(PATH)), der "usr" enthaelt,  \n\t\
+     							installiert man-Seiten aus man_de und man_en, ferner *.html-Dateien und eine README.md-Datei fuer den git-Server \n\
+"make stumm und make stumminst" => zum Aufruf aus vim \n\
+"make git" => aktualisiert die Datei auf dem zugeordneten git-Server \n\
+"make giterlaub" => speichert die Daten zum Hochladen auf den git-Server \n\
+"make version" => kompilieren mit opts, installieren und aktualisieren auf git-Server mit einheitlicher Dateiversion \n\
+"make transfer <zielvz>" => kopieren der Programmdateien abzüglich bestimmter Kommentare in Zielverzeichnis <zielvz> \n\
+"make verschieb" => wie transfer, mit ../<DPROG>rein als Zielverzeichnis \n\
+"make vsneu" => wie verschieb, löscht vorher das als Zielverzeichnis (geht nur, wenn das github-Repository vorher gelöscht ist) \n\
+"make ruf" => ruft das Programm auf \n\
+"make rufv" => ruft das Programm mit Parameter -v auf \n\
+"make uninstall" => deinstalliert alles, frägt noch manchmal rücke \n\
+"make allesweg" => deinstalliert alles, beantwortet Rückfragen mit "y" \n\
+"mitpg=1 make <..>" => es wird mit/fuer postgres kompiliert und gelinkt, die Praeprozessordirektive "mitpostgres" wird dem Compiler uebergeben \n\
+"make neuproj" => kopiert Dateien für neues Projekt in Verzeichnis fuer neues Projekt\n'
+endef
 
 ICH::=$(firstword $(MAKEFILE_LIST))
 SRCS::=$(wildcard *.cpp)
+WRZ::=$(SRCS:.cpp=)
 OBJ::=$(SRCS:.cpp=.o)
 # wenn aus vi aufgerufen, kein unnoetigen Ausgaben, BA=bedingte Ausgabe, BFA=bedingte Fehlerausgabe
 BA::=&1
@@ -52,7 +57,7 @@ endif
 #EXPFAD=/usr/local/sbin
 EXPFAD::=$(shell echo $(PATH) | tr -s ':' '\n' | grep /usr/ | head -n 1)
 EXPFAD::=$(shell echo $(PATH) | tr -s ':' '\n' | grep /usr/ | awk '{ print length, $$0 }' | sort -n -s | cut -d" " -f2- | head -n1)
-
+LAUF::=0
 #// ifneq ($(shell g++-6 --version >$(KR); echo $$?),0)
 #//  CCName::=g++
 #//  CFLAGS::=$(CFLAGS) -std=gnu++11 # 7.8.17 nicht nötig für opensuse42, hinderlich für fedora; 5.9.17: geht nicht mehr (wg. auto)
@@ -104,7 +109,7 @@ ifneq ($(LT),)
 	LDFLAGS::=$(LDFLAGS) -ltiff
 endif
 ifneq ($(LBOOST),)
-	LDFLAGS::=$(LDFLAGS) -lboost_iostreams -lboost_locale
+	LDFLAGS::=$(LDFLAGS) -lboost_iostreams -lboost_locale # -lboost_system -lboost_filesystem
 endif
 ifneq ($(LACL),)
 	LDFLAGS::=$(LDFLAGS) -lacl
@@ -156,6 +161,7 @@ slc::=$(SUDC)/sbin/ldconfig
 # si_unins=$(SPR)$(1)>$(KR)||{ $(call i_unins,$(1),$(2))};
 # GROFFCHECK::=$(call i1siund,$(PGROFF)):
 
+# nach: http://make.mad-scientist.net/papers/advanced-auto-dependency-generation/
 DEPDIR ::= .d
 $(shell mkdir -p $(DEPDIR)>$(KR))
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
@@ -186,6 +192,13 @@ GZS::=$(patsubst %,%.gz,$(MANS))
 
 .PHONY: all
 all: anzeig weiter
+
+.PHONY: help
+help: hilfe
+
+.PHONY: hilfe
+hilfe:
+	$(call hilfe,".")
 
 .PHONY: glei
 glei: anzeig $(EXEC) $(GZS) 
@@ -245,6 +258,7 @@ endef
 # ssh-add ~/.ssh/id_rsa_git
 # xclip -sel clip < ~/.ssh/id_rsa_git.pub
 # auf http://github.com -> view profile and more -> settings -> SSH and GPG keys -> New SSH key <Titel> <key> einfuegen
+.PHONY: git
 git: # README.md
 #	@git config --global user.name "Gerald Schade"
 #	@git config --global user.email "gerald.schade@gmx.de"
@@ -299,18 +313,21 @@ $(EXEC): $(OBJ)
 	-@printf " Fertig mit/Finished with %b$(ICH)%b, Target: %b$@%b:, nachher/afterwords:\n" $(blau) $(reset) $(blau) $(reset)
 	-@printf " '%b%s%b'\n" $(blau) "$$(ls -l --time-style=+' %d.%m.%Y %H:%M:%S' --color=always $(EXEC))" $(reset)
 
-%.o : %.cpp
-%.o : %.cpp $(DEPDIR)/%.d
+%.o: %.cpp
+%.o: %.cpp $(DEPDIR)/%.d
+	-@$(eval LAUF=$(shell echo $$(($(LAUF)+1))))
+	-@[ $(LAUF) = 1 ]&& rm -f fehler.txt;:
 	@[ $@ = $(DPROG).o ]&&{ $(call machvers);if test -f entwickeln; then awk "BEGIN {print `cat versdt`+0.00001}">versdt;\
 	else printf " %bFile '%bentwickeln%b' missing, keeping the version number stable/ Datei '%bentwickeln%b' fehlt, lasse die Version gleich%b\n" \
 	$(schwarz) $(grau) $(schwarz) $(grau) $(schwarz) $(reset) >$(BA); fi;}; :;
 	@printf " kompiliere %b%s%b: " $(blau) "$<" $(reset) >$(BA);
 #	-@if ! test -f instvz; then printf \"$$(getent passwd $$(logname)|cut -d: -f6)\">instvz; fi;
 	-@if ! test -f instvz; then printf \"$$(pwd)\">instvz; fi; # wird in kons.cpp verwendet
-	-$(CC) $(DEBUG)$(DEPFLAGS) $(CFLAGS) -c $< $(BFA);
+	-$(CC) $(DEBUG)$(DEPFLAGS) $(CFLAGS) $< $(BFA);
 	-@sed -i 's/versdt //g;s/gitvdt //g' $(DEPDIR)/*.Td
 	-@if test -s fehler.txt; then vi +0/error fehler.txt; else rm -f fehler.txt; fi;
 #	-@$(shell $(POSTCOMPILE))
+	@if test -s fehler.txt; then echo Fehler!!!!!!; fi;
 	@if test -s fehler.txt; then false; fi;
 
 $(DEPDIR)/%.d: ;
@@ -495,6 +512,10 @@ vsneu: verschieb
 .PHONY: ruf
 ruf:
 	@$(EXPFAD)/$(EXEC)
+
+.PHONY: rufv
+rufv:
+	@$(EXPFAD)/$(EXEC) -v
 
 .PHONY: version
 version: dovers

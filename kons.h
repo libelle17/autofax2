@@ -715,6 +715,7 @@ struct wpgcl
     void virttusetzbemerkwoher(const string& ibemerk,const uchar vwoher);
 		void virtfrisch();
 		void virtoausgeb() const;
+		string holpptrstr() const;
 };
 
 // fuer Wertepaare, die nur aus Datei gezogen werden und nicht zusaetzlich ueber die Befehlszeile eingegeben werden koennen
@@ -791,7 +792,8 @@ struct optcl:wpgcl
 		uchar nichtspeichern=0;
 		const uchar virteinzutragen(/*schAcl<optcl>**/void *schlp,int obverb);
 		void virtweisomapzu(/*schAcl<optcl>**/void *schlp);
-		void virtloeschomaps(/*schAcl<optcl>**/void *schlp);
+//		void virtloeschomaps(/*schAcl<optcl>**/void *schlp);
+		void virtloeschomaps(schAcl<optcl> *schlp);
 		optcl(const string& pname,const void* pptr,const par_t art, const int kurzi, const int langi, TxB* TxBp, const long Txi,
 				const uchar wi, const long Txi2, const string rottxt, const int iwert,const uchar woher,const uchar obno=0);
 		void setzwert();

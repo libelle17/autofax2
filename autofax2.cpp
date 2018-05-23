@@ -2319,7 +2319,7 @@ void hhcl::virtrueckfragen()
 	const size_t aktc=0;
 	hLog(violetts+Tx[T_virtrueckfragen]+schwarz);
 	if (rzf) { //ω
-	// Rueckfragen koennen auftauchen in: virtrueckfragen, konfcapi (<- pruefcapi), aenderefax, rufpruefsamba
+		// Rueckfragen koennen auftauchen in: virtrueckfragen, konfcapi (<- pruefcapi), aenderefax, rufpruefsamba
 		zufaxenvz=Tippverz(Tx[T_Verzeichnis_mit_zu_faxenden_Dateien],&zufaxenvz);
 		wvz=Tippverz(Tx[T_Verzeichnis_mit_wartenden_Dateien],&wvz);
 		ngvz=Tippverz(Tx[T_Verzeichnis_mit_gescheiterten_Dateien],&ngvz);
@@ -2411,7 +2411,7 @@ void hhcl::virtrueckfragen()
 		schAcl<optcl> oprsql=schAcl<optcl>("oprsql"); // Optionen
 		svec sqls;
 		caus<<"sqlzn: "<<sqlzn<<endl;
-	  optausg(rot);
+		optausg(rot);
 		sqlrp.clear();
 		for(size_t akt=0;akt<sqlzn;akt++) {
 			stringstream soptname;
@@ -2420,70 +2420,156 @@ void hhcl::virtrueckfragen()
 			//			opn.omap[soptname.str()]->virtoausgeb();
 			caus<<"akt: "<<akt<<" "<<sqlp[akt]<<endl;
 			const string *const vorgabe=(akt<sqlzn?&sqlp[akt]:&nix);
-				string zwi;
-				while (1) {
-					zwi=Tippstr(string(Tx[T_SQL_Befehl_Nr])+ltoan(akt+1)+(vorgabe->empty()?
-								Tx[T_faxnr_wird_ersetzt_mit_der_Faxnr]:
-								Tx[T_Strich_ist_SQL_Befehl_loeschen_faxnr_wird_ersetzt_mit_der_Faxnr]),
-							vorgabe,/*obnichtleer=*/0);
-					if (zwi=="-") zwi.clear();
-					if (zwi.empty()) {
-						break;
-					} else {
-						svec dben=holdbaussql(zwi);
-						//// <<"dben.size(): "<<(int)dben.size()<<endl;
-						uchar dbda=1;
-						if (!dben.size()) {
-							if (Tippob(Tx[T_In]+rots+zwi+blau+Tx[T_keine_Datenbank_gefunden_Wollen_Sie_den_SQL_Befehl_neu_eingeben])) continue;
-							dbda=0;
-						} else { // if (!dben.size()) 
-							uchar nochmal=0;
-							for(size_t i=0;i<dben.size();i++) {
-								//// <<"i: "<<blau<<i<<rot<<": "<<dben[i]<<schwarz<<endl;
-								if (pruefDB(dben[i])) {
-									dbda=0;
-									if (Tippob(Tx[T_Datenbank]+rots+dben[i]+blau+Tx[T_nicht_ermittelbar_Wollen_Sie_den_SQL_Befehl_neu_eingeben])) {
-										nochmal=1;
-										break;
-									} // if (strchr("jyJYoOsS",(int)erg)) 
-								} // if (pruefDB(dben[i])) 
-							} // for(size_t i=0;i<dben.size();i++) 
-							if (nochmal) continue;     
-						} // if (!dben.size()) 
-						if (dbda) {
-							if (zwi.find("&&faxnr&&")==string::npos) {
-								if (Tippob(Tx[T_In]+rots+zwi+blau+Tx[T_keinmal_faxnr_gefunden_Wollen_Sie_den_SQL_Befehl_neu_eingeben])) continue;
-							} else {
-								RS rtest(this->My,ersetzAllezu(zwi,"&&faxnr&&","9999"),aktc,ZDB); //// (const char*)trimfaxnr));
-								if (rtest.obfehl) {
-									if (Tippob(Tx[T_In]+rots+zwi+blau+Tx[T_koennte_ein_SQL_Fehler_sein_Wollen_Sie_den_SQL_Befehl_neu_eingeben])) continue;
-								} // if (rtest.obfehl)
-							} // if (zwi.find("&&faxnr&&")==string::npos) 
-						} // if (dbda)
-					} // if (zwi.empty()) else
-					break;
-				} // while (1)
+			string zwi;
+			while (1) {
+				zwi=Tippstr(string(Tx[T_SQL_Befehl_Nr])+ltoan(akt+1)+(vorgabe->empty()?
+							Tx[T_faxnr_wird_ersetzt_mit_der_Faxnr]:
+							Tx[T_Strich_ist_SQL_Befehl_loeschen_faxnr_wird_ersetzt_mit_der_Faxnr]),
+						vorgabe,/*obnichtleer=*/0);
+				if (zwi=="-") zwi.clear();
 				if (zwi.empty()) {
-					if (akt>sqlzn && akt >sqlvzn) akt--;
+					break;
 				} else {
-					// hier Sql-Dateien pruefen
-					/*
-					cppSchluess* neuS=new cppSchluess;
-					neuS->name=string("SQL_")+ltoan(++aktsp);
-					neuS->wert=zwi;
-					sqlv.push_back(neuS);
-					nsqlzn++;
-					*/
-					sqlrp<<zwi;
-					string istr=ltoan(akt+1);
-					oprsql<<new optcl(/*pname*/soptname.str(),/*pptr*/&sqlrp[sqlrp.size()-1],/*art*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
+					svec dben=holdbaussql(zwi);
+					//// <<"dben.size(): "<<(int)dben.size()<<endl;
+					uchar dbda=1;
+					if (!dben.size()) {
+						if (Tippob(Tx[T_In]+rots+zwi+blau+Tx[T_keine_Datenbank_gefunden_Wollen_Sie_den_SQL_Befehl_neu_eingeben])) continue;
+						dbda=0;
+					} else { // if (!dben.size()) 
+						uchar nochmal=0;
+						for(size_t i=0;i<dben.size();i++) {
+							//// <<"i: "<<blau<<i<<rot<<": "<<dben[i]<<schwarz<<endl;
+							if (pruefDB(dben[i])) {
+								dbda=0;
+								if (Tippob(Tx[T_Datenbank]+rots+dben[i]+blau+Tx[T_nicht_ermittelbar_Wollen_Sie_den_SQL_Befehl_neu_eingeben])) {
+									nochmal=1;
+									break;
+								} // if (strchr("jyJYoOsS",(int)erg)) 
+							} // if (pruefDB(dben[i])) 
+						} // for(size_t i=0;i<dben.size();i++) 
+						if (nochmal) continue;     
+					} // if (!dben.size()) 
+					if (dbda) {
+						if (zwi.find("&&faxnr&&")==string::npos) {
+							if (Tippob(Tx[T_In]+rots+zwi+blau+Tx[T_keinmal_faxnr_gefunden_Wollen_Sie_den_SQL_Befehl_neu_eingeben])) continue;
+						} else {
+							RS rtest(this->My,ersetzAllezu(zwi,"&&faxnr&&","9999"),aktc,ZDB); //// (const char*)trimfaxnr));
+							if (rtest.obfehl) {
+								if (Tippob(Tx[T_In]+rots+zwi+blau+Tx[T_koennte_ein_SQL_Fehler_sein_Wollen_Sie_den_SQL_Befehl_neu_eingeben])) continue;
+							} // if (rtest.obfehl)
+						} // if (zwi.find("&&faxnr&&")==string::npos) 
+					} // if (dbda)
 				} // if (zwi.empty()) else
-				if (akt>=sqlzn && akt>=sqlvzn) {
-					if (!Tippob(Tx[T_Wolle_Sie_noch_einen_SQL_Befehl_eingeben],Txk[T_j_af])) break;
+				break;
+			} // while (1)
+			if (zwi.empty()) {
+				if (akt>sqlzn && akt >sqlvzn) akt--;
+			} else {
+				// hier Sql-Dateien pruefen
+				/*
+					 cppSchluess* neuS=new cppSchluess;
+					 neuS->name=string("SQL_")+ltoan(++aktsp);
+					 neuS->wert=zwi;
+					 sqlv.push_back(neuS);
+					 nsqlzn++;
+				 */
+				caus<<rot<<"sqlrp.size(): "<<sqlrp.size()<<schwarz<<endl;
+				caus<<rot<<"oprsql.size(): "<<oprsql.size()<<schwarz<<endl;
+        if (sqlrp.size()) caus<<rot<<"&sqlrp[0]: "<<&sqlrp[0]<<schwarz<<endl;
+				sqlrp.push_back(shared_ptr<string>(new string(zwi)));
+        if (sqlrp.size()) caus<<rot<<"&sqlrp[0]: "<<&sqlrp[0]<<schwarz<<endl;
+				caus<<"&sqlrp[0]: "<<gruen<<&sqlrp[0]<<schwarz<<endl;
+				caus<<" sqlrp[0]: "<<gruen<<sqlrp[0]<<schwarz<<endl;
+				caus<<"*sqlrp[0]: "<<gruen<<*sqlrp[0]<<schwarz<<endl;
+//				caus<<gruen<<*reinterpret_cast<string*>(&sqlrp[0])<<schwarz<<endl;
+				caus<<"zwi: "<<hgrau<<zwi<<schwarz<<endl;
+				caus<<rot<<"sqlrp.size(): "<<sqlrp.size()<<schwarz<<endl;
+				caus<<"sqlrp[sqlrp.size()-1]: ";
+				caus<<hgrau<<sqlrp[sqlrp.size()-1]<<schwarz<<endl;
+				caus<<"sqlrp[0]: ";
+				caus<<hgrau<<sqlrp[0]<<schwarz<<endl;
+				caus<<"Stell 1"<<endl;
+				string istr=ltoan(akt+1);
+				caus<<"Stell 2"<<endl;
+				for(unsigned i=0;i<oprsql.schl.size();i++) {
+					caus<<"1 i: "<<i<<" "<<(void*)&oprsql.schl[i]<<" "<<(void*)&oprsql.schl[i]->pptr<<endl;
 				}
+				caus<<(void*)&sqlrp[sqlrp.size()-1]<<" "<<sqlrp[sqlrp.size()-1]<<endl;
+				optcl *opp=new optcl(/*pname*/soptname.str(),/*pptr*/sqlrp[sqlrp.size()-1].get(),/*art*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
+				caus<<"(void*)opp->pptr: "<<(void*)opp->pptr<<endl;
+				oprsql<<opp;
+				caus<<"(void*)opp->pptr: "<<(void*)opp->pptr<<endl;
+				caus<<"(void*)oprsql[oprsql.size()-1]->pptr: "<<(void*)oprsql[oprsql.size()-1]->pptr<<endl;
+				caus<<"(void*)oprsql.schl[oprsql.schl.size()-1]->pptr: "<<(void*)oprsql.schl[oprsql.schl.size()-1]->pptr<<endl;
+				caus<<"(void*)&sqlrp[sqlrp.size()-1]: "<<(void*)&sqlrp[sqlrp.size()-1]<<" "<<sqlrp[sqlrp.size()-1]<<endl;
+				caus<<"Stell 3, oprsql.size(): "<<oprsql.size()<<endl;
+				for(unsigned i=0;i<oprsql.schl.size();i++) {
+					caus<<"2 i: "<<i<<" "<<(void*)&oprsql.schl[i]<<" "<<(void*)&oprsql.schl[i]->pptr<<", &sqlrp[0]: "<<&sqlrp[0]<<schwarz<<endl;
+					caus<<"*pptr: "<<*(shared_ptr<string>*)oprsql.schl[i]->pptr<<endl;
+//					caus<<"*pptr: "<<**(shared_ptr<string>*)oprsql.schl[i]->pptr<<endl;
+				}
+				caus<<"Stell 4"<<endl;
+				auto runde=0;
+				for(auto op:oprsql.schl) {
+					caus<<" Stell 5"<<endl;
+					caus<<"runde: "<<++runde<<endl;
+					caus<<" Stell 6"<<endl;
+					caus<<dgrau<<"(void*)op->pptr: "<<(void*)op->pptr<<endl;
+					caus<<op->holpptrstr()<<schwarz<<endl;
+					caus<<" Stell 7"<<endl;
+				}
+				caus<<" Stell 8"<<endl;
+				caus<<", pptr: "<<dgrau<<*(string*)oprsql[oprsql.size()-1]->pptr<<schwarz<<endl;
+			} // if (zwi.empty()) else
+			caus<<blau<<"1 pptr: ";
+			caus<<gruen<<*(string*)oprsql[oprsql.size()-1]->pptr<<schwarz<<endl;
+			if (akt>=sqlzn && akt>=sqlvzn) {
+				if (!Tippob(Tx[T_Wolle_Sie_noch_einen_SQL_Befehl_eingeben],Txk[T_j_af])) break;
+			}
+			//			map<const char* const,optcl const*>::iterator omit;
+			//			shared_ptr<optcl> omit;
+		} // 		for(size_t akt=0;akt<sqlzn;akt++)
+		auto runde=0;
+		for(auto op:oprsql.schl) {
+					caus<<"runde: "<<++runde<<", pptr: "<<dgrau;
+					caus<<op->holpptrstr()<<schwarz<<endl;
 		}
-	  optausg(violett);
-	} //α
+		for(size_t iru=oprsql.size();iru;) {
+			iru--;
+			cout<<rot<<setw(3)<<iru<<schwarz<<" ";
+			if (oprsql[iru]->pptr) 
+				caus<<"iru: "<<iru<<", pptr: "<<dgrau<<*(string*)oprsql[iru]->pptr<<schwarz<<endl;
+			//			oprsql[iru]->virtoausgeb();
+		}
+		caus<<blau<<"2 pptr: ";
+		caus<<gruen<<*(string*)oprsql[oprsql.size()-1]->pptr<<schwarz<<endl;
+		optausg(rot);
+		if (0) { // hilft nix
+			for(auto omit=opn.schl.end();omit!=opn.schl.begin();) {
+				omit--;
+				if (!(*omit)->pname.find("SQL_")) {
+					(*omit)->virtloeschomaps(&opn);
+					opn.schl.erase(omit);
+				}
+			}
+		}
+		caus<<blau<<"3 pptr: ";
+		caus<<gruen<<*(string*)oprsql[oprsql.size()-1]->pptr<<schwarz<<endl;
+		optausg(violett);
+		for(auto omit=oprsql.schl.begin();omit!=oprsql.schl.end();omit++) {
+			opn<<(*omit);
+		}
+		caus<<blau<<"4 Ende pptr: ";
+		caus<<gruen<<*(string*)oprsql[oprsql.size()-1]->pptr<<schwarz<<endl;
+		caus<<"oprsql.size(): "<<oprsql.size()<<endl;
+//		for(size_t iru=5;iru<oprsql.size();iru++) {
+		caus<<blau<<"5 Ende pptr: ";
+		caus<<gruen<<*(string*)oprsql[oprsql.size()-1]->pptr<<schwarz<<endl;
+		caus<<blau<<"5 Anfang pptr: ";
+		caus<<gruen<<*(string*)oprsql[0]->pptr<<schwarz<<endl;
+		optausg(dblau);
+	} // if (rzf) //α
 	dhcl::virtrueckfragen();
 } // void hhcl::virtrueckfragen()
 

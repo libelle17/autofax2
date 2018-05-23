@@ -107,7 +107,7 @@ getIPR() {
 		LT="${_LT} ${_LT}-${dev}";
 		LT5="";
 	}
-	// rpm kam schon auf ubuntu vor, dpkg auf opensuse eher nicht
+	# rpm kam schon auf ubuntu vor, dpkg auf opensuse eher nicht
 	{ still which dpkg &&
 		{ 
 			SPR="dpkg -s ";

@@ -436,7 +436,7 @@ class hhcl:public dhcl
 	string sqlvz;  // Zahl der SQL-Befehle aus Vorgaben
 	size_t sqlvzn=0; // Zahl der SQL-Befehle aus Vorgaben numerisch
 	string* sqlvp; // Array der Vorgabe-SQL-Befehle
-	svec sqlrp; // vector der rueckfrage-SQL-Befehle
+	vector<shared_ptr<string>> sqlrp; // vector der rueckfrage-SQL-Befehle
 
 	size_t zmzn=0; // Zahl der Zielmusterpaare numerisch
 	string *zmmp; // Array der Zielmuster

@@ -3255,6 +3255,28 @@ void wpgcl::virtoausgeb() const
 	cout<<schwarz;
 }
 
+// wird bisher nicht benoetigt
+string wpgcl::holpptrstr() const
+{
+	if (pptr) {
+		if (part==puchar||part==pbin) {
+			return ltoan((int)*(uchar*)pptr);
+		} else if (part==pint) {
+			return ltoan((*(int*)pptr));
+		} else if (part==plong) {
+			return ltoan(*(long*)pptr);
+		} else if (part==pdat) {
+			stringstream strstr;
+			strstr<<ztacl((struct tm*)pptr,"%F %T");
+			return strstr.str();
+		} else /*pstri,pdez,ppwd,pfile,pverz*/ {
+			return *(string*)pptr;
+		}
+	} else {
+		return nix;
+	}
+} // string wpgcl::holpptrstr() const
+
 void WPcl::virtoausgeb() const
 {
 	wpgcl::virtoausgeb();
@@ -6467,7 +6489,7 @@ void optcl::virtweisomapzu(void *schlp)
 	TxBp->lgn=altlgn;
 } // void optcl::virtweisomapzu
 
-void optcl::virtloeschomaps(void *schlp)
+void optcl::virtloeschomaps(schAcl<optcl> *schlp)
 {
 	// Indices (maps) loeschen
 	//// caus<<"loesche omap, pname: "<<blau<<pname<<schwarz<<endl;
