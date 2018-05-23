@@ -2413,12 +2413,9 @@ void hhcl::virtrueckfragen()
 		caus<<"sqlzn: "<<sqlzn<<endl;
 		optausg(rot);
 		sqlrp.clear();
+		unsigned neunr{1}; // Nr. des SQL-Befehles nach neuer Zaehlung
 		for(size_t akt=0;akt<sqlzn;akt++) {
-			stringstream soptname;
-			soptname<<"SQL_"<<(akt+1);
-			// caus<<"akt: "<<(akt+1)<<" "<<*(string*)opn.omap[soptname.str()]->pptr<<endl;
-			//			opn.omap[soptname.str()]->virtoausgeb();
-			caus<<"akt: "<<akt<<" "<<sqlp[akt]<<endl;
+			//// caus<<"akt: "<<akt<<" "<<sqlp[akt]<<endl;
 			const string *const vorgabe=(akt<sqlzn?&sqlp[akt]:&nix);
 			string zwi;
 			while (1) {
@@ -2475,7 +2472,11 @@ void hhcl::virtrueckfragen()
 					 nsqlzn++;
 				 */
 				sqlrp.push_back(shared_ptr<string>(new string(zwi)));
-				string istr=ltoan(akt+1);
+				string istr=ltoan(neunr);
+				stringstream soptname;
+				soptname<<"SQL_"<<(neunr++);
+				//// caus<<"akt: "<<(akt+1)<<" "<<*(string*)opn.omap[soptname.str()]->pptr<<endl;
+				//			opn.omap[soptname.str()]->virtoausgeb();
 				optcl *opp=new optcl(/*pname*/soptname.str(),/*pptr*/sqlrp[sqlrp.size()-1].get(),/*art*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
 				oprsql<<opp;
 			} // if (zwi.empty()) else
@@ -2486,6 +2487,7 @@ void hhcl::virtrueckfragen()
 			//			shared_ptr<optcl> omit;
 		} // 		for(size_t akt=0;akt<sqlzn;akt++)
 		//// optausg(rot);
+		// vorherige SQL-Abfragen loeschen
 		for(auto omit=opn.schl.end();omit!=opn.schl.begin();) {
 			omit--;
 			if (!(*omit)->pname.find("SQL_")) {
@@ -2493,6 +2495,7 @@ void hhcl::virtrueckfragen()
 				opn.schl.erase(omit);
 			}
 		}
+		// aktuelle SQL-Abfragen eintragen
 		for(auto omit=oprsql.schl.begin();omit!=oprsql.schl.end();omit++) {
 			opn<<(*omit);
 		}

@@ -2448,8 +2448,10 @@ int dhcl::initDB()
 int dhcl::pruefDB(const string& db)
 {
 	hLog(violetts+Txk[T_pruefDB]+db+")"+schwarz);
+	unsigned fehnr{0};
 	if (!My) {
 		My=new DB(myDBS,linstp,host,muser,mpwd,maxconz,db,0,0,0,obverb,oblog,DB::defmycharset,DB::defmycollat,3,0);
+		fehnr=My->fehnr;
 		if (My->ConnError) {
 			delete My;
 			My=0;
@@ -2457,7 +2459,7 @@ int dhcl::pruefDB(const string& db)
 			My->lassoffen=1;
 		}
 	} // 	if (!My)
-	return (My->fehnr); 
+	return (fehnr); 
 } // pruefDB
 
 dhcl::~dhcl()
