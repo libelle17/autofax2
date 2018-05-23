@@ -2409,7 +2409,6 @@ void hhcl::virtrueckfragen()
 		undstr=Tippstr(Tx[T_Buchstabenfolge_vor_weiterem_Adressaten_sowie_weiterer_Faxnummer],&undstr);
 		// sql abfragen, eintragen, sql aus opn loeschen, maps loeschen, maps neu erstellen
 		schAcl<optcl> oprsql=schAcl<optcl>("oprsql"); // Optionen
-		svec sqls;
 		caus<<"sqlzn: "<<sqlzn<<endl;
 		optausg(rot);
 		sqlrp.clear();
@@ -2499,6 +2498,7 @@ void hhcl::virtrueckfragen()
 		for(auto omit=oprsql.schl.begin();omit!=oprsql.schl.end();omit++) {
 			opn<<(*omit);
 		}
+
 	} // if (rzf) //α
 	dhcl::virtrueckfragen();
 } // void hhcl::virtrueckfragen()
