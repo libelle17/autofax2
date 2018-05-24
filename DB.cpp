@@ -2036,7 +2036,7 @@ my_ulonglong RS::tbupd(const vector<instyp>& einf,int obverb, const string& bedi
 	switch (dbp->DBS) {
 		case MySQL:
       isql=string("UPDATE ")+dbp->dnb+table+dbp->dne+" SET ";// string( hier nicht streichen!
-      for(unsigned i = 0;i<einf.size();i++) {
+      for(unsigned i=0;i<einf.size();i++) {
         isql+=dbp->dnb+einf[i].feld+dbp->dne;
         isql+=" = ";
         if (einf[i].obkeinwert)
@@ -2048,7 +2048,7 @@ my_ulonglong RS::tbupd(const vector<instyp>& einf,int obverb, const string& bedi
           isql+=(einf[i].wert);
         if (i<einf.size()-1)
           isql+=", ";
-      } //       for(unsigned i = 0;i<einf.size();i++)
+      } //       for(unsigned i=0;i<einf.size();i++)
       isql+=" WHERE ";
       isql+=bedingung;
       //// <<blau<<isql<<schwarz<<endl;
@@ -2225,7 +2225,7 @@ my_ulonglong RS::tbins(vector<instyp>* einfp,const size_t aktc/*=0*/,uchar samme
 			switch (dbp->DBS) {
 				case MySQL:
 					isql=string("INSERT INTO ")+dbp->dnb+table+dbp->dne+'('; // string( hier nicht streichen!
-					for(unsigned i = 0;i<einfp->size();i++) {
+					for(unsigned i=0;i<einfp->size();i++) {
 						if (i) isql+=',';
 						isql+=dbp->dnb+einfp->at(i).feld+dbp->dne;
 					}
@@ -2244,7 +2244,7 @@ my_ulonglong RS::tbins(vector<instyp>* einfp,const size_t aktc/*=0*/,uchar samme
 					////				isql.reserve(isql.length()+2);
 					if (einfp->size()) {
 						if (zaehler>1) isql+=",(";
-						for(unsigned i = 0;i<einfp->size();i++) {
+						for(unsigned i=0;i<einfp->size();i++) {
 							if (i) {
 								////						isql.reserve(isql.length()+1);
 								isql+=',';
@@ -2252,13 +2252,13 @@ my_ulonglong RS::tbins(vector<instyp>* einfp,const size_t aktc/*=0*/,uchar samme
 							////					isql.reserve(isql.length()+2+strlen(einfp->at(i).wert.c_str()));
 							////          if (einfp->at(i).feld=="EML") KLA isql+="_utf8"; KLZ
 							isql+=(einfp->at(i).wert);
-						} //         for(unsigned i = 0;i<einfp->size();i++)
+						} //         for(unsigned i=0;i<einfp->size();i++)
 						////				isql.reserve(isql.length()+2);
 						isql+=")";
 					} // 				if (einfp->size())
 					if (mitupd) {
 						isql+=" ON DUPLICATE KEY UPDATE ";
-						for(unsigned i = 0;i<einfp->size();i++) {
+						for(unsigned i=0;i<einfp->size();i++) {
 							if (i) isql+=',';
 							isql+=dbp->dnb+einfp->at(i).feld+dbp->dne+'='+einfp->at(i).wert;
 						}

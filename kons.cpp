@@ -2267,7 +2267,7 @@ template<typename SCL> void schAcl<SCL>::setzbemerkwoher(SCL *optp,const string&
  if (optp->pname.empty()) {
 	 optp->virttusetzbemerkwoher(ibemerk,vwoher);
  } else {
-	for (size_t i = 0;i<schl.size();i++) {
+	for (size_t i=0;i<schl.size();i++) {
 		if (schl[i]->pname==optp->pname) {
 			schl[i]->virttusetzbemerkwoher(ibemerk,vwoher);
 		}
@@ -2302,9 +2302,9 @@ int cppschreib(const string& fname, WPcl *conf, size_t csize)
 {
   mdatei f(fname,ios::out);
   if (f.is_open()) {
-    for (size_t i = 0;i<csize;i++) {
+    for (size_t i=0;i<csize;i++) {
       f<<conf[i].pname<<" = \""<<conf[i].wert<<"\""<<endl;
-    } //     for (size_t i = 0;i<csize;i++)
+    } //     for (size_t i=0;i<csize;i++)
     return 0;
   } //   if (f.is_open())
   return 1;
@@ -2316,7 +2316,7 @@ int multicppschreib(const string& fname, WPcl **conf, size_t *csizes, size_t csz
   mdatei f(fname,ios::out);
   if (f.is_open()) {
     for (size_t j=0;j<cszahl;j++) {
-      for (size_t i = 0;i<csizes[j];i++) {
+      for (size_t i=0;i<csizes[j];i++) {
         f<<conf[j][i].pname<<" = \""<<conf[j][i].wert<<"\""<<endl;
       }
     }
@@ -2347,9 +2347,9 @@ int Schschreib(const char *fname, Schluessel *conf, size_t csize)
 #else // obfstream 
   FILE *f=oeffne(fname,3,&erfolg);
   if (!erfolg) return 1;
-  for (size_t i = 0;i<csize;i++) {
+  for (size_t i=0;i<csize;i++) {
     fprintf(f,"%s = \"%s\"\n",conf[i].key,conf[i].val);
-  } // 	for (size_t i = 0;i<csize;i++)
+  } // 	for (size_t i=0;i<csize;i++)
   fclose(f);
 #endif // obfstream else
 #endif	 // false
@@ -3385,11 +3385,11 @@ std::string string_to_hex(const std::string& input)
 	size_t len = input.length();
 	string output;
 	output.reserve(2 * len);
-	for (size_t i = 0; i < len; ++i) {
+	for (size_t i=0;i<len;++i) {
 		const unsigned char c = input[i];
 		output.push_back(lut[c >> 4]);
 		output.push_back(lut[c & 15]);
-	} // 	for (size_t i = 0; i < len; ++i)
+	} // 	for (size_t i=0; i < len; ++i)
 	return output;
 } // std::string string_to_hex(const std::string& input)
 
@@ -5218,12 +5218,12 @@ void hcl::verarbeitkonf()
 {
 	hLog(violetts+Txk[T_verarbeitkonf]+schwarz);
 	if (!nrzf&&obhilfe<=2) {
-		for (size_t i = 0;i<opn.size();i++) {
+		for (size_t i=0;i<opn.size();i++) {
 			if (!opn[i]->pname.empty() && !opn[i]->woher) {
 				fLog(Txk[T_rueckzufragen_wegen]+rots+opn[i]->pname+schwarz,1,0);
 				rzf=1;
 			}
-		} // 		for (size_t i = 0;i<opn.size();i++)
+		} // 		for (size_t i=0;i<opn.size();i++)
 	} // 	if (!nrzf&&obhilfe<=2)
 	hLog(violetts+Txk[T_Ende]+Txk[T_verarbeitkonf]+schwarz);
 } // void hcl::verarbeitkonf()
@@ -6564,7 +6564,7 @@ template <> void schAcl<WPcl>::eintrinit()
 // wird aufgerufen in template<typename SCL> void schAcl<SCL>::schAschreib
 template <> void schAcl<optcl>::eintrinit()
 {
-  for (size_t i = 0;i<schl.size();i++) {
+  for (size_t i=0;i<schl.size();i++) {
 		schl[i]->eingetragen=0;
 	}
 }
@@ -6606,7 +6606,7 @@ template<typename SCL> void schAcl<SCL>::schAschreib(mdatei *const f,int obverb)
 {
 //	eintrinit();
 ////	caus<<"schl.size(): "<<schl.size()<<", omap.size(): "<<omap.size()<<endl;
-	for (size_t i = 0;i<schl.size();i++) {
+	for (size_t i=0;i<schl.size();i++) {
 		//// <<"i: "<<blau<<i<<schwarz<<", pname: "<<blau<<schl[i]->pname<<schwarz<<", pptr: "<<blau<<schl[i]->virtholstr()<<schwarz<<endl;
 		if (!schl[i]->pname.empty()) {
 	//		schl[i]->virtoausgeb();
@@ -6618,7 +6618,7 @@ template<typename SCL> void schAcl<SCL>::schAschreib(mdatei *const f,int obverb)
 				*f<<schl[i]->pname<<" = \""<<schl[i]->virtholstr()<<"\""<<endl;
 			} // 		if (!schl[i]->pname.empty() && schl[i]->virteinzutragen(this))
 		}
-	} //   for (size_t i = 0;i<zahl;i++)
+	} //   for (size_t i=0;i<zahl;i++)
 } // void schAcl::schAschreib
 
 // kann aufgerufen werden

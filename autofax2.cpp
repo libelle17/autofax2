@@ -1946,9 +1946,10 @@ void hhcl::pruefisdn()
 		hLog(blaus+Tx[T_ISDN_Karte_gefunden]+schwarz+rueck[0]+blau+Tx[T_Setze]+Tx[T_mitCapi]+schwarz+Tx[T_aauf]+blau+"1.");
 	// wenn zum Konfigurationszeitpunkt keine Fritzcard drinstak, aber jetzt, dann rueckfragen
 		if (!obfcard) {
+			fLog(Txk[T_rueckzufragen_wegen]+rots+"!obfcard"+schwarz,1,0);
 			rzf=1;
 			obfcard=1;
-		}
+		} // 		if (!obfcard)
 	} else {
 		hLog(rots+Tx[T_Keine_ISDN_Karte_gefunden]+schwarz+Tx[T_mitCapi]+rot+Tx[T_aauf]+schwarz+"0.");
 		obcapi=obfcard=0;
@@ -2292,6 +2293,7 @@ void hhcl::pruefmodem()
 	}
 	// wenn zum Konfigurationszeitpunkt kein Modem drinstak, aber jetzt, dann rueckfragen
 	if (!schonda /*//obmodem && agcnfA.hole("obmodem")=="0"*/) {
+		fLog(Txk[T_rueckzufragen_wegen]+rots+"!schonda"+schwarz+" (Modem)",1,0);
 		rzf=1;
 	}
 	// wenn nur obkschreib, dann noch nicht auf neu eingestecktes Modem reagieren
