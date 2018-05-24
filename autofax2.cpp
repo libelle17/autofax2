@@ -2485,7 +2485,6 @@ void hhcl::virtrueckfragen()
 			//			map<const char* const,optcl const*>::iterator omit;
 			//			shared_ptr<optcl> omit;
 		} // 		for(size_t akt=0;akt<sqlzn;akt++)
-		//// optausg(rot);
 		// vorherige SQL-Abfragen loeschen
 		for(auto omit=opn.schl.end();omit!=opn.schl.begin();) {
 			omit--;
@@ -2500,6 +2499,7 @@ void hhcl::virtrueckfragen()
 		}
 	} // if (rzf) //α
 	dhcl::virtrueckfragen();
+		optausg(rot);
 } // void hhcl::virtrueckfragen()
 
 // wird aufgerufen in lauf

@@ -715,7 +715,6 @@ struct wpgcl
     void virttusetzbemerkwoher(const string& ibemerk,const uchar vwoher);
 		void virtfrisch();
 		void virtoausgeb() const;
-		string holpptrstr() const;
 };
 
 // fuer Wertepaare, die nur aus Datei gezogen werden und nicht zusaetzlich ueber die Befehlszeile eingegeben werden koennen
@@ -983,9 +982,9 @@ string Tippzahl(const char *frage, const char *vorgabe=0);
 string Tippzahl(const char *frage, const string *vorgabe);
 string Tippzahl(const string& frage, const string *vorgabe);
 long Tippzahl(const string& frage,const long& vorgabe);
-string Tippstr(const char *frage, const string *vorgabe=0,const uchar obnichtleer=1);
+string Tippstr(const char *const frage, const string *const vorgabe=0,const uchar obnichtleer=1);
 // char* Tippcstr(const char *frage, char* buf, unsigned long buflen, const char* vorgabe=nix);
-string Tippstr(const string& frage, const string *vorgabe=0,const uchar obnichtleer=1);
+string Tippstr(const string& frage, const string *const vorgabe=0,const uchar obnichtleer=1);
 string Tippverz(const char *frage,const string *vorgabe=0);
 uchar VerzeichnisGibts(const char* vname);
 int tuloeschen(const string& zuloe,const string& cuser=nix,int obverb=0, int oblog=0,stringstream *ausgp=0);

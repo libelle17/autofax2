@@ -3151,12 +3151,12 @@ long Tippzahl(const string& frage,const long& vorgabe)
 	return buf;
 	} // Tippcstr
  */
-string Tippstr(const char *frage, const string *vorgabe,const uchar obnichtleer/*=1*/) 
+string Tippstr(const char *const frage, const string *const vorgabe,const uchar obnichtleer/*=1*/) 
 {
 	return Tippstr(string(frage), vorgabe,obnichtleer);
 } // Tippstr
 
-string Tippstr(const string& frage, const string *vorgabe,const uchar obnichtleer/*=1*/) 
+string Tippstr(const string& frage, const string *const vorgabe,const uchar obnichtleer/*=1*/) 
 {
 	string input;
 	pthread_mutex_lock(&getmutex);
@@ -3254,28 +3254,6 @@ void wpgcl::virtoausgeb() const
 	} // 	if (pptr)
 	cout<<schwarz;
 }
-
-// wird bisher nicht benoetigt
-string wpgcl::holpptrstr() const
-{
-	if (pptr) {
-		if (part==puchar||part==pbin) {
-			return ltoan((int)*(uchar*)pptr);
-		} else if (part==pint) {
-			return ltoan((*(int*)pptr));
-		} else if (part==plong) {
-			return ltoan(*(long*)pptr);
-		} else if (part==pdat) {
-			stringstream strstr;
-			strstr<<ztacl((struct tm*)pptr,"%F %T");
-			return strstr.str();
-		} else /*pstri,pdez,ppwd,pfile,pverz*/ {
-			return *(string*)pptr;
-		}
-	} else {
-		return nix;
-	}
-} // string wpgcl::holpptrstr() const
 
 void WPcl::virtoausgeb() const
 {
@@ -5498,7 +5476,7 @@ void hcl::virtautokonfschreib()
 	hLog(violetts+Txk[T_autokonfschreib]+schwarz+", "+Txk[T_rueckzufragen]+blau+(rzf?Txk[T_ja]:Txk[T_nein])+schwarz+", "+Txk[T_zu_schreiben]+blau+(hccd.obzuschreib?Txk[T_ja]:Txk[T_nein])+schwarz);
 	if (rzf||hccd.obzuschreib) {
 		hLog(gruens+Txk[T_schreibe_Konfiguration]+schwarz);
-		opn.confschreib(akonfdt,ios::out,mpfad,0);
+		opn.confschreib(akonfdt,ios::out,mpfad,0,obverb,oblog);
 	} // if (rzf||obzuschreib)
 	return;
 	/*
@@ -5860,10 +5838,14 @@ string wpgcl::virtholstr() const
 				break;
 			case pdat:
 				thr_strftime((struct tm*)pptr,&rstr);
+			// stringstream strstr;
+			// strstr<<ztacl((struct tm*)pptr,"%F %T");
+			// rstr= strstr.str();
 		} // 	 switch (part)
 	} //  if (pptr)
 	return rstr;
 } // string WPcl::virtholstr()
+
 
 string WPcl::virtholstr() const
 {
@@ -6251,9 +6233,9 @@ void hcl::pruefsamba(const vector<const string*>& vzn,const svec& abschni,const 
 				string pw1, pw2;
 				while (1) {
 					do {
-						pw1=Tippstr(string(Txk[T_Passwort_fuer_samba])+Txk[T_fuer_Benutzer]+dblau+cuser+schwarz+"'",&pw1);
+						pw1=Tippstr(string(Txk[T_Passwort_fuer_samba])+Txk[T_fuer_Benutzer]+dblau+cuser+schwarz+"'"/*,&pw1*/);
 					} while (pw1.empty());
-					pw2=Tippstr(string(Txk[T_Passwort_fuer_samba])+Txk[T_fuer_Benutzer]+dblau+cuser+schwarz+"' ("+Txk[T_erneute_Eingabe]+")",&pw2);
+					pw2=Tippstr(string(Txk[T_Passwort_fuer_samba])+Txk[T_fuer_Benutzer]+dblau+cuser+schwarz+"' ("+Txk[T_erneute_Eingabe]+")"/*,&pw2*/);
 					if (pw1==pw2) break;
 				} //         while (1)
 				systemrueck("smbpasswd -n -a "+cuser,obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
@@ -6603,18 +6585,18 @@ const uchar optcl::virteinzutragen(/*schAcl<optcl>**/void* schlp,int obverb)
 ////	caus<<violett<<">)"; caus<<omit->first<<endl;caus<<omit->second->pname<<endl;omit->second->virtoausgeb(); caus<<schwarz;
 	if (omit!=((schAcl<optcl>*)schlp)->omap.end()) {
 		if (omit->second->eingetragen) {
-			fLog(ltoan(nr)+" "+violetts+Txk[T_einzutragen]+Txk[T_schon_eingetragen]+blaus+omit->first+schwarz+"' = '"+blau+omit->second->pname+schwarz+"'",obverb,0);
+			fLog(ltoan(nr)+" "+violetts+Txk[T_einzutragen]+Txk[T_schon_eingetragen]+blaus+omit->first+schwarz+"' = '"+omit->second->virtholstr()+schwarz+"'",obverb,0);
 ////			obverb=altobverb;
 			return 0;
 		}
 //		optcl* trick=(optcl*)omit->second;
 //		trick->eingetragen=1;
-		fLog(ltoan(nr)+" "+violetts+Txk[T_einzutragen]+blaus+Txk[T_wird_jetzt_eingetragen]+blaus+omit->first+schwarz+"' = '"+blau+omit->second->pname+schwarz+"'",obverb,0);
+		fLog(ltoan(nr)+" "+violetts+Txk[T_einzutragen]+blaus+Txk[T_wird_jetzt_eingetragen]+blaus+omit->first+schwarz+"' = '"+blau+omit->second->virtholstr()+schwarz+"'",obverb,0);
 		omit->second->eingetragen=1;
 ////		obverb=altobverb;
 		return 1;
 	}
-	fLog(ltoan(nr)+" "+violetts+Txk[T_einzutragen]+blaus+Txk[T_nicht_gefunden]+": "+blaus+pname+schwarz+"'",obverb,0);
+	fLog(ltoan(nr)+" "+violetts+Txk[T_einzutragen]+blaus+Txk[T_nicht_gefunden]+": "+blaus+omit->second->virtholstr()+schwarz+"'",obverb,0);
 ////	obverb=altobverb;
 	return 0;
 } // const uchar optcl::virteinzutragen
@@ -6625,6 +6607,7 @@ template<typename SCL> void schAcl<SCL>::schAschreib(mdatei *const f,int obverb)
 //	eintrinit();
 ////	caus<<"schl.size(): "<<schl.size()<<", omap.size(): "<<omap.size()<<endl;
 	for (size_t i = 0;i<schl.size();i++) {
+		//// <<"i: "<<blau<<i<<schwarz<<", pname: "<<blau<<schl[i]->pname<<schwarz<<", pptr: "<<blau<<schl[i]->virtholstr()<<schwarz<<endl;
 		if (!schl[i]->pname.empty()) {
 	//		schl[i]->virtoausgeb();
 			const uchar einzt=/*1;*/schl[i]->virteinzutragen(this,obverb);

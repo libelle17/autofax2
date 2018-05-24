@@ -642,7 +642,7 @@ void DB::init(
 				pconn = PQconnectdb(constr.c_str()); ////192.168.178.21 port=5432
 				if ((fehnr=PQstatus(pconn)) != CONNECTION_OK) {
 					while (rootpwd.empty()) {
-						rootpwd=Tippstr({}+Txd[T_Bitte_geben_Sie_ein_Passwort_fuer_Benutzer_postgres_ein],&rootpwd);
+						rootpwd=Tippstr({}+Txd[T_Bitte_geben_Sie_ein_Passwort_fuer_Benutzer_postgres_ein]/*,&rootpwd*/);
 					}
 					const string mconstr ="user='postgres' password='"+rootpwd+/*"' dbname='" + uedb */+ "' hostaddr='"+ip_a+"' port='"+ltoan(port)+"'";
 					pmconn = PQconnectdb(mconstr.c_str()); 
@@ -724,9 +724,9 @@ void DB::setzrpw(int obverb/*=0*/,int oblog/*=0*/) // Setze root-password
 				if (Tippob(Txd[T_MySQL_Passwort]+(Txk[T_fuer_Benutzer]+dblaus)+"root"+schwarz+Txd[T_ist_leer_Wollen_Sie_eines_festlegen])) {
 					while (1) {
 						do {
-							rootpwd=Tippstr(Txd[T_Bitte_geben_Sie_ein_MySQL_Passwort_fuer_Benutzer_root_ein],&rootpwd);
+							rootpwd=Tippstr(Txd[T_Bitte_geben_Sie_ein_MySQL_Passwort_fuer_Benutzer_root_ein]/*,&rootpwd*/);
 						} while (rootpwd.empty());	
-						rootpw2=Tippstr(string(Txd[T_Bitte_geben_Sie_ein_MySQL_Passwort_fuer_Benutzer_root_ein])+" ("+Txk[T_erneute_Eingabe]+")",&rootpw2);
+						rootpw2=Tippstr(string(Txd[T_Bitte_geben_Sie_ein_MySQL_Passwort_fuer_Benutzer_root_ein])+" ("+Txk[T_erneute_Eingabe]+")"/*,&rootpw2*/);
 						if (rootpw2==rootpwd) break;
 					} //         while (1)
 					// 7.7.17: neuer Fehler "ERROR 1819 (HY000) at line 1: Your password does not satisfy the current policy requirements" auf fedora
@@ -764,9 +764,9 @@ void DB::setzrpw(int obverb/*=0*/,int oblog/*=0*/) // Setze root-password
 				while (1) {
 					do {
 						rootpwd=Tippstr(string(Txd[T_PostgreSQL_musste_neu_eingerichtet_werden])+
-								Txd[T_Welches_Passwort_soll_der_Benutzer_postgres_haben]+": ",&rootpwd);
+								Txd[T_Welches_Passwort_soll_der_Benutzer_postgres_haben]+": "/*,&rootpwd*/);
 					} while (rootpwd.empty());
-					rootpw2=Tippstr(string(Txd[T_Welches_Passwort_soll_der_Benutzer_postgres_haben])+" ("+Txk[T_erneute_Eingabe]+"): ",&rootpw2);
+					rootpw2=Tippstr(string(Txd[T_Welches_Passwort_soll_der_Benutzer_postgres_haben])+" ("+Txk[T_erneute_Eingabe]+"): "/*,&rootpw2*/);
 					if (rootpw2==rootpwd) break;
 				} // while (1)
 				uchar geht=0;
@@ -2476,8 +2476,8 @@ void dhcl::virtrueckfragen()
 		string mpw2;
 		mpwd.clear();
 		do {
-			mpwd=Tippstr(string(Txd[T_Passwort_fuer_MySQL_MariaDB])+Txk[T_fuer_Benutzer]+dblau+muser+schwarz+"'",&mpwd);
-			mpw2=Tippstr(string(Txd[T_Passwort_fuer_MySQL_MariaDB])+Txk[T_fuer_Benutzer]+dblau+muser+schwarz+"'"+" ("+Txk[T_erneute_Eingabe]+")",&mpw2);
+			mpwd=Tippstr(string(Txd[T_Passwort_fuer_MySQL_MariaDB])+Txk[T_fuer_Benutzer]+dblau+muser+schwarz+"'"/*,&mpwd*/);
+			mpw2=Tippstr(string(Txd[T_Passwort_fuer_MySQL_MariaDB])+Txk[T_fuer_Benutzer]+dblau+muser+schwarz+"'"+" ("+Txk[T_erneute_Eingabe]+")"/*,&mpw2*/);
 		} while (mpwd!=mpw2);
 		const string pwdstr=XOR(mpwd,pwk);
 		dbq=Tippstr(string(Txd[T_Datenbankname_fuer_MySQL_MariaDB_auf])+dblau+host+schwarz+"'",&dbq);
