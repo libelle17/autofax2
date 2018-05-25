@@ -2414,7 +2414,7 @@ void hhcl::virtrueckfragen()
 //		optausg(rot);
 		sqlrp.clear();
 		unsigned neunr{1}; // Nr. des SQL-Befehles nach neuer Zaehlung
-		for(size_t akt=0;akt<sqlzn;akt++) {
+		for(size_t akt=0;/*akt<sqlzn*/1;akt++) {
 			//// caus<<"akt: "<<akt<<" "<<sqlp[akt]<<endl;
 			const string *const vorgabe=(akt<sqlzn?&sqlp[akt]:&nix);
 			string zwi;
@@ -2461,7 +2461,7 @@ void hhcl::virtrueckfragen()
 				break;
 			} // while (1)
 			if (zwi.empty()) {
-				if (akt>sqlzn && akt >sqlvzn) akt--;
+				if (akt>sqlzn-2 && akt>sqlvzn-2) akt--;
 			} else {
 				// hier Sql-Dateien pruefen
 				/*
@@ -2480,7 +2480,7 @@ void hhcl::virtrueckfragen()
 				optcl *opp=new optcl(/*pname*/soptname.str(),/*pptr*/sqlrp[sqlrp.size()-1].get(),/*art*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
 				oprsql<<opp;
 			} // if (zwi.empty()) else
-			if (akt>=sqlzn && akt>=sqlvzn) {
+			if (akt>sqlzn-2 && akt>sqlvzn-2) {
 				if (!Tippob(Tx[T_Wolle_Sie_noch_einen_SQL_Befehl_eingeben],Txk[T_j_af])) break;
 			}
 			//			map<const char* const,optcl const*>::iterator omit;
@@ -2500,7 +2500,7 @@ void hhcl::virtrueckfragen()
 		}
 	} // if (rzf) //α
 	dhcl::virtrueckfragen();
-		optausg(rot);
+		// optausg(rot);
 } // void hhcl::virtrueckfragen()
 
 // wird aufgerufen in lauf
