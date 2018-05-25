@@ -2481,11 +2481,14 @@ void hhcl::virtrueckfragen()
 				oprsql<<opp;
 			} // if (zwi.empty()) else
 			if (akt>sqlzn-2 && akt>sqlvzn-2) {
-				if (!Tippob(Tx[T_Wolle_Sie_noch_einen_SQL_Befehl_eingeben],Txk[T_j_af])) break;
+				if (!Tippob(Tx[T_Wolle_Sie_noch_einen_SQL_Befehl_eingeben],Txk[T_j_af])) { 
+					break;
+				}
 			}
 			//			map<const char* const,optcl const*>::iterator omit;
 			//			shared_ptr<optcl> omit;
 		} // 		for(size_t akt=0;akt<sqlzn;akt++)
+		sqlzn=neunr-1;
 		// vorherige SQL-Abfragen loeschen
 		for(auto omit=opn.schl.end();omit!=opn.schl.begin();) {
 			omit--;
@@ -2607,7 +2610,7 @@ void hhcl::virtlieskonfein()
 		opn.omap["sqlz"]->woher=1;
 		for(size_t i=0;i<sqlzn;i++) {
 			sqlp[i]=*(string*)opvsql[i]->pptr;
-			caus<<"opvsql["<<i<<"]: "<<*(string*)opvsql[i]->pptr<<endl;
+			//// <<"opvsql["<<i<<"]: "<<*(string*)opvsql[i]->pptr<<endl;
 			opsql<<opvsql[i];
 			opn<<opsql.letzter();
 		}
