@@ -1264,7 +1264,7 @@ void hhcl::pruefcvz()
 	pruefverz(cfaxuserrcvz,obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/0,/*besitzer=*/"",/*benutzer=*/cuser,/*obmachen=*/0);
 } // hhcl::pruefcvz
 
-// in empfcapi() und pruefcapi(), virtrueckfragen()
+// in empfcapi und pruefcapi, virtrueckfragen
 void hhcl::pruefsfftobmp()
 {
 	hLog(violetts+Tx[T_pruefsfftobmp]+schwarz);
@@ -2411,7 +2411,7 @@ void hhcl::virtrueckfragen()
 		undstr=Tippstr(Tx[T_Buchstabenfolge_vor_weiterem_Adressaten_sowie_weiterer_Faxnummer],&undstr);
 		// sql abfragen, eintragen, sql aus opn loeschen, maps loeschen, maps neu erstellen
 		schAcl<optcl> oprsql=schAcl<optcl>("oprsql"); // Optionen
-//		optausg(rot);
+		//		optausg(rot);
 		sqlrp.clear();
 		unsigned neunr{1}; // Nr. des SQL-Befehles nach neuer Zaehlung
 		for(size_t akt=0;/*akt<sqlzn*/1;akt++) {
@@ -2503,7 +2503,7 @@ void hhcl::virtrueckfragen()
 		}
 	} // if (rzf) //α
 	dhcl::virtrueckfragen();
-		// optausg(rot);
+	// optausg(rot);
 } // void hhcl::virtrueckfragen()
 
 // wird aufgerufen in lauf
