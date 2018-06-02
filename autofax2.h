@@ -269,6 +269,8 @@ enum T_
 	T_keinmal_faxnr_gefunden_Wollen_Sie_den_SQL_Befehl_neu_eingeben,
 	T_koennte_ein_SQL_Fehler_sein_Wollen_Sie_den_SQL_Befehl_neu_eingeben,
 	T_Wolle_Sie_noch_einen_SQL_Befehl_eingeben,
+	T_zum_Streichen_Strich_beim_letzten_nichts_eingeben,
+	T_Zielverzeichnis_Nr,
 	T_MAX //α
 }; // enum T_ //ω
 
@@ -290,10 +292,11 @@ void pruefrules(int obverb, int oblog);
 // Steuerung der Abspeicherung gesendeter Faxe je nach Muster
 class zielmustercl 
 {
-  // beim letzten Element muss ziel leer sein!
-  public:
+	private:
     string muster;
     string ziel;
+  // beim letzten Element muss ziel leer sein!
+  public:
     regex_t regex;
     // wird nur in Vorgaben gebraucht:
     zielmustercl(const char * const muster,const char * const ziel);
@@ -303,6 +306,7 @@ class zielmustercl
     int kompilier(const uchar obext=1);
     int setzemuster(const string& vmuster,const uchar obext=1);
     const string& holmuster() const;
+    const string& holziel() const;
     int obmusterleer() const;
 }; // class zielmustercl
 
@@ -433,7 +437,6 @@ class hhcl:public dhcl
 	string* sqlp; // Array der SQL-Befehle
 	//    string sqlz;  // Zahl der SQL-Befehle
 	//    size_t sqlzn=0; // Zahl der SQL-Befehle numerisch
-	string sqlvz;  // Zahl der SQL-Befehle aus Vorgaben
 	size_t sqlvzn=0; // Zahl der SQL-Befehle aus Vorgaben numerisch
 	string* sqlvp; // Array der Vorgabe-SQL-Befehle
 	vector<shared_ptr<string>> sqlrp; // vector der rueckfrage-SQL-Befehle
@@ -444,6 +447,8 @@ class hhcl:public dhcl
 	zielmustercl *zmp; // Zielmusterzeiger
 	size_t zmvzn=0; // Zielmusterzahl numerisch aus Vorgaben
 	zielmustercl *zmvp; // Zielmusterzeiger aus Vorgaben
+	vector<shared_ptr<string>> zmmrp; // vector der rueckfrage-Zielmuster
+	vector<shared_ptr<string>> zmzrp; // vector der rueckfrage-Ziele
 
  public: //α //ω
  private: //α //ω

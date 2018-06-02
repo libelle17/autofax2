@@ -563,6 +563,10 @@ char const *DPROG_T[T_MAX+1][SprachZahl]={
 		"' could be an sql error. Do You want to reenter the sql command?"},
 	// T_Wolle_Sie_noch_einen_SQL_Befehl_eingeben,
 	{"Wollen Sie noch einen SQL-Befehl eingeben?","Do You want to enter another sql command?"},
+	// T_zum_Streichen_Strich_beim_letzten_nichts_eingeben
+	{" (zum Streichen -, beim letzten nichts eingeben)"," (for deleting enter -, for the last one enter nothing)"},
+	// T_Zielverzeichnis_Nr
+	{"Zielverzeichnis Nr. ","Target directory no. "},
 	{"",""} //α
 }; // char const *DPROG_T[T_MAX+1][SprachZahl]=
 
@@ -729,7 +733,7 @@ string zielname(const string& qdatei, const zielmustercl& zmp, uchar wieweiterza
 			Tx[T_Muster_Doppelpunkt]+rot+zmakt->holmuster()+schwarz+"'";
 		if (ausgp&&obverb) *ausgp<<meld<<endl; else fLog(meld,obverb,oblog);
 		if (!reti){
-			return zielname(qdatei,zmakt->ziel,wieweiterzaehl,zieldatei,obgleichp,obverb,oblog,ausgp);
+			return zielname(qdatei,zmakt->holziel(),wieweiterzaehl,zieldatei,obgleichp,obverb,oblog,ausgp);
 		} //     if (!reti)
 		if (zmakt->obmusterleer()) break;
 	} //   for(zielmustercl *zmakt=zmp;1;zmakt++)
@@ -849,10 +853,15 @@ int zielmustercl::obmusterleer() const
 	return muster.empty();
 } // int zielmustercl::obmusterleer() 
 
-const string& zielmustercl::holmuster () const
+const string& zielmustercl::holmuster() const
 {
 	return muster;
 } // const string& zielmustercl::holmuster()
+
+const string& zielmustercl::holziel() const
+{
+	return ziel;
+} // const string& zielmustercl::holziel()
 
 
 hhcl::hhcl(const int argc, const char *const *const argv):dhcl(argc,argv,DPROG,/*mitcron*/1) //α
@@ -2019,9 +2028,9 @@ void hhcl::virtVorgbAllg()
 // wird aufgerufen in lauf
 void hhcl::pvirtVorgbSpeziell()
 {
-	hLog(violetts+Tx[T_pvirtVorgbSpeziell]+schwarz); //ω
+	hLog(violetts+Tx[T_pvirtVorgbSpeziell]+schwarz);
+	virtMusterVorgb(); //ω
 	dhcl::pvirtVorgbSpeziell(); //α
-	virtMusterVorgb();
 } // void hhcl::pvirtVorgbSpeziell
 
 // wird aufgerufen in lauf
@@ -2096,8 +2105,7 @@ void hhcl::virtMusterVorgb()
 	msn="999999";
 	LocalIdentifier=Tx[T_MeiEinrichtung];
 	cFaxUeberschrift=Tx[T_Mei_FaxUeberschrift];
-	/*//sqlz=*/sqlvz="0";
-	sqlvzn=atol(sqlvz.c_str());
+	sqlvzn=0;
 	////  host="localhost"; // 'localhost' schon Vorgabe bei Definition
 	zufaxenvz="/var/"+meinname+vtz+Tx[T_zufaxen];
 	wvz="/var/"+meinname+vtz+Tx[T_warteauffax];
@@ -2461,6 +2469,7 @@ void hhcl::virtrueckfragen()
 				break;
 			} // while (1)
 			if (zwi.empty()) {
+				// wenn beim letzten Vorgabe-SQL-String - eingegeben wurde, dann (noch nicht) aufhoeren
 				if (akt>sqlzn-2 && akt>sqlvzn-2) akt--;
 			} else {
 				// hier Sql-Dateien pruefen
@@ -2487,7 +2496,7 @@ void hhcl::virtrueckfragen()
 			}
 			//			map<const char* const,optcl const*>::iterator omit;
 			//			shared_ptr<optcl> omit;
-		} // 		for(size_t akt=0;akt<sqlzn;akt++)
+		} // 		for(size_t akt=0;1;akt++)
 		sqlzn=neunr-1;
 		// vorherige SQL-Abfragen loeschen
 		for(auto omit=opn.schl.end();omit!=opn.schl.begin();) {
@@ -2499,6 +2508,53 @@ void hhcl::virtrueckfragen()
 		}
 		// aktuelle SQL-Abfragen eintragen
 		for(auto omit=oprsql.schl.begin();omit!=oprsql.schl.end();omit++) {
+			opn<<(*omit);
+		}
+		schAcl<optcl> oprzm=schAcl<optcl>("oprzm"); // Optionen
+		zmmrp.clear();
+		zmzrp.clear();
+		neunr=1; // Nr. des Zielmusterpaares nach neuer Zaehlung
+		zmmrp.clear();
+		zmzrp.clear();
+		for(size_t akt=0;/*akt<zmzn*/1;akt++) {
+			const string *const vgbm=(akt<zmzn?&zmvp[akt].holmuster():&nix),
+									 *const vgbz=(akt<zmzn?&zmvp[akt].holziel():&nix);
+			string zwim,zwiz;
+			while (1) {
+				zwim=Tippstr(string(Tx[T_Zielmuster_Nr])+ltoan(akt+1)+Tx[T_zum_Streichen_Strich_beim_letzten_nichts_eingeben],vgbm,/*obnichtleer=*/0);
+				if (zwim=="-") break;
+				zwiz=Tippstr(string(Tx[T_Zielverzeichnis_Nr])+ltoan(akt+1),vgbz);
+        if (!pruefverz(zwiz,obverb,oblog,/*obmitfacl*/0,/*obmitcon*/0,/*besitzer*/string(),/*benutzer*/string(),/*obmachen*/0)) break;
+			} // while (1)
+			if (zwim=="-") {
+				if (akt>zmzn-2) akt--;
+			} else {
+				zmmrp.push_back(shared_ptr<string>(new string(zwim)));
+				zmzrp.push_back(shared_ptr<string>(new string(zwiz)));
+				string istr=ltoan(neunr);
+				stringstream zmmname,zmzname;
+				zmmname<<"ZMMuster_"<<neunr;
+				zmzname<<"ZMZiel_"<<neunr;
+				//// caus<<"akt: "<<(akt+1)<<" "<<*(string*)opn.omap[soptname.str()]->pptr<<endl;
+				//			opn.omap[soptname.str()]->virtoausgeb();
+				optcl *opmp=new optcl(/*pname*/zmmname.str(),/*pptr*/zmmrp[neunr-1].get(),/*art*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zielmuster_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/2);
+				oprzm<<opmp;
+				optcl *opzp=new optcl(/*pname*/zmzname.str(),/*pptr*/zmzrp[neunr-1].get(),/*art*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Ziel_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/2);
+				oprzm<<opzp;
+				neunr++;
+			} // 			if (zwim=="-")
+		} // 		for(size_t akt=0;/*akt<zmzn*/1;akt++)
+		zmzn=neunr-1;
+		// vorherige Zielmusterpaare loeschen
+		for(auto omit=opn.schl.end();omit!=opn.schl.begin();) {
+			omit--;
+			if (!(*omit)->pname.find("ZMMuster_")||!(*omit)->pname.find("ZMZiel_")) {
+				(*omit)->virtloeschomaps(&opn);
+				opn.schl.erase(omit);
+			}
+		}
+		// aktuelle Zielmusterpaare eintragen
+		for(auto omit=oprzm.schl.begin();omit!=oprzm.schl.end();omit++) {
 			opn<<(*omit);
 		}
 	} // if (rzf) //α
@@ -2595,7 +2651,7 @@ void hhcl::virtlieskonfein()
 		++i;
 		stringstream soptname;
 		soptname<<"SQL_"<<i;
-		opsql<<new optcl(/*pname*/soptname.str(),/*pptr*/&sqlp[i-1],/*art*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/ltoan(i),/*wert*/-1,/*woher*/1);
+		opsql<<new optcl(/*pname*/soptname.str(),/*pptr*/&sqlp[i-1],/*art*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/ltoan(i),/*wert*/-1,/*woher*/2);
 //// folgendes wuerde zum Absturz fuehren (der shared_ptr muss derselbe sein, damit er und sein Inhalt nur einmal versucht wird zu destruieren):
 ////		shared_ptr<optcl> kop2{opsql[opsql.size()-1]};
 ////		opn<<kop2;
@@ -2616,6 +2672,7 @@ void hhcl::virtlieskonfein()
 		}
 	} // 	if (!sqlzn)
 	if (!zmzn) {
+		// wenn in der Konfigurationsdatei keine Zielmuster stehen
 		zmzn=zmvzn;
 		opn.omap["musterzahl"]->woher=1;
 		for(size_t i=0;i<zmvzn+zmvzn;i++) {
@@ -2625,6 +2682,7 @@ void hhcl::virtlieskonfein()
 		zmp=zmvp;
 	} else {
 ////		caus<<blau<<"opzm.size(): "<<violett<<opzm.size()<<schwarz<<endl;
+		opn.omap["musterzahl"]->woher=2;
 		zmmp=new string[zmzn];
 		zmzp=new string[zmzn];
 		for(size_t i=0;i<zmzn;) {
@@ -2634,9 +2692,9 @@ void hhcl::virtlieskonfein()
 			zmzname<<"ZMZiel_"<<i;
 			////	  const string *const istrp=new string(ltoan(i));	
 			string istr=ltoan(i);
-			opzm<<new optcl(/*pname*/zmmname.str(),/*pptr*/&zmmp[i-1],/*art*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zielmuster_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
+			opzm<<new optcl(/*pname*/zmmname.str(),/*pptr*/&zmmp[i-1],/*art*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zielmuster_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/2);
 			opn<<opzm.letzter();
-			opzm<<new optcl(/*pname*/zmzname.str(),/*pptr*/&zmzp[i-1],/*art*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Ziel_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
+			opzm<<new optcl(/*pname*/zmzname.str(),/*pptr*/&zmzp[i-1],/*art*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Ziel_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/2);
 			opn<<opzm.letzter();
 			//// caus<<"opn.schl.size(): "<<opn.schl.size()<<", omap.size(): "<<opn.omap.size()<<endl;
 		} // 	for(long i=0;i<zmzn;)

@@ -54,8 +54,7 @@ void hhcl::pvirtVorgbSpeziell()
         *officetab = "office",
         *quelltab = "quelle",
         *kvaetab  = "kvaerzte";
-  sqlvz="7";
-  sqlvzn=atol(sqlvz.c_str());
+	sqlvzn=7;
 	sqlvp=new string[sqlvzn];
 	for(size_t i=0;i<sqlvzn;) {
 		switch (i) {
@@ -162,8 +161,8 @@ void hhcl::pvirtVorgbSpeziell()
 			zmmname<<"ZMMuster_"<<i;
 			zmzname<<"ZMZiel_"<<i;
 			const string istr=ltoan(i);
-			opvzm<<new optcl(/*pname*/zmmname.str(),/*pptr*/&zmvp[i-1].muster,/*part*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zielmuster_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
-			opvzm<<new optcl(/*pname*/zmzname.str(),/*pptr*/&zmvp[i-1].ziel,/*part*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Ziel_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
+			opvzm<<new optcl(/*pname*/zmmname.str(),/*pptr*/&zmvp[i-1].holmuster(),/*part*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zielmuster_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
+			opvzm<<new optcl(/*pname*/zmzname.str(),/*pptr*/&zmvp[i-1].holziel(),/*part*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Ziel_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
 		}
 	} else {
 	}
