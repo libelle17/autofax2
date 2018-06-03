@@ -269,7 +269,8 @@ enum T_
 	T_keinmal_faxnr_gefunden_Wollen_Sie_den_SQL_Befehl_neu_eingeben,
 	T_koennte_ein_SQL_Fehler_sein_Wollen_Sie_den_SQL_Befehl_neu_eingeben,
 	T_Wolle_Sie_noch_einen_SQL_Befehl_eingeben,
-	T_zum_Streichen_Strich_beim_letzten_nichts_eingeben,
+	T_zum_Streichen_Strich_eingeben,
+	T_beim_letzten_fuer_alle_Uebrigen_nichts_eingeben,
 	T_Zielverzeichnis_Nr,
 	T_MAX //α
 }; // enum T_ //ω
@@ -434,7 +435,7 @@ class hhcl:public dhcl
 	long listz=30; //ω
 
 	size_t sqlzn=0; // Zahl der SQL-Befehle numerisch
-	string* sqlp; // Array der SQL-Befehle
+	string* sqlp=0; // Array der SQL-Befehle
 	//    string sqlz;  // Zahl der SQL-Befehle
 	//    size_t sqlzn=0; // Zahl der SQL-Befehle numerisch
 	size_t sqlvzn=0; // Zahl der SQL-Befehle aus Vorgaben numerisch
@@ -444,7 +445,7 @@ class hhcl:public dhcl
 	size_t zmzn=0; // Zahl der Zielmusterpaare numerisch
 	string *zmmp; // Array der Zielmuster
 	string *zmzp; // Array der Ziele
-	zielmustercl *zmp; // Zielmusterzeiger
+	zielmustercl *zmp=0; // Zielmusterzeiger
 	size_t zmvzn=0; // Zielmusterzahl numerisch aus Vorgaben
 	zielmustercl *zmvp; // Zielmusterzeiger aus Vorgaben
 	vector<shared_ptr<string>> zmmrp; // vector der rueckfrage-Zielmuster

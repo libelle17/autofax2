@@ -927,18 +927,29 @@ struct absch
  void clear();
 }; // class absch
 
+struct paarcl
+{
+	string name;
+	string wert;
+	string bemerk;
+	paarcl(const string& name, const string& wert, const string& bemerk);
+}; // kpaar
+
 // Konfigurationsdatei-Klasse, Nachfolger von confdat
-struct confdcl {
+struct confdcl 
+{
 	string fname; // Dateiname
 	svec zn;
+	vector<paarcl> paare;
 	uchar obgelesen;
 	uchar obzuschreib;
+	uchar mitabsch{0};
 	size_t richtige;
 	vector<absch> abschv;
-	confdcl(const string& fname, int obverb);
+	confdcl(const string& fname, int obverb, const char tz='=');
 	confdcl();
-	int lies(const string& vfname, int obverb);
-	template <typename SCL> void kauswert(schAcl<SCL> *sA, int obverb=0, const char tz='=',const uchar mitclear=1);
+	int lies(const string& vfname, int obverb, const char tz='=');
+	template <typename SCL> void kauswert(schAcl<SCL> *sA, int obverb=0,const uchar mitclear=1);
 	void Abschn_auswert(int obverb=0, const char tz='=');
 };
 
@@ -985,7 +996,8 @@ long Tippzahl(const string& frage,const long& vorgabe);
 string Tippstr(const char *const frage, const string *const vorgabe=0,const uchar obnichtleer=1);
 // char* Tippcstr(const char *frage, char* buf, unsigned long buflen, const char* vorgabe=nix);
 string Tippstr(const string& frage, const string *const vorgabe=0,const uchar obnichtleer=1);
-string Tippverz(const char *frage,const string *vorgabe=0);
+string Tippverz(const string& frage,const string *const vorgabe=0);
+string Tippverz(const char *const frage,const string *const vorgabe=0);
 uchar VerzeichnisGibts(const char* vname);
 int tuloeschen(const string& zuloe,const string& cuser=nix,int obverb=0, int oblog=0,stringstream *ausgp=0);
 int attrangleich(const string& zu, const string& gemaess,const string* const zeitvondtp=0, int obverb=0, int oblog=0);

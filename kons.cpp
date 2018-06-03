@@ -1920,6 +1920,7 @@ void absch::clear()
  av.clear();
 } // void absch::clear()
 
+// sollte in lies eingebaut und daher unnoetig sein
 void confdcl::Abschn_auswert(int obverb/*=0*/, const char tz/*='='*/)
 {
   absch abp;
@@ -1964,7 +1965,7 @@ void confdcl::Abschn_auswert(int obverb/*=0*/, const char tz/*='='*/)
 } // void confdcl::Abschn_auswert(int obverb, char tz)
 
 // setzt die Werte aus der Datei in der Optionenschar *sA
-template <typename SCL> void confdcl::kauswert(schAcl<SCL> *sA, int obverb, const char tz,const uchar mitclear/*=1*/)
+template <typename SCL> void confdcl::kauswert(schAcl<SCL> *sA, int obverb,const uchar mitclear/*=1*/)
 {
 	fLog(violetts+Txk[T_kauswert]+schwarz+": "+fname,obverb,0);
 	richtige=0;
@@ -1977,69 +1978,30 @@ template <typename SCL> void confdcl::kauswert(schAcl<SCL> *sA, int obverb, cons
 			while(ii--) {
 				sA->schl[ii]->ausgewertet=0;
 			}
-		}
-		string ibemerk;
-
-		for(size_t zni=zn.size();zni;) {
-			--zni;
-			string *zeile=&zn[zni];
-			size_t pos=zeile->find('#');
-			if (!pos||zeile->empty()) {
-				zn.erase(zn.begin()+zni);
-				continue;
-			} else if (pos!=string::npos) {
-				// wir nehmen an, die Kommentarzeile gehoert zum naechsten Parameter, wenn sie vorne beginnt
-				if (!pos) {
-					// Ueberschrift am Anfang  weglassen
-					if (!richtige && zeile->find("onfigura")!=string::npos && zeile->find("automati")!=string::npos) {
-					} else {
-						if (!ibemerk.empty()) ibemerk+='\n';
-						ibemerk+=zeile->substr(pos);
-					} // if (!richtige ... else
-				} // if (!pos)
-				zeile->erase(pos);
-			} // if (pos!=string::npos)
-			ltrim(zeile);
-////			if (obverb) caus<<zni<<". "<<blau<<"Zeile: "<<schwarz<<*zeile<<endl;
-			if (!zeile->empty()) {
-				if (obverb>1) fLog(Txk[T_stern_zeile]+*zeile,obverb,0);
-				pos=zeile->find(tz);
-				if (pos!=string::npos && pos>0) { 
-					string pname=zeile->substr(0,pos);
-					rtrim(&pname);
-					string wert=zeile->substr(pos+1);
-					gtrim(&wert);
-					anfzweg(wert);
-					if (sA) {
+			for(size_t nr=0;nr<paare.size();nr++) {
 						size_t ii=sA->schl.size();
 						//// <<"auswert() "<<pname<<" vor while, wert: "<<wert<<endl;
 ////						if (obverb) caus<<"Stell 9, sA->name: "<<sA->name<<endl;
 						while(ii--) {
 							if (sA->schl[ii]) if (!sA->schl[ii]->ausgewertet) { 
 								// conf[ii]->pname muss am Zeilenanfang anfangen, sonst Fehler z.B.: number, faxnumber
-////								if (obverb) caus<<"Stell 11, sA->schl["<<ii<<"]->pname: "<<sA->schl[ii]->pname<<endl;
-								if (pname==sA->schl[ii]->pname) {
+								//// if (obverb) caus<<"Stell 11, pname: "<<pname<<", sA->schl["<<ii<<"]->pname: "<<sA->schl[ii]->pname<<", wert: "<<wert<<endl;
+								if (paare[nr].name==sA->schl[ii]->pname) {
+									//// if (obverb) caus<<"werte aus ..."<<endl;
 									sA->schl[ii]->ausgewertet=1;
 									//// <<"sA->schl[ii]->pname: "<<sA->schl[ii]->pname<<endl;
 									//// <<blau<<"setze!"<<schwarz<<endl;
-									const int wiefalsch=sA->schl[ii]->setzstr(wert.c_str(),&obzuschreib,/*ausDatei=*/1);
+									const int wiefalsch=sA->schl[ii]->setzstr(paare[nr].wert.c_str(),&obzuschreib,/*ausDatei=*/1);
 									if (!wiefalsch) {
-										sA->setzbemerkwoher(sA->schl[ii].get(),/*bemerk=*/ibemerk,/*woher*/2);
+										sA->setzbemerkwoher(sA->schl[ii].get(),/*bemerk=*/paare[nr].bemerk,/*woher*/2);
 										++richtige;
-										ibemerk.clear();
 									}
 									break;
 								} // if( !strcmp(sA[i]->pname.c_str(),zeile->c_str()) ) 
 							} // 	if (sA->schl[ii]) if (!sA->schl[ii]->ausgewertet)
 						} // 	while(ii--)
-						/*
-							 if (!gef)
-							 fLog(rots+Txk[T_Fehler_bei_auswert]+schwarz+sA->schl[ii]->pname+rot+Txk[T_nicht_gefunden],obverb+1);
-						 */
-					} // while( ii-- ) 
-				} // if (pos!=string::npos && 1==sscanf(zeile->c_str(),scs.c_str(),zeile->c_str())) 
-			} // if (!zeile->empty()) 
-		} // for(size_t i=0;i<zn.size();i++) 
+			} // 			for(size_t nr=0;nr<paare.size();nr++)
+		} // 		if (sA)
 		//// <<violett<<"obzuschreib: "<<rot<<(int)obzuschreib<<schwarz<<endl;
 	} // if (obgelesen) 
 	/*//	
@@ -2050,7 +2012,7 @@ template <typename SCL> void confdcl::kauswert(schAcl<SCL> *sA, int obverb, cons
 		KLZ
 	 */
 	fLog(violetts+Txk[T_Ende]+Txk[T_kauswert]+schwarz,obverb,0);
-} // void sAdat::kauswert
+} // template <typename SCL> void confdcl::kauswert
 
 void wpgcl::virtfrisch()
 {
@@ -3176,7 +3138,12 @@ string Tippstr(const string& frage, const string *const vorgabe,const uchar obni
 	return input;
 } // Tippstr
 
-string Tippverz(const char *frage,const string *vorgabe) 
+string Tippverz(const string& frage,const string *const vorgabe) 
+{
+	return Tippverz(frage.c_str(),vorgabe);
+}
+
+string Tippverz(const char *const frage,const string *const vorgabe) 
 {
 	string input, vg2="n"; uchar fertig=0;
 	while(1) {
@@ -5198,7 +5165,7 @@ void hcl::virtlieskonfein()
 	// die Reihenfolge muss der in agcnfA.init (in getcommandl0) sowie der in virtrueckfragen entsprechen
 // afcd.cinit(akonfdt,&agcnfA,obverb,'=',/*mitclear=*/0); // hier werden die Daten aus der Datei eingelesen
 	hccd.lies(akonfdt,obverb);
-	hccd.kauswert(&opn,obverb,'=',0);
+	hccd.kauswert(&opn,obverb,0);
 	virtlgnzuw();
 	setzlog();
 	if (!hccd.obzuschreib) {
@@ -5885,13 +5852,14 @@ const string& optcl::virtmachbemerk(const Sprache lg,const binaer obfarbe/*=wahr
 
 int optcl::setzstr(const char* const neuw,uchar *const obzuschreib/*=0*/,const uchar ausDatei/*=0*/)
 {
-	uchar tuschreib=0;
-	int wiefalsch=wpgcl::tusetzstr(neuw,/*obzuschreib*/&tuschreib,ausDatei,/*keineprio*/woher>1);
+	uchar tuschreib{0};
+	// nicht mit Vorgaben (woher 2) Befehlszeilenoption (woher 3) ueberschreiben
+	int wiefalsch=wpgcl::tusetzstr(neuw,/*obzuschreib*/&tuschreib,ausDatei,/*keineprio*/woher>2);
 	if (tuschreib) if (obzuschreib) if (!*obzuschreib) if (!nichtspeichern) {
 		*obzuschreib=1;
 	}
 	return wiefalsch;
-}
+} // setzstr
 
 int WPcl::setzstr(const char* const neuw,uchar *const obzuschreib/*=0*/,const uchar ausDatei/*=0*/)
 {
@@ -5908,11 +5876,11 @@ int WPcl::setzstr(const string& neus,uchar *const obzuschreib/*=0*/,const uchar 
 //  aufgerufen in: pzuweis (Befehlszeile) und auswert (Datei)
 int wpgcl::tusetzstr(const char* const neuw,uchar *const tuschreibp,const uchar ausDatei/*=0*/,const uchar keineprio/*=0*/)
 {
-	int wiefalsch=0;
-	struct tm tmp={0},tmmax={0},neu={0};
-	char *emax=0,*eakt;
+	int wiefalsch{0};
+	struct tm tmp{0},tmmax{0},neu{0};
+	char *emax{0},*eakt;
 	if (pptr) {
-		struct stat entryarg={0};
+		struct stat entryarg{0};
 		long neul;
 		binaer neub;
 		uchar neuu;
@@ -5924,13 +5892,16 @@ int wpgcl::tusetzstr(const char* const neuw,uchar *const tuschreibp,const uchar 
 				//// <<"*(string*)pptr: "<<*(string*)pptr<<", neuw: "<<neuw<<endl;
 				// ... dann zuweisen
 				if (*(string*)pptr!=neuw) {
+					//// <<blau<<"vor weise zu 1 "<<schwarz<<endl;
 					// Befehlszeilenoptionen nicht durch Konfigurationsdateioptionen ueberschreiben lassen
 					if (keineprio) {
 						*tuschreibp=1; 
 					} else {
+						//// <<blau<<"vor weise zu 2 "<<schwarz<<endl;
 						if (part==pdez && !isnumeric(neuw)) {
 							wiefalsch=1;
 						} else {
+							//// <<blau<<"weise zu"<<schwarz<<endl;
 							*(string*)pptr=neuw;
 						}
 					}
@@ -6178,7 +6149,7 @@ void hcl::pruefsamba(const vector<const string*>& vzn,const svec& abschni,const 
 	struct stat sstat={0};
 	if (!(conffehlt=lstat(smbdt,&sstat))) {
 		confdcl smbcd(smbdt,obverb);
-		smbcd.Abschn_auswert(obverb);
+//		smbcd.Abschn_auswert(obverb);
 		uchar gef[vzn.size()]; memset(gef,0,vzn.size()*sizeof(uchar));
 		for(size_t i=0;i<smbcd.abschv.size();i++) {
 			if (smbcd.abschv[i].aname!="global") {
@@ -6518,14 +6489,18 @@ confdcl::confdcl():obgelesen(0),obzuschreib(0)
 {
 }
 
-confdcl::confdcl(const string& fname, int obverb):obgelesen(0),obzuschreib(0)
+confdcl::confdcl(const string& fname, int obverb, const char tz/*='='*/):obgelesen(0),obzuschreib(0)
 {
  if (!fname.empty())
-	 lies(fname,obverb);
+	 lies(fname,obverb,tz);
 } // confdcl::confdcl
 
+paarcl::paarcl(const string& name, const string& wert, const string& bemerk):name(name),wert(wert),bemerk(bemerk)
+{
+}
+
 // Achtung: Wegen der Notwendigkeit zur Existenz der Datei zum Aufruf von setfacl kann die Datei erstellt werden!
-int confdcl::lies(const string& vfname, int obverb)
+int confdcl::lies(const string& vfname, int obverb, const char tz/*='='*/)
 {
 	fLog(violetts+Txk[T_lies]+blau+": "+vfname+schwarz,obverb,/*oblog*/0);
   fname=vfname;
@@ -6537,8 +6512,55 @@ int confdcl::lies(const string& vfname, int obverb)
 		if (f.is_open()) {
 			if (obverb>0) cout<<Txk[T_confdat_lies_Datei]<<blau<<fname<<schwarz<<endl;
 			string zeile;
+			string ibemerk;
+			absch abp;
 			while (getline(f,zeile)) {
+				size_t pos=zeile.find('#');
+				if (!pos||zeile.empty()) {
+					continue;
+				} else if (pos!=string::npos) {
+					// wir nehmen an, die Kommentarzeile gehoert zum naechsten Parameter, wenn sie vorne beginnt
+					if (!pos) {
+						// Ueberschrift am Anfang  weglassen
+						if (paare.empty() && zeile.find("onfigura")!=string::npos && zeile.find("automati")!=string::npos) {
+						} else {
+							if (!ibemerk.empty()) ibemerk+='\n';
+							ibemerk+=zeile.substr(pos);
+						} // if (!richtige ... else
+					} // if (!pos)
+					zeile.erase(pos);
+				} // if (pos!=string::npos)
+				ltrim(&zeile);
 				zn<<zeile;
+				////			if (obverb) caus<<zni<<". "<<blau<<"Zeile: "<<schwarz<<*zeile<<endl;
+				if (!zeile.empty()) {
+					if (obverb>1) fLog(Txk[T_stern_zeile]+zeile,obverb,0);
+					if (zeile[0]=='[' && zeile[zeile.length()-1]==']') {
+						mitabsch=1;
+						zeile.erase(zeile.length()-1);
+						zeile.erase(0,1);
+						if (/*!abp.aname.empty() && */abp.av.size()) {
+							abschv.push_back(abp);
+							abp.clear();
+						}
+						abp.aname=zeile;
+					} else {
+						pos=zeile.find(tz);
+						if (pos!=string::npos && pos>0) { 
+							string pname=zeile.substr(0,pos);
+							rtrim(&pname);
+							string wert=zeile.substr(pos+1);
+							gtrim(&wert);
+							anfzweg(wert);
+							paare.push_back(paarcl(pname,wert,ibemerk));
+							ibemerk.clear();
+							if (mitabsch) abp.av.push_back(abSchl(pname,wert));
+						} // if (pos!=string::npos && 1==sscanf(zeile->c_str(),scs.c_str(),zeile->c_str())) 
+					} // if (zeile[0]
+				} // if (!zeile->empty()) 
+			} // 			while (getline(f,zeile))
+			if (!abp.aname.empty() && abp.av.size()) {
+				abschv.push_back(abp);
 			}
 			obgelesen=1;
 		} else {
@@ -6564,7 +6586,7 @@ template <> void schAcl<WPcl>::eintrinit()
 // wird aufgerufen in template<typename SCL> void schAcl<SCL>::schAschreib
 template <> void schAcl<optcl>::eintrinit()
 {
-  for (size_t i=0;i<schl.size();i++) {
+	for (size_t i=0;i<schl.size();i++) {
 		schl[i]->eingetragen=0;
 	}
 }
@@ -6576,42 +6598,42 @@ const uchar wpgcl::virteinzutragen(void *schlp,int obverb)
 
 const uchar optcl::virteinzutragen(/*schAcl<optcl>**/void* schlp,int obverb)
 {
-////	const int altobverb=obverb;
+	////	const int altobverb=obverb;
 	static size_t nr=0;
 	nr++;
-////	obverb=1;
+	////	obverb=1;
 	// fLog(violetts+Txk[T_einzutragen]+blaus+pname+schwarz+"'",obverb,0);
 	map<string,optcl*>::iterator omit=((schAcl<optcl>*)schlp)->omap.find(pname);
-////	caus<<violett<<">)"; caus<<omit->first<<endl;caus<<omit->second->pname<<endl;omit->second->virtoausgeb(); caus<<schwarz;
+	////	caus<<violett<<">)"; caus<<omit->first<<endl;caus<<omit->second->pname<<endl;omit->second->virtoausgeb(); caus<<schwarz;
 	if (omit!=((schAcl<optcl>*)schlp)->omap.end()) {
 		if (omit->second->eingetragen) {
 			fLog(ltoan(nr)+" "+violetts+Txk[T_einzutragen]+Txk[T_schon_eingetragen]+blaus+omit->first+schwarz+"' = '"+omit->second->virtholstr()+schwarz+"'",obverb,0);
-////			obverb=altobverb;
+			////			obverb=altobverb;
 			return 0;
 		}
-//		optcl* trick=(optcl*)omit->second;
-//		trick->eingetragen=1;
+		//		optcl* trick=(optcl*)omit->second;
+		//		trick->eingetragen=1;
 		fLog(ltoan(nr)+" "+violetts+Txk[T_einzutragen]+blaus+Txk[T_wird_jetzt_eingetragen]+blaus+omit->first+schwarz+"' = '"+blau+omit->second->virtholstr()+schwarz+"'",obverb,0);
 		omit->second->eingetragen=1;
-////		obverb=altobverb;
+		////		obverb=altobverb;
 		return 1;
 	}
 	fLog(ltoan(nr)+" "+violetts+Txk[T_einzutragen]+blaus+Txk[T_nicht_gefunden]+": "+blaus+omit->second->virtholstr()+schwarz+"'",obverb,0);
-////	obverb=altobverb;
+	////	obverb=altobverb;
 	return 0;
 } // const uchar optcl::virteinzutragen
 
 // wird aufgerufen in template<typename SCL> int schAcl<SCL>::confschreib und multischreib
 template<typename SCL> void schAcl<SCL>::schAschreib(mdatei *const f,int obverb)
 {
-//	eintrinit();
-////	caus<<"schl.size(): "<<schl.size()<<", omap.size(): "<<omap.size()<<endl;
+	//	eintrinit();
+	////	caus<<"schl.size(): "<<schl.size()<<", omap.size(): "<<omap.size()<<endl;
 	for (size_t i=0;i<schl.size();i++) {
 		//// <<"i: "<<blau<<i<<schwarz<<", pname: "<<blau<<schl[i]->pname<<schwarz<<", pptr: "<<blau<<schl[i]->virtholstr()<<schwarz<<endl;
 		if (!schl[i]->pname.empty()) {
-	//		schl[i]->virtoausgeb();
+			//		schl[i]->virtoausgeb();
 			const uchar einzt=/*1;*/schl[i]->virteinzutragen(this,obverb);
-	//		schl[i]->virtoausgeb();
+			//		schl[i]->virtoausgeb();
 			if (einzt) {
 				schl[i]->virtmachbemerk(Txk.lgn);
 				if (!schl[i]->bemerk.empty()) *f<<(schl[i]->bemerk[0]=='#'?"":"# ")<<*loeschefarbenaus(&schl[i]->bemerk)<<endl;
