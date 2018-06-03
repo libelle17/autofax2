@@ -443,8 +443,8 @@ class hhcl:public dhcl
 	vector<shared_ptr<string>> sqlrp; // vector der rueckfrage-SQL-Befehle
 
 	size_t zmzn=0; // Zahl der Zielmusterpaare numerisch
-	string *zmmp; // Array der Zielmuster
-	string *zmzp; // Array der Ziele
+	string *zmmp=0; // Array der Zielmuster
+	string *zmzp=0; // Array der Ziele
 	zielmustercl *zmp=0; // Zielmusterzeiger
 	size_t zmvzn=0; // Zielmusterzahl numerisch aus Vorgaben
 	zielmustercl *zmvp; // Zielmusterzeiger aus Vorgaben

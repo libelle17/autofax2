@@ -2491,7 +2491,7 @@ void hhcl::virtrueckfragen()
 				optcl *opp=new optcl(/*pname*/soptname.str(),/*pptr*/sqlrp[sqlrp.size()-1].get(),/*art*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
 				oprsql<<opp;
 			} // if (zwi.empty()) else
-			if (akt>sqlzn-1 && akt>sqlvzn-1) {
+			if (akt>sqlzn-1) {
 				if (!Tippob(Tx[T_Wolle_Sie_noch_einen_SQL_Befehl_eingeben],Txk[T_j_af])) { 
 					break;
 				}
@@ -2670,7 +2670,7 @@ void hhcl::virtlieskonfein()
 //		caus<<"Nr."<<nr<<", Name: "<<blau<<hccd.paare[nr].name<<schwarz<<", Wert: "<<violett<<hccd.paare[nr].wert<<schwarz<<endl;
 	}
 	if (sqlzn) {
-		if (sqlp) delete [] sqlp;
+		delete[] sqlp;
 		sqlp=new string[sqlzn]{string()};
 		for(size_t i=0;i<sqlzn;) {
 			++i;
@@ -2691,13 +2691,13 @@ void hhcl::virtlieskonfein()
 				aktopsql->pname=soptname.str();
 				opn<<aktopsql;
 			}
-		}
+		} // 		for(auto aktopsql:opsql.schl)
 		// optausg(rot);
 	} // if (sqlzn)
 	// wenn in der Konfigurationsdatei keine sql-Befehle stehen, dann die aus den Vorgaben nehmen
 	if (!sqlzn) {
 		sqlzn=sqlvzn;
-		if (sqlp) delete [] sqlp;
+		delete[] sqlp;
 		sqlp=new string[sqlzn];
 //		opn.omap["sqlz"]->woher=1;
 		for(size_t i=0;i<sqlzn;i++) {
@@ -2707,20 +2707,13 @@ void hhcl::virtlieskonfein()
 			opn<<opsql.letzter();
 		}
 	} // 	if (!sqlzn)
-	if (zmp) delete [] zmp;
-	if (!zmzn) {
-		// wenn in der Konfigurationsdatei keine Zielmuster stehen
-		zmzn=zmvzn;
-//		opn.omap["musterzahl"]->woher=1;
-		for(size_t i=0;i<zmvzn+zmvzn;i++) {
-			opzm<<opvzm[i];
-			opn<<opzm.letzter();
-		} // 		for(long i=0;i<zmzn;i++) 
-		zmp=zmvp;
-	} else {
+
+	if (zmzn) {
 ////		caus<<blau<<"opzm.size(): "<<violett<<opzm.size()<<schwarz<<endl;
 //		opn.omap["musterzahl"]->woher=2;
+		delete[] zmmp;
 		zmmp=new string[zmzn];
+		delete[] zmzp;
 		zmzp=new string[zmzn];
 		for(size_t i=0;i<zmzn;) {
 			++i;
@@ -2730,35 +2723,64 @@ void hhcl::virtlieskonfein()
 			////	  const string *const istrp=new string(ltoan(i));	
 			string istr=ltoan(i);
 			opzm<<new optcl(/*pname*/zmmname.str(),/*pptr*/&zmmp[i-1],/*art*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zielmuster_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/2);
-			opn<<opzm.letzter();
 			opzm<<new optcl(/*pname*/zmzname.str(),/*pptr*/&zmzp[i-1],/*art*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Ziel_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/2);
-			opn<<opzm.letzter();
 			//// caus<<"opn.schl.size(): "<<opn.schl.size()<<", omap.size(): "<<opn.omap.size()<<endl;
 		} // 	for(long i=0;i<zmzn;)
-////		caus<<blau<<"opzm.size(): "<<violett<<opzm.size()<<schwarz<<endl;
-////		caus<<blau<<"opn.size(): "<<violett<<opn.size()<<schwarz<<endl;
+		////		caus<<blau<<"opzm.size(): "<<violett<<opzm.size()<<schwarz<<endl;
+		////		caus<<blau<<"opn.size(): "<<violett<<opn.size()<<schwarz<<endl;
 		hccd.kauswert(&opzm,obverb,/*mitclear*/0);
-//		opn.gibaus(1);
-//		opzm.~schAcl();
+		zmzn=0;
+		shared_ptr<optcl> laktopzm=0;
+		for(auto aktopzm:opzm.schl) {
+			if (laktopzm) {
+				// jeden 2. Durchgang auswerten: aktopzm=Ziel, laktopzm=Muster
+				if (!((string*)aktopzm->pptr)->empty()) {
+					stringstream zmmname,zmzname;
+					zmmname<<"ZMMuster_"<<++zmzn;
+					laktopzm->pname=zmmname.str();
+					opn<<laktopzm;
+					zmzname<<"ZMZiel_"<<zmzn;
+					aktopzm->pname=zmzname.str();
+					opn<<aktopzm;
+				}
+				laktopzm=0;
+			} else {
+				laktopzm=aktopzm;
+			}
+		} // 		for(auto aktopzm:opzm.schl)
+		//		opn.gibaus(1);
+		//		opzm.~schAcl();
+		delete[] zmp;
 		zmp=new zielmustercl[zmzn];
 		for(size_t i=0;i<zmzn;i++) {
-			zmp[i]=zielmustercl(zmmp[i],zmzp[i]);
+			// neue Nummerierung, alte Bezuege
+			zmp[i]=zielmustercl(*(string*)opzm[i+i]->pptr,*(string*)opzm[i+i+1]->pptr);
 		}
+	} // 	if (zmzn)
+	if (!zmzn) {
+		// wenn in der Konfigurationsdatei keine Zielmuster stehen
+		zmzn=zmvzn;
+		//		opn.omap["musterzahl"]->woher=1;
+		for(size_t i=0;i<zmvzn+zmvzn;i++) {
+			opzm<<opvzm[i];
+			opn<<opzm.letzter();
+		} // 		for(long i=0;i<zmzn;i++) 
+		zmp=zmvp;
 	} // 	if (!zmzn)
-////	optausg(rot);
-////	opn.gibomapaus();
+	////	optausg(rot);
+	////	opn.gibomapaus();
 	hLog(violetts+Txk[T_Ende]+Txk[T_virtlieskonfein]+schwarz); //α
 	obverb=altobverb;
 } // void hhcl::virtlieskonfein()
 
 int main(int argc,char** argv)
 {
-		if (argc>1) { //ω
-		} //α
-		hhcl hhi(argc,argv); // hiesige Hauptinstanz, mit lngzuw, setzlog und pruefplatte
-		hhi.lauf(); // Einleitungsteil mit virtuellen Funktionen, 
-		// mit virtVorgbAllg,pvirtVorgbSpeziell,initopt,parsecl,pvirtmacherkl,zeighilfe,virtlieskonfein,verarbeitkonf,lieszaehlerein,MusterVorgb,dovi,dovs,virtzeigversion
-		// virtautokonfschreib,update,
+	if (argc>1) { //ω
+	} //α
+	hhcl hhi(argc,argv); // hiesige Hauptinstanz, mit lngzuw, setzlog und pruefplatte
+	hhi.lauf(); // Einleitungsteil mit virtuellen Funktionen, 
+	// mit virtVorgbAllg,pvirtVorgbSpeziell,initopt,parsecl,pvirtmacherkl,zeighilfe,virtlieskonfein,verarbeitkonf,lieszaehlerein,MusterVorgb,dovi,dovs,virtzeigversion
+	// virtautokonfschreib,update,
 } // int main 
 
 void hhcl::virttesterg()
