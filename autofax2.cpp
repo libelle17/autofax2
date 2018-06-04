@@ -2426,7 +2426,7 @@ void hhcl::virtrueckfragen()
 		unsigned neunr{1}; // Nr. des SQL-Befehles nach neuer Zaehlung
 		for(size_t akt=0;/*akt<sqlzn*/1;) {
 			//// caus<<"akt: "<<akt<<" "<<sqlp[akt]<<endl;
-			const string *const vorgabe=(akt<sqlzn?&sqlp[akt]:&nix);
+			const string *const vorgabe=(akt<sqlzn?(string*)opn[akt+sqlz0]->pptr/*sqlp[akt]*/:&nix);
 			//// <<"vorgabe: "<<*vorgabe<<", sqlvp["<<akt<<"]: "<<sqlvp[akt]<<endl;
 			akt++;
 			string zwi;
@@ -2669,7 +2669,9 @@ void hhcl::virtlieskonfein()
 		}
 //		caus<<"Nr."<<nr<<", Name: "<<blau<<hccd.paare[nr].name<<schwarz<<", Wert: "<<violett<<hccd.paare[nr].wert<<schwarz<<endl;
 	}
+	sqlz0=opn.size();
 	if (sqlzn) {
+		// wenn SQL-Befehle aus Konfigurkationsdatei geholt
 		delete[] sqlp;
 		sqlp=new string[sqlzn]{string()};
 		for(size_t i=0;i<sqlzn;) {

@@ -434,6 +434,7 @@ class hhcl:public dhcl
 	uchar oblista=0;
 	long listz=30; //ω
 
+	size_t sqlz0=0; // Index in opn mit erster SQL-Option
 	size_t sqlzn=0; // Zahl der SQL-Befehle numerisch
 	string* sqlp=0; // Array der SQL-Befehle
 	//    string sqlz;  // Zahl der SQL-Befehle
