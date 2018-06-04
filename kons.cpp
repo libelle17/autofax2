@@ -627,7 +627,7 @@ const char *kons_T[T_konsMAX+1][SprachZahl]=
 	// T_kauswert,
 	{"kauswert()","cexploit()"},
 	// T_optausg,
-	{"optausg()","optprintout()"},
+	{".oausgeb()",".oprintout()"},
 	// T_einzutragen
 	{"einzutragen: ","to enter: "},
 	// T_schon_eingetragen
@@ -2057,6 +2057,7 @@ template<typename SCL> void schAcl<SCL>::frisch()
   }
 ////	caus<<violett<<"Ende frisch schAcl: "<<blau<<name<<schwarz<<endl;
 } // void schAcl::frisch()
+
 
 template<typename SCL> schAcl<SCL>::schAcl(const string& name):name(name)
 {
@@ -4855,7 +4856,7 @@ void hcl::lauf()
 		virtlieskonfein();
 		verarbeitkonf();
 //		opn.gibomapaus();
-//		if (obverb) optausg(gruen);
+//		if (obverb) opn.oausgeb(gruen);
 	} // if (obhilfe==3)
 //	opn.omapzuw();
 	pvirtmacherkl();
@@ -5130,7 +5131,7 @@ void hcl::parsecl()
 			} // 			if (kurzp||langp)
 		} // if (aclen>1)
 	} // 	for(ap=argcmv.begin();ap!=argcmv.end();ap++)
-//	if (obverb) optausg(gelb);
+//	if (obverb) opn.oausgeb(gelb);
 	for(size_t i=0;i<argcmv.size();i++) {
 		if (!argcmv[i].agef) {
 			fLog(rots+"Parameter: "+gruen+argcmv[i].argcs+rot+Txk[T_nicht_erkannt]+schwarz,1,0);
@@ -5221,7 +5222,7 @@ int hcl::zeighilfe(const stringstream *const erkl)
 				if (!opn[j]->pname.empty() && (obhilfe>1 || opn[j]->wi) &&(opn[j]->kurzi!=-1 || opn[j]->langi!=-1))
 					opn[j]->hilfezeile(Txk.lgn);
 			} //     for(size_t j=0;j<opn.size();j++)
-////			optausg(violett);
+////			opn.oausgeb(violett);
 		} // if (obhilfe==4) else
 		return 1;
 	} // if (obhilfe)
@@ -5748,7 +5749,7 @@ void hcl::zeigkonf()
 		//// strftime(buf, sizeof(buf), "%d.%m.%Y %H.%M.%S", &tm);
 	} //   if (!lstat(akonfdt.c_str(),&kstat))
 	cout<<")"<<(obverb?":":Txk[T_Bitte_rufen_Sie_dies_mit_w_auf_um_die_aktuellen_Optionen_zu_sehen])<<endl;
-	if (obverb) optausg(dblau);
+	if (obverb) opn.oausgeb(dblau);
 } // void hcl::zeigkonf()
 // augerufen in: anhalten(), zeigkonf()
 
@@ -6474,17 +6475,6 @@ template<typename SCL> void schAcl<SCL>::omapzuw()
 } // void hcl::omapzuw(optcl *optp,size_t optz)
 */
 
-// wird aufgerufen in parsecl, lauf
-void hcl::optausg(const char *farbe)
-{
-	hLog(violetts+Txk[T_optausg]+schwarz);
-	for(size_t iru=0;iru<opn.size();iru++) {
-			cout<<farbe<<setw(3)<<iru<<schwarz<<" ";
-			opn[iru]->virtoausgeb();
-	}
-	hLog(violetts+Txk[T_Ende]+Txk[T_optausg]+schwarz);
-} // void hcl::optausg
-
 confdcl::confdcl():obgelesen(0),obzuschreib(0)
 {
 }
@@ -6651,6 +6641,17 @@ template<typename SCL> void schAcl<SCL>::gibaus(const int nr/*=0*/)
    cout<<"i: "<<gruen<<i<<schwarz<<",schl:"<<schl[i]<<",pname: "<<blau<<schl[i]->pname<<schwarz<<Txk[T_Wert]<<blau<<schl[i]->virtholstr()<<schwarz<<endl;
   }
 } // template<typename SCL> void schAcl
+
+// wird aufgerufen in parsecl, lauf
+template<typename SCL> void schAcl<SCL>::oausgeb(const char* const farbe)
+{
+	fLog(violetts+name+Txk[T_optausg]+schwarz);
+	for(size_t iru=0;iru<size();iru++) {
+			cout<<farbe<<setw(3)<<iru<<schwarz<<" ";
+			schl[iru]->virtoausgeb();
+	}
+	fLog(violetts+Txk[T_Ende]+name+Txk[T_optausg]+schwarz);
+} // void schAcl::frisch()
 
 template<typename SCL> void schAcl<SCL>::gibomapaus()
 {

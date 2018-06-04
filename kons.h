@@ -849,6 +849,7 @@ template <typename SCL> class schAcl {
  void gibomapaus();
  void eintrinit();
  void frisch();
+ void oausgeb(const char* const farbe);
  ~schAcl();
 }; // class schAcl
 template <> void schAcl<WPcl>::sinit(size_t vzahl, ...);
@@ -1327,7 +1328,6 @@ class hcl
 		void update(const string& DPROG);
 		virtual void virtschlussanzeige();
 	public:
-		void optausg(const char *farbe); // Optionen ausgeben
 		void pruefcl(); // commandline mit omap und mit argcmv parsen
 		hcl(const int argc, const char *const *const argv,const char* const DPROG,const uchar mitcron);
 		~hcl();

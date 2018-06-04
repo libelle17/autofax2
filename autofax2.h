@@ -272,6 +272,7 @@ enum T_
 	T_zum_Streichen_Strich_eingeben,
 	T_beim_letzten_fuer_alle_Uebrigen_nichts_eingeben,
 	T_Zielverzeichnis_Nr,
+	T_setzhylavz,
 	T_MAX //α
 }; // enum T_ //ω
 
@@ -285,7 +286,7 @@ string kopiere(const string& qdatei, const string& zield, uint *kfehler, const u
 string kopiere(const string& qdatei, const zielmustercl& zmp, uint *kfehler, const uchar wieweiterzaehl, int obverb=0, int oblog=0);
 string zielname(const string& qdatei, const string& zielvz,uchar wieweiterzaehl=0, string* zieldatei=0, uchar* obgleichp=0, 
                 int obverb=0, int oblog=0, stringstream *ausgp=0);
-string zielname(const string& qdatei, const zielmustercl& zmp,uchar wieweiterzaehl=0, string* zieldatei=0, uchar* obgleichp=0, int obverb=0, 
+string zielname(const string& qdatei, const zielmustercl& zmup,uchar wieweiterzaehl=0, string* zieldatei=0, uchar* obgleichp=0, int obverb=0, 
                 int oblog=0, stringstream *ausgp=0);
 void pruefrules(int obverb, int oblog);
 
@@ -315,6 +316,7 @@ class zielmustercl
 class hhcl:public dhcl
 {
  private: //ω
+		static const string initdhyladt; // /etc/init.d/hylafax
     svec modems;       // gefundene Modems
     uchar modemgeaendert=0; // hmodem neu gesetzt
     int hylazuerst=-1;  // ob ein Fax zuerst ueber Hylafax versucht werden soll zu faxen
@@ -421,12 +423,14 @@ class hhcl:public dhcl
     string citycode;    // Ortsvorwahl
     string msn;         // MSN fuer Fax
     string LocalIdentifier; // eigener Namen fuer Hylafax bis 10 Buchstaben
+    string varsphylavz; // Verzeichnis der Hyla-Spool-Dateien /var/spool/hylafax oder /var/spool/fax
     string cFaxUeberschrift; // eigener Namen fuer Capisuite bis 20 Buchstaben
-		schAcl<optcl> opsql=schAcl<optcl>("opsql"),opzm=schAcl<optcl>("opzm"),opvsql=schAcl<optcl>("opvsql"),opvzm=schAcl<optcl>("opvzm"); // Optionen
+		schAcl<optcl> opvsql=schAcl<optcl>("opvsql"),opvzm=schAcl<optcl>("opvzm"); // Optionen
     string host="localhost";  // fuer MySQL/MariaDB
 
 		schAcl<WPcl> cfcnfC=schAcl<WPcl>("cfcnfC"); // Capikonfiguration aus fax.conf
 		schAcl<WPcl> cccnfC=schAcl<WPcl>("cccnfC"); // Capikonfiguration aus capisuite.conf
+		schAcl<WPcl> hfcnfC=schAcl<WPcl>("hfcnfC"); // Hylakonfiguration
  protected: //α
 	string p1;
 	int p2;
@@ -443,10 +447,11 @@ class hhcl:public dhcl
 	string* sqlvp; // Array der Vorgabe-SQL-Befehle
 	vector<shared_ptr<string>> sqlrp; // vector der rueckfrage-SQL-Befehle
 
+	size_t zmz0=0; // Index in opn mit erster Zielmusterpaaroption, wird vielleicht nicht gebraucht
 	size_t zmzn=0; // Zahl der Zielmusterpaare numerisch
 	string *zmmp=0; // Array der Zielmuster
 	string *zmzp=0; // Array der Ziele
-	zielmustercl *zmp=0; // Zielmusterzeiger
+	vector<shared_ptr<zielmustercl>> zmsp; // Zielmusterzeiger
 	size_t zmvzn=0; // Zielmusterzahl numerisch aus Vorgaben
 	zielmustercl *zmvp; // Zielmusterzeiger aus Vorgaben
 	vector<shared_ptr<string>> zmmrp; // vector der rueckfrage-Zielmuster
@@ -472,6 +477,7 @@ class hhcl:public dhcl
 	void virttesterg(); //α
 	void virtlieskonfein();
 	void virtautokonfschreib();
+	int setzhylavz(); // sucht das Hylaverzeichnis und setzt varsphylavz darauf, return 0, wenn nicht gefunden dann varsphylavz="", return 1
  protected: 
 	// void virtlgnzuw(); // wird aufgerufen in: virtrueckfragen, parsecl, lieskonfein, hcl::hcl nach holsystemsprache
 	void virtVorgbAllg();

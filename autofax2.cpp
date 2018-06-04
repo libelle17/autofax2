@@ -569,6 +569,8 @@ char const *DPROG_T[T_MAX+1][SprachZahl]={
 	{" (beim letzten fuer alle Uebrigen nichts eingeben)"," (for the last for all the rest enter nothing)"},
 	// T_Zielverzeichnis_Nr
 	{"Zielverzeichnis Nr. ","Target directory no. "},
+	// T_setzhylavz
+	{"setzhylavz()","sethyladir()"},
 	{"",""} //α
 }; // char const *DPROG_T[T_MAX+1][SprachZahl]=
 
@@ -577,6 +579,8 @@ const char *logdt="/var/log/" DPROG "vorgabe.log";//darauf wird in kons.h verwie
 
 using namespace std; //ω
 
+
+const string cSQL_{"SQL_"}, cZMMuster_{"ZMMuster_"}, cZMZiel_{"ZMZiel_"};
 
 // wird aufgerufen in: verschiebe (Version 1), verschiebe (Version 2), wegfaxen
 // ziel kann Verzeichnis oder Datei sein; im ersten Fall wird eine Datei des Namens von quelle dort als *zielp verwendet
@@ -725,11 +729,11 @@ string zielname(const string& qdatei, const string& rzielvz, uchar wieweiterzaeh
 } // zielname 
 
 // wird aufgerufen in: verschiebe (Version 2), kopiere (Version 2), neuerdateiname, 
-string zielname(const string& qdatei, const zielmustercl& zmp, uchar wieweiterzaehl/*=0*/, string* zieldatei/*=0*/, uchar *obgleichp/*=0*/, 
+string zielname(const string& qdatei, const zielmustercl& zmup, uchar wieweiterzaehl/*=0*/, string* zieldatei/*=0*/, uchar *obgleichp/*=0*/, 
 		int obverb/*=0*/, int oblog/*=0*/, stringstream *ausgp/*=0*/)
 {
 	//  Log(violetts+Tx[T_zielname]+schwarz,obverb,oblog);
-	for(const zielmustercl *zmakt=&zmp;1;zmakt++){
+	for(const zielmustercl *zmakt=&zmup;1;zmakt++){
 		int reti=regexec(&(zmakt->regex),qdatei.c_str(),0,NULL,0);
 		const string meld=Txk[T_datei]+rots+qdatei+schwarz+Tx[T_entspricht]+(reti?Tx[T_entsprichtnicht]:Tx[T_entsprichtdoch])+
 			Tx[T_Muster_Doppelpunkt]+rot+zmakt->holmuster()+schwarz+"'";
@@ -738,7 +742,7 @@ string zielname(const string& qdatei, const zielmustercl& zmp, uchar wieweiterza
 			return zielname(qdatei,zmakt->holziel(),wieweiterzaehl,zieldatei,obgleichp,obverb,oblog,ausgp);
 		} //     if (!reti)
 		if (zmakt->obmusterleer()) break;
-	} //   for(zielmustercl *zmakt=zmp;1;zmakt++)
+	} //   for(zielmustercl *zmakt=zmup;1;zmakt++)
 	return {};
 } // zielname
 
@@ -2328,7 +2332,7 @@ void hhcl::pvirtvorrueckfragen()
 // wird aufgerufen in lauf
 void hhcl::virtrueckfragen()
 {
-	const size_t aktc=0;
+	const size_t aktc{0};
 	hLog(violetts+Tx[T_virtrueckfragen]+schwarz);
 	if (rzf) { //ω
 		// Rueckfragen koennen auftauchen in: virtrueckfragen, konfcapi (<- pruefcapi), aenderefax, rufpruefsamba
@@ -2421,7 +2425,7 @@ void hhcl::virtrueckfragen()
 		undstr=Tippstr(Tx[T_Buchstabenfolge_vor_weiterem_Adressaten_sowie_weiterer_Faxnummer],&undstr);
 		// sql abfragen, eintragen, sql aus opn loeschen, maps loeschen, maps neu erstellen
 		schAcl<optcl> oprsql=schAcl<optcl>("oprsql"); // Optionen
-		//		optausg(rot);
+		////		opn.oausgeb(rot);
 		sqlrp.clear();
 		unsigned neunr{1}; // Nr. des SQL-Befehles nach neuer Zaehlung
 		for(size_t akt=0;/*akt<sqlzn*/1;) {
@@ -2477,7 +2481,7 @@ void hhcl::virtrueckfragen()
 				// hier Sql-Dateien pruefen
 				/*
 					 cppSchluess* neuS=new cppSchluess;
-					 neuS->name=string("SQL_")+ltoan(++aktsp);
+					 neuS->name=string(cSQL_)+ltoan(++aktsp);
 					 neuS->wert=zwi;
 					 sqlv.push_back(neuS);
 					 nsqlzn++;
@@ -2485,7 +2489,7 @@ void hhcl::virtrueckfragen()
 				sqlrp.push_back(shared_ptr<string>(new string(zwi)));
 				string istr=ltoan(neunr);
 				stringstream soptname;
-				soptname<<"SQL_"<<(neunr++);
+				soptname<<cSQL_<<(neunr++);
 				//// caus<<"akt: "<<(akt)<<" "<<*(string*)opn.omap[soptname.str()]->pptr<<endl;
 				//			opn.omap[soptname.str()]->virtoausgeb();
 				optcl *opp=new optcl(/*pname*/soptname.str(),/*pptr*/sqlrp[sqlrp.size()-1].get(),/*art*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
@@ -2503,7 +2507,7 @@ void hhcl::virtrueckfragen()
 		// vorherige SQL-Abfragen loeschen
 		for(auto omit=opn.schl.end();omit!=opn.schl.begin();) {
 			omit--;
-			if (!(*omit)->pname.find("SQL_")) {
+			if (!(*omit)->pname.find(cSQL_)) {
 				(*omit)->virtloeschomaps(&opn);
 				opn.schl.erase(omit);
 			}
@@ -2518,10 +2522,10 @@ void hhcl::virtrueckfragen()
 		neunr=1; // Nr. des Zielmusterpaares nach neuer Zaehlung
 		zmmrp.clear();
 		zmzrp.clear();
-		optausg(blau);
+		////opn.oausgeb(blau);
 		for(size_t akt=0;/*akt<zmzn*/1;) {
-			const string *const vgbm=(akt<zmzn?&zmp[akt].holmuster():&nix),
-									 *const vgbz=(akt<zmzn?&zmp[akt].holziel():&nix);
+			const string *const vgbm=(akt<zmzn?&zmsp[akt]->holmuster():&nix),
+									 *const vgbz=(akt<zmzn?&zmsp[akt]->holziel():&nix);
 			akt++;
 			string zwim,zwiz;
 			while (1) {
@@ -2536,8 +2540,8 @@ void hhcl::virtrueckfragen()
 				zmzrp.push_back(shared_ptr<string>(new string(zwiz)));
 				string istr=ltoan(neunr);
 				stringstream zmmname,zmzname;
-				zmmname<<"ZMMuster_"<<neunr;
-				zmzname<<"ZMZiel_"<<neunr;
+				zmmname<<cZMMuster_<<neunr;
+				zmzname<<cZMZiel_<<neunr;
 				//// caus<<"akt: "<<(akt)<<" "<<*(string*)opn.omap[soptname.str()]->pptr<<endl;
 				//			opn.omap[soptname.str()]->virtoausgeb();
 				optcl *opmp=new optcl(/*pname*/zmmname.str(),/*pptr*/zmmrp[neunr-1].get(),/*art*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zielmuster_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/2);
@@ -2553,7 +2557,7 @@ void hhcl::virtrueckfragen()
 		// vorherige Zielmusterpaare loeschen
 		for(auto omit=opn.schl.end();omit!=opn.schl.begin();) {
 			omit--;
-			if (!(*omit)->pname.find("ZMMuster_")||!(*omit)->pname.find("ZMZiel_")) {
+			if (!(*omit)->pname.find(cZMMuster_)||!(*omit)->pname.find(cZMZiel_)) {
 				(*omit)->virtloeschomaps(&opn);
 				opn.schl.erase(omit);
 			}
@@ -2564,13 +2568,143 @@ void hhcl::virtrueckfragen()
 		}
 	} // if (rzf) //α
 	dhcl::virtrueckfragen();
-	// optausg(rot);
+	//// opn.oausgeb(rot);
 } // void hhcl::virtrueckfragen()
+
+// aufgerufen in liescapiconf
+void hhcl::hfcnfCfuell()
+{
+	static uchar neu=1;
+	if (neu) {	
+		hfcnfC<<new WPcl("spool_dir",&spoolcapivz,pstri);
+		hfcnfC<<new WPcl("fax_user_dir",&cfaxuservz,pstri);
+		neu=0;
+	} // 	if (neu)
+} // void hhcl::hfcnfCfuell
+
+
+const string hhcl::initdhyladt="/etc/init.d/hylafax";
+// wird aufgerufen in: pruefhyla, main
+int hhcl::setzhylavz()
+{
+	// koennte auch im Fall eines entfernten Modems oder hylafax-Programms benoetigt werden
+	// sucht das Hylaverzeichnis und setzt varsphylavz darauf, return 0, wenn nicht gefunden dann varsphylavz="", return 1
+	// varsphylavz und hsendqvz festlegen
+	fLog(violetts+Tx[T_setzhylavz]+schwarz);
+	// wird fruehestens in korrigierecapi benoetigt
+	// varsphylavz wird benoetigt in: korrigierecapi, untersuchespool, hfaxsetup(pruefhyla), pruefhyla, hylaausgeb(untersuchespool,zeigweitere)
+	// hsendqvz wird benoetigt in: loescheallewartenden, loeschewaise, zeigweitere, inDBh(faxemitH)
+	const char* testcmd="/bin/faxrcvd";
+	int fundart=0;
+	uchar weiterpruefen=0; 
+	// 28.3.16: Die Datei /etc/init.d/hylafax+ taugt nicht fuer die Fallunterscheidung, da sie selbst eine Fallunterscheidung enthaelt
+
+	svec hrueck;
+	// 1) hylafax-Dienst im systemd suchen, dort steht z.B. ConditionPathExists=/var/spool/hylafax/etc/setup.cache ...
+	systemrueck("grep /var $(dirname $(dirname $(which systemctl)))/lib/systemd/system/*fax*.service 2>/dev/null | "
+			"head -n 1 | cut -d'=' -f2 | awk -F'/etc' '{print $1}'", obverb,oblog,&hrueck,/*obsudc=*/0);
+	if (hrueck.size()) {
+		varsphylavz=hrueck[0];
+		fundart=1;
+	} else {
+		// 2) ... ansonsten steht vielleicht in /etc/init.d/hylafax das Verzeichnis:
+		// in der OpenSuse-Datei bekam das Verzeichnis den Namen "SPOOL",
+		// in Ubuntu "HYLAFAX_HOME"; dort bekam die Variable "SPOOL" einen anderen Inhalt
+
+		////    cppSchluess hylaconf[]={{"SPOOL"},{"HYLAFAX_HOME"}};
+		////    size_t cs=sizeof hylaconf/sizeof*hylaconf;
+		const char* const sarr[]={"SPOOL","HYLAFAX_HOME"};
+		schlArr hycnfA(sarr,sizeof sarr/sizeof *sarr);
+		hfcnfCfuell();
+		struct stat hstat={0};
+		if (!lstat(initdhyladt.c_str(),&hstat)) {
+			initdhyladt_gibts=1;
+			confdat hylacd(initdhyladt,&hycnfA,obverb);
+		} //     if (!lstat(initdhyladt.c_str(),&hstat))
+		if (!hycnfA[1].wert.empty()) {
+			//  if (cpplies(initdhyladt,hylaconf,cs)) KLA
+			varsphylavz=hycnfA[1].wert;
+			fundart=2;
+		} else if (!hycnfA[0].wert.empty()) {
+			varsphylavz=hycnfA[0].wert;
+			fundart=2;
+		} else {
+			// 3) ... ansonsten schauen, welches Verzeichnis es gibt ...
+			struct stat hstat={0},fstat={0};
+			const char *hfax="/var/spool/hylafax", *ffax="/var/spool/fax";
+			int hgibts=!lstat(hfax,&hstat), fgibts=!lstat(ffax,&hstat);
+			if (hgibts && !fgibts) {
+				varsphylavz=hfax; 
+				fundart=3;
+			} else if (!hgibts && fgibts) {
+				varsphylavz=ffax;
+				fundart=3;
+			}  else if (hgibts && fgibts) {
+				// 4) ... falls beide, dann das juengere nehmen
+				if (hstat.st_mtime>fstat.st_mtime) {
+					varsphylavz=hfax;
+				} else {
+					varsphylavz=ffax;
+				}
+				fundart=4;
+			} else {
+				// 5) ... falls beide nicht, dann /var/spool/hylafax
+				varsphylavz=hfax;
+				fundart=5;
+			} //       if (hgibts && !fgibts) else else
+		} //     if (!hycnfA[1].wert.empty())  else else 
+		weiterpruefen=1;
+	} // if (hrueck.size()) else 
+
+	// falls nicht im systemd-Dienst gefunden, dann zuerst im praeferierten, dann in anderen Verzeichnissen pruefen, wo es ./bin/faxrecvd gibt 
+	if (weiterpruefen) {
+		////  if (lsys.getsys(obverb,oblog)==sus) varsphylavz="/var/spool/fax";
+		////  else if (lsys.getsys(obverb,oblog)==deb) varsphylavz="/var/spool/hylafax";
+		string testvz=varsphylavz;
+		for(unsigned iru=0;iru<(sizeof moeglhvz/sizeof *moeglhvz)+1;iru++) {
+			struct stat entryhyla={0};
+			if (!lstat((testvz+testcmd).c_str(),&entryhyla)) {
+				varsphylavz=testvz; 
+				if (iru) fundart=6;
+				break;
+			} else if (iru==sizeof moeglhvz/sizeof *moeglhvz) {
+				// obhyla=0 hier noch nicht, da setzhylavz auch einmal vor der Installation schon aufgerufen wird
+				break; // kein Verzeichnis gefunden
+			} //   else if (iru==sizeof moeglhvz/sizeof *moeglhvz)
+			testvz=moeglhvz[iru];
+		} //     for(unsigned iru=0;iru<(sizeof moeglhvz/sizeof *moeglhvz)+1;iru++)
+	} //   if (weiterpruefen)
+	if (obverb) {
+		string grund;
+		switch (fundart) {
+			case 1: grund=Tx[T_aus_systemd_fax_service_Datei_ermittelt];break;
+			case 2: grund=Tx[T_aus_etc_init_d_hylafax_ermittelt];break;
+			case 3: grund=Tx[T_aus_seiner_ausschliesslichen_Existenz_ermittelt];break;
+			case 4: grund=Tx[T_aus_seinem_geringen_Alter_ermittelt];break;
+			case 5: grund=Tx[T_aus_mangelnder_Alternative_ermittelt];break;
+			case 6: grund=Tx[T_aus_Existenz_von]+blaus+testcmd+schwarz+Tx[T_ermittelt];break;
+		} //     switch (fundart)
+		Log(Tx[T_hylafax_Verzeichnis]+blaus+varsphylavz+schwarz+grund);
+	} // if (obverb)
+	kuerzevtz(&varsphylavz);
+	hsendqvz=varsphylavz+"/sendq";
+	pruefverz(hsendqvz,obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/0,/*besitzer=*/huser,/*benutzer=*/cuser,/*obmachen=*/0);
+	hdoneqvz=varsphylavz+"/doneq";
+	pruefverz(hdoneqvz,obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/0,/*besitzer=*/huser,/*benutzer=*/cuser,/*obmachen=*/0);
+	harchivevz=varsphylavz+"/archive";
+	pruefverz(harchivevz,obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/0,/*besitzer=*/huser,/*benutzer=*/cuser,/*obmachen=*/0);
+	xferfaxlog=varsphylavz+"/etc/xferfaxlog"; 
+	hempfavz=varsphylavz+"/" DPROG "arch";
+	return 0;
+} // int hhcl::setzhylavz()
+
 
 // wird aufgerufen in lauf
 void hhcl::virtpruefweiteres()
 { //ω
+	setzhylavz();
 	hcl::virtpruefweiteres(); // z.Zt. leer //α
+
 } // void hhcl::virtpruefweiteres
 
 // wird aufgerufen in lauf
@@ -2655,29 +2789,29 @@ void hhcl::virtlieskonfein()
 	// sqlzn und zmzn aus den Konfigurationsdateien ermitteln (um sie nicht dort speichern zu muessen)
 	sqlzn=0;
 	zmzn=0;
-	const string smu="SQL_", zmmu="ZMMuster_", zzmu="ZMZiel_";
 	for(size_t nr=0;nr<hccd.paare.size();nr++) {
-		if  (!hccd.paare[nr].name.find(smu)) {
-			unsigned long neusqlzn=atol(hccd.paare[nr].name.substr(smu.length()).c_str());
+		if  (!hccd.paare[nr].name.find(cSQL_)) {
+			unsigned long neusqlzn=atol(hccd.paare[nr].name.substr(cSQL_.length()).c_str());
 			if (neusqlzn>sqlzn) sqlzn=neusqlzn;
-		} else if  (!hccd.paare[nr].name.find(zmmu)) {
-			unsigned long neuzmzn=atol(hccd.paare[nr].name.substr(zmmu.length()).c_str());
+		} else if  (!hccd.paare[nr].name.find(cZMMuster_)) {
+			unsigned long neuzmzn=atol(hccd.paare[nr].name.substr(cZMMuster_.length()).c_str());
 			if (neuzmzn>zmzn) zmzn=neuzmzn;
-		} else if  (!hccd.paare[nr].name.find(zzmu)) {
-			unsigned long neuzmzn=atol(hccd.paare[nr].name.substr(zzmu.length()).c_str());
+		} else if  (!hccd.paare[nr].name.find(cZMZiel_)) {
+			unsigned long neuzmzn=atol(hccd.paare[nr].name.substr(cZMZiel_.length()).c_str());
 			if (neuzmzn>zmzn) zmzn=neuzmzn;
 		}
-//		caus<<"Nr."<<nr<<", Name: "<<blau<<hccd.paare[nr].name<<schwarz<<", Wert: "<<violett<<hccd.paare[nr].wert<<schwarz<<endl;
+////		caus<<"Nr."<<nr<<", Name: "<<blau<<hccd.paare[nr].name<<schwarz<<", Wert: "<<violett<<hccd.paare[nr].wert<<schwarz<<endl;
 	}
 	sqlz0=opn.size();
 	if (sqlzn) {
 		// wenn SQL-Befehle aus Konfigurkationsdatei geholt
 		delete[] sqlp;
 		sqlp=new string[sqlzn]{string()};
+		schAcl<optcl> opsql=schAcl<optcl>("opsql");
 		for(size_t i=0;i<sqlzn;) {
 			++i;
 			stringstream soptname;
-			soptname<<"SQL_"<<i;
+			soptname<<cSQL_<<i;
 			opsql<<new optcl(/*pname*/soptname.str(),/*pptr*/&sqlp[i-1],/*art*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/ltoan(i),/*wert*/-1,/*woher*/2);
 			//// folgendes wuerde zum Absturz fuehren (der shared_ptr muss derselbe sein, damit er und sein Inhalt nur einmal versucht wird zu destruieren):
 			////		shared_ptr<optcl> kop2{opsql[opsql.size()-1]};
@@ -2689,12 +2823,12 @@ void hhcl::virtlieskonfein()
 		for(auto aktopsql:opsql.schl) {
 			if (!((string*)aktopsql->pptr)->empty()) {
 				stringstream soptname;
-				soptname<<"SQL_"<<++sqlzn;
+				soptname<<cSQL_<<++sqlzn;
 				aktopsql->pname=soptname.str();
 				opn<<aktopsql;
 			}
 		} // 		for(auto aktopsql:opsql.schl)
-		// optausg(rot);
+		//// opn.oausgeb(rot);
 	} // if (sqlzn)
 	// wenn in der Konfigurationsdatei keine sql-Befehle stehen, dann die aus den Vorgaben nehmen
 	if (!sqlzn) {
@@ -2705,14 +2839,15 @@ void hhcl::virtlieskonfein()
 		for(size_t i=0;i<sqlzn;i++) {
 			sqlp[i]=*(string*)opvsql[i]->pptr;
 			//// <<"opvsql["<<i<<"]: "<<*(string*)opvsql[i]->pptr<<endl;
-			opsql<<opvsql[i];
-			opn<<opsql.letzter();
+			opn<<opvsql[i];
 		}
 	} // 	if (!sqlzn)
 
+	zmsp.clear();
 	if (zmzn) {
 ////		caus<<blau<<"opzm.size(): "<<violett<<opzm.size()<<schwarz<<endl;
 //		opn.omap["musterzahl"]->woher=2;
+		schAcl<optcl> opzm=schAcl<optcl>("opzm");
 		delete[] zmmp;
 		zmmp=new string[zmzn];
 		delete[] zmzp;
@@ -2720,8 +2855,8 @@ void hhcl::virtlieskonfein()
 		for(size_t i=0;i<zmzn;) {
 			++i;
 			stringstream zmmname,zmzname;
-			zmmname<<"ZMMuster_"<<i;
-			zmzname<<"ZMZiel_"<<i;
+			zmmname<<cZMMuster_<<i;
+			zmzname<<cZMZiel_<<i;
 			////	  const string *const istrp=new string(ltoan(i));	
 			string istr=ltoan(i);
 			opzm<<new optcl(/*pname*/zmmname.str(),/*pptr*/&zmmp[i-1],/*art*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zielmuster_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/2);
@@ -2731,6 +2866,8 @@ void hhcl::virtlieskonfein()
 		////		caus<<blau<<"opzm.size(): "<<violett<<opzm.size()<<schwarz<<endl;
 		////		caus<<blau<<"opn.size(): "<<violett<<opn.size()<<schwarz<<endl;
 		hccd.kauswert(&opzm,obverb,/*mitclear*/0);
+////		opzm.oausgeb(rot);
+		zmz0=opn.size();
 		zmzn=0;
 		shared_ptr<optcl> laktopzm=0;
 		for(auto aktopzm:opzm.schl) {
@@ -2738,12 +2875,13 @@ void hhcl::virtlieskonfein()
 				// jeden 2. Durchgang auswerten: aktopzm=Ziel, laktopzm=Muster
 				if (!((string*)aktopzm->pptr)->empty()) {
 					stringstream zmmname,zmzname;
-					zmmname<<"ZMMuster_"<<++zmzn;
+					zmmname<<cZMMuster_<<++zmzn;
 					laktopzm->pname=zmmname.str();
 					opn<<laktopzm;
-					zmzname<<"ZMZiel_"<<zmzn;
+					zmzname<<cZMZiel_<<zmzn;
 					aktopzm->pname=zmzname.str();
 					opn<<aktopzm;
+					zmsp.push_back(shared_ptr<zielmustercl>(new zielmustercl(*(string*)laktopzm->pptr,*(string*)aktopzm->pptr)));
 				}
 				laktopzm=0;
 			} else {
@@ -2752,24 +2890,22 @@ void hhcl::virtlieskonfein()
 		} // 		for(auto aktopzm:opzm.schl)
 		//		opn.gibaus(1);
 		//		opzm.~schAcl();
-		delete[] zmp;
-		zmp=new zielmustercl[zmzn];
-		for(size_t i=0;i<zmzn;i++) {
-			// neue Nummerierung, alte Bezuege
-			zmp[i]=zielmustercl(*(string*)opzm[i+i]->pptr,*(string*)opzm[i+i+1]->pptr);
-		}
+////		caus<<"zmznneu: "<<zmznneu<<endl;
+////		for(size_t i=0;i<zmznneu;i++) caus<<"i: "<<i<<", zmsp[i].muster: "<<zmsp[i]->holmuster()<<", zmsp[i].ziel: "<<zmsp[i]->holziel()<<endl;
+
 	} // 	if (zmzn)
 	if (!zmzn) {
 		// wenn in der Konfigurationsdatei keine Zielmuster stehen
 		zmzn=zmvzn;
 		//		opn.omap["musterzahl"]->woher=1;
 		for(size_t i=0;i<zmvzn+zmvzn;i++) {
-			opzm<<opvzm[i];
-			opn<<opzm.letzter();
+			opn<<opvzm[i];
+      if (i%2==1) {
+				zmsp.push_back(shared_ptr<zielmustercl>(new zielmustercl(*(string*)opvzm[i-1]->pptr,*(string*)opvzm[i]->pptr)));
+			}
 		} // 		for(long i=0;i<zmzn;i++) 
-		zmp=zmvp;
 	} // 	if (!zmzn)
-	////	optausg(rot);
+	////	opn.oausgeb(rot);
 	////	opn.gibomapaus();
 	hLog(violetts+Txk[T_Ende]+Txk[T_virtlieskonfein]+schwarz); //α
 	obverb=altobverb;
