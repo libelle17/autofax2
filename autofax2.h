@@ -273,6 +273,14 @@ enum T_
 	T_beim_letzten_fuer_alle_Uebrigen_nichts_eingeben,
 	T_Zielverzeichnis_Nr,
 	T_setzhylavz,
+	T_aus_systemd_fax_service_Datei_ermittelt,
+	T_aus_etc_init_d_hylafax_ermittelt,
+	T_aus_seiner_ausschliesslichen_Existenz_ermittelt,
+	T_aus_seinem_geringen_Alter_ermittelt,
+	T_aus_mangelnder_Alternative_ermittelt,
+	T_aus_Existenz_von,
+	T_ermittelt,
+	T_hylafax_Verzeichnis,
 	T_MAX //α
 }; // enum T_ //ω
 
@@ -317,6 +325,7 @@ class hhcl:public dhcl
 {
  private: //ω
 		static const string initdhyladt; // /etc/init.d/hylafax
+		uchar initdhyladt_gibts{0}; // Datei initdhyladt existiert
     svec modems;       // gefundene Modems
     uchar modemgeaendert=0; // hmodem neu gesetzt
     int hylazuerst=-1;  // ob ein Fax zuerst ueber Hylafax versucht werden soll zu faxen
@@ -339,12 +348,13 @@ class hhcl:public dhcl
 
     servc *sfaxq=0, *shfaxd=0, *shylafaxd=0, *sfaxgetty=0, *scapis=0;
     confdcl *cfaxcp=0; // Zeiger auf ausgelesene /etc/capisuite/fax.conf
-		const string s1="mv -n ";
+    confdcl *hfaxcp{0}; // Zeiger auf ausgelesene /etc/init.d/hylafax.conf
+		const string s1{"mv -n "};
 		//		const string s2="/2200/* ";
 		//schlArr hylcnfA; // fuer q1234 o.ae.
 		uchar hgelesen=0; // Protokolldatei war auslesbar
-		static constexpr const char *moeglhvz[2]={"/var/spool/fax","var/spool/hylafax"};
-		string huser="uucp"; // "uucp" oder "fax"
+		static constexpr const char *moeglhvz[2]{"/var/spool/fax","var/spool/hylafax"};
+		string huser{"uucp"}; // "uucp" oder "fax"
     uchar obfcard=1;    // ob Fritzcard eingesteckt
     uchar obfcgeprueft=0; // ob schon geprueft, ob Fritzcard eingesteckt
     uchar obmodem=1;    // ob Modem angeschlossen
@@ -424,6 +434,8 @@ class hhcl:public dhcl
     string msn;         // MSN fuer Fax
     string LocalIdentifier; // eigener Namen fuer Hylafax bis 10 Buchstaben
     string varsphylavz; // Verzeichnis der Hyla-Spool-Dateien /var/spool/hylafax oder /var/spool/fax
+		string spoolvz; // Kandidat SPOOL in Konfigurkationsdatei dafür
+		string hylafax_homevz; // Kandidat HYLAFAX_HOME in Konfigurkationsdatei dafür
     string cFaxUeberschrift; // eigener Namen fuer Capisuite bis 20 Buchstaben
 		schAcl<optcl> opvsql=schAcl<optcl>("opvsql"),opvzm=schAcl<optcl>("opvzm"); // Optionen
     string host="localhost";  // fuer MySQL/MariaDB
@@ -431,6 +443,11 @@ class hhcl:public dhcl
 		schAcl<WPcl> cfcnfC=schAcl<WPcl>("cfcnfC"); // Capikonfiguration aus fax.conf
 		schAcl<WPcl> cccnfC=schAcl<WPcl>("cccnfC"); // Capikonfiguration aus capisuite.conf
 		schAcl<WPcl> hfcnfC=schAcl<WPcl>("hfcnfC"); // Hylakonfiguration
+		string hempfavz;    // var/spool/(hyla)fax/" DPROG "arch
+		string xferfaxlog; // varsphylavz + "/etc/xferfaxlog"; 
+    string hsendqvz; // /var/spool/hylafax/sendq
+    string hdoneqvz; // /var/spool/hylafax/doneq
+    string harchivevz; // /var/spool/hylafax/archive
  protected: //α
 	string p1;
 	int p2;
@@ -461,6 +478,7 @@ class hhcl:public dhcl
  private: //α //ω
 	void cfcnfCfuell();
 	void cccnfCfuell();
+	void hfcnfCfuell(); // /etc/init.d/hylafax
 	void liescapiconf();
 	void konfcapi(); // aufgerufen in pruefcapi
 	void capisv();

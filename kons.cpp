@@ -6643,14 +6643,14 @@ template<typename SCL> void schAcl<SCL>::gibaus(const int nr/*=0*/)
 } // template<typename SCL> void schAcl
 
 // wird aufgerufen in parsecl, lauf
-template<typename SCL> void schAcl<SCL>::oausgeb(const char* const farbe)
+template<typename SCL> void schAcl<SCL>::oausgeb(const char* const farbe,int obverb/*=0*/,int oblog/*=0*/)
 {
-	fLog(violetts+name+Txk[T_optausg]+schwarz);
+	fLog(violetts+name+Txk[T_optausg]+schwarz,obverb,oblog);
 	for(size_t iru=0;iru<size();iru++) {
 			cout<<farbe<<setw(3)<<iru<<schwarz<<" ";
 			schl[iru]->virtoausgeb();
 	}
-	fLog(violetts+Txk[T_Ende]+name+Txk[T_optausg]+schwarz);
+	fLog(violetts+Txk[T_Ende]+name+Txk[T_optausg]+schwarz,obverb,oblog);
 } // void schAcl::frisch()
 
 template<typename SCL> void schAcl<SCL>::gibomapaus()

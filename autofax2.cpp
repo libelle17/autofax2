@@ -571,6 +571,22 @@ char const *DPROG_T[T_MAX+1][SprachZahl]={
 	{"Zielverzeichnis Nr. ","Target directory no. "},
 	// T_setzhylavz
 	{"setzhylavz()","sethyladir()"},
+	// T_aus_systemd_fax_service_Datei_ermittelt
+	{" aus systemd-fax-service-Datei ermittelt"," determined from systemd fax service file"},
+	// T_aus_etc_init_d_hylafax_ermittelt,
+	{" aus /etc/init.d/hylafax ermittelt"," determined from /etc/init.d/hylafax"},
+	// T_aus_seiner_ausschliesslichen_Existenz_ermittelt
+	{" aus seiner ausschliesslichen Existenz ermittelt"," determined from its exclusive existence"},
+	// T_aus_seinem_geringen_Alter_ermittelt
+	{" aus seinem geringeren Alter ermittelt"," determined from its lower age"},
+	// T_aus_mangelnder_Alternative_ermittelt
+	{" aus mangelnder Alternative ermittelt"," determined from missing alternative"},
+	// T_aus_Existenz_von,
+	{" aus Existenz von "," determined from the existence of "},
+	// T_ermittelt
+	{" ermittelt.","."},
+	// T_hylafax_Verzeichnis
+	{"hylafax-Verzeichnis: ","hylafax-directory: "},
 	{"",""} //α
 }; // char const *DPROG_T[T_MAX+1][SprachZahl]=
 
@@ -797,6 +813,7 @@ void pruefblack(int obverb, int oblog)
 	} // if (blacki.is_open())  else
 } // void pruefblack(int obverb, int oblog) 
 
+constexpr const char *hhcl::moeglhvz[2];
 // wird aufgerufen in pruefsfftobmp und empfcapi
 void hhcl::instsfftobmp()
 {
@@ -2572,12 +2589,12 @@ void hhcl::virtrueckfragen()
 } // void hhcl::virtrueckfragen()
 
 // aufgerufen in liescapiconf
-void hhcl::hfcnfCfuell()
+void hhcl::hfcnfCfuell() // hylafax 
 {
 	static uchar neu=1;
 	if (neu) {	
-		hfcnfC<<new WPcl("spool_dir",&spoolcapivz,pstri);
-		hfcnfC<<new WPcl("fax_user_dir",&cfaxuservz,pstri);
+		hfcnfC<<new WPcl("SPOOL",&spoolvz,pstri);
+		hfcnfC<<new WPcl("HYLAFAX_HOME",&hylafax_homevz,pstri);
 		neu=0;
 	} // 	if (neu)
 } // void hhcl::hfcnfCfuell
@@ -2590,7 +2607,7 @@ int hhcl::setzhylavz()
 	// koennte auch im Fall eines entfernten Modems oder hylafax-Programms benoetigt werden
 	// sucht das Hylaverzeichnis und setzt varsphylavz darauf, return 0, wenn nicht gefunden dann varsphylavz="", return 1
 	// varsphylavz und hsendqvz festlegen
-	fLog(violetts+Tx[T_setzhylavz]+schwarz);
+	fLog(violetts+Tx[T_setzhylavz]+schwarz,obverb,oblog);
 	// wird fruehestens in korrigierecapi benoetigt
 	// varsphylavz wird benoetigt in: korrigierecapi, untersuchespool, hfaxsetup(pruefhyla), pruefhyla, hylaausgeb(untersuchespool,zeigweitere)
 	// hsendqvz wird benoetigt in: loescheallewartenden, loeschewaise, zeigweitere, inDBh(faxemitH)
@@ -2613,25 +2630,25 @@ int hhcl::setzhylavz()
 
 		////    cppSchluess hylaconf[]={{"SPOOL"},{"HYLAFAX_HOME"}};
 		////    size_t cs=sizeof hylaconf/sizeof*hylaconf;
-		const char* const sarr[]={"SPOOL","HYLAFAX_HOME"};
-		schlArr hycnfA(sarr,sizeof sarr/sizeof *sarr);
 		hfcnfCfuell();
-		struct stat hstat={0};
+		struct stat hstat{0};
 		if (!lstat(initdhyladt.c_str(),&hstat)) {
 			initdhyladt_gibts=1;
-			confdat hylacd(initdhyladt,&hycnfA,obverb);
+			if (hfaxcp) delete hfaxcp;
+			hfaxcp = new confdcl(initdhyladt,obverb);
+			hfaxcp->kauswert(&hfcnfC);
 		} //     if (!lstat(initdhyladt.c_str(),&hstat))
-		if (!hycnfA[1].wert.empty()) {
+		if (!hylafax_homevz.empty()) {
 			//  if (cpplies(initdhyladt,hylaconf,cs)) KLA
-			varsphylavz=hycnfA[1].wert;
+			varsphylavz=hylafax_homevz;
 			fundart=2;
-		} else if (!hycnfA[0].wert.empty()) {
-			varsphylavz=hycnfA[0].wert;
+		} else if (!spoolvz.empty()) {
+			varsphylavz=spoolvz;
 			fundart=2;
 		} else {
 			// 3) ... ansonsten schauen, welches Verzeichnis es gibt ...
-			struct stat hstat={0},fstat={0};
-			const char *hfax="/var/spool/hylafax", *ffax="/var/spool/fax";
+			struct stat hstat{0},fstat{0};
+			const char *const hfax{"/var/spool/hylafax"}, *const ffax{"/var/spool/fax"};
 			int hgibts=!lstat(hfax,&hstat), fgibts=!lstat(ffax,&hstat);
 			if (hgibts && !fgibts) {
 				varsphylavz=hfax; 
@@ -2684,7 +2701,7 @@ int hhcl::setzhylavz()
 			case 5: grund=Tx[T_aus_mangelnder_Alternative_ermittelt];break;
 			case 6: grund=Tx[T_aus_Existenz_von]+blaus+testcmd+schwarz+Tx[T_ermittelt];break;
 		} //     switch (fundart)
-		Log(Tx[T_hylafax_Verzeichnis]+blaus+varsphylavz+schwarz+grund);
+		fLog(Tx[T_hylafax_Verzeichnis]+blaus+varsphylavz+schwarz+grund);
 	} // if (obverb)
 	kuerzevtz(&varsphylavz);
 	hsendqvz=varsphylavz+"/sendq";

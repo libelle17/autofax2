@@ -849,7 +849,7 @@ template <typename SCL> class schAcl {
  void gibomapaus();
  void eintrinit();
  void frisch();
- void oausgeb(const char* const farbe);
+ void oausgeb(const char* const farbe,int obverb=0,int oblog=0);
  ~schAcl();
 }; // class schAcl
 template <> void schAcl<WPcl>::sinit(size_t vzahl, ...);
