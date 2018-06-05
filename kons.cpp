@@ -5644,6 +5644,9 @@ int hcl::kompilfort(const string& was,const string& vorcfg/*=string()*/, const s
 		////		const string b4="ldconfig "+lsys.getlib64();
 		const string b4="ldconfig /usr";
 		int erg1;
+		// bei linux-source muss unter Ubuntu 4.15.0-22-generic evtl. libelf-dev installiert werden, ferner /usr/src/linux-headers-4.15.0-22/arch/x86/include/asm/uaccess.h um die beiden Zeilen:
+		// #include <linux/thread_info.h> und
+		// #include <linux/sched.h> ergaenzt werden
 									caus<<"1"<<endl;
 									caus<<"2"<<endl;
 									caus<<"3"<<endl;
