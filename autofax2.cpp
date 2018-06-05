@@ -2679,7 +2679,7 @@ int hhcl::setzhylavz()
 		////  else if (lsys.getsys(obverb,oblog)==deb) varsphylavz="/var/spool/hylafax";
 		string testvz=varsphylavz;
 		for(unsigned iru=0;iru<(sizeof moeglhvz/sizeof *moeglhvz)+1;iru++) {
-			struct stat entryhyla={0};
+			struct stat entryhyla{0};
 			if (!lstat((testvz+testcmd).c_str(),&entryhyla)) {
 				varsphylavz=testvz; 
 				if (iru) fundart=6;
