@@ -646,6 +646,8 @@ const char *kons_T[T_konsMAX+1][SprachZahl]=
 	{"virtlgnzuw, langu: ","virtlgnassign, langu: "},
 	// T_Bitte_rufen_Sie_dies_mit_w_auf_um_die_aktuellen_Optionen_zu_sehen
 	{" (bitte rufen Sie dies mit -w auf, um die aktuellen Optionen zu sehen)"," (please call this with -v to see the current options)"},
+	// T_keine_Daten_zum_Anzeigen_Bearbeiten
+	{"keine Dateien zum Anzeigen/Bearbeiten","no files to show/edit"},
 	{"",""}
 }; // const char *Txkonscl::TextC[T_konsMAX+1][SprachZahl]=
 
@@ -1813,105 +1815,105 @@ int obprogda(const string& prog, int obverb/*=0*/, int oblog/*=0*/, string *pfad
 
 linst_cl::linst_cl(int obverb,int oblog)
 {
-// inhaltlich parallel getIPR() in install.sh
-		if (obprogda("rpm",obverb>0?obverb-1:0,oblog)) {
-			dev="devel";
-			schau="rpm -q";
-			udpr=sudc+"rpm -e --nodeps ";
-			if (obprogda("zypper",obverb>0?obverb-1:0,oblog)) { // opensuse
-				// heruntergeladene Dateien behalten
-				ipr=zypper;
-				instp=sudc+"zypper -n --gpg-auto-import-keys in ";
-				instyp=instp+"-y -f ";
-				upr="zypper -n rm -u ";
-				uypr=upr+"-y ";
-				upd=sudc+"zypper patch";
-				repos=sudc+"zypper lr | grep 'g++\\|devel_gcc'>/dev/null 2>&1 || "+
-				      sudc+"zypper ar http://download.opensuse.org/repositories/devel:/gcc/`cat /etc/*-release |"
-							"grep ^NAME= | cut -d'\"' -f2 | sed 's/ /_/'`_`cat /etc/*-release | grep ^VERSION_ID= | cut -d'\"' -f2`/devel:gcc.repo;";
-				compil="gcc gcc-c++ gcc6-c++";
-			} else { // dann fedora oder mageia
-				if (obprogda("dnf",obverb>0?obverb-1:0,oblog)) {
-					ipr=dnf;
-					instp=sudc+"dnf install ";
-					instyp=sudc+"dnf -y install ";
-					upr="dnf remove ";
-					uypr="dnf -y remove ";
-					upd=sudc+"dnf update";
-				} else if (obprogda("yum",obverb>0?obverb-1:0,oblog)) {
-					ipr=yum;
-					instp=sudc+"yum install ";
-					instyp=sudc+"yum -y install ";
-					upr="yum remove ";
-					uypr="yum -y remove ";
-					upd=sudc+"yum update";
-				} else if (obprogda("urpmi.update",obverb>0?obverb-1:0,oblog)) {
-					ipr=urp;
-					instp="urpmi --auto ";
-					instyp="urpmi --auto --force ";
-					upr="urpme ";
-					uypr="urpme --auto --force ";
-					upd=sudc+"urpmi.update -a";
-				} // 				if (obprogda("dnf",obverb>0?obverb-1:0,oblog))
-				compil="make automake gcc-c++ kernel-devel";
-			} // 			if (obprogda("zypper",obverb>0?obverb-1:0,oblog)) KLZ // opensuse
-		} else if (obprogda("apt-get",obverb>0?obverb-1:0,oblog)) {
-			// Repositories: Frage nach cdrom ausschalten
-			// genauso in: configure
-			// wenn cdrom-Zeile vorkommt, vor ftp.-debian-Zeile steht und www.debian.org erreichbar ist, dann alle cdrom-Zeilen hinten anhaengen
-			// gleichlautend in configure: einricht()
-			systemrueck("S=/etc/apt/sources.list;F='^[^#]*cdrom:';grep -qm1 $F $S && "
-			    "test 0$(sed -n '/^[^#]*ftp.*debian/{=;q}' $S) -gt 0$(sed -n '/'$F'/{=;q}' $S) && "
-					"ping -qc 1 www.debian.org >/dev/null 2>&1 && sed -i.bak '/'$F'/{H;d};${p;x}' $S;:",obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
-			// hier werden die Dateien vorgabemaessig behalten
-			ipr=apt;
-			schau="dpkg -s";
-			instp=sudc+"apt-get install "; 
-			instyp=sudc+"apt-get -y --force-yes --reinstall install "; 
-			upr="apt-get -f install; apt-get --auto-remove purge ";
-			udpr=sudc+"apt-get -f install;"+sudc+"dpkg -r --force-depends ";
-			uypr="apt-get -f install; apt-get -y --auto-remove purge ";
-			upd=sudc+"apt update;"+sudc+"apt upgrade;";
-			compil="install build-essential linux-headers-`uname -r`";
-			dev="dev";
-		} else if (obprogda("pacman",obverb>0?obverb-1:0,oblog)) {
-			ipr=pac;
-			schau="pacman -Qi";
-			instp=sudc+"pacman -S ";
-			instyp=sudc+"pacman -S --noconfirm ";
-			upr="pacman -R -s ";
-			udpr=sudc+"pacman -R -d -d ";
-			uypr="pacman -R -s --noconfirm "; 
-			upd=sudc+"pacman -Syu";
-			compil="gcc linux-headers-`uname -r`";
-		} else {
-			cerr<<Txk[T_Weder_zypper_noch_apt_get_noch_dnf_noch_yum_als_Installationspgrogramm_gefunden]<<endl;
-		} // 		if (obprogda("rpm",obverb>0?obverb-1:0,oblog))
-    svec qrueck;
-		if (findv==1) {
-			systemrueck("find /usr -maxdepth 1 -type d -name 'lib*'",obverb,oblog,&qrueck,/*obsudc=*/0);
-		} else findfile(&qrueck,findv,obverb,oblog,0,"/usr",/*muster=*/"lib[^/]*$",1,34,1);
-		for(size_t iru=0;iru<qrueck.size();iru++) libs+=qrueck[iru]+" ";
-		obprogda("sh",obverb,oblog,&shpf);// Pfad zu sh
-		obprogda("xargs",obverb,oblog,&xargspf);// Pfad zu xargs
-		obprogda("ionice",obverb,oblog,&ionicepf);// Pfad zu ionice
-		obprogda("nice",obverb,oblog,&nicepf);// Pfad zu nice
+	// inhaltlich parallel getIPR() in install.sh
+	if (obprogda("apt-get",obverb>0?obverb-1:0,oblog)) {
+		// Repositories: Frage nach cdrom ausschalten
+		// genauso in: configure
+		// wenn cdrom-Zeile vorkommt, vor ftp.-debian-Zeile steht und www.debian.org erreichbar ist, dann alle cdrom-Zeilen hinten anhaengen
+		// gleichlautend in configure: einricht()
+		systemrueck("S=/etc/apt/sources.list;F='^[^#]*cdrom:';grep -qm1 $F $S && "
+				"test 0$(sed -n '/^[^#]*ftp.*debian/{=;q}' $S) -gt 0$(sed -n '/'$F'/{=;q}' $S) && "
+				"ping -qc 1 www.debian.org >/dev/null 2>&1 && sed -i.bak '/'$F'/{H;d};${p;x}' $S;:",obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
+		// hier werden die Dateien vorgabemaessig behalten
+		ipr=apt;
+		schau="dpkg -s";
+		instp=sudc+"apt-get install "; 
+		instyp=sudc+"apt-get -y --force-yes --reinstall install "; 
+		upr="apt-get -f install; apt-get --auto-remove purge ";
+		udpr=sudc+"apt-get -f install;"+sudc+"dpkg -r --force-depends ";
+		uypr="apt-get -f install; apt-get -y --auto-remove purge ";
+		upd=sudc+"apt update;"+sudc+"apt upgrade;";
+		compil="install build-essential linux-headers-`uname -r`";
+		dev="dev";
+	} else if (obprogda("rpm",obverb>0?obverb-1:0,oblog)) {
+		dev="devel";
+		schau="rpm -q";
+		udpr=sudc+"rpm -e --nodeps ";
+		if (obprogda("zypper",obverb>0?obverb-1:0,oblog)) { // opensuse
+			// heruntergeladene Dateien behalten
+			ipr=zypper;
+			instp=sudc+"zypper -n --gpg-auto-import-keys in ";
+			instyp=instp+"-y -f ";
+			upr="zypper -n rm -u ";
+			uypr=upr+"-y ";
+			upd=sudc+"zypper patch";
+			repos=sudc+"zypper lr | grep 'g++\\|devel_gcc'>/dev/null 2>&1 || "+
+				sudc+"zypper ar http://download.opensuse.org/repositories/devel:/gcc/`cat /etc/*-release |"
+				"grep ^NAME= | cut -d'\"' -f2 | sed 's/ /_/'`_`cat /etc/*-release | grep ^VERSION_ID= | cut -d'\"' -f2`/devel:gcc.repo;";
+			compil="gcc gcc-c++ gcc6-c++";
+		} else { // dann fedora oder mageia
+			if (obprogda("dnf",obverb>0?obverb-1:0,oblog)) {
+				ipr=dnf;
+				instp=sudc+"dnf install ";
+				instyp=sudc+"dnf -y install ";
+				upr="dnf remove ";
+				uypr="dnf -y remove ";
+				upd=sudc+"dnf update";
+			} else if (obprogda("yum",obverb>0?obverb-1:0,oblog)) {
+				ipr=yum;
+				instp=sudc+"yum install ";
+				instyp=sudc+"yum -y install ";
+				upr="yum remove ";
+				uypr="yum -y remove ";
+				upd=sudc+"yum update";
+			} else if (obprogda("urpmi.update",obverb>0?obverb-1:0,oblog)) {
+				ipr=urp;
+				instp="urpmi --auto ";
+				instyp="urpmi --auto --force ";
+				upr="urpme ";
+				uypr="urpme --auto --force ";
+				upd=sudc+"urpmi.update -a";
+			} // 				if (obprogda("dnf",obverb>0?obverb-1:0,oblog))
+			compil="make automake gcc-c++ kernel-devel";
+		} // 			if (obprogda("zypper",obverb>0?obverb-1:0,oblog)) KLZ // opensuse
+	} else if (obprogda("pacman",obverb>0?obverb-1:0,oblog)) {
+		ipr=pac;
+		schau="pacman -Qi";
+		instp=sudc+"pacman -S ";
+		instyp=sudc+"pacman -S --noconfirm ";
+		upr="pacman -R -s ";
+		udpr=sudc+"pacman -R -d -d ";
+		uypr="pacman -R -s --noconfirm "; 
+		upd=sudc+"pacman -Syu";
+		compil="gcc linux-headers-`uname -r`";
+	} else {
+		cerr<<Txk[T_Weder_zypper_noch_apt_get_noch_dnf_noch_yum_als_Installationspgrogramm_gefunden]<<endl;
+	} // 		if (obprogda("rpm",obverb>0?obverb-1:0,oblog))
+	svec qrueck;
+	if (findv==1) {
+		systemrueck("find /usr -maxdepth 1 -type d -name 'lib*'",obverb,oblog,&qrueck,/*obsudc=*/0);
+	} else findfile(&qrueck,findv,obverb,oblog,0,"/usr",/*muster=*/"lib[^/]*$",1,34,1);
+	for(size_t iru=0;iru<qrueck.size();iru++) libs+=qrueck[iru]+" ";
+	obprogda("sh",obverb,oblog,&shpf);// Pfad zu sh
+	obprogda("xargs",obverb,oblog,&xargspf);// Pfad zu xargs
+	obprogda("ionice",obverb,oblog,&ionicepf);// Pfad zu ionice
+	obprogda("nice",obverb,oblog,&nicepf);// Pfad zu nice
 } // linst_cl::linst_cl(int obverb,int oblog)
 
 const string& absch::suche(const char* const sname)
 {
 	static const string nix;
-  for (size_t i=0;i<av.size();i++) {
-    if (av[i].pname==sname) {
-      return av[i].wert;
-    }
-  } //   for (size_t i=0;i<av.size();i++)
-  return nix;
+	for (size_t i=0;i<av.size();i++) {
+		if (av[i].pname==sname) {
+			return av[i].wert;
+		}
+	} //   for (size_t i=0;i<av.size();i++)
+	return nix;
 } // const string& absch::suche(const char* const sname)
 
 const string& absch::suche(const string& sname)
 {
-  return suche(sname.c_str());
+	return suche(sname.c_str());
 } // const string& absch::suche(const string& sname)
 
 void absch::clear()
@@ -5642,16 +5644,49 @@ int hcl::kompilfort(const string& was,const string& vorcfg/*=string()*/, const s
 		////		const string b4="ldconfig "+lsys.getlib64();
 		const string b4="ldconfig /usr";
 		int erg1;
+									caus<<"1"<<endl;
+									caus<<"2"<<endl;
+									caus<<"3"<<endl;
+									caus<<"4"<<endl;
+									caus<<"b1: "<<b1<<endl;
+									caus<<"4a"<<endl;
+									caus<<"4b"<<endl;
+									caus<<"4c"<<endl;
+									caus<<"4d"<<endl;
 		if (!(erg1=systemrueck(b1,obverb,oblog,/*rueck=*/0,/*obsudc=*/0))) {
+									caus<<"5"<<endl;
+									caus<<"6"<<endl;
+									caus<<"7"<<endl;
+									caus<<"8"<<endl;
 			////if (!(erg1=systemrueck(b1,obverb,oblog,/*rueck=*/0,/*obsudc=*/0,/*verbergen=*/0,/*obergebnisanzeig=*/wahr,/*ueberschr=*/string(),
 			////				/*errm=*/0,/*obincron=*/0,/*ausgp=*/0,/*obdirekt=*/0))) KLZ
 			ret=systemrueck(b2,obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
+									caus<<"9"<<endl;
+									caus<<"10"<<endl;
+									caus<<"11"<<endl;
+									caus<<"12"<<endl;
 		} else {
+									caus<<"13"<<endl;
+									caus<<"14"<<endl;
+									caus<<"15"<<endl;
+									caus<<"16"<<endl;
 			if (!systemrueck(b3,obverb,oblog,/*rueck=*/0,/*obsudc=*/0)) {
+									caus<<"17"<<endl;
+									caus<<"18"<<endl;
+									caus<<"19"<<endl;
+									caus<<"20"<<endl;
 				ret=systemrueck(b2,obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
+									caus<<"21"<<endl;
+									caus<<"22"<<endl;
+									caus<<"23"<<endl;
+									caus<<"24"<<endl;
 			}
 		}
 		systemrueck(b4,obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
+									caus<<"25"<<endl;
+									caus<<"26"<<endl;
+									caus<<"27"<<endl;
+									caus<<"28"<<endl;
 		hLog(string(Txk[T_Ergebnis_nach_make])+" "+ltoan(erg1));
 		hLog(string(Txk[T_Ergebnis_nach_make_install])+" "+ltoan(ret));
 		////		ret=systemrueck(bef,obverb,oblog);
@@ -6346,12 +6381,17 @@ void viadd(string* cmdp,string* zeigp, const string& datei,const uchar ro/*=0*/,
 // wird aufgerufen in dodovi
 void hcl::vischluss(string& erg,string& zeig)
 {
-	erg+="tabfirst' -p";
-	string exdt=instvz+"/.exrc";
-	{ifstream is(exdt);if (is.good()) erg+="Nu "+exdt;}
-	//// <<violett<<cmd+" +'"+erg+" "+devtty<<schwarz<<endl;
-	systemrueck("ls -l "+zeig,2);
-	exit(systemrueck(cmd+" +'"+erg+" "+devtty,obverb,0,/*rueck=*/0,/*obsudc=*/0));
+	if (cmd==edit) {
+		fLog(rots+Txk[T_keine_Daten_zum_Anzeigen_Bearbeiten]+schwarz,1,0);
+		exit(0);
+	} else {
+		erg+="tabfirst' -p";
+		string exdt=instvz+"/.exrc";
+		{ifstream is(exdt);if (is.good()) erg+="Nu "+exdt;}
+		//// <<violett<<cmd+" +'"+erg+" "+devtty<<schwarz<<endl;
+		if (!zeig.empty()) systemrueck("ls -l "+zeig,2);
+		exit(systemrueck(cmd+" +'"+erg+" "+devtty,obverb,0,/*rueck=*/0,/*obsudc=*/0));
+	}
 } // void vischluss
 
 // aufgerufen in: dovi

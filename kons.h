@@ -447,6 +447,7 @@ enum Tkons_
 	T_rueckzufragen_wegen,
 	T_virtlgnzuw_langu,
 	T_Bitte_rufen_Sie_dies_mit_w_auf_um_die_aktuellen_Optionen_zu_sehen,
+	T_keine_Daten_zum_Anzeigen_Bearbeiten,
 	T_konsMAX
 }; // Tkons_
 
