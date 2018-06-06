@@ -810,6 +810,19 @@ struct optcl:wpgcl
 // fuer Commandline-Optionen
 // enum par_t:uchar {pstri,pdez,ppwd,pverz,pfile,puchar,pbin,pint,plong,pdat}; // Parameterart: Sonstiges, Verzeichnis, Datei, uchar, int, long, Datum (struct tm)
 
+struct abSchl {
+   const string pname;
+   const string wert;
+   abSchl(const string& vname, const string& vwert):pname(vname),wert(vwert) {}
+}; // class abSchl
+
+struct sAinitcl
+{
+ const char* const name;
+ const void *wertp;
+ sAinitcl(const char* const name, const void *wertp):name(name),wertp(wertp){}
+};
+
 template <typename SCL> class schAcl {
  public:
 	string name;
@@ -829,6 +842,8 @@ template <typename SCL> class schAcl {
  inline size_t size(){return schl.size();}
  inline shared_ptr<SCL> letzter() {return schl[schl.size()-1];} 
  schAcl(const string& name);
+ schAcl(const string& name, vector<sAinitcl>& v);
+ schAcl(const string& name, vector<abSchl>& v);
 // schAcl(const string& name, const char* const* sarr,size_t vzahl);
  // void neu(size_t vzahl=0);
  void sinit(size_t vzahl, ...);
@@ -856,12 +871,6 @@ template <typename SCL> class schAcl {
 template <> void schAcl<WPcl>::sinit(size_t vzahl, ...);
 template <> void schAcl<WPcl>::eintrinit();
 template <> void schAcl<optcl>::eintrinit();
-
-struct abSchl {
-   string pname;
-   string wert;
-   abSchl(string& vname, string& vwert):pname(vname),wert(vwert) {}
-}; // class abSchl
 
 // Linux-System-Enum
 enum lsysen:uchar {usys,sus,deb,fed};

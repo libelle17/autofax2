@@ -3868,6 +3868,25 @@ void hhcl::virtlieskonfein()
 int main(int argc,char** argv)
 {
 	if (argc>1) { //ω
+		const void *w1="wert1";
+		w1="wert11";
+		vector<sAinitcl> v;
+		vector<abSchl> w;
+		const string x1="x1";
+		const string x2="x2";
+		v.push_back(sAinitcl("n1",w1));
+		v.push_back(sAinitcl("n2","wert2"));
+		schAcl<WPcl> tst=schAcl<WPcl>("tst",v); // Capikonfiguration aus fax.conf
+		for(size_t i=0;i<tst.size();i++) {
+			caus<<tst[i]->pname<<", wert: '"<<(char*)tst[i]->pptr<<"'"<<endl;
+		}
+		w.push_back(abSchl("m1",x1));
+		w.push_back(abSchl("m2",x2));
+		schAcl<WPcl> tsw=schAcl<WPcl>("tsw",w); // Capikonfiguration aus fax.conf
+		for(size_t i=0;i<tsw.size();i++) {
+			caus<<tsw[i]->pname<<", wert: '"<<*(string*)tsw[i]->pptr<<"'"<<endl;
+		}
+		exit(12);
 	} //α
 	hhcl hhi(argc,argv); // hiesige Hauptinstanz, mit lngzuw, setzlog und pruefplatte
 	hhi.lauf(); // Einleitungsteil mit virtuellen Funktionen, 
