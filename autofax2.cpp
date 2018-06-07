@@ -942,7 +942,8 @@ hhcl::hhcl(const int argc, const char *const *const argv):dhcl(argc,argv,DPROG,/
 } // hhcl::hhcl //α
 // Hier neue Funktionen speichern: //ω
 
-// aufgerufen in liescapiconf
+// aufgerufen in liescapiconf, dann unnoetig
+#ifdef false
 void hhcl::cfcnfCfuell()
 {
 	static uchar neu=1;
@@ -960,6 +961,7 @@ void hhcl::cfcnfCfuell()
 		neu=0;
 	} // 	if (neu)
 } // void hhcl::cfcnfCfuell
+#endif
 
 // aufgerufen in liescapiconf
 void hhcl::cccnfCfuell()
@@ -986,11 +988,26 @@ void hhcl::liescapiconf()
 	} else findfile(&qrueck,findv,obverb,oblog,0,wo,/*muster=*/"/fax\\.conf$");
 	if (qrueck.size()) cfaxconfdt=qrueck[0];
 	if (!cfaxconfdt.empty()) {
+#ifdef false
 		cfcnfCfuell();
+#endif
+		aSvec cv;
+		cv<<aScl("spool_dir",&spoolcapivz);
+		cv<<aScl("fax_user_dir",&cfaxuservz);
+		cv<<aScl("send_tries",&maxcdials);
+		cv<<aScl("send_delays",&send_delays);
+		cv<<aScl("outgoing_MSN",&outgoing_MSN);
+		cv<<aScl("dial_prefix",&dial_prefix);
+		cv<<aScl("fax_stationID",&fax_stationID);
+		cv<<aScl("fax_headline",&fax_headline);
+		cv<<aScl("fax_email_from",&fax_email_from);
+		cv<<aScl("outgoing_timeout",&outgoing_timeout);
+		vector<aScl> cw{{"spool_dir",&spoolcapivz},{"fax_user_dir",&cfaxuservz}};
+		cfcnfCp=new schAcl<WPcl>("cfcnfC",cv); // Capikonfiguration aus fax.conf
 		pruefverz(dir_name(cfaxconfdt),obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/0);
 		if (cfaxcp) delete cfaxcp;
 		cfaxcp = new confdcl(cfaxconfdt,obverb);
-		cfaxcp->kauswert(&cfcnfC);
+		cfaxcp->kauswert(cfcnfCp);
 //		cfaxcp->Abschn_auswert(obverb);
 #ifdef false
 		cfcnfA.init(10,"spool_dir","fax_user_dir","send_tries","send_delays","outgoing_MSN",
@@ -1223,8 +1240,8 @@ void hhcl::konfcapi()
 		outgoing_timeout="60";
 		outgoing_timeout=Tippstr(string("outgoing_timeout: ")+Tx[T_Geduld_bis_zum_Verbindungsaufbau_in_s],&outgoing_timeout);
 		if (obverb>0) {
-			for(unsigned snr=0;snr<cfcnfC.size();snr++) {
-				hLog("snr: "+blaus+ltoan(snr)+schwarz+" "+cfcnfC[snr]->pname+", "+cfcnfC[snr]->virtholstr());
+			for(unsigned snr=0;snr<cfcnfCp->size();snr++) {
+				hLog("snr: "+blaus+ltoan(snr)+schwarz+" "+(*cfcnfCp)[snr]->pname+", "+(*cfcnfCp)[snr]->virtholstr());
 			}
 		} // if (obverb>0)
 	} // if (rzf || (capicffehlt && !nrzf))
@@ -1260,22 +1277,22 @@ void hhcl::konfcapi()
 						if (nkz<kommpos) {
 							lzeile=zeile.substr(0,nkz); 
 							rzeile=zeile.substr(nkz+1);
-							for(unsigned snr=0;snr<cfcnfC.size();snr++) {
-								if (lzeile.find(cfcnfC[snr]->pname)!=string::npos) {
+							for(unsigned snr=0;snr<cfcnfCp->size();snr++) {
+								if (lzeile.find((*cfcnfCp)[snr]->pname)!=string::npos) {
 									//// _out<<"snr: "<<snr<<", lzeile: "<<tuerkis<<lzeile<<schwarz<<", rzeile: "<<blau<<rzeile<<schwarz<<endl;
 									string altwert=rzeile;
 									gtrim(&altwert);
 									anfzweg(altwert); // Anfuehrungszeichen entfernen
-									if (snr==0 || snr==1) cfcnfC[snr]->setzstr(altwert); // spool_dir und fax_user_dir hier nicht konfigurierbar
-									fLog(string("cfcnfC[")+ltoan(snr)+"].name: "+tuerkis+cfcnfC[snr]->pname+schwarz+Tx[T_komma_wert]+
-											(cfcnfC[snr]->virtholstr()==altwert?blau:rot)+cfcnfC[snr]->virtholstr()+schwarz+Tx[T_komma_Altwert]+
+									if (snr==0 || snr==1) (*cfcnfCp)[snr]->setzstr(altwert); // spool_dir und fax_user_dir hier nicht konfigurierbar
+									fLog(string("cfcnfC[")+ltoan(snr)+"].name: "+tuerkis+(*cfcnfCp)[snr]->pname+schwarz+Tx[T_komma_wert]+
+											((*cfcnfCp)[snr]->virtholstr()==altwert?blau:rot)+(*cfcnfCp)[snr]->virtholstr()+schwarz+Tx[T_komma_Altwert]+
 											blau+altwert+schwarz,obverb+iru,oblog+iru);
-									if (cfcnfC[snr]->virtholstr()!=altwert) {
+									if ((*cfcnfCp)[snr]->virtholstr()!=altwert) {
 										if (!iru) {
 											neuschreiben=1;
 											paramdiff=1;
 										} else {
-											string zschr=cfcnfC[snr]->pname+" = \""+cfcnfC[snr]->virtholstr()+"\"";
+											string zschr=(*cfcnfCp)[snr]->pname+" = \""+(*cfcnfCp)[snr]->virtholstr()+"\"";
 											*fneu<<zschr<<endl;
 											geschrieben=1;
 										} //                   if (!iru) else
@@ -1495,10 +1512,10 @@ void hhcl::clieskonf()
 				richtige=0;
 				//// <<"abschv["<<i<<"].av.size() "<<cfaxcp->abschv[i].av.size()<<endl;
 				for(size_t j=0;j<cfaxcp->abschv[i].av.size();j++) {
-					if (cfaxcp->abschv[i].av[j].pname=="fax_numbers") {if (cfaxcp->abschv[i].av[j].wert==outgoing_MSN) richtige++;}
-					else if (cfaxcp->abschv[i].av[j].pname=="fax_stationID") {if (cfaxcp->abschv[i].av[j].wert==fax_stationID) richtige++;}
-					else if (cfaxcp->abschv[i].av[j].pname=="fax_headline") {if (cfaxcp->abschv[i].av[j].wert==fax_headline) richtige++;}
-					else if (cfaxcp->abschv[i].av[j].pname=="fax_email_from") {if (cfaxcp->abschv[i].av[j].wert==fax_email_from) richtige++;}
+					if (cfaxcp->abschv[i].av[j].name=="fax_numbers") {if (*cfaxcp->abschv[i].av[j].wertp==outgoing_MSN) richtige++;}
+					else if (cfaxcp->abschv[i].av[j].name=="fax_stationID") {if (*cfaxcp->abschv[i].av[j].wertp==fax_stationID) richtige++;}
+					else if (cfaxcp->abschv[i].av[j].name=="fax_headline") {if (*cfaxcp->abschv[i].av[j].wertp==fax_headline) richtige++;}
+					else if (cfaxcp->abschv[i].av[j].name=="fax_email_from") {if (*cfaxcp->abschv[i].av[j].wertp==fax_email_from) richtige++;}
 				} //         for(size_t j=0;j<cfaxcp->abschv[i].av.size();j++)
 				break;
 			} //       if (cfaxcp->abschv[i].aname==cuser)
@@ -1986,7 +2003,7 @@ int hhcl::pruefcapi()
 					scapis->stop(-1,oblog);
 					capilaeuft=scapis->startundenable(-1,oblog);
 					if (capilaeuft) {
-						::fLog(Tx[T_Capisuite_gestartet],1,oblog);
+						fLog(Tx[T_Capisuite_gestartet],1,oblog);
 						break;
 					} else {
 						////       ::fLog("Capisuite konnte nicht gestartet werden.",1,1);
@@ -3868,21 +3885,16 @@ void hhcl::virtlieskonfein()
 int main(int argc,char** argv)
 {
 	if (argc>1) { //ω
-		const void *w1="wert1";
-		w1="wert11";
-		vector<sAinitcl> v;
-		vector<abSchl> w;
-		const string x1="x1";
-		const string x2="x2";
-		v.push_back(sAinitcl("n1",w1));
-		v.push_back(sAinitcl("n2","wert2"));
-		schAcl<WPcl> tst=schAcl<WPcl>("tst",v); // Capikonfiguration aus fax.conf
-		for(size_t i=0;i<tst.size();i++) {
-			caus<<tst[i]->pname<<", wert: '"<<(char*)tst[i]->pptr<<"'"<<endl;
-		}
-		w.push_back(abSchl("m1",x1));
-		w.push_back(abSchl("m2",x2));
+		aSvec w;
+		string x1("x1");
+		string x2("x2");
+		w<<aScl("m1",&x1);
+		w<<aScl("m2",&x2);
 		schAcl<WPcl> tsw=schAcl<WPcl>("tsw",w); // Capikonfiguration aus fax.conf
+		for(size_t i=0;i<tsw.size();i++) {
+			caus<<tsw[i]->pname<<", wert: '"<<*(string*)tsw[i]->pptr<<"'"<<endl;
+		}
+		x1="x1neu";
 		for(size_t i=0;i<tsw.size();i++) {
 			caus<<tsw[i]->pname<<", wert: '"<<*(string*)tsw[i]->pptr<<"'"<<endl;
 		}

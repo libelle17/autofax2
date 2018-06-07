@@ -670,13 +670,12 @@ std::string string_to_hex(const std::string& input);
 int dateivgl(const string& d1, const string& d2,uchar obzeit=0);
 void kuerzevtz(string *vzp);
 
-class svec: public vector<std::string>
+struct svec: public vector<std::string>
 {
-  public:
-    inline svec& operator<<(const std::string& str) {
-      this->push_back(str);
-      return *this;
-    }
+	inline svec& operator<<(const std::string& str) {
+		this->push_back(str);
+		return *this;
+	}
 }; // class svec: public vector<std::string>
 
 //svec& operator<<(svec& v, const std::string& str);
@@ -810,18 +809,19 @@ struct optcl:wpgcl
 // fuer Commandline-Optionen
 // enum par_t:uchar {pstri,pdez,ppwd,pverz,pfile,puchar,pbin,pint,plong,pdat}; // Parameterart: Sonstiges, Verzeichnis, Datei, uchar, int, long, Datum (struct tm)
 
-struct abSchl {
-   const string pname;
-   const string wert;
-   abSchl(const string& vname, const string& vwert):pname(vname),wert(vwert) {}
-}; // class abSchl
+struct aScl {
+   const string name;
+   const string *wertp;
+   aScl(const string& name, const string *wertp):name(name),wertp(wertp) {}
+}; // class aScl
 
-struct sAinitcl
+struct aSvec:vector<aScl>
 {
- const char* const name;
- const void *wertp;
- sAinitcl(const char* const name, const void *wertp):name(name),wertp(wertp){}
-};
+	inline aSvec& operator<<(const aScl& aS) {
+		this->push_back(aS);
+		return *this;
+	}
+}; // class aSvec: public vector<std::string>
 
 template <typename SCL> class schAcl {
  public:
@@ -842,8 +842,10 @@ template <typename SCL> class schAcl {
  inline size_t size(){return schl.size();}
  inline shared_ptr<SCL> letzter() {return schl[schl.size()-1];} 
  schAcl(const string& name);
- schAcl(const string& name, vector<sAinitcl>& v);
- schAcl(const string& name, vector<abSchl>& v);
+#ifdef false
+ schAcl(const string& name, vector<aScl>& v);
+#endif
+ schAcl(const string& name, vector<aScl> v);
 // schAcl(const string& name, const char* const* sarr,size_t vzahl);
  // void neu(size_t vzahl=0);
  void sinit(size_t vzahl, ...);
@@ -932,7 +934,7 @@ struct color {
 struct absch
 {
  string aname;
- vector<abSchl> av;
+ vector<aScl> av;
  const string& suche(const char* const sname);
  const string& suche(const string& sname);
  void clear();

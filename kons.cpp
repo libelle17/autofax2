@@ -1904,8 +1904,8 @@ const string& absch::suche(const char* const sname)
 {
 	static const string nix;
 	for (size_t i=0;i<av.size();i++) {
-		if (av[i].pname==sname) {
-			return av[i].wert;
+		if (av[i].name==sname) {
+			return *av[i].wertp;
 		}
 	} //   for (size_t i=0;i<av.size();i++)
 	return nix;
@@ -1949,7 +1949,7 @@ void confdcl::Abschn_auswert(int obverb/*=0*/, const char tz/*='='*/)
           wert=zeile->substr(pos+1);
           gtrim(&wert);
           anfzweg(wert);
-          abp.av.push_back(abSchl(name,wert));
+          abp.av.push_back(aScl(name,&wert));
         } //         if (pos!=string::npos && pos>0) 
       } //       if (zeile->at(0)=='[' && zeile->at(zeile->length()-1)==']') 
     } //     if (zeile->length()) 
@@ -2049,19 +2049,20 @@ void optcl::virtfrisch()
   nichtspeichern=0;	
 ////	caus<<violett<<"Ende optcl::virtfrisch "<<blau<<pname<<schwarz<<endl;
 } // void optcl::virtfrisch()
-
-template<> schAcl<WPcl>::schAcl(const string& name, vector<sAinitcl>& v):name(name)
+#ifdef false
+template<> schAcl<WPcl>::schAcl(const string& name, vector<aScl>& v):name(name)
 {
 	for(size_t i=0;i<v.size();i++) {
 		WPcl *wp=new WPcl(v[i].name,v[i].wertp);
 		schl.push_back((shared_ptr<WPcl>)wp);
 	}
 }
+#endif
 
-template<> schAcl<WPcl>::schAcl(const string& name, vector<abSchl>& v):name(name)
+template<> schAcl<WPcl>::schAcl(const string& name, vector<aScl> v):name(name)
 {
 	for(size_t i=0;i<v.size();i++) {
-		WPcl *wp=new WPcl(v[i].pname,&v[i].wert);
+		WPcl *wp=new WPcl(v[i].name,v[i].wertp);
 		schl.push_back((shared_ptr<WPcl>)wp);
 	}
 }
@@ -6597,12 +6598,13 @@ int confdcl::lies(const string& vfname, int obverb, const char tz/*='='*/)
 						if (pos!=string::npos && pos>0) { 
 							string pname=zeile.substr(0,pos);
 							rtrim(&pname);
+							// hier evtl. new bzw. shared_ptr noetig
 							string wert=zeile.substr(pos+1);
 							gtrim(&wert);
 							anfzweg(wert);
 							paare.push_back(paarcl(pname,wert,ibemerk));
 							ibemerk.clear();
-							if (mitabsch) abp.av.push_back(abSchl(pname,wert));
+							if (mitabsch) abp.av.push_back(aScl(pname,&wert));
 						} // if (pos!=string::npos && 1==sscanf(zeile->c_str(),scs.c_str(),zeile->c_str())) 
 					} // if (zeile[0]
 				} // if (!zeile->empty()) 

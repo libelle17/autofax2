@@ -2,7 +2,7 @@
 .\" manual page for ²DPROG²
 .\" write to geraldschade@gmx.de if You discover an error or a deficit in the program
 .pc
-.TH man 1 "06.06.18" "Version 0.11078" "\fB²DPROG²\fR man page"
+.TH man 1 "07.06.18" "Version 0.11116" "\fB²DPROG²\fR man page"
 .SH NAME
 \fB²DPROG² \- Fax server functionality\fR: induces automatic fax transmission of files, naming of received faxes and logging of all of them in a database
 .br
@@ -15,10 +15,10 @@
 .SH OPTIONS 
 .SH PRECONDITIONS
 .br
-n1, wert: 'wert11'
-.br
-n2, wert: 'wert2'
-.br
 m1, wert: 'x1'
+.br
+m2, wert: 'x2'
+.br
+m1, wert: 'x1neu'
 .br
 m2, wert: 'x2'
