@@ -1003,7 +1003,13 @@ void hhcl::liescapiconf()
 		cv<<aScl("fax_email_from",&fax_email_from);
 		cv<<aScl("outgoing_timeout",&outgoing_timeout);
 		vector<aScl> cw{{"spool_dir",&spoolcapivz},{"fax_user_dir",&cfaxuservz}};
-		cfcnfCp=new schAcl<WPcl>("cfcnfC",cv); // Capikonfiguration aus fax.conf
+		cfcnfCp=new schAcl<WPcl>("cfcnfC",&cv); // Capikonfiguration aus fax.conf
+		if (!cfcnfCp) {
+			cfcnfCp=new schAcl<WPcl>("cfcnfC", new vector<aScl>{
+				{"spool_dir",&spoolcapivz},
+				{"fax_user_dir",&cfaxuservz}
+			});
+		}
 		pruefverz(dir_name(cfaxconfdt),obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/0);
 		if (cfaxcp) delete cfaxcp;
 		cfaxcp = new confdcl(cfaxconfdt,obverb);
@@ -3890,7 +3896,7 @@ int main(int argc,char** argv)
 		string x2("x2");
 		w<<aScl("m1",&x1);
 		w<<aScl("m2",&x2);
-		schAcl<WPcl> tsw=schAcl<WPcl>("tsw",w); // Capikonfiguration aus fax.conf
+		schAcl<WPcl> tsw=schAcl<WPcl>("tsw",&w); // Capikonfiguration aus fax.conf
 		for(size_t i=0;i<tsw.size();i++) {
 			caus<<tsw[i]->pname<<", wert: '"<<*(string*)tsw[i]->pptr<<"'"<<endl;
 		}

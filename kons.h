@@ -842,10 +842,10 @@ template <typename SCL> class schAcl {
  inline size_t size(){return schl.size();}
  inline shared_ptr<SCL> letzter() {return schl[schl.size()-1];} 
  schAcl(const string& name);
+ schAcl(const string& name, vector<aScl> *v);
 #ifdef false
- schAcl(const string& name, vector<aScl>& v);
-#endif
  schAcl(const string& name, vector<aScl> v);
+#endif
 // schAcl(const string& name, const char* const* sarr,size_t vzahl);
  // void neu(size_t vzahl=0);
  void sinit(size_t vzahl, ...);

@@ -2049,16 +2049,14 @@ void optcl::virtfrisch()
   nichtspeichern=0;	
 ////	caus<<violett<<"Ende optcl::virtfrisch "<<blau<<pname<<schwarz<<endl;
 } // void optcl::virtfrisch()
-#ifdef false
-template<> schAcl<WPcl>::schAcl(const string& name, vector<aScl>& v):name(name)
+template<> schAcl<WPcl>::schAcl(const string& name, vector<aScl> *v):name(name)
 {
-	for(size_t i=0;i<v.size();i++) {
-		WPcl *wp=new WPcl(v[i].name,v[i].wertp);
+	for(size_t i=0;i<v->size();i++) {
+		WPcl *wp=new WPcl((*v)[i].name,(*v)[i].wertp);
 		schl.push_back((shared_ptr<WPcl>)wp);
 	}
 }
-#endif
-
+#ifdef false
 template<> schAcl<WPcl>::schAcl(const string& name, vector<aScl> v):name(name)
 {
 	for(size_t i=0;i<v.size();i++) {
@@ -2066,6 +2064,7 @@ template<> schAcl<WPcl>::schAcl(const string& name, vector<aScl> v):name(name)
 		schl.push_back((shared_ptr<WPcl>)wp);
 	}
 }
+#endif
 
 template<typename SCL> void schAcl<SCL>::frisch()
 {

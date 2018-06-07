@@ -469,7 +469,9 @@ class hhcl:public dhcl
 		schAcl<WPcl> cccnfC=schAcl<WPcl>("cccnfC"); // Capikonfiguration aus capisuite.conf
 		schAcl<WPcl> hfcnfC=schAcl<WPcl>("hfcnfC"); // Hylakonfiguration
 		schAcl<WPcl> hyaltcnfC{schAcl<WPcl>("hyaltcnfC")}; // Hylakonfiguration
+#ifdef false
 		schAcl<WPcl> cfCp{"Test",{{"spool_dir",&spoolcapivz},{"fax_user_dir",&cfaxuservz}}};
+#endif
 		string hempfavz;    // var/spool/(hyla)fax/" DPROG "arch
 		string xferfaxlog; // varsphylavz + "/etc/xferfaxlog"; 
 		string hsendqvz; // /var/spool/hylafax/sendq
