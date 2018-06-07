@@ -942,40 +942,6 @@ hhcl::hhcl(const int argc, const char *const *const argv):dhcl(argc,argv,DPROG,/
 } // hhcl::hhcl //α
 // Hier neue Funktionen speichern: //ω
 
-// aufgerufen in liescapiconf, dann unnoetig
-#ifdef false
-void hhcl::cfcnfCfuell()
-{
-	static uchar neu=1;
-	if (neu) {	
-		cfcnfC<<new WPcl("spool_dir",&spoolcapivz,pstri);
-		cfcnfC<<new WPcl("fax_user_dir",&cfaxuservz,pstri);
-		cfcnfC<<new WPcl("send_tries",&maxcdials,pstri);
-		cfcnfC<<new WPcl("send_delays",&send_delays,pstri);
-		cfcnfC<<new WPcl("outgoing_MSN",&outgoing_MSN,pstri);
-		cfcnfC<<new WPcl("dial_prefix",&dial_prefix,pstri);
-		cfcnfC<<new WPcl("fax_stationID",&fax_stationID,pstri);
-		cfcnfC<<new WPcl("fax_headline",&fax_headline,pstri);
-		cfcnfC<<new WPcl("fax_email_from",&fax_email_from,pstri);
-		cfcnfC<<new WPcl("outgoing_timeout",&outgoing_timeout,pstri);
-		neu=0;
-	} // 	if (neu)
-} // void hhcl::cfcnfCfuell
-#endif
-
-// aufgerufen in liescapiconf
-void hhcl::cccnfCfuell()
-{
-	static uchar neu=1;
-	if (neu) {	
-		cccnfC<<new WPcl("incoming_script",&cdn[0],pstri);
-		cccnfC<<new WPcl("log_file",&cdn[1],pstri);
-		cccnfC<<new WPcl("log_error",&cdn[2],pstri);
-		cccnfC<<new WPcl("idle_script",&cdn[3],pstri);
-		neu=0;
-	} // 	if (neu)
-} // void hhcl::cccnfCfuell
-
 // in virtVorgbAllg, pruefcapi
 void hhcl::liescapiconf()
 {
@@ -988,33 +954,25 @@ void hhcl::liescapiconf()
 	} else findfile(&qrueck,findv,obverb,oblog,0,wo,/*muster=*/"/fax\\.conf$");
 	if (qrueck.size()) cfaxconfdt=qrueck[0];
 	if (!cfaxconfdt.empty()) {
-#ifdef false
-		cfcnfCfuell();
-#endif
-		aSvec cv;
-		cv<<aScl("spool_dir",&spoolcapivz);
-		cv<<aScl("fax_user_dir",&cfaxuservz);
-		cv<<aScl("send_tries",&maxcdials);
-		cv<<aScl("send_delays",&send_delays);
-		cv<<aScl("outgoing_MSN",&outgoing_MSN);
-		cv<<aScl("dial_prefix",&dial_prefix);
-		cv<<aScl("fax_stationID",&fax_stationID);
-		cv<<aScl("fax_headline",&fax_headline);
-		cv<<aScl("fax_email_from",&fax_email_from);
-		cv<<aScl("outgoing_timeout",&outgoing_timeout);
-		vector<aScl> cw{{"spool_dir",&spoolcapivz},{"fax_user_dir",&cfaxuservz}};
-		cfcnfCp=new schAcl<WPcl>("cfcnfC",&cv); // Capikonfiguration aus fax.conf
 		if (!cfcnfCp) {
 			cfcnfCp=new schAcl<WPcl>("cfcnfC", new vector<aScl>{
-				{"spool_dir",&spoolcapivz},
-				{"fax_user_dir",&cfaxuservz}
-			});
+					{"spool_dir",&spoolcapivz},
+					{"fax_user_dir",&cfaxuservz},
+					{"send_tries",&maxcdials},
+					{"send_delays",&send_delays},
+					{"outgoing_MSN",&outgoing_MSN},
+					{"dial_prefix",&dial_prefix},
+					{"fax_stationID",&fax_stationID},
+					{"fax_headline",&fax_headline},
+					{"fax_email_from",&fax_email_from},
+					{"outgoing_timeout",&outgoing_timeout}
+					});
 		}
 		pruefverz(dir_name(cfaxconfdt),obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/0);
 		if (cfaxcp) delete cfaxcp;
 		cfaxcp = new confdcl(cfaxconfdt,obverb);
 		cfaxcp->kauswert(cfcnfCp);
-//		cfaxcp->Abschn_auswert(obverb);
+		//		cfaxcp->Abschn_auswert(obverb);
 #ifdef false
 		cfcnfA.init(10,"spool_dir","fax_user_dir","send_tries","send_delays","outgoing_MSN",
 				"dial_prefix","fax_stationID","fax_headline","fax_email_from","outgoing_timeout");
@@ -1084,11 +1042,18 @@ void hhcl::liescapiconf()
 			} //       if (aktgelzeit>lgelzeit)
 		} // if (!lstat(ccapiconfdt.c_str(),&cstat)) 
 		if (cczulesen) {
-			cccnfCfuell();
+			if (!cccnfCp) {
+				cccnfCp=new schAcl<WPcl>("cccnfC", new vector<aScl>{
+						{"incoming_script",&cdn[0]},
+						{"log_file",&cdn[1]},
+						{"log_error",&cdn[2]},
+						{"idle_script",&cdn[3]}
+						});
+			}
 			pruefverz(dir_name(ccapiconfdt),obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/0);
 			confdcl ccapc(ccapiconfdt,obverb);
 			////<<"azaehlerdt: "<<blau<<azaehlerdt<<schwarz<<endl;
-			ccapc.kauswert(&cccnfC);
+			ccapc.kauswert(cccnfCp);
 			cczulesen=0;
 			if (!cuser.empty()) {
 				for(size_t j=0;j<sizeof cdn/sizeof *cdn;j++) {
@@ -2661,18 +2626,6 @@ void hhcl::virtrueckfragen()
 	//// opn.oausgeb(rot);
 } // void hhcl::virtrueckfragen()
 
-// aufgerufen in liescapiconf
-void hhcl::hfcnfCfuell() // hylafax 
-{
-	static uchar neu=1;
-	if (neu) {	
-		hfcnfC<<new WPcl("SPOOL",&spoolvz,pstri);
-		hfcnfC<<new WPcl("HYLAFAX_HOME",&hylafax_homevz,pstri);
-		neu=0;
-	} // 	if (neu)
-} // void hhcl::hfcnfCfuell
-
-
 const string hhcl::initdhyladt="/etc/init.d/hylafax";
 // wird aufgerufen in: pruefhyla, main
 int hhcl::setzhylavz()
@@ -2703,13 +2656,18 @@ int hhcl::setzhylavz()
 
 		////    cppSchluess hylaconf[]={{"SPOOL"},{"HYLAFAX_HOME"}};
 		////    size_t cs=sizeof hylaconf/sizeof*hylaconf;
-		hfcnfCfuell();
+		if (!hfcnfCp) {
+			hfcnfCp=new schAcl<WPcl>("hfcnfC", new vector<aScl>{
+					{"SPOOL",&spoolvz},
+					{"HYLAFAX_HOME",&hylafax_homevz}
+					});
+		}
 		struct stat hstat{0};
 		if (!lstat(initdhyladt.c_str(),&hstat)) {
 			initdhyladt_gibts=1;
 			if (hfaxcp) delete hfaxcp;
 			hfaxcp = new confdcl(initdhyladt,obverb);
-			hfaxcp->kauswert(&hfcnfC);
+			hfaxcp->kauswert(hfcnfCp);
 		} //     if (!lstat(initdhyladt.c_str(),&hstat))
 		if (!hylafax_homevz.empty()) {
 			//  if (cpplies(initdhyladt,hylaconf,cs)) KLA
@@ -3114,23 +3072,6 @@ void hhcl::hfaxsetup()
 	this->setzfaxgtpfad();
 } // hfaxsetup
 
-// aufgerufen in hliesconf
-void hhcl::hyaltcnfCfuell() // hylafax 
-{
-	static uchar neu=1;
-	if (neu) {	
-		hyaltcnfC<<new WPcl("CountryCode",&countrycode_dt,pstri);
-		hyaltcnfC<<new WPcl("AreaCode",&areacode_dt,pstri);
-		hyaltcnfC<<new WPcl("FAXNumber",&faxnumber_dt,pstri);
-		hyaltcnfC<<new WPcl("LongDistancePrefix",&longdistanceprefix_dt,pstri);
-		hyaltcnfC<<new WPcl("InternationalPrefix",&internationalprefix_dt,pstri);
-		hyaltcnfC<<new WPcl("RingsBeforeAnswer",&ringsbeforeanswer_dt,pstri);
-		hyaltcnfC<<new WPcl("LocalIdentifier",&localidentifier_dt,pstri);
-		hyaltcnfC<<new WPcl("MaxDials",&maxdials_dt,pstri);
-		neu=0;
-	} // 	if (neu)
-} // void hhcl::hfcnfCfuell
-
 void hhcl::hliesconf()
 {
 #ifdef false
@@ -3151,9 +3092,20 @@ void hhcl::hliesconf()
 			hylazukonf=1;
 		} // if (hyaltcnfA.shl[0].wert ...
 #else
-		hyaltcnfCfuell();
+		if (!hyaltcnfCp) {
+			hyaltcnfCp=new schAcl<WPcl>("hyaltcnfC", new vector<aScl>{
+					{"CountryCode",&countrycode_dt},
+					{"AreaCode",&areacode_dt},
+					{"FAXNumber",&faxnumber_dt},
+					{"LongDistancePrefix",&longdistanceprefix_dt},
+					{"InternationalPrefix",&internationalprefix_dt},
+					{"RingsBeforeAnswer",&ringsbeforeanswer_dt},
+					{"LocalIdentifier",&localidentifier_dt},
+					{"MaxDials",&maxdials_dt}
+					});
+		}
 		confdcl hyaltcp(modconfdt,obverb);
-    hyaltcp.kauswert(&hyaltcnfC);
+		hyaltcp.kauswert(hyaltcnfCp);
 #endif
 	} //   if (lstat(modconfdt.c_str(),&mstat)) else
 	// hyaltcnfA.ausgeb();
@@ -3891,20 +3843,6 @@ void hhcl::virtlieskonfein()
 int main(int argc,char** argv)
 {
 	if (argc>1) { //ω
-		aSvec w;
-		string x1("x1");
-		string x2("x2");
-		w<<aScl("m1",&x1);
-		w<<aScl("m2",&x2);
-		schAcl<WPcl> tsw=schAcl<WPcl>("tsw",&w); // Capikonfiguration aus fax.conf
-		for(size_t i=0;i<tsw.size();i++) {
-			caus<<tsw[i]->pname<<", wert: '"<<*(string*)tsw[i]->pptr<<"'"<<endl;
-		}
-		x1="x1neu";
-		for(size_t i=0;i<tsw.size();i++) {
-			caus<<tsw[i]->pname<<", wert: '"<<*(string*)tsw[i]->pptr<<"'"<<endl;
-		}
-		exit(12);
 	} //α
 	hhcl hhi(argc,argv); // hiesige Hauptinstanz, mit lngzuw, setzlog und pruefplatte
 	hhi.lauf(); // Einleitungsteil mit virtuellen Funktionen, 

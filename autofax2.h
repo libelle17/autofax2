@@ -466,12 +466,9 @@ class hhcl:public dhcl
 		string host="localhost";  // fuer MySQL/MariaDB
 
 		schAcl<WPcl> *cfcnfCp=0/*schAcl<WPcl>("cfcnfC")*/; // Capikonfiguration aus fax.conf
-		schAcl<WPcl> cccnfC=schAcl<WPcl>("cccnfC"); // Capikonfiguration aus capisuite.conf
-		schAcl<WPcl> hfcnfC=schAcl<WPcl>("hfcnfC"); // Hylakonfiguration
-		schAcl<WPcl> hyaltcnfC{schAcl<WPcl>("hyaltcnfC")}; // Hylakonfiguration
-#ifdef false
-		schAcl<WPcl> cfCp{"Test",{{"spool_dir",&spoolcapivz},{"fax_user_dir",&cfaxuservz}}};
-#endif
+		schAcl<WPcl> *cccnfCp=0; // Capikonfiguration aus capisuite.conf
+		schAcl<WPcl> *hfcnfCp=0; // Hylakonfiguration
+		schAcl<WPcl> *hyaltcnfCp=0; // Hylakonfiguration
 		string hempfavz;    // var/spool/(hyla)fax/" DPROG "arch
 		string xferfaxlog; // varsphylavz + "/etc/xferfaxlog"; 
 		string hsendqvz; // /var/spool/hylafax/sendq
@@ -509,12 +506,6 @@ class hhcl:public dhcl
 
 	public: //α //ω
 	private: //α //ω
-#ifdef false
-		void cfcnfCfuell();
-#endif
-		void cccnfCfuell();
-		void hfcnfCfuell(); // /etc/init.d/hylafax
-		void hyaltcnfCfuell(); // hylafax 
 		void liescapiconf();
 		void konfcapi(); // aufgerufen in pruefcapi
 		void capisv();
