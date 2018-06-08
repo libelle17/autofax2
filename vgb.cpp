@@ -17,7 +17,7 @@ class Txvgcl: public TxB
 */
 
 // const char *Txvgcl::TextC[T_vgMAX+1][SprachZahl]={
-const char *vgb_T[T_vgMAX+1][SprachZahl]={
+const char *vgb_T[T_vgMAX+1][SprachZahl]{
       // T_VorgbSpeziell_Ueberlad
       {"VorgbSpeziell_Ueberlad()","specificprefs_overload()"},
       {"",""}
