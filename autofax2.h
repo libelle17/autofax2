@@ -532,6 +532,7 @@ class hhcl:public dhcl
 		int hconfig() const;
 		void hfaxsetup();
     void hliesconf();
+		void machopvzm();
 	protected: 
 		// void virtlgnzuw(); // wird aufgerufen in: virtrueckfragen, parsecl, lieskonfein, hcl::hcl nach holsystemsprache
 		void virtVorgbAllg();

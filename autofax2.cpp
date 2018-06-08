@@ -2154,6 +2154,19 @@ void hhcl::pvirtmacherkl()
 		<<drot<<dbq<<blau<<Tx[T_Tabellen]<<drot<<touta<<blau<<"`,`"<<drot<<spooltab<<blau<<Tx[T_aein]<<schwarz;
 } // void hhcl::pvirtmacherkl //α
 
+void hhcl::machopvzm()
+{
+	for(size_t i=0;i<zmvzn;) {
+		++i;
+		stringstream zmmname,zmzname;
+		zmmname<<"ZMMuster_"<<i;
+		zmzname<<"ZMZiel_"<<i;
+		const string istr=ltoan(i);
+		opvzm<<new optcl(/*pname*/zmmname.str(),/*pptr*/&zmvp[i-1].holmuster(),/*part*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zielmuster_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
+		opvzm<<new optcl(/*pname*/zmzname.str(),/*pptr*/&zmvp[i-1].holziel(),/*part*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Ziel_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
+	}
+}
+
 // wird aufgerufen in lauf
 void hhcl::virtMusterVorgb()
 {
@@ -2176,6 +2189,7 @@ void hhcl::virtMusterVorgb()
 	// wird nur vor dem ersten fork bearbeitet
 	zmvp=zmi;
 	zmvzn=sizeof zmi/sizeof *zmi;
+	machopvzm();
 	dhcl::virtMusterVorgb(); //α
 } // void hhcl::MusterVorgb
 
