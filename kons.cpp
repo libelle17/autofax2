@@ -2403,9 +2403,11 @@ int systemrueck(const string& cmd, int obverb/*=0*/, int oblog/*=0*/, vector<str
   } else {
     aktues=ueberschr;
   } //   if (ueberschr.empty())
-	const string FLR="$HOME/sreuck.tmp";
+	char tmpd[L_tmpnam];
+	tmpnam(tmpd);
+	// '... 2>/dev/null' nicht unbedingt aufheben
 	const string bef=(obsudc?sudc+(obsudc==2&&!sudc.empty()?"-H ":""):"")+
-		(obdirekt?hcmd:"env PATH='"+spath+"' "+"sh -c 'FLR="+FLR+";rm -f $FLR;"+ersetzAllezu(hcmd,"'","'\\''")+" 2>$FLR'");
+		(obdirekt?hcmd:"env PATH='"+spath+"' "+"sh -c '"+ersetzAllezu(hcmd,"'","'\\''")+"'"+(hcmd.find(" 2>")==string::npos/*||obverb>0*/?string(" 2>")+tmpd:string()));
 	const string befanz{ersetze(bef.c_str(),spath.c_str(),"...")};
 	const string hsubs{bef.substr(0,getcols()-7-aktues.length())};
 	string meld{aktues+": "+blau+hsubs+schwarz+" ..."};
@@ -2484,7 +2486,7 @@ int systemrueck(const string& cmd, int obverb/*=0*/, int oblog/*=0*/, vector<str
   } else {
     erg=system(bef.c_str());
   } // if (rueck) else
-	erg=system(("FLR="+FLR+";[ -s $FLR ]&&{ printf '"+rot+"';cat $FLR;}").c_str());
+  int erg2 __attribute__((unused)){system((string("FLR=")+tmpd+";[ -s $FLR ]&&{ printf '\n"+rot+"';cat $FLR;printf '"+schwarz+"';}").c_str())};
 #ifdef systemrueckprofiler
   prf.ausgab1000("vor weiter");
 #endif
@@ -4830,11 +4832,11 @@ const string& gitv=
 const string& spath=
 #include "spath"
 ;
-const string s_true="true";
-const string s_dampand="&&";
-const string s_gz="gz";
-const string& defvors="https://github.com/"+gitv+"/";
-const string& defnachs="/archive/master.tar.gz";
+const string s_true{"true"};
+const string s_dampand{"&&"};
+const string s_gz{"gz"};
+const string& defvors{"https://github.com/"+gitv+"/"};
+const string& defnachs{"/archive/master.tar.gz"};
 
 // wird aufgerufen in main
 hcl::hcl(const int argc, const char *const *const argv,const char* const DPROG,const uchar mitcron):DPROG(DPROG),mitcron(mitcron)
@@ -5654,59 +5656,26 @@ int hcl::kompilfort(const string& was,const string& vorcfg/*=string()*/, const s
 		////						"&&"+sudc+"make uninstall; cd \\\"\\$H\\\"\\n\" >> \""+unindt+"\";KLZ "
 		";"+sudc+"ldconfig "+lsys.getlib64()+";'";
 		 */
-		const string b1="cd \""+ivw+"\"&&"+(vorcfg.empty()?s_true:vorcfg)+(ohneconf?"":"&& [ -f configure ]&&./configure ")+cfgbismake+" make";
-		const string b2="cd \""+ivw+"\"&& make install";
-		const string b3="cd \""+ivw+"\"&&{ M=Makefile;[ -f $M ]&&{ grep -q 'distclean:' $M&&make distclean||{ grep -q 'clean:' $M&&make clean;};};};"
-			"[ -f configure ]&&./configure; make";
+		const string b1{"cd \""+ivw+"\"&&"+(vorcfg.empty()?s_true:vorcfg)+(ohneconf?"":"&& [ -f configure ]&&./configure ")+cfgbismake+" make"};
+		const string b2{"cd \""+ivw+"\"&& make install"};
+		const string b3{"cd \""+ivw+"\"&&{ M=Makefile;[ -f $M ]&&{ grep -q 'distclean:' $M&&make distclean||{ grep -q 'clean:' $M&&make clean;};};};"
+			"[ -f configure ]&&./configure; make"};
 		////		const string b4="ldconfig "+lsys.getlib64();
-		const string b4="ldconfig /usr";
+		const string b4{"ldconfig /usr"};
 		int erg1;
 		// bei linux-source muss unter Ubuntu 4.15.0-22-generic evtl. libelf-dev installiert werden, ferner /usr/src/linux-headers-4.15.0-22/arch/x86/include/asm/uaccess.h um die beiden Zeilen:
 		// #include <linux/thread_info.h> und
 		// #include <linux/sched.h> ergaenzt werden
-									caus<<"1"<<endl;
-									caus<<"2"<<endl;
-									caus<<"3"<<endl;
-									caus<<"4"<<endl;
-									caus<<"b1: "<<b1<<endl;
-									caus<<"4a"<<endl;
-									caus<<"4b"<<endl;
-									caus<<"4c"<<endl;
-									caus<<"4d"<<endl;
 		if (!(erg1=systemrueck(b1,obverb,oblog,/*rueck=*/0,/*obsudc=*/0))) {
-									caus<<"5"<<endl;
-									caus<<"6"<<endl;
-									caus<<"7"<<endl;
-									caus<<"8"<<endl;
 			////if (!(erg1=systemrueck(b1,obverb,oblog,/*rueck=*/0,/*obsudc=*/0,/*verbergen=*/0,/*obergebnisanzeig=*/wahr,/*ueberschr=*/string(),
 			////				/*errm=*/0,/*obincron=*/0,/*ausgp=*/0,/*obdirekt=*/0))) KLZ
 			ret=systemrueck(b2,obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
-									caus<<"9"<<endl;
-									caus<<"10"<<endl;
-									caus<<"11"<<endl;
-									caus<<"12"<<endl;
 		} else {
-									caus<<"13"<<endl;
-									caus<<"14"<<endl;
-									caus<<"15"<<endl;
-									caus<<"16"<<endl;
 			if (!systemrueck(b3,obverb,oblog,/*rueck=*/0,/*obsudc=*/0)) {
-									caus<<"17"<<endl;
-									caus<<"18"<<endl;
-									caus<<"19"<<endl;
-									caus<<"20"<<endl;
 				ret=systemrueck(b2,obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
-									caus<<"21"<<endl;
-									caus<<"22"<<endl;
-									caus<<"23"<<endl;
-									caus<<"24"<<endl;
 			}
 		}
 		systemrueck(b4,obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
-									caus<<"25"<<endl;
-									caus<<"26"<<endl;
-									caus<<"27"<<endl;
-									caus<<"28"<<endl;
 		hLog(string(Txk[T_Ergebnis_nach_make])+" "+ltoan(erg1));
 		hLog(string(Txk[T_Ergebnis_nach_make_install])+" "+ltoan(ret));
 		////		ret=systemrueck(bef,obverb,oblog);
