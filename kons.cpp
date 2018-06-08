@@ -2404,7 +2404,7 @@ int systemrueck(const string& cmd, int obverb/*=0*/, int oblog/*=0*/, vector<str
     aktues=ueberschr;
   } //   if (ueberschr.empty())
 	char tmpd[L_tmpnam];
-	tmpnam(tmpd);
+	const char *const ergtmp __attribute__((unused)){tmpnam(tmpd)};
 	// '... 2>/dev/null' nicht unbedingt aufheben
 	const string bef=(obsudc?sudc+(obsudc==2&&!sudc.empty()?"-H ":""):"")+
 		(obdirekt?hcmd:"env PATH='"+spath+"' "+"sh -c '"+ersetzAllezu(hcmd,"'","'\\''")+"'"+(hcmd.find(" 2>")==string::npos/*||obverb>0*/?string(" 2>")+tmpd:string()));
