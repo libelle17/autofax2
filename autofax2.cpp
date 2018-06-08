@@ -1536,12 +1536,12 @@ void hhcl::pruefmodcron()
 int hhcl::pruefcapi()
 {
 	hLog(violetts+Tx[T_pruefcapi]+schwarz+" obcapi: "+(obcapi?"1":"0"));
-	static uchar capiloggekuerzt=0;
-	static uchar capischonerfolgreichinstalliert=0;
-	int capilaeuft=0;
-	int erg=0;
-	unsigned versuch=0;
-	uchar schonkonfiguriert=0;
+	static uchar capiloggekuerzt{0};
+	static uchar capischonerfolgreichinstalliert{0};
+	int capilaeuft{0};
+	int erg{0};
+	unsigned versuch{0};
+	uchar schonkonfiguriert{0};
 	capisv();
 	if (obcapi) {
 		for(;versuch<2;versuch++) {
@@ -1678,7 +1678,7 @@ int hhcl::pruefcapi()
 										systemrueck("mv -f \""+gccpfad+".bak\" \""+gccpfad+"\" &&"+
 												"mv -f \""+gpppfad+".bak\" \""+gpppfad+"\"",obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
 									} // 									if (obdown)
-									exit(99);
+////									exit(99);
 									obverb=altobverb;
 								} // if (lstat(fcpciko.c_str(), &entryfc)) 
 							} // if (systemrueck
@@ -1705,7 +1705,7 @@ int hhcl::pruefcapi()
 							// sollte nach Korrektur von kernel-modules-extra zu kernel-modules-extra-$(uname -r) kaum mehr vorkommen
 							if (v1!=v2) {
 								virtautokonfschreib();
-								::fLog(blaus+Tx[T_Zur_Inbetriebnahme_der_Capisuite_muss_das_Modul_capi_geladen_werten]+schwarz+v1+blau+" -> "
+								fLog(blaus+Tx[T_Zur_Inbetriebnahme_der_Capisuite_muss_das_Modul_capi_geladen_werten]+schwarz+v1+blau+" -> "
 										+schwarz+v2+blau+").\n"+blau+Tx[T_Bitte_zu_dessen_Verwendung_den_Rechner_neu_starten]+schwarz+mpfad+blau+Tx[T_aufrufen]
 										+schwarz,1,1);
 								exit(9);
@@ -1970,7 +1970,7 @@ int hhcl::pruefcapi()
 					servc::daemon_reload();
 					systemrueck("systemctl stop isdn",obverb>0?obverb:-1,oblog,0,/*obsudc=*/1,1);
 					////      systemrueck(sudc+"systemctl start isdn",obverb,oblog);
-					::fLog(Tx[T_StarteCapisuite],-1,oblog);
+					fLog(Tx[T_StarteCapisuite],-1,oblog);
 					scapis->stop(-1,oblog);
 					capilaeuft=scapis->startundenable(-1,oblog);
 					if (capilaeuft) {
@@ -2564,7 +2564,8 @@ void hhcl::virtrueckfragen()
 				optcl *opp=new optcl(/*pname*/soptname.str(),/*pptr*/sqlrp[sqlrp.size()-1].get(),/*art*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_SQL_Befehl_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
 				oprsql<<opp;
 			} // if (zwi.empty()) else
-			if (akt>sqlzn-1) {
+			// sqlzn-1 waere sehr viel
+			if (akt+1>sqlzn) {
 				if (!Tippob(Tx[T_Wolle_Sie_noch_einen_SQL_Befehl_eingeben],Txk[T_j_af])) { 
 					break;
 				}

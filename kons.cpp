@@ -2403,11 +2403,12 @@ int systemrueck(const string& cmd, int obverb/*=0*/, int oblog/*=0*/, vector<str
   } else {
     aktues=ueberschr;
   } //   if (ueberschr.empty())
+	const string FLR="$HOME/sreuck.tmp";
 	const string bef=(obsudc?sudc+(obsudc==2&&!sudc.empty()?"-H ":""):"")+
-		(obdirekt?hcmd:"env PATH='"+spath+"' "+"sh -c '"+ersetzAllezu(hcmd,"'","'\\''")+"'");
-	const string befanz=ersetze(bef.c_str(),spath.c_str(),"...");
-	string hsubs=bef.substr(0,getcols()-7-aktues.length());
-	string meld=aktues+": "+blau+hsubs+schwarz+" ...";
+		(obdirekt?hcmd:"env PATH='"+spath+"' "+"sh -c 'FLR="+FLR+";rm -f $FLR;"+ersetzAllezu(hcmd,"'","'\\''")+" 2>$FLR'");
+	const string befanz{ersetze(bef.c_str(),spath.c_str(),"...")};
+	const string hsubs{bef.substr(0,getcols()-7-aktues.length())};
+	string meld{aktues+": "+blau+hsubs+schwarz+" ..."};
 	if (ausgp&&obverb>0) *ausgp<<meld<<endl; else { if (obverb||oblog) fLog(meld,obverb>0?-1:0,oblog); }
 	if (!rueck) if (obergebnisanzeig) {neurueck=1;rueck=new vector<string>;}
 	// #define systemrueckprofiler
@@ -2483,6 +2484,7 @@ int systemrueck(const string& cmd, int obverb/*=0*/, int oblog/*=0*/, vector<str
   } else {
     erg= system(bef.c_str());
   } // if (rueck) else
+	system(("FLR="+FLR+";[ -s $FLR ]&&{ printf '"+rot+"';cat $FLR;}").c_str());
 #ifdef systemrueckprofiler
   prf.ausgab1000("vor weiter");
 #endif
@@ -5715,7 +5717,7 @@ int hcl::kompilfort(const string& was,const string& vorcfg/*=string()*/, const s
 	return ret;
 } // int hcl::kompilfort(const string& was,const string& vorcfg/*=string()*/, const string& cfgbismake/*==s_dampand*/,uchar ohneconf/*=0*/)
 
-const string tiffmark="/usr/local/sclibtiff";
+const string tiffmark{"/usr/local/sclibtiff"};
 
 // aufgerufen bei autofax in: pruefhyla, empfcapi, virtrueckfragen
 void hcl::prueftif(string aktvers)
