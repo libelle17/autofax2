@@ -2482,9 +2482,9 @@ int systemrueck(const string& cmd, int obverb/*=0*/, int oblog/*=0*/, vector<str
       erg=1;
     } //     if (FILE* pipe = popen(hcmd.c_str(), "r"))  else 
   } else {
-    erg= system(bef.c_str());
+    erg=system(bef.c_str());
   } // if (rueck) else
-	system(("FLR="+FLR+";[ -s $FLR ]&&{ printf '"+rot+"';cat $FLR;}").c_str());
+	erg=system(("FLR="+FLR+";[ -s $FLR ]&&{ printf '"+rot+"';cat $FLR;}").c_str());
 #ifdef systemrueckprofiler
   prf.ausgab1000("vor weiter");
 #endif
