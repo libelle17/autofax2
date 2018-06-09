@@ -1025,6 +1025,7 @@ FILE*
 oeffne(const string& datei, uchar art, uchar* erfolg,uchar faclbak=1,int obverb=0, int oblog=0);
 #endif // falsch
 
+enum distroenum{unbek=-1,Mint,Ubuntu,Debian,Suse,Fedora,Fedoraalt,Mageia,Manjaro};
 struct linst_cl
 {
  instprog ipr=keinp; // installiertes Program

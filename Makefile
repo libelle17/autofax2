@@ -418,7 +418,13 @@ $(1).gz: $(EXEC) $(1)
 	-@printf " aktualisiere/updating %b$(1)%b\n" $(blau) $(reset)
 	-@sed -i "s/\(Version \)[^\"]*/\1$$$$(cat versdt)/;s/\(\.TH[^\"]*\)\"[^\"]*/\1\"$$$$(date +'%d.%m.%y')/" $(1)
 	-@Lang=$(shell echo $(1)|cut -d_ -f2|head -c1);\
-	TMP=tmp_opt_$$$$Lang;chmod +x $(EXEC);printf " rufe auf/calling: '$(EXEC) -1lg $$$$Lang -sh'\n";./$(EXEC) -1lg $$$$Lang -sh|sed -e 's/^/.br\n/;s/\[[01];3.m/\\fB/g;s/\[0m/\\fR/g;'|sed ':a;N;$$$$!ba'>$$$$TMP; \
+		TMP=tmp_opt_$$$$Lang;chmod +x $(EXEC);\
+		EX="./$(EXEC) -1lg $$$$Lang -sh";\
+		W1="sed -e s/^/.br\n/;s/\\[[01]\\;3.m/\\\\fB/g;s/\\[0m/\\\\fR/g";\
+		W1a=$$$$(echo $$$$W1|sed s/\\\\n/\\\\\\\\n/g\;s/`echo -e "\033"`/\(ESC\)/g);\
+		W2="sed :a;N;$$$$!ba";\
+		printf " rufe auf/calling: '%b$$$$EX |$$$$W1a |$$$$W2 >$$$$TMP%b'\n" $(blau) $(reset);\
+		$$$$EX|$$$$W1|$$$$W2>$$$$TMP; \
 	 nlinit=`echo 'nl="'; echo '"'`; eval "$$$$nlinit"; \
 	 von=".SH $$(OPN)"; bis=".SH $$(FKT)"; sed -i.bak "/$$$$von/,/$$$$bis/{/$$$$von/{n;p;r $$$$TMP$$$$nl};/$$$$bis/p;d}" $(1);
 	@sed 's/²gitv²/$(GITV)/g;s/²DPROG²/$(DPROG)/g;s/\\fB/\\fI/g' $(1)|gzip -c >$$@

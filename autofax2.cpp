@@ -3657,10 +3657,9 @@ void hhcl::verzeichnisse()
 	pruefverz(wvz,obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/1,/*besitzer=*/cuser);
 	pruefverz(ngvz,obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/1,/*besitzer=*/cuser);
 	pruefverz(empfvz,obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/1,/*besitzer=*/cuser);
-	for(zielmustercl *zmakt=zmsp[0].get();1;zmakt++){
-		pruefverz(zmakt->holziel(),obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/1,/*besitzer=*/cuser);
-		if (zmakt->obmusterleer()) break;
-	} //   for(zielmustercl *zmakt=zmp;1;zmakt++)
+	for(size_t i=0;i<zmsp.size();i++) {
+		pruefverz(zmsp[i]->holziel(),obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/1,/*besitzer=*/cuser);
+	}
 	for(uint imu=0;imu<this->zmzn;imu++) {
 		const string imus{ltoan(imu)};
 		fLog(Tx[T_Muster]+imus+": '"+blau+this->zmsp[imu]->holmuster()+schwarz+"'",this->obverb>1,this->oblog);
@@ -3862,7 +3861,6 @@ void hhcl::virtlieskonfein()
 		//		opn.gibaus(1);
 		//		opzm.~schAcl();
 ////		caus<<"zmznneu: "<<zmznneu<<endl;
-////		for(size_t i=0;i<zmznneu;i++) caus<<"i: "<<i<<", zmsp[i].muster: "<<zmsp[i]->holmuster()<<", zmsp[i].ziel: "<<zmsp[i]->holziel()<<endl;
 
 	} // 	if (zmzn)
 	if (!zmzn) {
@@ -3876,6 +3874,7 @@ void hhcl::virtlieskonfein()
 			}
 		} // 		for(long i=0;i<zmzn;i++) 
 	} // 	if (!zmzn)
+	//// for(size_t i=0;i<zmsp.size();i++) caus<<"i: "<<i<<", zmsp[i].muster: "<<zmsp[i]->holmuster()<<", zmsp[i].ziel: "<<zmsp[i]->holziel()<<endl;
 	////	opn.oausgeb(rot);
 	////	opn.gibomapaus();
 	hLog(violetts+Txk[T_Ende]+Txk[T_virtlieskonfein]+schwarz); //α

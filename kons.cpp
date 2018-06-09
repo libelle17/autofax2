@@ -1846,105 +1846,111 @@ linst_cl::linst_cl(int obverb,int oblog)
 			confdcl *osvd{new confdcl(osvdt[i],obverb)};
 			osvd->kauswert(osvCp);
 			if (!osname.empty()) {
-				caus<<"osName: "<<osname<<endl;
 				break;
 			}
 		}
 	}
-	int distro{osname.empty()?(
-			obprogda("apt-get",obverb>0?obverb-1:0,oblog)?2:
+	distroenum distro{osname.empty()?(
+			obprogda("apt-get",obverb>0?obverb-1:0,oblog)?Ubuntu:
 			obprogda("rpm",obverb>0?obverb-1:0,oblog)?(
-				obprogda("zypper",obverb>0?obverb-1:0,oblog)?3:
-				obprogda("dnf",obverb>0?obverb-1:0,oblog)||obprogda("yum",obverb>0?obverb-1:0,oblog)?4:
-				obprogda("urpmi.update",obverb>0?obverb-1:0,oblog)?5:-1
+				obprogda("zypper",obverb>0?obverb-1:0,oblog)?Suse:
+				obprogda("dnf",obverb>0?obverb-1:0,oblog)?Fedora:
+				obprogda("yum",obverb>0?obverb-1:0,oblog)?Fedoraalt:
+				obprogda("urpmi.update",obverb>0?obverb-1:0,oblog)?Mageia:unbek
 				):
-			obprogda("pacman",obverb>0?obverb-1:0,oblog)?6:-1
+			obprogda("pacman",obverb>0?obverb-1:0,oblog)?Manjaro:unbek
 			):
-		osname.find("Mint")!=string::npos?0:
-		osname.find("Ubuntu")!=string::npos?1:
-		osname.find("Debian")!=string::npos?2:
-		osname.find("SUSE")!=string::npos?3:
-		osname.find("Fedora")!=string::npos?4:
-		osname.find("Mageia")!=string::npos?5:
-		osname.find("Manjaro")!=string::npos?6:-1
+		osname.find("Mint")!=string::npos?Mint:
+		osname.find("Ubuntu")!=string::npos?Ubuntu:
+		osname.find("Debian")!=string::npos?Debian:
+		osname.find("SUSE")!=string::npos?Suse:
+		osname.find("Fedora")!=string::npos?Fedora:
+		osname.find("Mageia")!=string::npos?Mageia:
+		osname.find("Manjaro")!=string::npos?Manjaro:unbek
 	};
-		caus<<"distro: "<<distro<<endl;
 	// inhaltlich parallel getIPR() in install.sh
-	if (obprogda("apt-get",obverb>0?obverb-1:0,oblog)) {
-		// Repositories: Frage nach cdrom ausschalten
-		// genauso in: configure
-		// wenn cdrom-Zeile vorkommt, vor ftp.-debian-Zeile steht und www.debian.org erreichbar ist, dann alle cdrom-Zeilen hinten anhaengen
-		// gleichlautend in configure: einricht()
-		caus<<"vor sources 3"<<endl;
-		systemrueck("S=/etc/apt/sources.list;F='^[^#]*cdrom:';grep -qm1 $F $S && "
-				"test 0$(sed -n '/^[^#]*ftp.*debian/{=;q}' $S) -gt 0$(sed -n '/'$F'/{=;q}' $S) && "
-				"ping -qc 1 www.debian.org >/dev/null 2>&1 && sed -i.bak '/'$F'/{H;d};${p;x}' $S;:",obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
-		caus<<"nach sources 3"<<endl;
-		// hier werden die Dateien vorgabemaessig behalten
-		ipr=apt;
-		schau="dpkg -s";
-		instp=sudc+"apt-get install "; 
-		instyp=sudc+"apt-get -y --force-yes --reinstall install "; 
-		upr="apt-get -f install; apt-get --auto-remove purge ";
-		udpr=sudc+"apt-get -f install;"+sudc+"dpkg -r --force-depends ";
-		uypr="apt-get -f install; apt-get -y --auto-remove purge ";
-		upd=sudc+"apt update;"+sudc+"apt upgrade;";
-		compil="install build-essential linux-headers-`uname -r`";
-		dev="dev";
-	} else if (obprogda("rpm",obverb>0?obverb-1:0,oblog)) {
-		dev="devel";
-		schau="rpm -q";
-		udpr=sudc+"rpm -e --nodeps ";
-		if (obprogda("zypper",obverb>0?obverb-1:0,oblog)) { // opensuse
-			// heruntergeladene Dateien behalten
-			ipr=zypper;
-			instp=sudc+"zypper -n --gpg-auto-import-keys in ";
-			instyp=instp+"-y -f ";
-			upr="zypper -n rm -u ";
-			uypr=upr+"-y ";
-			upd=sudc+"zypper patch";
-			repos=sudc+"zypper lr | grep 'g++\\|devel_gcc'>/dev/null 2>&1 || "+
-				sudc+"zypper ar http://download.opensuse.org/repositories/devel:/gcc/`cat /etc/*-release |"
-				"grep ^NAME= | cut -d'\"' -f2 | sed 's/ /_/'`_`cat /etc/*-release | grep ^VERSION_ID= | cut -d'\"' -f2`/devel:gcc.repo;";
-			compil="gcc gcc-c++ gcc6-c++";
-		} else { // dann fedora oder mageia
-			if (obprogda("dnf",obverb>0?obverb-1:0,oblog)) {
-				ipr=dnf;
-				instp=sudc+"dnf install ";
-				instyp=sudc+"dnf -y install ";
-				upr="dnf remove ";
-				uypr="dnf -y remove ";
-				upd=sudc+"dnf update";
-			} else if (obprogda("yum",obverb>0?obverb-1:0,oblog)) {
-				ipr=yum;
-				instp=sudc+"yum install ";
-				instyp=sudc+"yum -y install ";
-				upr="yum remove ";
-				uypr="yum -y remove ";
-				upd=sudc+"yum update";
-			} else if (obprogda("urpmi.update",obverb>0?obverb-1:0,oblog)) {
-				ipr=urp;
-				instp="urpmi --auto ";
-				instyp="urpmi --auto --force ";
-				upr="urpme ";
-				uypr="urpme --auto --force ";
-				upd=sudc+"urpmi.update -a";
+	switch (distro) {
+		case unbek:
+			cerr<<Txk[T_Weder_zypper_noch_apt_get_noch_dnf_noch_yum_als_Installationspgrogramm_gefunden]<<endl;
+		case Mint: case Ubuntu: case Debian:
+			// Repositories: Frage nach cdrom ausschalten
+			// genauso in: configure
+			// wenn cdrom-Zeile vorkommt, vor ftp.-debian-Zeile steht und www.debian.org erreichbar ist, dann alle cdrom-Zeilen hinten anhaengen
+			// gleichlautend in configure: einricht()
+			systemrueck("S=/etc/apt/sources.list;F='^[^#]*cdrom:';grep -qm1 $F $S && "
+					"test 0$(sed -n '/^[^#]*ftp.*debian/{=;q}' $S) -gt 0$(sed -n '/'$F'/{=;q}' $S) && "
+					"ping -qc 1 www.debian.org >/dev/null 2>&1 && sed -i.bak '/'$F'/{H;d};${p;x}' $S;:",obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
+			// hier werden die Dateien vorgabemaessig behalten
+			ipr=apt;
+			schau="dpkg -s";
+			instp=sudc+"apt-get install "; 
+			instyp=sudc+"apt-get -y --force-yes --reinstall install "; 
+			upr="apt-get -f install; apt-get --auto-remove purge ";
+			udpr=sudc+"apt-get -f install;"+sudc+"dpkg -r --force-depends ";
+			uypr="apt-get -f install; apt-get -y --auto-remove purge ";
+			upd=sudc+"apt update;"+sudc+"apt upgrade;";
+			compil="install build-essential linux-headers-`uname -r`";
+			dev="dev";
+			break;
+		case Suse: case Fedora: case Fedoraalt: case Mageia:
+			dev="devel";
+			schau="rpm -q";
+			udpr=sudc+"rpm -e --nodeps ";
+			switch (distro) {
+				case Suse:
+					// heruntergeladene Dateien behalten
+					ipr=zypper;
+					instp=sudc+"zypper -n --gpg-auto-import-keys in ";
+					instyp=instp+"-y -f ";
+					upr="zypper -n rm -u ";
+					uypr=upr+"-y ";
+					upd=sudc+"zypper patch";
+					repos=sudc+"zypper lr | grep 'g++\\|devel_gcc'>/dev/null 2>&1 || "+
+						sudc+"zypper ar http://download.opensuse.org/repositories/devel:/gcc/`cat /etc/*-release |"
+						"grep ^NAME= | cut -d'\"' -f2 | sed 's/ /_/'`_`cat /etc/*-release | grep ^VERSION_ID= | cut -d'\"' -f2`/devel:gcc.repo;";
+					compil="gcc gcc-c++ gcc6-c++";
+					break;
+				case Fedora:
+					ipr=dnf;
+					instp=sudc+"dnf install ";
+					instyp=sudc+"dnf -y install ";
+					upr="dnf remove ";
+					uypr="dnf -y remove ";
+					upd=sudc+"dnf update";
+					break;
+				case Fedoraalt:
+					ipr=yum;
+					instp=sudc+"yum install ";
+					instyp=sudc+"yum -y install ";
+					upr="yum remove ";
+					uypr="yum -y remove ";
+					upd=sudc+"yum update";
+					break;
+				case Mageia:
+					ipr=urp;
+					instp="urpmi --auto ";
+					instyp="urpmi --auto --force ";
+					upr="urpme ";
+					uypr="urpme --auto --force ";
+					upd=sudc+"urpmi.update -a";
+					break;
+				default:
+					break;
 			} // 				if (obprogda("dnf",obverb>0?obverb-1:0,oblog))
 			compil="make automake gcc-c++ kernel-devel";
-		} // 			if (obprogda("zypper",obverb>0?obverb-1:0,oblog)) KLZ // opensuse
-	} else if (obprogda("pacman",obverb>0?obverb-1:0,oblog)) {
-		ipr=pac;
-		schau="pacman -Qi";
-		instp=sudc+"pacman -S ";
-		instyp=sudc+"pacman -S --noconfirm ";
-		upr="pacman -R -s ";
-		udpr=sudc+"pacman -R -d -d ";
-		uypr="pacman -R -s --noconfirm "; 
-		upd=sudc+"pacman -Syu";
-		compil="gcc linux-headers-`uname -r`";
-	} else {
-		cerr<<Txk[T_Weder_zypper_noch_apt_get_noch_dnf_noch_yum_als_Installationspgrogramm_gefunden]<<endl;
-	} // 		if (obprogda("rpm",obverb>0?obverb-1:0,oblog))
+			break;
+		case Manjaro:
+			ipr=pac;
+			schau="pacman -Qi";
+			instp=sudc+"pacman -S ";
+			instyp=sudc+"pacman -S --noconfirm ";
+			upr="pacman -R -s ";
+			udpr=sudc+"pacman -R -d -d ";
+			uypr="pacman -R -s --noconfirm "; 
+			upd=sudc+"pacman -Syu";
+			compil="gcc linux-headers-`uname -r`";
+			break;
+	}
 	svec qrueck;
 	if (findv==1) {
 		systemrueck("find /usr -maxdepth 1 -type d -name 'lib*'",obverb,oblog,&qrueck,/*obsudc=*/0);
