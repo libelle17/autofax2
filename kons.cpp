@@ -1813,17 +1813,73 @@ int obprogda(const string& prog, int obverb/*=0*/, int oblog/*=0*/, string *pfad
   return 0; 
 } // string obprogda(string prog,int obverb, int oblog,string *pfad)
 
+template<> schAcl<WPcl>::schAcl(const string& name, vector<aScl> *v):name(name)
+{
+	for(size_t i=0;i<v->size();i++) {
+		WPcl *wp=new WPcl((*v)[i].name,(*v)[i].wertp);
+		schl.push_back((shared_ptr<WPcl>)wp);
+	}
+}
+#ifdef false
+template<> schAcl<WPcl>::schAcl(const string& name, vector<aScl> v):name(name)
+{
+	for(size_t i=0;i<v.size();i++) {
+		WPcl *wp=new WPcl(v[i].name,v[i].wertp);
+		schl.push_back((shared_ptr<WPcl>)wp);
+	}
+}
+#endif
+
 linst_cl::linst_cl(int obverb,int oblog)
 {
+	struct stat osvers{0};
+	const string osvdt[]{"/etc/os-release","/etc/lsb-release"};
+	const string feld[]{"NAME","DISTRIB_ID"};
+	string osname;
+	for(size_t i{0};i<sizeof osvdt/sizeof *osvdt;i++) {
+		if (!lstat(osvdt[i].c_str(),&osvers)) {
+			osname.clear();
+			schAcl<WPcl> *osvCp{new schAcl<WPcl>("osvC", new vector<aScl>{
+					{feld[i],&osname},
+					})
+			};
+			confdcl *osvd{new confdcl(osvdt[i],obverb)};
+			osvd->kauswert(osvCp);
+			if (!osname.empty()) {
+				caus<<"osName: "<<osname<<endl;
+				break;
+			}
+		}
+	}
+	int distro{osname.empty()?(
+			obprogda("apt-get",obverb>0?obverb-1:0,oblog)?2:
+			obprogda("rpm",obverb>0?obverb-1:0,oblog)?(
+				obprogda("zypper",obverb>0?obverb-1:0,oblog)?3:
+				obprogda("dnf",obverb>0?obverb-1:0,oblog)||obprogda("yum",obverb>0?obverb-1:0,oblog)?4:
+				obprogda("urpmi.update",obverb>0?obverb-1:0,oblog)?5:-1
+				):
+			obprogda("pacman",obverb>0?obverb-1:0,oblog)?6:-1
+			):
+		osname.find("Mint")!=string::npos?0:
+		osname.find("Ubuntu")!=string::npos?1:
+		osname.find("Debian")!=string::npos?2:
+		osname.find("SUSE")!=string::npos?3:
+		osname.find("Fedora")!=string::npos?4:
+		osname.find("Mageia")!=string::npos?5:
+		osname.find("Manjaro")!=string::npos?6:-1
+	};
+		caus<<"distro: "<<distro<<endl;
 	// inhaltlich parallel getIPR() in install.sh
 	if (obprogda("apt-get",obverb>0?obverb-1:0,oblog)) {
 		// Repositories: Frage nach cdrom ausschalten
 		// genauso in: configure
 		// wenn cdrom-Zeile vorkommt, vor ftp.-debian-Zeile steht und www.debian.org erreichbar ist, dann alle cdrom-Zeilen hinten anhaengen
 		// gleichlautend in configure: einricht()
+		caus<<"vor sources 3"<<endl;
 		systemrueck("S=/etc/apt/sources.list;F='^[^#]*cdrom:';grep -qm1 $F $S && "
 				"test 0$(sed -n '/^[^#]*ftp.*debian/{=;q}' $S) -gt 0$(sed -n '/'$F'/{=;q}' $S) && "
 				"ping -qc 1 www.debian.org >/dev/null 2>&1 && sed -i.bak '/'$F'/{H;d};${p;x}' $S;:",obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
+		caus<<"nach sources 3"<<endl;
 		// hier werden die Dateien vorgabemaessig behalten
 		ipr=apt;
 		schau="dpkg -s";
@@ -2049,22 +2105,6 @@ void optcl::virtfrisch()
   nichtspeichern=0;	
 ////	caus<<violett<<"Ende optcl::virtfrisch "<<blau<<pname<<schwarz<<endl;
 } // void optcl::virtfrisch()
-template<> schAcl<WPcl>::schAcl(const string& name, vector<aScl> *v):name(name)
-{
-	for(size_t i=0;i<v->size();i++) {
-		WPcl *wp=new WPcl((*v)[i].name,(*v)[i].wertp);
-		schl.push_back((shared_ptr<WPcl>)wp);
-	}
-}
-#ifdef false
-template<> schAcl<WPcl>::schAcl(const string& name, vector<aScl> v):name(name)
-{
-	for(size_t i=0;i<v.size();i++) {
-		WPcl *wp=new WPcl(v[i].name,v[i].wertp);
-		schl.push_back((shared_ptr<WPcl>)wp);
-	}
-}
-#endif
 
 template<typename SCL> void schAcl<SCL>::frisch()
 {
@@ -2403,11 +2443,12 @@ int systemrueck(const string& cmd, int obverb/*=0*/, int oblog/*=0*/, vector<str
   } else {
     aktues=ueberschr;
   } //   if (ueberschr.empty())
-	char tmpd[L_tmpnam];
-	const char *const ergtmp __attribute__((unused)){tmpnam(tmpd)};
+	char tmpd[]{P_tmpdir "/konsXXXXXX"};
+	const int mksterg{mkstemp(tmpd)};
 	// '... 2>/dev/null' nicht unbedingt aufheben
 	const string bef=(obsudc?sudc+(obsudc==2&&!sudc.empty()?"-H ":""):"")+
-		(obdirekt?hcmd:"env PATH='"+spath+"' "+"sh -c '"+ersetzAllezu(hcmd,"'","'\\''")+"'"+(hcmd.find(" 2>")==string::npos/*||obverb>0*/?string(" 2>")+tmpd:string()));
+		(obdirekt?hcmd:"env PATH='"+spath+"' "+"sh -c '"+ersetzAllezu(hcmd,"'","'\\''")+"'"+
+		 (mksterg!=-1&&(hcmd.find(" 2>")==string::npos||obverb>0)?string(" 2>")+tmpd:string()));
 	const string befanz{ersetze(bef.c_str(),spath.c_str(),"...")};
 	const string hsubs{bef.substr(0,getcols()-7-aktues.length())};
 	string meld{aktues+": "+blau+hsubs+schwarz+" ..."};
@@ -5601,7 +5642,7 @@ void hcl::virtschlussanzeige()
 		fLog(ausg.str(),1,oblog); 
 	} //   if (obverb>0)
 	hLog(Txk[T_Fertig_mit]+blaus+meinname+schwarz+" !");
-}// augerufen in: dovi, dovc, dovh
+}// augerufen in: dovi und in abgeleiteten Programmen z.B. dovc, dovh
 
 // wird aufgerufen in prueftif
 int hcl::holvomnetz(const string& datei,const string& vors/*=defvors*/,const string& nachs/*=defnachs*/)
@@ -5674,7 +5715,7 @@ int hcl::kompilfort(const string& was,const string& vorcfg/*=string()*/, const s
 			if (!systemrueck(b3,obverb,oblog,/*rueck=*/0,/*obsudc=*/0)) {
 				ret=systemrueck(b2,obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
 			}
-		}
+		} // 		if (!(erg1=systemrueck(b1,obverb,oblog,/*rueck=*/0,/*obsudc=*/0))) else 
 		systemrueck(b4,obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
 		hLog(string(Txk[T_Ergebnis_nach_make])+" "+ltoan(erg1));
 		hLog(string(Txk[T_Ergebnis_nach_make_install])+" "+ltoan(ret));

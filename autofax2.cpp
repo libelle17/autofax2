@@ -636,6 +636,12 @@ char const *DPROG_T[T_MAX+1][SprachZahl]={
 		" (if it hangs, especially more than 3 weeks, please invoke again)"},
 	// T_hylafaxspringtnichtan
 	{"hylafax.service springt nicht an. Verwende Hylafax nicht.","hylafax.service does not start up. Not utilizing hylafax."},
+	// T_verzeichnisse
+	{"verzeichnisse()","directories()"},
+	// T_Muster,
+	{"Muster ","Pattern "},
+	// T_Ziel,
+	{"Ziel ","Target "},
 	{"",""} //α
 }; // char const *DPROG_T[T_MAX+1][SprachZahl]=
 
@@ -3622,7 +3628,7 @@ int hhcl::pruefhyla()
 } // int hhcl::pruefhyla()
 
 
-// augerufen in: main
+// augerufen in: virtpruefweiteres
 void hhcl::dovh()
 {
 	// muss nach setzhylavz kommen
@@ -3641,14 +3647,35 @@ void hhcl::dovh()
 	vischluss(erg,zeig);
 } // void hhcl::dovh()
 
+// wird aufgerufen in: virtpruefweiteres
+void hhcl::verzeichnisse()
+{
+	hLog(violetts+Tx[T_verzeichnisse]);
+	pruefcvz(); 
+	pruefverz(zufaxenvz,obverb,oblog,/*obmitfacl=*/2,/*obmitcon=*/1,/*besitzer=*/cuser); // dahin soll man schreiben koennen
+//	pruefverz(zufaxenvz+"/2200",obverb,oblog,/*obmitfacl=*/2,/*obmitcon=*/1,/*besitzer=*/cuser); // dahin soll man schreiben koennen
+	pruefverz(wvz,obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/1,/*besitzer=*/cuser);
+	pruefverz(ngvz,obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/1,/*besitzer=*/cuser);
+	pruefverz(empfvz,obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/1,/*besitzer=*/cuser);
+	for(zielmustercl *zmakt=zmsp[0].get();1;zmakt++){
+		pruefverz(zmakt->holziel(),obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/1,/*besitzer=*/cuser);
+		if (zmakt->obmusterleer()) break;
+	} //   for(zielmustercl *zmakt=zmp;1;zmakt++)
+	for(uint imu=0;imu<this->zmzn;imu++) {
+		const string imus{ltoan(imu)};
+		fLog(Tx[T_Muster]+imus+": '"+blau+this->zmsp[imu]->holmuster()+schwarz+"'",this->obverb>1,this->oblog);
+		fLog(Tx[T_Ziel]+imus+":   '"+blau+this->zmsp[imu]->holziel()+schwarz+"'",this->obverb>1,this->oblog);
+	} //   for(uint imu=0;imu<this->zmzn;imu++)
+} // hhcl:: verzeichnisse()
 
 // wird aufgerufen in lauf
 void hhcl::virtpruefweiteres()
 { //ω
 	setzhylavz();
 	if (obvh) dovh();
-	hcl::virtpruefweiteres(); // z.Zt. leer //α
+	verzeichnisse();
 
+	hcl::virtpruefweiteres(); // z.Zt. leer //α
 } // void hhcl::virtpruefweiteres
 
 // wird aufgerufen in lauf

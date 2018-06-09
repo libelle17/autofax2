@@ -305,6 +305,9 @@ enum T_
 	T_Fuehre_aus_Dp,
 	T_falls_es_hier_haengt_bitte_erneut_aufrufen,
 	T_hylafaxspringtnichtan,
+	T_verzeichnisse,
+	T_Muster,
+	T_Ziel,
 	T_MAX //α
 }; // enum T_ //ω
 
@@ -465,7 +468,7 @@ class hhcl:public dhcl
 		schAcl<optcl> opvsql=schAcl<optcl>("opvsql"),opvzm=schAcl<optcl>("opvzm"); // Optionen
 		string host="localhost";  // fuer MySQL/MariaDB
 
-		schAcl<WPcl> *cfcnfCp=0/*schAcl<WPcl>("cfcnfC")*/; // Capikonfiguration aus fax.conf
+		schAcl<WPcl> *cfcnfCp{0}/*schAcl<WPcl>("cfcnfC")*/; // Capikonfiguration aus fax.conf
 		schAcl<WPcl> *cccnfCp=0; // Capikonfiguration aus capisuite.conf
 		schAcl<WPcl> *hfcnfCp=0; // Hylakonfiguration
 		schAcl<WPcl> *hyaltcnfCp=0; // Hylakonfiguration
@@ -533,6 +536,7 @@ class hhcl:public dhcl
 		void hfaxsetup();
     void hliesconf();
 		void machopvzm();
+		void verzeichnisse();
 	protected: 
 		// void virtlgnzuw(); // wird aufgerufen in: virtrueckfragen, parsecl, lieskonfein, hcl::hcl nach holsystemsprache
 		void virtVorgbAllg();
