@@ -1255,6 +1255,7 @@ class hcl
 		string mpwd;  // Passwort fuer Mysql/MariaDB //ω
 		stringstream uebers; // Ueberschrift fuer Verarbeitungslauf
 		const uchar mitcron; // ob Programm auch in Cron eingetragen werden kann; kann im Konstruktor angegeben werden
+		unsigned tmmoelen;
 #ifdef _WIN32
     char cpt[255];
     DWORD dcpt;

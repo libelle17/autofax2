@@ -382,6 +382,29 @@ enum T_
 	T_empfhyla,
 	T_was,
 	T_Bilddatei,
+	T_avon,
+	T_zupdf,
+	T_pruefocr,
+	T_Umwandlungvon,
+	T_inPDFmit,
+	T_misserfolg,
+	T_Erfolg_af,
+	T_Seiten,
+	T_Installiere_ocrmypdf,
+	T_Ihre_Python3_Version_koennte_mit,
+	T_veraltet_sein_Wenn_Sie_Ihre_Faxe_OCR_unterziehen_wollen_dann_fuehren_Sie_bitte_ein_Systemupdate_durch_mit,
+	T_pruefsoffice,
+	T_pruefconvert,
+	T_pruefunpaper,
+	T_beendetErgebnis,
+	T_holtif,
+	T_nicht_angekommen,
+	T_Dateien,
+	T_nicht_verarbeitbar_Verschiebe_sie_nach,
+	T_Zahl_der_empfangenen_Faxe,
+	T_bereinigevz,
+	T_Bereinige_Verzeichnis,
+	T_DateienzahlimVz,
 	T_MAX //α
 }; // enum T_ //ω
 
@@ -403,6 +426,8 @@ const string& pruefspool(DB *My,const string& spooltab, const string& altspool, 
 void pruefouttab(DB *My, const string& touta, const int obverb, const int oblog, const uchar direkt=0);
 void pruefudoc(DB *My, const string& tudoc, const int obverb, const int oblog, const uchar direkt=0);
 void pruefinctab(DB *My, const string& tinca, const int obverb, const int oblog, const uchar direkt=0);
+string verschiebe(const string& qdatei, const auto/*string,zielmustercl*/& zielvz, const string& cuser=nix, 
+                  uint *vfehlerp=0, const uchar wieweiterzaehl=1, int obverb=0,int oblog=0, stringstream *ausgp=0,const uchar auchgleiche=0);
 
 
 // Steuerung der Abspeicherung gesendeter Faxe je nach Muster
@@ -580,6 +605,8 @@ class hhcl:public dhcl
 		vector<zielmustercl> zmVp; // Zielmuster aus Vorgaben
 		vector<shared_ptr<string>> zmmrp; // vector der rueckfrage-Zielmuster
 		vector<shared_ptr<string>> zmzrp; // vector der rueckfrage-Ziele
+		string virtvz; //	instvz+"/ocrv";
+	  string ocrmp; //	virtvz+"/bin/ocrmypdf";
 
 	public: //α //ω
 	private: //α //ω
@@ -616,6 +643,11 @@ class hhcl:public dhcl
     void korrigierehyla(const unsigned tage=90,const size_t aktc=2);
 		void getSender(const string& faxnr, string *getnamep, string *bsnamep,const size_t aktc);
     string stdfaxnr(const string& faxnr);
+    int pruefsoffice(uchar mitloe=0);
+    void bereinigevz(const size_t aktc/*=0*/);
+		void dober(const string& wvz, set<string>& fdn,uchar aucherfolg,stringstream *ausgp,const size_t aktc,
+				set<string> *cmisslp,set<string> *cgelup,set<string> *hmisslp,set<string> *hgelup);
+		void anhalten();
 	protected: 
 		// void virtlgnzuw(); // wird aufgerufen in: virtrueckfragen, parsecl, lieskonfein, hcl::hcl nach holsystemsprache
 		void virtVorgbAllg();
@@ -642,6 +674,13 @@ class hhcl:public dhcl
     void empfarch(uchar obalte=0);
 		void empfhyla(const string& ganz,size_t aktc, const uchar was,const string& nr=nix);
 		void empfcapi(const string& stamm,size_t aktc, const uchar was,const string& nr=nix);
+	  int zupdf(const string* quell, const string& ziel, ulong *pseitenp=0, int obocr=1, int loeschen=1); // 0=Erfolg
+    int pruefocr();
+    int pruefconvert();
+		int holtif(const string& datei,ulong *seitenp=0,struct tm *tmp=0,struct stat *elogp=0,
+		           string *absdrp=0,string *tsidp=0,string *calleridp=0,string *devnamep=0);
+		void pruefunpaper();
+		void unpaperfuercron(const string& ocrprog);
 	public: //α
 		hhcl(const int argc, const char *const *const argv);
 		~hhcl();

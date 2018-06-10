@@ -4902,6 +4902,7 @@ hcl::hcl(const int argc, const char *const *const argv,const char* const DPROG,c
 {
 	tstart=clock();
 	holbefz0(argc,argv);
+	tmmoelen=sizeof tmmoegl/sizeof *tmmoegl;
 	langu=holsystemsprache(obverb);
 	virtlgnzuw();
 	pthread_mutex_init(&printf_mutex, NULL);
