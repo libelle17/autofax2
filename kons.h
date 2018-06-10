@@ -1257,6 +1257,7 @@ class hcl
     size_t cptlen;
 #endif // _WIN32 else
 	public:
+		int retu{0}; // Return-Value
 		int obverb=0; // verbose
 		int oblog=0;  // mehr Protokollieren
     uchar rzf=0; // rueckzufragen

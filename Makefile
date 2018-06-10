@@ -421,7 +421,7 @@ $(1).gz: $(EXEC) $(1)
 		TMP=tmp_opt_$$$$Lang;chmod +x $(EXEC);\
 		EX="./$(EXEC) -1lg $$$$Lang -sh";\
 		W1="sed -e s/^/.br\n/;s/\\[[01]\\;3.m/\\\\fB/g;s/\\[0m/\\\\fR/g";\
-		W1a=$$$$(echo $$$$W1|sed s/\\\\n/\\\\\\\\n/g\;s/`echo -e "\033"`/\(ESC\)/g);\
+		W1a=$$$$(echo $$$$W1|sed s/\\\\n/\\\\\\\\n/g\;s/`printf "\033"`/\(ESC\)/g);\
 		W2="sed :a;N;$$$$!ba";\
 		printf " rufe auf/calling: '%b$$$$EX |$$$$W1a |$$$$W2 >$$$$TMP%b'\n" $(blau) $(reset);\
 		$$$$EX|$$$$W1|$$$$W2>$$$$TMP; \

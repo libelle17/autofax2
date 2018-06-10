@@ -4004,7 +4004,7 @@ int servc::obsvfeh(int obverb/*=0*/,int oblog/*=0*/) // ob service einrichtungs 
 	obenabled=1;
 	for(int iru=0;iru<2;iru++) {
 		svec statrueck;
-		systemrueck("systemctl -n 0 status '"+sname+"'",obverb,oblog,&statrueck,1);
+		systemrueck("systemctl -n 0 status '"+sname+"' 2>/dev/null",obverb,oblog,&statrueck,1);
 		for(size_t j=0;j<statrueck.size();j++) {
 			const string *sp=&statrueck[j];
 			if (sp->find("Loaded:")!=string::npos) {
@@ -4952,6 +4952,7 @@ void hcl::lauf()
 		if (logdateineu) tuloeschen(logdt,"",obverb,oblog);
 		hLog(Txk[T_Logpfad]+drots+loggespfad+schwarz+Txk[T_oblog]+drot+ltoan((int)oblog)+schwarz+")");
 		virtpruefweiteres();
+		if (retu) return;
 	} // 	if (!keineverarbeitung)
 	if (mitcron) pruefcron(string()); // soll vor Log(Tx[T_Verwende ... stehen
 	if (!keineverarbeitung) {
@@ -5126,7 +5127,7 @@ void hcl::parsecl()
 	if (obverb) obverb=0; // damit nicht aus -v obverb=2 wird
 	vector<argcl>::iterator ap,apn;
 	for(ap=argcmv.begin();ap!=argcmv.end();ap++) {
-		uchar nichtspeichern=0, gegenteil=0, kurzp=0, langp=0;
+		uchar nichtspeichern{0}, gegenteil{0}, kurzp{0}, langp{0};
 		const char *acstr=ap->argcs;
 		//// <<rot<<"acstr: "<<schwarz<<acstr<<endl;
 		unsigned aclen=strlen(acstr);
@@ -6169,8 +6170,9 @@ void hcl::pruefsamba(const vector<const string*>& vzn,const svec& abschni,const 
 		if (obsfehlt) {
 			if (!nrzf) {
 				obinst=Tippob(Txk[T_Samba_muesste_installiert_werden_soll_ich],Txk[T_j_af]);
-				if (obinst)
+				if (obinst) {
 					linstp->doinst("samba",obverb,oblog);
+				}
 				////        smbrestart=0;
 			} // if (!nrzf) 
 		} // 	if (obsfehlt)

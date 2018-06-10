@@ -308,6 +308,52 @@ enum T_
 	T_verzeichnisse,
 	T_Muster,
 	T_Ziel,
+	T_rufpruefsamba,
+	T_Faxempfang,
+	T_Gefaxt,
+	T_zufaxenvz,
+	T_pruefspool,
+	T_pruefouta,
+	T_eindeutige_Identifikation,
+	T_Originalname_der_Datei,
+	T_Originalname_der_Datei_vor_Umwandlung_in_PDF,
+	T_zu_senden_an,
+	T_Prioritaet_aus_Dateinamen,
+	T_Zahl_der_bisherigen_Versuche_in_Capisuite,
+	T_Zahl_der_bisherigen_Versuche_in_Hylafax,
+	T_Spooldatei_in_Capisuite,
+	T_Pfad_zur_Spooldatei_in_Capisuite_ohne_abschliessendes_Verzeichnistrennzeichen,
+	T_Aenderungszeit_der_CapiSpoolDatei,
+	T_Aenderungszeit_der_CapiSpooldatei_im_time_Format,
+	T_Aenderungszeit_der_Hylaspooldatei,
+	T_Aenderungszeit_der_Hylaspooldatei_im_Time_Format,
+	T_jobid_in_letztem_gescheitertem_hylafax,
+	T_state_Feld_in_hylafax,
+	T_Index_auf_urspruenglichen_Dateinamen,
+	T_capistat,
+	T_statuscode_in_letztem_gescheitertem_hylafax,
+	T_status_in_letztem_gescheitertem_hylafax,
+	T_capispooldateien_der_Capisuite,
+	T_1_ist_erfolgreiche_Uebertragung_0_ist_fehlgeschlagen,
+	T_Name_des_Adressaten_aus_Faxnummer_ermittelt,
+	T_Datum_des_Losschickens,
+	T_Ende_der_Uebertragung,
+	T_Kennung_im_Faxsystem_hylafax_Nr_Capisuite_Datei_MSFax_Fax_Dateiname,
+	T_Dateigroesse,
+	T_Seitenzahl,
+	T_Zahl_der_Anwahlen,
+	T_Faxnummer_des_Adressaten,
+	T_Titel_des_Adressaten,
+	T_PID_falls_aus_Dateinamen_ermittelt,
+	T_Kurzbezeichnung_der_eigenen_Faxstelle,
+	T_Geraetename,
+	T_Name_des_Adressaten_aus_Dateiname,
+	T_Archiv_fuer_die_erfolgreichen_Faxe,
+	T_pruefudoc,
+	T_Archiv_fuer_die_Dateinamen_vor_Aufteilung,
+	T_pruefinca,
+	T_identisch_zu_submid_in_outa,
+	T_Datenbank_nicht_initialisierbar_breche_ab,
 	T_MAX //α
 }; // enum T_ //ω
 
@@ -325,16 +371,18 @@ string zielname(const string& qdatei, const zielmustercl& zmup,uchar wieweiterza
                 int oblog=0, stringstream *ausgp=0);
 void pruefrules(int obverb, int oblog);
 void useruucp(const string& huser, const int obverb, const int oblog);
+const string& pruefspool(DB *My,const string& spooltab, const string& altspool, const int obverb, const int oblog, uchar direkt=0);
+void pruefouttab(DB *My, const string& touta, const int obverb, const int oblog, const uchar direkt=0);
+void pruefudoc(DB *My, const string& tudoc, const int obverb, const int oblog, const uchar direkt=0);
+void pruefinctab(DB *My, const string& tinca, const int obverb, const int oblog, const uchar direkt=0);
 
 
 // Steuerung der Abspeicherung gesendeter Faxe je nach Muster
-class zielmustercl 
+struct zielmustercl 
 {
-	private:
     string muster;
     string ziel;
   // beim letzten Element muss ziel leer sein!
-  public:
     regex_t regex;
     // wird nur in Vorgaben gebraucht:
     zielmustercl(const char * const muster,const char * const ziel);
@@ -493,8 +541,7 @@ class hhcl:public dhcl
 		string* sqlp=0; // Array der SQL-Befehle
 		//    string sqlz;  // Zahl der SQL-Befehle
 		//    size_t sqlzn=0; // Zahl der SQL-Befehle numerisch
-		size_t sqlvzn=0; // Zahl der SQL-Befehle aus Vorgaben numerisch
-		string* sqlvp; // Array der Vorgabe-SQL-Befehle
+		svec sqlVp; // Vector der Vorgabe-SQL-Befehl
 		vector<shared_ptr<string>> sqlrp; // vector der rueckfrage-SQL-Befehle
 
 		size_t zmz0=0; // Index in opn mit erster Zielmusterpaaroption, wird vielleicht nicht gebraucht
@@ -502,8 +549,7 @@ class hhcl:public dhcl
 		string *zmmp=0; // Array der Zielmuster
 		string *zmzp=0; // Array der Ziele
 		vector<shared_ptr<zielmustercl>> zmsp; // Zielmusterzeiger
-		size_t zmvzn=0; // Zielmusterzahl numerisch aus Vorgaben
-		zielmustercl *zmvp; // Zielmusterzeiger aus Vorgaben
+		vector<zielmustercl> zmVp; // Zielmuster aus Vorgaben
 		vector<shared_ptr<string>> zmmrp; // vector der rueckfrage-Zielmuster
 		vector<shared_ptr<string>> zmzrp; // vector der rueckfrage-Ziele
 
@@ -537,6 +583,7 @@ class hhcl:public dhcl
     void hliesconf();
 		void machopvzm();
 		void verzeichnisse();
+    void rufpruefsamba();
 	protected: 
 		// void virtlgnzuw(); // wird aufgerufen in: virtrueckfragen, parsecl, lieskonfein, hcl::hcl nach holsystemsprache
 		void virtVorgbAllg();

@@ -642,6 +642,103 @@ char const *DPROG_T[T_MAX+1][SprachZahl]={
 	{"Muster ","Pattern "},
 	// T_Ziel,
 	{"Ziel ","Target "},
+	// T_rufpruefsamba
+	{"rufpruefsamba()","callchecksamba()"},
+	// T_Faxempfang
+	{"Faxempfang","FaxArrival"},
+	// T_Gefaxt
+	{"Gefaxt","Faxed"},
+	// T_zufaxenvz
+	{"zufaxenvz: '","outgoing dir: '"},
+	// T_pruefspool
+	{"pruefspool()","checkspool()"},
+	// T_pruefouta
+	{"pruefouta()","checkouta()"},
+	// T_eindeutige_Identifikation
+	{"eindeutige Identifikation","distinct identification"},
+	// T_Originalname_der_Datei
+	{"Originalname der Datei","original name of the file"},
+	// T_Originalname_der_Datei_vor_Umwandlung_in_PDF
+	{"Originalname der Datei vor Umwandlung in PDF","original name of the file before converting to pdf"},
+	// T_zu_senden_an
+	{"zu senden an","to be sent to"},
+	// T_Prioritaet_aus_Dateinamen
+	{"Prioritaet der Fax-Programme: 0=capi und 1=hyla per Konfigurationsdatei, 2=capi und 3=hyla per Faxdateiname",
+		"Priority of the fax programs: 0=capi and 1=hyla via configuration file, 2=capi and 3=hyla via fax file name"},
+	// T_Zahl_der_bisherigen_Versuche_in_Capisuite
+	{"Zahl der bisherigen Versuche in Capisuite","No. of previous tries in Capisuite"},
+	// T_Zahl_der_bisherigen_Versuche_in_Hylafax
+	{"Zahl der bisherigen Versuche in Hylafax","No. of previous tries in Hylafax"},
+	// T_Spooldatei_in_Capisuite
+	{"Spooldatei in Capisuite","Spool file in Capisuite"},
+	// T_Pfad_zur_Spooldatei_in_Capisuite_ohne_abschliessendes_Verzeichnistrennzeichen
+	{"Pfad zur Spooldatei in Capisuite, ohne abschliessendes Verzeichnistrennzeichen",
+		"Path to the spool file in Capisuite, without closing directory separator"},
+	// T_Aenderungszeit_der_CapiSpoolDatei
+	{"Aenderungszeit der CapiSpooldatei","Modification time of the capi spool file"},
+	// T_Aenderungszeit_der_CapiSpooldatei_im_time_Format
+	{"Aenderungszeit der CapiSpooldatei, im time()-Format","Modification time of the capi spool file, in time() format"},
+	// T_Aenderungszeit_der_Hylaspooldatei
+	{"Aenderungszeit der Hyla-Spooldatei","Modification time of the hyla spool file"},
+	// T_Aenderungszeit_der_Hylaspooldatei_im_Time_Format
+	{"Aenderungszeit der Hyla-Spooldatei, im time()-Format","Modification time of the hyla spool file, in time() format"},
+	// T_jobid_in_letztem_gescheitertem_hylafax
+	{"jobid in letztem gescheitertem hylafax","job id of the last failed hylafax"},
+	// T_state_Feld_in_hylafax
+	{"state-Feld in hylafax: 0=init,1=gestrichen,2=schwebend,3=wartend,4=blockiert,5=bereit,6=verarb,7=gesandt,8=gescheitert,9=fehlend,10=woasined",
+		"state-field in hylafax: 0=init,1=suspended,2=pending,3=sleeping,4=blocked,5=ready,6=active,7=done,8=failed,9=missing,10=unknown"},
+	// T_Index_auf_urspruenglichen_Dateinamen
+	{"Index auf urspruenglichen Dateinamen in Tabelle 'udoc'","Index on original filename in table 'udoc'"},
+	// T_capistat
+	{"capistat: 0=init,1=gestrichen,2=schwebend,3=wartend,4=blockiert,5=bereit,6=verarb,7=gesandt,8=gescheitert,9=fehlend,10=woasined",
+		"capistat: 0=init,1=suspended,2=pending,3=sleeping,4=blocked,5=ready,6=active,7=done,8=failed,9=missing,10=unknown"},
+	// T_statuscode_in_letztem_gescheitertem_hylafax
+	{"statuscode in letztem gescheitertem hylafax","status code of the last failed hylafax"},
+	// T_status_in_letztem_gescheitertem_hylafax
+	{"status in letztem gescheitertem hylafax","status of the last failed hylafax"},
+	// T_capispooldateien_der_Capisuite
+	{"capiSpooldateien der Capisuite","capi spool files of capisuite"},
+	// T_1_ist_erfolgreiche_Uebertragung_0_ist_fehlgeschlagen
+	{"1=erfolgreiche Uebertragung, 0=fehlgeschlagen","1=successful transmission, 0=failure"},
+	// T_Name_des_Adressaten_aus_Faxnummer_ermittelt
+	{"Name des Adressaten, aus Faxnummer ermittelt","Name of the receiver according to his fax number"},
+	// T_Datum_des_Losschickens
+	{"Datum des Losschickens","submit time"},
+	// T_Ende_der_Uebertragung
+	{"Ende der Uebertragung","end of submission"},
+	// T_Kennung_im_Faxsystem_hylafax_Nr_Capisuite_Datei_MSFax_Fax_Dateiname
+	{"Kennung im Faxsystem (hylafax: Nr., Capisuite: Datei, MS Fax: Fax-Dateiname",
+		"identifier in fax system (hylafax: no, capisuite: file, ms fax: fax file name"},
+	// T_Dateigroesse
+	{"Dateigroesse","file size"},
+	// T_Seitenzahl
+	{"Seitenzahl","no. of pages"},
+	// T_Zahl_der_Anwahlen
+	{"Zahl der Anwahlen","No. of tries"},
+	// T_Faxnummer_des_Adressaten
+	{"Faxnummer des Adressaten","receiver's fax no"},
+	// T_Titel_des_Adressaten
+	{"Titel des Adressaten","receiver's fax no"},
+	// T_PID_falls_aus_Dateinamen_ermittelt
+	{"PID, falls aus Dateinamen ermittelt","PID, if excerpted from file name"},
+	// T_Kurzbezeichnung_der_eigenen_Faxstelle
+	{"Kurzbezeichnung der eigenen Faxstelle","short name of the own fax location"},
+	// T_Geraetename
+	{"Geraetename","device name"},
+	// T_Name_des_Adressaten_aus_Dateiname
+	{"Name des Adressaten aus Dateiname","Name of the receiver from file name"},
+	// T_Archiv_fuer_die_erfolgreichen_Faxe
+	{"Archiv fuer die erfolgreichen Faxe","archive for successful faxes"},
+	// T_pruefudoc
+	{"pruefudoc()","checkudoc()"},
+	// T_Archiv_fuer_die_Dateinamen_vor_Aufteilung
+	{"Archiv fuer die Dateinamen vor Aufteilung","archive for filenames before splitting"},
+	// T_pruefinca
+	{"pruefinca()","checkinca()"},
+	// T_identisch_zu_submid_in_outa
+	{"identisch zu submid in outa","identical to submid in outa"},
+	// T_Datenbank_nicht_initialisierbar_breche_ab
+	{"Datenbank nicht initialisierbar, breche ab","database init failed, stopping"},
 	{"",""} //α
 }; // char const *DPROG_T[T_MAX+1][SprachZahl]=
 
@@ -807,10 +904,10 @@ string zielname(const string& qdatei, const zielmustercl& zmup, uchar wieweiterz
 	for(const zielmustercl *zmakt=&zmup;1;zmakt++){
 		int reti=regexec(&(zmakt->regex),qdatei.c_str(),0,NULL,0);
 		const string meld=Txk[T_datei]+rots+qdatei+schwarz+Tx[T_entspricht]+(reti?Tx[T_entsprichtnicht]:Tx[T_entsprichtdoch])+
-			Tx[T_Muster_Doppelpunkt]+rot+zmakt->holmuster()+schwarz+"'";
+			Tx[T_Muster_Doppelpunkt]+rot+zmakt->muster+schwarz+"'";
 		if (ausgp&&obverb) *ausgp<<meld<<endl; else fLog(meld,obverb,oblog);
 		if (!reti){
-			return zielname(qdatei,zmakt->holziel(),wieweiterzaehl,zieldatei,obgleichp,obverb,oblog,ausgp);
+			return zielname(qdatei,zmakt->ziel,wieweiterzaehl,zieldatei,obgleichp,obverb,oblog,ausgp);
 		} //     if (!reti)
 		if (zmakt->obmusterleer()) break;
 	} //   for(zielmustercl *zmakt=zmup;1;zmakt++)
@@ -2162,14 +2259,14 @@ void hhcl::pvirtmacherkl()
 
 void hhcl::machopvzm()
 {
-	for(size_t i=0;i<zmvzn;) {
+	for(size_t i=0;i<zmVp.size();) {
 		++i;
 		stringstream zmmname,zmzname;
 		zmmname<<"ZMMuster_"<<i;
 		zmzname<<"ZMZiel_"<<i;
 		const string istr=ltoan(i);
-		opvzm<<new optcl(/*pname*/zmmname.str(),/*pptr*/&zmvp[i-1].holmuster(),/*part*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zielmuster_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
-		opvzm<<new optcl(/*pname*/zmzname.str(),/*pptr*/&zmvp[i-1].holziel(),/*part*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Ziel_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
+		opvzm<<new optcl(/*pname*/zmmname.str(),/*pptr*/&zmVp[i-1].muster,/*part*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Zielmuster_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
+		opvzm<<new optcl(/*pname*/zmzname.str(),/*pptr*/&zmVp[i-1].ziel,/*part*/pstri,-1,-1,/*TxBp*/&Tx,/*Txi*/T_Ziel_Nr,/*wi*/0,/*Txi2*/-1,/*rottxt*/istr,/*wert*/-1,/*woher*/1);
 	}
 }
 
@@ -2185,16 +2282,17 @@ void hhcl::virtMusterVorgb()
 	msn="999999";
 	LocalIdentifier=Tx[T_MeiEinrichtung];
 	cFaxUeberschrift=Tx[T_Mei_FaxUeberschrift];
-	sqlvzn=0;
 	////  host="localhost"; // 'localhost' schon Vorgabe bei Definition
 	zufaxenvz="/var/"+meinname+vtz+Tx[T_zufaxen];
 	wvz="/var/"+meinname+vtz+Tx[T_warteauffax];
 	ngvz="/var/"+meinname+vtz+Tx[T_nichtgefaxt];
 	empfvz="/var/"+meinname+vtz+Tx[T_empfvz];
-	static zielmustercl zmi[]={zielmustercl("[Ss]pamfax","/var/"+meinname+"/spam"),zielmustercl("","/var/"+meinname+vtz+Tx[T_gesandt])};//= nur Beispiel
+//	static zielmustercl zmi[]={zielmustercl("[Ss]pamfax","/var/"+meinname+"/spam"),zielmustercl("","/var/"+meinname+vtz+Tx[T_gesandt])};//= nur Beispiel
 	// wird nur vor dem ersten fork bearbeitet
-	zmvp=zmi;
-	zmvzn=sizeof zmi/sizeof *zmi;
+//	zmvp=zmi;
+	zmVp.clear();
+	zmVp.push_back(zielmustercl("[Ss]pamfax","/var/"+meinname+"/spam"));
+	zmVp.push_back(zielmustercl("","/var/"+meinname+vtz+Tx[T_gesandt]));
 	machopvzm();
 	dhcl::virtMusterVorgb(); //α
 } // void hhcl::MusterVorgb
@@ -2600,8 +2698,8 @@ void hhcl::virtrueckfragen()
 		zmzrp.clear();
 		////opn.oausgeb(blau);
 		for(size_t akt=0;/*akt<zmzn*/1;) {
-			const string *const vgbm=(akt<zmzn?&zmsp[akt]->holmuster():&nix),
-									 *const vgbz=(akt<zmzn?&zmsp[akt]->holziel():&nix);
+			const string *const vgbm=(akt<zmzn?&zmsp[akt]->muster:&nix),
+									 *const vgbz=(akt<zmzn?&zmsp[akt]->ziel:&nix);
 			akt++;
 			string zwim,zwiz;
 			while (1) {
@@ -3647,6 +3745,48 @@ void hhcl::dovh()
 	vischluss(erg,zeig);
 } // void hhcl::dovh()
 
+// wird aufgerufen in: main
+void hhcl::rufpruefsamba()
+{
+	hLog(violetts+Tx[T_rufpruefsamba]);
+	vector<const string*> vzn;
+	svec abschni,suchs;
+	const int ISambaName[]{T_Zufaxen,T_Warteauffax,T_Nichtgefaxt,T_Faxempfang}; 
+	////={&zufaxenvz,&wvz,&nvz,&empfvz};
+	if (!zufaxenvz.empty()) vzn.push_back(&zufaxenvz);
+	if (!wvz.empty()) vzn.push_back(&wvz);
+	if (!ngvz.empty()) vzn.push_back(&ngvz);
+	if (!empfvz.empty()) vzn.push_back(&empfvz);
+	for(auto zmakt: zmsp) {
+		if (!zmakt->ziel.empty()) vzn.push_back(&zmakt->ziel);
+	} //     for(zielmustercl *zmakt=zmp;1;zmakt++)
+	for(unsigned k=0;k<vzn.size();k++) {
+		string suchstr;
+		if (k<4) {
+			abschni<<Tx[ISambaName[k]];
+			Sprache altSpr=Tx.lgn;
+			for(int akts=0;akts<SprachZahl;akts++) {
+				Tx.lgn=(Sprache)akts;
+				suchstr=string("\\[")+Tx[ISambaName[k]]+"\\]\\|";
+			} //         for(int akts=0;akts<SprachZahl;akts++)
+			Tx.lgn=altSpr;
+		} else {
+			abschni<<string(Tx[T_Gefaxt])+"_"+ltoan(k-4);
+			if (k==4) {
+				Sprache altSpr=Tx.lgn;
+				for(int akts=0;akts<SprachZahl;akts++) {
+					Tx.lgn=(Sprache)akts;
+					suchstr=string("\\[")+Tx[T_Gefaxt]+"_\\|";
+				} //         for(int akts=0;akts<SprachZahl;akts++)
+				Tx.lgn=altSpr;
+			} // 						if (k==4)
+		} // 					if (k<4) else
+		suchs<<suchstr;
+	} // 	for(unsigned k=0;k<vzn.size();k++)
+	pruefsamba(vzn,abschni,suchs,DPROG,cuser);
+} // pruefsamba
+
+
 // wird aufgerufen in: virtpruefweiteres
 void hhcl::verzeichnisse()
 {
@@ -3657,15 +3797,187 @@ void hhcl::verzeichnisse()
 	pruefverz(wvz,obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/1,/*besitzer=*/cuser);
 	pruefverz(ngvz,obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/1,/*besitzer=*/cuser);
 	pruefverz(empfvz,obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/1,/*besitzer=*/cuser);
-	for(size_t i=0;i<zmsp.size();i++) {
-		pruefverz(zmsp[i]->holziel(),obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/1,/*besitzer=*/cuser);
+	for(auto zmakt: zmsp) {
+		pruefverz(zmakt->ziel,obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/1,/*besitzer=*/cuser);
 	}
 	for(uint imu=0;imu<this->zmzn;imu++) {
 		const string imus{ltoan(imu)};
-		fLog(Tx[T_Muster]+imus+": '"+blau+this->zmsp[imu]->holmuster()+schwarz+"'",this->obverb>1,this->oblog);
-		fLog(Tx[T_Ziel]+imus+":   '"+blau+this->zmsp[imu]->holziel()+schwarz+"'",this->obverb>1,this->oblog);
+		fLog(Tx[T_Muster]+imus+": '"+blau+this->zmsp[imu]->muster+schwarz+"'",this->obverb>1,this->oblog);
+		fLog(Tx[T_Ziel]+imus+":   '"+blau+this->zmsp[imu]->ziel+schwarz+"'",this->obverb>1,this->oblog);
 	} //   for(uint imu=0;imu<this->zmzn;imu++)
 } // hhcl:: verzeichnisse()
+
+// wird aufgerufen in: main
+const string& pruefspool(DB *My,const string& spooltab, const string& altspool, const int obverb, const int oblog, uchar direkt/*=0*/)
+{
+	fLog(violetts+Tx[T_pruefspool]+schwarz+", direkt: "+(direkt?"1":"0"),obverb,oblog);
+	const size_t aktc=0;
+	if (!direkt) {
+		Feld felder[] = {
+			Feld("ID","int","10","",Tx[T_eindeutige_Identifikation],1,1),
+			Feld("original","varchar","1","",Tx[T_Originalname_der_Datei],/*obind=*/1,/*obauto=*/0,/*nnull=*/1),
+			Feld("origvu","varchar","1","",Tx[T_Originalname_der_Datei_vor_Umwandlung_in_PDF],0,0,1),
+			Feld("idudoc","int","10","",Tx[T_Index_auf_urspruenglichen_Dateinamen],0,0,1),
+			Feld("telnr","varchar","1","",Tx[T_zu_senden_an],0,0,1),
+			Feld("adressat","varchar","1","",Tx[T_zu_senden_an],0,0,1),
+			Feld("prio","int","1","",Tx[T_Prioritaet_aus_Dateinamen],0,0,1),
+			Feld("capidials","int","10","",Tx[T_Zahl_der_bisherigen_Versuche_in_Capisuite],0,0,1),
+			Feld("capistat","int","2","",Tx[T_capistat],0,0,1),
+			Feld("hyladials","int","10","",Tx[T_Zahl_der_bisherigen_Versuche_in_Hylafax],0,0,1),
+			Feld("capispooldatei","varchar","1","",Tx[T_Spooldatei_in_Capisuite],0,0,1),
+			Feld("capispoolpfad","varchar","1","",Tx[T_Pfad_zur_Spooldatei_in_Capisuite_ohne_abschliessendes_Verzeichnistrennzeichen],0,0,1),
+			Feld("cdateidatum","datetime","0","0",Tx[T_Aenderungszeit_der_CapiSpoolDatei],0,0,1),
+			Feld("cdateizeit","double","0","0",Tx[T_Aenderungszeit_der_CapiSpooldatei_im_time_Format],0,0,1),
+			Feld("hylanr","int","10","","jobid in hylafax",0,0,1),
+			Feld("hdateidatum","datetime","0","0",Tx[T_Aenderungszeit_der_Hylaspooldatei],0,0,1),
+			Feld("hdateizeit","double","0","0",Tx[T_Aenderungszeit_der_Hylaspooldatei_im_Time_Format],0,0,1),
+			Feld("althylanr","int","10","",Tx[T_jobid_in_letztem_gescheitertem_hylafax],0,0,1),
+			Feld("hylastate","int","2","",Tx[T_state_Feld_in_hylafax],0,0,1),
+			Feld("hylastatuscode","int","10","",Tx[T_statuscode_in_letztem_gescheitertem_hylafax],0,0,1),
+			Feld("hylastatus","varchar","80","",Tx[T_status_in_letztem_gescheitertem_hylafax],0,0,1),
+			Feld("pages","int","10","",Tx[T_Seitenzahl],0,0,1),
+		}; //     Feld felder[] = 
+		Feld ifelder0[]{Feld("capispooldatei")}; Index i0("capispooldatei",ifelder0,sizeof ifelder0/sizeof* ifelder0);
+		Feld ifelder1[]{Feld("cdateidatum")};    Index i1("cdateidatum",ifelder1,sizeof ifelder1/sizeof* ifelder1);
+		Feld ifelder2[]{Feld("hdateidatum")};    Index i2("hdateidatum",ifelder2,sizeof ifelder2/sizeof* ifelder2);
+		////    Feld ifelder3[] = {Feld("original")};       Index i3("original",ifelder3,sizeof ifelder3/sizeof* ifelder3);
+		Index indices[]{i0,i1,i2/*,i3*/};
+		// auf jeden Fall ginge "binary" statt "utf8" und "" statt "utf8_general_ci"
+		Tabelle taa(My,altspool,felder,sizeof felder/sizeof* felder,indices,sizeof indices/sizeof *indices,0,0,Tx[T_capispooldateien_der_Capisuite]
+				/*//, "InnoDB","utf8","utf8_unicode_ci","DYNAMIC"*/);
+		if (taa.prueftab(aktc,obverb)) {
+			fLog(rots+Tx[T_Fehler_beim_Pruefen_von]+schwarz+altspool,1,1);
+			exit(11);
+		} // 		if (taa->prueftab(&taa, aktc,obverb))
+		Tabelle tab(My,spooltab,felder,sizeof felder/sizeof* felder,indices,sizeof indices/sizeof *indices,0,0,Tx[T_capispooldateien_der_Capisuite]
+				/*// , "InnoDB","utf8","utf8_unicode_ci","DYNAMIC"*/);
+		if (tab.prueftab(aktc,obverb)) {
+			fLog(rots+Tx[T_Fehler_beim_Pruefen_von]+schwarz+spooltab,1,1);
+			exit(11);
+		} // 		if (tab->prueftab(&tab, aktc,obverb))
+	} // if (!direkt) 
+	return spooltab;
+} // const char* pruefspool(DB *My,const char* spooltab, int obverb, int oblog, uchar direkt=0)
+
+// wird aufgerufen in: main
+void pruefouttab(DB *My, const string& touta, const int obverb, const int oblog, const uchar direkt/*=0*/)
+{
+	fLog(violetts+Tx[T_pruefouta]+schwarz,obverb,oblog);
+	const size_t aktc=0;
+	if (!direkt) {
+		Feld felder[] = {
+			Feld("eind","int","10","",Tx[T_eindeutige_Identifikation],1,1),
+			Feld("Erfolg","int","1","",Tx[T_1_ist_erfolgreiche_Uebertragung_0_ist_fehlgeschlagen],0,0,1),
+			Feld("rcname","varchar","1","",Tx[T_Name_des_Adressaten_aus_Faxnummer_ermittelt],0,0,1),
+			Feld("submt","datetime","0","0",Tx[T_Datum_des_Losschickens],0,0,1),
+			Feld("transe","datetime","0","0",Tx[T_Ende_der_Uebertragung],0,0,1),
+			Feld("submid","varchar","1","",Tx[T_Kennung_im_Faxsystem_hylafax_Nr_Capisuite_Datei_MSFax_Fax_Dateiname],0,0,1),
+			Feld("docname","varchar","1","",Tx[T_Dateiname],0,0,1),
+			Feld("idudoc","int","10","",Tx[T_Index_auf_urspruenglichen_Dateinamen],0,0,1),
+			Feld("fsize","int","10","",Tx[T_Dateigroesse],0,0,1,"",1),
+			Feld("pages","int","10","",Tx[T_Seitenzahl],0,0,1),
+			Feld("retries","int","10","",Tx[T_Zahl_der_Anwahlen],0,0,1),
+			Feld("rcfax","varchar","1","",Tx[T_Faxnummer_des_Adressaten],0,0,1),
+			Feld("adressat","varchar","1","",Tx[T_Name_des_Adressaten_aus_Dateiname],0,0,1),
+			Feld("titel","varchar","1","",Tx[T_Titel_des_Adressaten],0,0,1),
+			Feld("pid","int","10","",Tx[T_PID_falls_aus_Dateinamen_ermittelt],0,0,1),
+			Feld("tsid","varchar","1","",Tx[T_Kurzbezeichnung_der_eigenen_Faxstelle],0,0,1),
+			Feld("devname","varchar","1","",Tx[T_Geraetename],0,0,1),
+			//			Feld("oscht","datetime","0","0",Tx[T_outgoing_schedule_time_oder_so_aehnlich_nur_MSFax],0,0,1),
+			//			Feld("subject","varchar","1","",Tx[T_Hinweis_auf_Dateiinhalt_oder_Adressat_nur_MSFax],0,0,1),
+			//			Feld("id","varchar","1","",Tx[T_identisch_zu_submid_nur_MSFax],0,0,1),
+			//			Feld("prio","int","1","",Tx[T_Prioritaet_nur_MSFax],0,0,1),
+			//			Feld("csid","varchar","1","",Tx[T_Faxnummer_des_Adressaten_nur_MSFax],0,0,1),
+			//			Feld("sender","varchar","1","",Tx[T_Faxnummer_des_Senders_nur_MSFax],0,0,1),
+			//			Feld("transs","datetime","0","0",Tx[T_Beginn_der_Uebertragung_nur_MSFax],0,0,1),
+		};
+		Feld ifelder0[] = {Feld("submt"),Feld("Erfolg")};   Index i0("submt",ifelder0,sizeof ifelder0/sizeof* ifelder0);
+		Feld ifelder1[] = {Feld("Erfolg"),Feld("submt")};   Index i1("Erfolg",ifelder1,sizeof ifelder1/sizeof* ifelder1);
+		Feld ifelder2[] = {Feld("docname"),Feld("Erfolg")}; Index i2("docname",ifelder2,sizeof ifelder2/sizeof* ifelder2);
+		Feld ifelder3[] = {Feld("pid"),Feld("Erfolg")};     Index i3("pid",ifelder3,sizeof ifelder3/sizeof* ifelder3);
+		Feld ifelder4[] = {Feld("rcfax"),Feld("Erfolg")};   Index i4("rcfax",ifelder4,sizeof ifelder4/sizeof* ifelder4);
+		Feld ifelder5[] = {Feld("submid")}; Index i5("submid",ifelder5,sizeof ifelder5/sizeof* ifelder5);
+		Index indices[]={i0,i1,i2,i3,i4,i5};
+		// auf jeden Fall ginge "binary" statt "utf8" und "" statt "utf8_general_ci"
+		Tabelle taba(My,touta,felder,sizeof felder/sizeof* felder,indices,sizeof indices/sizeof *indices,0,0,
+				Tx[T_Archiv_fuer_die_erfolgreichen_Faxe]/*//,"InnoDB","utf8","utf8_general_ci","DYNAMIC"*/);
+		if (taba.prueftab(aktc,obverb)) {
+			fLog(rots+Tx[T_Fehler_beim_Pruefen_von]+schwarz+touta,1,1);
+			exit(11);
+		}
+	} // if (!direkt)
+} // int pruefouttab(DB *My, string touta, int obverb, int oblog, uchar direkt=0)
+
+// wird aufgerufen in: main
+void pruefudoc(DB *My, const string& tudoc, const int obverb, const int oblog, const uchar direkt/*=0*/)
+{
+	fLog(violetts+Tx[T_pruefudoc]+schwarz,obverb,oblog);
+	const size_t aktc=0;
+	if (!direkt) {
+		Feld felder[] = {
+			Feld("id","int","10","",Tx[T_eindeutige_Identifikation],1,1),
+			Feld("udocname","varchar","1","",Tx[T_Dateiname],0,0,1),
+		};
+		Feld ifelder0[] = {Feld("udocname")};   Index i0("udocname",ifelder0,sizeof ifelder0/sizeof* ifelder0);
+		Index indices[]={i0};
+		// auf jeden Fall ginge "binary" statt "utf8" und "" statt "utf8_general_ci"
+		Tabelle taba(My,tudoc,felder,sizeof felder/sizeof* felder,indices,sizeof indices/sizeof *indices,0,0,
+				Tx[T_Archiv_fuer_die_Dateinamen_vor_Aufteilung]/*//,"InnoDB","utf8","utf8_general_ci","DYNAMIC"*/);
+		if (taba.prueftab(aktc,obverb)) {
+			fLog(rots+Tx[T_Fehler_beim_Pruefen_von]+schwarz+tudoc,1,1);
+			exit(11);
+		}
+	} // if (!direkt)
+} // int pruefudoc(DB *My, string tudoc, int obverb, int oblog, uchar direkt=0)
+
+// wird aufgerufen in: main
+void pruefinctab(DB *My, const string& tinca, const int obverb, const int oblog, const uchar direkt/*=0*/)
+{
+	fLog(violetts+Tx[T_pruefinca]+schwarz,obverb,oblog);
+	const size_t aktc=0;
+	if (!direkt){
+		Feld felder[] = {
+			Feld("eind","int","10","",Tx[T_eindeutige_Identifikation],1,1),
+			Feld("Erfolg","int","1","",Tx[T_1_ist_erfolgreiche_Uebertragung_0_ist_fehlgeschlagen],0,0,1),
+			////      Feld("rcname","varchar","1","",Tx[T_Name_des_Adressaten],0,0,1),
+			////      Feld("submt","datetime","0","0",Tx[T_Datum_des_Losschickens],0,0,1),
+			Feld("transe","datetime","0","0",Tx[T_Ende_der_Uebertragung],0,0,1),
+			////      Feld("submid","varchar","1","",Tx[T_Kennung_im_Faxsystem_hylafax_Nr_Capisuite_Datei_MSFax_Fax_Dateiname],0,0,1),
+			////      Feld("docname","varchar","1","",Tx[T_Dateiname],0,0,1),
+			Feld("fsize","int","10","",Tx[T_Dateigroesse],0,0,1),
+			Feld("pages","int","10","",Tx[T_Seitenzahl],0,0,1),
+			Feld("retries","int","10","",Tx[T_Zahl_der_Anwahlen],0,0,1),
+			////      Feld("rcfax","varchar","1","",Tx[T_Faxnummer_des_Adressaten],0,0,1),
+			Feld("titel","varchar","1","",Tx[T_Titel_des_Adressaten],0,0,1),
+			////      Feld("pid","int","10","",Tx[T_PID_falls_aus_Dateinamen_ermittelt],0,0,1),
+			Feld("tsid","varchar","1","",Tx[T_Kurzbezeichnung_der_eigenen_Faxstelle],0,0,1),
+			Feld("devname","varchar","1","",Tx[T_Geraetename],0,0,1),
+			//			Feld("callerid","varchar","1","",Tx[T_Bezeichnung_des_Anrufers],0,0,1),
+			////      Feld("oscht","datetime","0","0",Tx[T_outgoing_schedule_time_oder_so_aehnlich_nur_MSFax],0,0,1),
+			////      Feld("subject","varchar","1","",Tx[T_Hinweis_auf_Dateiinhalt_oder_Adressat_nur_MSFax],0,0,1),
+			Feld("id","varchar","1","",Tx[T_identisch_zu_submid_in_outa],0,0,1),
+			////      Feld("prio","int","10","",Tx[T_Prioritaet_nur_MSFax],0,0,1),
+			Feld("csid","varchar","1","",Tx[T_Faxnummer_des_Adressaten],0,0,1),
+			////      Feld("sender","varchar","1","",Tx[T_Faxnummer_des_Senders_nur_MSFax],0,0,1),
+			//			Feld("transs","datetime","0","0",Tx[T_Beginn_der_Uebertragung_nur_MSFax],0,0,1),
+		};
+		Feld ifelder0[] = {Feld("transe"),Feld("Erfolg")};   Index i0("transe",ifelder0,sizeof ifelder0/sizeof* ifelder0);
+		Feld ifelder1[] = {Feld("Erfolg"),Feld("transe")};   Index i1("Erfolg",ifelder1,sizeof ifelder1/sizeof* ifelder1);
+		Feld ifelder2[] = {Feld("titel"),Feld("Erfolg")}; Index i2("titel",ifelder2,sizeof ifelder2/sizeof* ifelder2);
+		Feld ifelder3[] = {Feld("tsid"),Feld("Erfolg")}; Index i3("tsid",ifelder3,sizeof ifelder3/sizeof* ifelder3);
+		Feld ifelder4[] = {Feld("id"),Feld("Erfolg")}; Index i4("id",ifelder4,sizeof ifelder4/sizeof* ifelder4);
+		Index indices[]={i0,i1,i2,i3,i4};
+		// auf jeden Fall ginge "binary" statt "utf8" und "" statt "utf8_general_ci"
+		Tabelle taba(My,tinca,felder,sizeof felder/sizeof* felder,indices,sizeof indices/sizeof *indices,0,0,
+				Tx[T_Archiv_fuer_die_erfolgreichen_Faxe]/*//,"InnoDB","utf8","utf8_general_ci","DYNAMIC"*/);
+		if (taba.prueftab(aktc,obverb)) {
+			fLog(rots+Tx[T_Fehler_beim_Pruefen_von]+schwarz+tinca,1,1);
+			exit(11);
+		}
+	} // 	if (!direkt)
+} // int pruefinctab(DB *My, string tinca, int obverb, int oblog, uchar direkt=0)
+
+
 
 // wird aufgerufen in lauf
 void hhcl::virtpruefweiteres()
@@ -3673,6 +3985,21 @@ void hhcl::virtpruefweiteres()
 	setzhylavz();
 	if (obvh) dovh();
 	verzeichnisse();
+	if (!kez&& !bvz && !anhl && !lista && !listi && !listw && suchstr.empty())
+		rufpruefsamba();
+	if (logdateineu) tuloeschen(logdt,string(),obverb,oblog);
+	hLog(Tx[T_zufaxenvz]+drots+zufaxenvz+schwarz+"'");
+	hLog(Txk[T_Logpfad]+drots+loggespfad+schwarz+Txk[T_oblog]+drot+ltoan((int)oblog)+schwarz+")");
+	if (initDB()) {
+		hLog(Tx[T_Datenbank_nicht_initialisierbar_breche_ab]);
+		retu=10;
+		return;
+	}
+	// pruefe Tabelle <spooltab> und erstelle sie ggf.
+	pruefspool(My,spooltab, altspool, obverb,oblog);
+	pruefouttab(My,touta, obverb,oblog);
+	pruefudoc(My,tudoc, obverb,oblog);
+	pruefinctab(My,tinca, obverb,oblog);
 
 	hcl::virtpruefweiteres(); // z.Zt. leer //α
 } // void hhcl::virtpruefweiteres
@@ -3680,7 +4007,7 @@ void hhcl::virtpruefweiteres()
 // wird aufgerufen in lauf
 void hhcl::virtzeigueberschrift()
 { //ω
-  // hier ggf. noch etwas an 'uebers' anhaengen //α
+	// hier ggf. noch etwas an 'uebers' anhaengen //α
 	hcl::virtzeigueberschrift();
 } // void hhcl::virtzeigueberschrift
 
@@ -3802,11 +4129,11 @@ void hhcl::virtlieskonfein()
 	} // if (sqlzn)
 	// wenn in der Konfigurationsdatei keine sql-Befehle stehen, dann die aus den Vorgaben nehmen
 	if (!sqlzn) {
-		sqlzn=sqlvzn;
+		sqlzn=sqlVp.size();
 		delete[] sqlp;
 		sqlp=new string[sqlzn];
 //		opn.omap["sqlz"]->woher=1;
-		for(size_t i=0;i<sqlzn;i++) {
+		for(size_t i=0;i<sqlVp.size();i++) {
 			sqlp[i]=*(string*)opvsql[i]->pptr;
 			//// <<"opvsql["<<i<<"]: "<<*(string*)opvsql[i]->pptr<<endl;
 			opn<<opvsql[i];
@@ -3865,16 +4192,16 @@ void hhcl::virtlieskonfein()
 	} // 	if (zmzn)
 	if (!zmzn) {
 		// wenn in der Konfigurationsdatei keine Zielmuster stehen
-		zmzn=zmvzn;
+		zmzn=zmVp.size();
 		//		opn.omap["musterzahl"]->woher=1;
-		for(size_t i=0;i<zmvzn+zmvzn;i++) {
+		for(size_t i=0;i<zmzn+zmzn;i++) {
 			opn<<opvzm[i];
       if (i%2==1) {
 				zmsp.push_back(shared_ptr<zielmustercl>(new zielmustercl(*(string*)opvzm[i-1]->pptr,*(string*)opvzm[i]->pptr)));
 			}
 		} // 		for(long i=0;i<zmzn;i++) 
 	} // 	if (!zmzn)
-	//// for(size_t i=0;i<zmsp.size();i++) caus<<"i: "<<i<<", zmsp[i].muster: "<<zmsp[i]->holmuster()<<", zmsp[i].ziel: "<<zmsp[i]->holziel()<<endl;
+	//// for(size_t i=0;i<zmsp.size();i++) caus<<"i: "<<i<<", zmsp[i].muster: "<<zmsp[i]->muster<<", zmsp[i].ziel: "<<zmsp[i]->ziel<<endl;
 	////	opn.oausgeb(rot);
 	////	opn.gibomapaus();
 	hLog(violetts+Txk[T_Ende]+Txk[T_virtlieskonfein]+schwarz); //α
@@ -3886,9 +4213,12 @@ int main(int argc,char** argv)
 	if (argc>1) { //ω
 	} //α
 	hhcl hhi(argc,argv); // hiesige Hauptinstanz, mit lngzuw, setzlog und pruefplatte
+	if (!hhi.retu) {
 	hhi.lauf(); // Einleitungsteil mit virtuellen Funktionen, 
+  }
 	// mit virtVorgbAllg,pvirtVorgbSpeziell,initopt,parsecl,pvirtmacherkl,zeighilfe,virtlieskonfein,verarbeitkonf,lieszaehlerein,MusterVorgb,dovi,dovs,virtzeigversion
 	// virtautokonfschreib,update,
+	return hhi.retu;
 } // int main 
 
 void hhcl::virttesterg()
