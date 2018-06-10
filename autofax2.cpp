@@ -4214,7 +4214,7 @@ int main(int argc,char** argv)
 	} //α
 	hhcl hhi(argc,argv); // hiesige Hauptinstanz, mit lngzuw, setzlog und pruefplatte
 	if (!hhi.retu) {
-	hhi.lauf(); // Einleitungsteil mit virtuellen Funktionen, 
+		hhi.lauf(); // Einleitungsteil mit virtuellen Funktionen, 
   }
 	// mit virtVorgbAllg,pvirtVorgbSpeziell,initopt,parsecl,pvirtmacherkl,zeighilfe,virtlieskonfein,verarbeitkonf,lieszaehlerein,MusterVorgb,dovi,dovs,virtzeigversion
 	// virtautokonfschreib,update,
