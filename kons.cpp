@@ -68,6 +68,7 @@ const string& instvz=
 uchar findv=3; // find-Version 1=system, 2=intern mit readdir, 3=intern mit nftw
 const string& unindt=instvz+"/uninstallinv"; // # Name muss identisch sein mit Variabler UNF in install.sh
 const string nix;
+string _mpfad;
 const string eins="1";
 el2set::iterator it2;
 set<elem3>::iterator it3;
@@ -648,6 +649,16 @@ const char *kons_T[T_konsMAX+1][SprachZahl]=
 	{" (bitte rufen Sie dies mit -w auf, um die aktuellen Optionen zu sehen)"," (please call this with -v to see the current options)"},
 	// T_keine_Daten_zum_Anzeigen_Bearbeiten
 	{"keine Dateien zum Anzeigen/Bearbeiten","no files to show/edit"},
+	// T_Maximaldauer_ueberschritten,
+	{"Maximaldauer ueberschritten","timeout"},
+	// 	T_Fehler_in_setfaclggf,
+	{"Fehler in setfaclggf: ","error in setfaclggf: "},
+	// 	T_Fehler_in_find2cl
+	{"Fehler in find2cl: ","error in find2cl: "},
+	// T_nach_sh_viall_beendet,
+	{"nach 'sh viall' beendet","exited after 'sh viall'"},
+	// 	T_nach__,
+	{"nach: ","after: "},
 	{"",""}
 }; // const char *Txkonscl::TextC[T_konsMAX+1][SprachZahl]=
 
@@ -779,7 +790,7 @@ void perfcl::ausgab1000(const string& stelle)
   if (zp1-zp0>10000) {
     cout<<gruen<<vonwo<<" "<<stelle<<" "<<nr<<Txk[T_Dauer]<<setprecision(7)<<setw(9)<<(long)(zp1-zp0)<<" = "
       <<fixed<<((zp1-zp0)/CLOCKS_PER_SEC)<<schwarz<<setprecision(0)<<" s"<<endl;
-    exit(102);
+    exit(schluss(102,Txk[T_Maximaldauer_ueberschritten]));
   } //   if (zp1-zp0>10000)
 } // void perfcl::ausgab1000(const string& stelle)
 
@@ -2606,7 +2617,7 @@ void pruefmehrfach(const string& wen,int obverb/*=0*/,uchar obstumm/*=0*/)
 {
 	const long smax{3600}; // maximal tolerierte Sekundenzahl, bevor statt dem eigenen Prozess der andere abgebrochen wird
 	svec rueck;
-	const string iwen=wen.empty()?base_name(meinpfad()):wen;
+	const string iwen{wen.empty()?base_name(meinpfad()):wen};
 	systemrueck("ps -eo comm,etimes,pid|grep -P '^"+iwen+"([[:space:]]|\\z)'",obverb,0,&rueck,/*obsudc=*/0);
 	long sek{0};
 	for(int aru=0;aru<3;aru++) {
@@ -2631,9 +2642,8 @@ void pruefmehrfach(const string& wen,int obverb/*=0*/,uchar obstumm/*=0*/)
 			// if (aru<2)
 		} else {
 			if (obstumm)
-				exit(0);
-			cout<<Txk[T_Program]<<blau<<iwen<<schwarz<<Txk[T_laeuft_schon_einmal_seit]<<blau<<sek<<" "<<schwarz<<Txk[T_sec_Breche_ab]<<endl;
-			exit(98);
+				exit(schluss(0));
+			exit(schluss(98,Txk[T_Program]+blaus+wen+schwarz+Txk[T_laeuft_schon_einmal_seit]+blau+ltoan(sek)+" "+schwarz+Txk[T_sec_Breche_ab],/*oblog*/0));
 		} // if (aru<2) else
 	} // 	for(int aru=0;aru<3;aru++) 
 	/*//
@@ -2807,7 +2817,8 @@ void setfaclggf(const string& datei,int obverb/*=0*/,int oblog/*=0*/,const binae
 							if (obprot) anfgg(unindt,sudc+"sh -c 'cd \""+dir_name(pfade[i])+"\";"+para+"'",bef,obverb,oblog);
 						} // 					if (faclbak)
 						if (obverb>1) systemrueck("ls -ld \""+pfade[i]+"\"",2,0,/*rueck=*/0,/*obsudc=*/1);
-						if (pfade[i]=="uvz/uuvz/uuuvz") exit(20);
+						if (pfade[i]=="uvz/uuvz/uuuvz") 
+							exit(schluss(20,Txk[T_Fehler_in_setfaclggf]+blaus+pfade[i]+"=="+"uvz/uuvz/uuuvz"+schwarz));
 						const string cmd=string("setfacl --mask -")+(!i && obunter?"R":"")+"m 'u:"+cuser+":"+ltoan(ergmod)+"' '"+pfade[i]+"'";
 						if (fake) { 
 							if (obverb||oblog) 
@@ -3791,7 +3802,7 @@ string meinpfad() {
 	return string(buff);
 } // meinpfad
 
-// home-Verzeichnis ohne '/' am Schluss
+// home-Verzeichnis ohne '/' am Ende
 string gethome()
 {
 	static string erg;
@@ -4460,7 +4471,8 @@ void find2cl::init(const string& mutter, const string& name, regex_t *reg, const
 		}
 		//    cout<<"letztel->pfad: "<<letztel->pfad<<" linkname: "<<linkname<<endl;
 		string link=linkname;
-		if (link==letztel->pfad) exit(97);
+		if (link==letztel->pfad) 
+			exit(schluss(97,Txk[T_Fehler_in_find2cl]+link+"=="+letztel->pfad));
 		neuel.init(dir_name(letztel->pfad),linkname);
 		//if (0)
 		for(size_t j=0;j<stack.size();j++) {
@@ -4895,7 +4907,7 @@ hcl::hcl(const int argc, const char *const *const argv,const char* const DPROG,c
 	pthread_mutex_init(&printf_mutex, NULL);
 	pthread_mutex_init(&getmutex, NULL);
 	pthread_mutex_init(&timemutex, NULL);
-	mpfad=meinpfad();
+	_mpfad=mpfad=meinpfad();
 	meinname=base_name(mpfad); // argv[0];
 	uebers<<schwarz<<Txk[T_Programm]<<blau<<mpfad<<schwarz<<", V: "<<blau<<fixed<<setprecision(5)<<versnr<<defaultfloat<<schwarz; // fuer virtzeigueberschrift
 	pruefinstv();
@@ -4909,6 +4921,14 @@ hcl::hcl(const int argc, const char *const *const argv,const char* const DPROG,c
 	pruefplatte(); // geht ohne Logaufruf, falls nicht #define systemrueckprofiler
 	linstp=new linst_cl(obverb,oblog);
 } // hcl::hcl
+
+int schluss(const int fnr,string text,int oblog)
+{
+	if (!text.empty()) {
+		fLog(blaus+_mpfad+schwarz+": "+text,1,oblog);
+	}
+	exit(fnr);
+} // int schluss
 
 // zum Aufruf virtueller Funktionen aus dem Konstruktur verschoben
 void hcl::lauf()
@@ -4930,7 +4950,7 @@ void hcl::lauf()
 	pvirtmacherkl();
 	if (zeighilfe(&erkl)) {
 		virttesterg();
-		exit(1);
+		exit(schluss(1));
 	}
 	pvirtvorzaehler();
 	lieszaehlerein();
@@ -4938,12 +4958,12 @@ void hcl::lauf()
 	else if (obvs) {
 		svec rueck;
 		systemrueck("cd \""+instvz+"\";ls -l $(grep 'DTN' vars|sed 's/DTN::=//g')",-1,oblog,&rueck);
-		exit(systemrueck("cd \""+instvz+"\"; sh viall"+devtty,/*obverb=*/0,/*oblog=*/0,/*rueck=*/0,/*obsudc=*/1));
+		exit(schluss(systemrueck("cd \""+instvz+"\"; sh viall"+devtty,/*obverb=*/0,/*oblog=*/0,/*rueck=*/0,/*obsudc=*/1),
+					Txk[T_nach_sh_viall_beendet],oblog));
 	}
 	else if (zeigvers) {
 		virtzeigversion();
-		hLog(violetts+Txk[T_Ende]+Txk[T_zeigvers]+schwarz);
-		exit(7);
+		exit(schluss(7,violetts+Txk[T_Ende]+Txk[T_zeigvers]+schwarz,oblog));
 	} // if (zeigvers)
 	else if (!keineverarbeitung) {
 		pvirtvorrueckfragen();
@@ -4952,9 +4972,8 @@ void hcl::lauf()
 		if (logdateineu) tuloeschen(logdt,"",obverb,oblog);
 		hLog(Txk[T_Logpfad]+drots+loggespfad+schwarz+Txk[T_oblog]+drot+ltoan((int)oblog)+schwarz+")");
 		virtpruefweiteres();
-		if (retu) return;
 	} // 	if (!keineverarbeitung)
-	if (mitcron) pruefcron(string()); // soll vor Log(Tx[T_Verwende ... stehen
+	if (mitcron) pruefcron(string()); // soll vor Log(Txk[T_Verwende ... stehen
 	if (!keineverarbeitung) {
 		pvirtfuehraus();
 	} //  if (!keineverarbeitung)
@@ -4970,7 +4989,7 @@ void hcl::lauf()
 	hLog(violetts+Txk[T_Ende]+schwarz);
 	delete linstp;
 	linstp=0;
-} // hcl::hcl()
+} // hcl::lauf()
 
 // wird aufgerufen in: hcl::hcl
 void hcl::holbefz0(const int argc, const char *const *const argv)
@@ -5203,8 +5222,7 @@ void hcl::parsecl()
 //	if (obverb) opn.oausgeb(gelb);
 	for(size_t i=0;i<argcmv.size();i++) {
 		if (!argcmv[i].agef) {
-			fLog(rots+"Parameter: "+gruen+argcmv[i].argcs+rot+Txk[T_nicht_erkannt]+schwarz,1,0);
-			exit(17);
+			exit(schluss(17,rots+"Parameter: "+gruen+argcmv[i].argcs+rot+Txk[T_nicht_erkannt]+schwarz));
 			if (!obhilfe) obhilfe=1;
 		} //     if (!argcmv[i].agef)
 	} //   for(size_t i=0;i<argcmv.size();i++)
@@ -5500,9 +5518,9 @@ void hcl::virtzeigueberschrift()
  */
 	if (mitcron) uebers<<(crongeprueft?
 				Txk[T_Aufrufintervall]+blaus
-				+(vorcm!=cronminut&&!(vorcm.empty()&&cronminut=="0")?((vorcm.empty()?Txk[T_gar_nicht]:vorcm)+" -> "):"")
+				+(vorcm!=cronminut&&!(vorcm.empty()&&cronminut=="0")?((vorcm.empty()?Txk[T_gar_nicht]:vorcm)+" -> "):string())
 				+(cronminut=="0"?Txk[T_kein_Aufruf]+schwarzs:cronminut+schwarz+(cronminut=="1"?Txk[T_Minute]:Txk[T_Minuten])):
-				"");
+				string());
 	fLog(uebers.str(),1,oblog);
 } // void hcl::virtzeigueberschrift
 
@@ -6420,15 +6438,15 @@ void viadd(string* cmdp,string* zeigp, const string& datei,const uchar ro/*=0*/,
 void hcl::vischluss(string& erg,string& zeig)
 {
 	if (cmd==edit) {
-		fLog(rots+Txk[T_keine_Daten_zum_Anzeigen_Bearbeiten]+schwarz,1,0);
-		exit(0);
+		exit(schluss(0,rots+Txk[T_keine_Daten_zum_Anzeigen_Bearbeiten]+schwarz));
 	} else {
 		erg+="tabfirst' -p";
 		string exdt=instvz+"/.exrc";
 		{ifstream is(exdt);if (is.good()) erg+="Nu "+exdt;}
 		//// <<violett<<cmd+" +'"+erg+" "+devtty<<schwarz<<endl;
 		if (!zeig.empty()) systemrueck("ls -l "+zeig,2);
-		exit(systemrueck(cmd+" +'"+erg+" "+devtty,obverb,0,/*rueck=*/0,/*obsudc=*/0));
+		string befehl=cmd+" +'"+erg+" "+devtty;
+		exit(schluss(systemrueck(befehl,obverb,0,/*rueck=*/0,/*obsudc=*/0),Txk[T_nach__]+blaus+befehl+schwarz));
 	}
 } // void vischluss
 

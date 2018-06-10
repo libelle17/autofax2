@@ -448,6 +448,11 @@ enum Tkons_
 	T_virtlgnzuw_langu,
 	T_Bitte_rufen_Sie_dies_mit_w_auf_um_die_aktuellen_Optionen_zu_sehen,
 	T_keine_Daten_zum_Anzeigen_Bearbeiten,
+	T_Maximaldauer_ueberschritten,
+	T_Fehler_in_setfaclggf,
+	T_Fehler_in_find2cl,
+	T_nach_sh_viall_beendet,
+	T_nach__,
 	T_konsMAX
 }; // Tkons_
 
@@ -1218,6 +1223,7 @@ extern const string s_gz; // ="gz";
 extern const string& defvors; // ="https://github.com/"+gitv+"/";
 extern const string& defnachs; // ="/archive/master.tar.gz";
 void viadd(string *cmdp,string* zeigp,const string& datei,const uchar ro=0,const uchar hinten=0, const uchar unten=0);
+int schluss(const int fnr,string text=string(),int oblog=0);
 
 extern class lsyscl lsys;
 
@@ -1227,8 +1233,8 @@ class hcl
 	private:
 		uchar obsetz=1; // setzzaehler
 		uchar mitpids=0; // mehrere pids
-		pidvec pidv;
 	protected:
+		pidvec pidv;
 		const char* const DPROG;
     double tstart, tende;
     size_t optslsz=0; // last opts.size()

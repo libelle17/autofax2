@@ -164,6 +164,8 @@ const char *DB_T[T_dbMAX+1][SprachZahl]={
 	{"', Wert: '","', value: '"},
 	// T_Tabelle
 	{"Tabelle: ","Table: "},
+	// T_Versuche_in_doAbfrage_mehr_als,
+	{"Versuche in doAbfrage mehr als ","in doAbfrage more tries than "},
 	{"",""}
 };
 // Txdbcl::Txdbcl() {TCp=(const char* const * const * const *)&TextC;}
@@ -504,8 +506,7 @@ void DB::init(
 					////			throw "Fehler beim Erstellen einer MySQL-Verbindung";
 				} else {
 					if (user.empty()) {
-						cerr<<rot<<Txd[T_Datenbankbenutzer_leer]<<schwarz<<endl;
-						exit(13);
+						exit(schluss(13,Txd[T_Datenbankbenutzer_leer]));
           }
 					RS *rs;
 					for(unsigned versuch=0;versuch<versuchzahl;versuch++) {
@@ -1798,7 +1799,7 @@ int RS::doAbfrage(const size_t aktc/*=0*/,int obverb/*=0*/,uchar asy/*=0*/,int o
 				string* sqlp=&sql;
 				for (unsigned versuche=0;versuche<maxversuche;versuche++) {
 					if (versuche==maxversuche-1)
-						exit(99);
+						exit(schluss(99,Txd[T_Versuche_in_doAbfrage_mehr_als]+ltoan(maxversuche),oblog));
 					if (asy) {
 						obfalsch=mysql_send_query(dbp->conn[aktc],sqlp->c_str(),sqlp->length());
 					} else {
@@ -1886,7 +1887,8 @@ int RS::doAbfrage(const size_t aktc/*=0*/,int obverb/*=0*/,uchar asy/*=0*/,int o
         const unsigned altfnr=fnr;
 				striktzurueck(altsqlm,aktc);
 				fnr=altfnr;
-				if (hoerauf) exit(hoerauf);
+				if (hoerauf) 
+					exit(schluss(hoerauf,fehler,oblog));
 			} // if (!db->conn[aktc]) else
 			if (obfehl) {
 				//// pthread_mutex_lock(&printf_mutex);
@@ -2312,8 +2314,7 @@ my_ulonglong RS::tbins(vector<instyp>* einfp,const size_t aktc/*=0*/,uchar samme
               } else if (fnr==1366) { // Incorrect string value
                 dbp->machbinaer(table,aktc,fmeld,0);
               } else {
-								cerr<<rot<<Txk[T_Fehler]<<schwarz<<fnr<<Txd[T_bei_sql_Befehl]<<isql<<endl;
-								exit(113);
+								exit(schluss(113,rots+Txk[T_Fehler]+schwarz+ltoan(fnr)+Txd[T_bei_sql_Befehl]+isql));
                 break; 
               } // if (fnr==1213) else else
 						} //             if (idp) else else else

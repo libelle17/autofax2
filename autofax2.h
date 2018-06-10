@@ -354,6 +354,34 @@ enum T_
 	T_pruefinca,
 	T_identisch_zu_submid_in_outa,
 	T_Datenbank_nicht_initialisierbar_breche_ab,
+	T_Verwende,
+	T_kein_Faxprogramm_verfuegbar,
+	T_aktiv,
+	T_aktiviert,
+	T_inaktiv,
+	T_korrigierecapi,
+	T_Folgende_Faxe_waren_mit_falschem_Erfolgskennzeichen_eingetragen_was_korrigiert_wird,
+	T_Faxnr,
+	T_zp,
+	T_tries,
+	T_size,
+	T_docname,
+	T_Folgende_Faxe_waren_nicht_eingetragen_was_korrigiert_wird,
+	T_telnr,
+	T_Gabelung_zu_korrigierecapi_misslungen,
+	T_Gabelung_zu_korrigierehyla_misslungen,
+	T_Gabelung_zu_faxemitH_misslungen,
+	T_Gabelung_zu_faxemitC_misslungen,
+	T_Gabelung_zu_untersuchespool_misslungen,
+	T_Gabelung_zu_zeigweitere_misslungen,
+	T_Gabelung_zu_empfarch_misslungen,
+	T_Gabelung_zu_wegfaxen_misslungen,
+	T_Gabelung_zu_bereinigevz_misslungen,
+	T_empfarch,
+	T_empfcapi,
+	T_empfhyla,
+	T_was,
+	T_Bilddatei,
 	T_MAX //α
 }; // enum T_ //ω
 
@@ -584,6 +612,10 @@ class hhcl:public dhcl
 		void machopvzm();
 		void verzeichnisse();
     void rufpruefsamba();
+    void korrigierecapi(const unsigned tage=90,const size_t aktc=1);
+    void korrigierehyla(const unsigned tage=90,const size_t aktc=2);
+		void getSender(const string& faxnr, string *getnamep, string *bsnamep,const size_t aktc);
+    string stdfaxnr(const string& faxnr);
 	protected: 
 		// void virtlgnzuw(); // wird aufgerufen in: virtrueckfragen, parsecl, lieskonfein, hcl::hcl nach holsystemsprache
 		void virtVorgbAllg();
@@ -607,6 +639,9 @@ class hhcl:public dhcl
 		void hylasv2(hyinst hyinstart);
 		void zeigdienste();
 		void pruefmodem();
+    void empfarch(uchar obalte=0);
+		void empfhyla(const string& ganz,size_t aktc, const uchar was,const string& nr=nix);
+		void empfcapi(const string& stamm,size_t aktc, const uchar was,const string& nr=nix);
 	public: //α
 		hhcl(const int argc, const char *const *const argv);
 		~hhcl();

@@ -118,6 +118,7 @@ enum Txdb_
 	T_Feld,
 	T_Wertma,
 	T_Tabelle,
+	T_Versuche_in_doAbfrage_mehr_als,
 	T_dbMAX,
 }; // enum Txdb_ 
 
