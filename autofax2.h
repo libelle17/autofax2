@@ -405,6 +405,26 @@ enum T_
 	T_bereinigevz,
 	T_Bereinige_Verzeichnis,
 	T_DateienzahlimVz,
+	T_Fehler_beim_Verschieben_Ausrufezeichen,
+	T_gefunden_in_Tabelle,
+	T_kommaFaxerfolg,
+	T_Fehlt,
+	T_Nicht_gefaxt,
+	T_Aus2,
+	T_wurden_in_Unterverzeichnisse_verschoben,
+	T_anhalten,
+	T_Cron_Aufruf_von,
+	T_gestoppt,
+	T_tu_lista, 
+	T_tu_listi, 
+	T_Letzte,
+	T_erfolgreich,
+	T_erfolglos,
+	T_versandte_Faxe,
+	T_empfangene_Faxe,
+	T_untersuchespool,
+	T_zeigweitere,
+	T_Weitere_Spool_Eintraege,
 	T_MAX //α
 }; // enum T_ //ω
 
@@ -418,7 +438,7 @@ string kopiere(const string& qdatei, const string& zield, uint *kfehler, const u
 string kopiere(const string& qdatei, const zielmustercl& zmp, uint *kfehler, const uchar wieweiterzaehl, int obverb=0, int oblog=0);
 string zielname(const string& qdatei, const string& zielvz,uchar wieweiterzaehl=0, string* zieldatei=0, uchar* obgleichp=0, 
                 int obverb=0, int oblog=0, stringstream *ausgp=0);
-string zielname(const string& qdatei, const zielmustercl& zmup,uchar wieweiterzaehl=0, string* zieldatei=0, uchar* obgleichp=0, int obverb=0, 
+string zielname(const string& qdatei, const vector<shared_ptr<zielmustercl>> *const zmup,uchar wieweiterzaehl=0, string* zieldatei=0, uchar* obgleichp=0, int obverb=0, 
                 int oblog=0, stringstream *ausgp=0);
 void pruefrules(int obverb, int oblog);
 void useruucp(const string& huser, const int obverb, const int oblog);
@@ -582,6 +602,8 @@ class hhcl:public dhcl
 		string faxgtpfad;   // /usr/lib/fax/faxgetty oder /usr/local/sbin/faxgetty
 		string faxqpfad,hfaxdpfad; // /usr/local/sbin/faxq, /usr/local/sbin/hfaxq
 		string countrycode_dt,areacode_dt,faxnumber_dt,longdistanceprefix_dt,internationalprefix_dt,ringsbeforeanswer_dt,localidentifier_dt,maxdials_dt;
+    svec vinca;
+		unsigned tage=0; // fuer korrigierecapi und korrigierehyla 
 	protected: //α
 		string p1;
 		int p2;
@@ -648,6 +670,13 @@ class hhcl:public dhcl
 		void dober(const string& wvz, set<string>& fdn,uchar aucherfolg,stringstream *ausgp,const size_t aktc,
 				set<string> *cmisslp,set<string> *cgelup,set<string> *hmisslp,set<string> *hgelup);
 		void anhalten();
+    string getzielvz(const string& datei); // in bereinigevz
+    string neuerdateiname(const string& qpfad); // in wegfaxen
+    void tu_lista(const string& oberfolg,const string& submids=nix);
+		void tu_listi(const uchar zurauswahl=0);
+		void untersuchespool(uchar mitupd=1,const size_t aktc=3); // faxart 0=capi, 1=hyla 
+		void bestimmtage();
+    void zeigweitere();
 	protected: 
 		// void virtlgnzuw(); // wird aufgerufen in: virtrueckfragen, parsecl, lieskonfein, hcl::hcl nach holsystemsprache
 		void virtVorgbAllg();
