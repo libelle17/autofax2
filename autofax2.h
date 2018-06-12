@@ -28,7 +28,6 @@ enum T_
 	T_Nichtgefaxt,
 	T_nichtgefaxt,
 	T_empfvz,
-	T_gesandt,
 	T_zvz_k,
 	T_zufaxenvz_l,
 	T_faxt_die_Dateien_aus_pfad_anstatt_aus,
@@ -425,12 +424,36 @@ enum T_
 	T_untersuchespool,
 	T_zeigweitere,
 	T_Weitere_Spool_Eintraege,
+	T_sammlecapi,
+	T_bereinigecapi,
+	T_Zahl_der_ueberpruefen_Datenbankeintraege,
+	T_davon_gescheiterte_Faxe,
+	T_davon_erfolgreiche_Faxe,
+	T_davon_noch_wartende_Faxe,
+	T_davon_nicht_in_Warteschlange,
+	T_Verwaiste_Datei,
+	T_geloescht_Fax_schon_in,
+	T_archiviert_Ausrufezeichen,
+	T_sammlehyla,
+	T_gestrichen,
+	T_schwebend,
+	T_wartend,
+	T_blockiert,
+	T_bereit,
+	T_verarb,
+	T_gesandt,
+	T_gescheitert,
+	T_nicht_in_der_Warteschlange,
+	T_woasined,
+	T_setzhylastat,
 	T_MAX //α
 }; // enum T_ //ω
 
 enum FaxTyp:uchar {capi=1,hyla};
 enum FxStat:uchar {init/*0*/,gestrichen,schwebend,wartend/*3*/,blockiert/*4*/,bereit/*5*/,verarb/*6*/,gesandt/*7*/,gescheitert/*8*/,fehlend,woasined};
 enum hyinst {keineh,hysrc,hypak,hyppk}; // hyla source, hyla Paket, hylaplus Paket
+class fsfcl; // Faxsendfile
+class hhcl; // Programmparameter
 void dorename(const string& quelle, const string& ziel, const string& cuser=nix, uint *vfehlerp=0, uchar schonda=0, int obverb=0, int oblog=0,
                   stringstream *ausgp=0);
 class zielmustercl; // fuer die Verteilung der erfolgreich gefaxten Dateien auf verschiedene Dateien
@@ -468,6 +491,83 @@ struct zielmustercl
     const string& holziel() const;
     int obmusterleer() const;
 }; // class zielmustercl
+
+class fxfcl // Faxfile
+{
+  public:
+    string npdf; // nicht-PDF
+    string spdf; // schon-PDF
+    string ur;   // urspruenglicher Dateinamen
+    unsigned prio; // Prioritaet der Fax-Programme: 0 = capi und 0 = hyla per Konfigurationsdatei, 1= capi und 2= hyla per Faxdateiname
+		ulong pseiten; // PDF-Seitenzahl
+    fxfcl(const string& npdf,const string& spdf,const string& ur,unsigned prio): npdf(npdf),spdf(spdf),ur(ur),prio(prio),pseiten(0) {}
+    // nur fuer Initialisierung in fsfcl, Konstruktur /*1*/, nur fuer wegfaxen
+    fxfcl(unsigned prio, const string& npdf,const string& spdf,ulong pseiten): npdf(npdf),spdf(spdf),prio(prio),pseiten(pseiten) {}
+    fxfcl(const string& spdf,const string& ur,unsigned prio): npdf(""),spdf(spdf),prio(prio),pseiten(0) {}
+    fxfcl() {}
+};
+
+class fsfcl : public fxfcl // Faxsendfile
+{
+  public:
+    string id;   // id in spooltab
+    string telnr;    // Telnr. des Adressaten
+    string capisd; // capispooldatei
+    int capids;  //capidials
+    string hylanr; // hylanr
+		string hqdt; // z.B. /var/spool/hylafax/doneq/q9902
+    int hdialsn; // hyladials
+		string hpages; // Seitenzahl
+    uchar fobfbox; // ob es jetzt mit Fritzbox weggefaxt werden muss
+    uchar fobcapi; // ob es jetzt mit Capi weggefaxt werden muss
+    uchar fobhyla; // ob es jetzt mit Hyla weggefaxt werden muss
+    string adressat; // Name des Adressaten aus Faxdatei
+		string idalt; // id in altspool
+    string original; // base_name(spdf)
+    string origvu;   // base_name(npdf)
+    string idudoc;   // id des urspruenglichen Dateinamens in tabelle udoc
+    string cspf;     // capispoolpfad
+    string cdd;      // cdateidatum
+    string cdials;   // capidials
+    string ctries; // parameter aus capiprot
+    string starttime; // parameter aus capiprot
+    string dialstring; // parameter aus capiprot
+    string hstate="0"; // Statuszahl ("state" in man sendq)
+    string hstatus; // Textbeschreibung des letztes Fehlschlags
+    string hstatuscode; // in xferfaxlog nicht gefunden
+		time_t tts=0;
+		time_t killtime=0;
+		string number;   // Telefonnummer
+    string hdials;   // hyladials
+		string maxdials; // maxdials (hylafax)
+    string hdd;      // hdateidatum
+    string sendqgespfad; // kann fuer capi oder hyla verwendet werden
+    string hgerg;  // hyla_gescheitert_erg
+    int hversuzahl;
+    FxStat capistat=init;// 1=wartend, 2=gesandt, 3=gescheitert, 4=fehlend (in spool keine Capi-Datei eingetragen oder die eingetragene gibts nicht)
+    FxStat hylastat=init;// 1=wartend, 2=gesandt, 3=gescheitert, 4=fehlend (in spool keine hyla-Datei eingetragen oder die eingetragene gibts nicht)
+  private:
+  public:
+		void archiviere(DB *const My, hhcl *const hhip, const struct stat *const entryp,const uchar obgescheitert, const FaxTyp ftyp, 
+		                uchar *gel, const size_t aktc, const int obverb, const int oblog);
+		int loeschecapi(const int obverb, const int oblog);
+    int loeschehyla(hhcl *const hhip, const int obverb, const int oblog);
+    /*1*/fsfcl(const string id, const string npdf, const string spdf, const string telnr, unsigned prio, const string capisd, int capids, 
+		           const string hylanr, int hdialsn, uchar fobfbox, uchar fobcapi, uchar fobhyla, const string adressat, ulong pseiten, string idalt):
+         fxfcl(prio,npdf,spdf,pseiten), id(id), telnr(telnr), capisd(capisd), capids(capids), 
+         hylanr(hylanr), hdialsn(hdialsn), fobfbox(fobfbox), fobcapi(fobcapi), fobhyla(fobhyla), adressat(adressat),idalt(idalt) {}
+    /*2*/fsfcl(const string id,const string original): id(id), original(original) {}
+    /*3*/fsfcl(const string id, const string capisd, const string hylanr, string const cspf): id(id), capisd(capisd), hylanr(hylanr), cspf(cspf) {}
+    /*4*/fsfcl(const string& hylanr): hylanr(hylanr) {}
+    /*5*/fsfcl(const string sendqgespfad, FxStat capistat): sendqgespfad(sendqgespfad), capistat(capistat) {}
+		/*6*/fsfcl(const string& original, const string& origvu, uchar cnr): original(original), origvu(origvu) {}
+    void setzcapistat(hhcl *hhip, struct stat *entrysendp);
+    void capiausgeb(stringstream *ausgp, const string& maxctrials, uchar fuerlog=0, int obverb=0, int oblog=0,ulong faxord=0);
+    void hylaausgeb(stringstream *ausgp, hhcl *hhip, int obsfehlt, uchar fuerlog=0, int obverb=0, uchar obzaehl=0, int oblog=0);
+    int holcapiprot(int obverb);
+		void scheitere(const string& wvz, const string& ngvz, const string& cuser, const string* const ziel=0, const int obverb=0, const int oblog=0);
+}; // class fsfcl
+
 
 //α
 class hhcl:public dhcl
@@ -677,6 +777,12 @@ class hhcl:public dhcl
 		void untersuchespool(uchar mitupd=1,const size_t aktc=3); // faxart 0=capi, 1=hyla 
 		void bestimmtage();
     void zeigweitere();
+    void sammlecapi(vector<fsfcl> *fsfvp,const size_t aktc);
+    void bereinigecapi(const size_t aktc);
+    void sammlehyla(vector<fsfcl> *fsfvp,const size_t aktc);
+		void setzhylastat(fsfcl *fsf, uchar *hyla_uverz_nrp, uchar startvznr,int *obsfehltp=0, 
+				struct stat *est=0);
+    int xferlog(fsfcl *fsfp/*, string *totpages=0, string *ntries=0, string *totdials=0, string *tottries=0, string *maxtries=0*/);
 	protected: 
 		// void virtlgnzuw(); // wird aufgerufen in: virtrueckfragen, parsecl, lieskonfein, hcl::hcl nach holsystemsprache
 		void virtVorgbAllg();
