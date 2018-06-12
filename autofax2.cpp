@@ -927,6 +927,28 @@ char const *DPROG_T[T_MAX+1][SprachZahl]={
 	{"unbekannt","unknown"},
 	// T_setzhylastat
 	{"setzhylastat()","sethylastat()"},
+	// T_archiviere
+	{"archiviere()","archiving()"},
+	// T_obgescheitert
+	{" obgescheitert: "," failed?: "},
+	// T_loeschecapi
+	{"loeschecapi()","deletecapi()"},
+	// T_loeschehyla
+	{"loeschehyla()","deletehyla()"},
+	// T_Loesche_Fax_hylanr
+	{"Loesche das Fax mit der hylanr: ","Deleting the fax with the hylano: "},
+	// T_erfolgreich_geloescht_fax_mit
+	{"Erfolgreich geloescht: Fax mit der hylanr: ","Successfully deleted: Fax with the hylano: "},
+	// T_Fehlermeldung_beim_Loeschversuch_eines_Hyla_Faxes_mit_faxrm
+	{"Fehlermeldung beim Loeschversuch eines Hyla-Faxes mit `faxrm ","Error while trying to delete a hyla-fax with `faxrm "},
+	// T_capiausgeb
+	{"capiausgeb()","displaycapitries()"},
+	// T_Anwahlen
+	{" Anwahlen,"," tries,"},
+	// T_kommaDatei
+	{",Datei:",",file:"},
+	// T_bzw
+	{",bzw.:",",and:"},
 	{"",""} //α
 }; // char const *DPROG_T[T_MAX+1][SprachZahl]=
 
@@ -5886,7 +5908,7 @@ void hhcl::setzhylastat(fsfcl *fsf, uchar *hyla_uverz_nrp, uchar startvznr, int 
 			Tx[T_setzhylastat],schwarz,blau,*hyla_uverz_nrp,schwarz,blau,startvznr,schwarz);
 	// wenn in *hyla_uverz_nrp '1' uebergeben wird, nur in sendq suchen
 	// Rueckgabe: 0 = in doneq oder archive gefunden
-	struct stat entryprot={0};
+	struct stat entryprot{0};
 	fsf->sendqgespfad.clear();
 	if (fsf->hylanr!="0") {
 		svec qrueck;
@@ -5904,54 +5926,41 @@ void hhcl::setzhylastat(fsfcl *fsf, uchar *hyla_uverz_nrp, uchar startvznr, int 
 			hLog(schwarzs+"obsfehlt: "+blau+(obsfehlt?"1":"0")+schwarz+", hyla_uverz_nr: "+blau+(*hyla_uverz_nrp?"1":"0")+schwarz);
 		} // 		if (obverb)
 		if (obsfehltp) *obsfehltp=obsfehlt;
+
 		if (!obsfehlt) {
-			if (hylcnfA.zahl==9) {
-				hylcnfA.reset();
-			} else { 
-				hylcnfA.init(10,"state","totdials","status","statuscode","!pdf","tts","number","maxdials","pdf","killtime");
-			} // 			if (hylcnfA.zahl==9) else
-			confdat hylcd(fsf->hqdt,&hylcnfA,obverb,':');
-			hgelesen=hylcd.obgelesen;
-		} // 	if (!obsfehlt)
+			string pdf1,pdf2,ttss,killtimes;
+			schAcl<WPcl> *hylcnfCp= 
+				new schAcl<WPcl>("cfcnfC", new vector<aScl>{
+						{"state",&fsf->hstate},
+						{"totdials",&fsf->hdials},
+						{"status",&fsf->hstatus},
+						{"statuscode",&fsf->hstatuscode},
+						{"!pdf",&pdf1},
+						{"tts",&ttss},
+						{"number",&fsf->number},
+						{"maxdials",&fsf->maxdials},
+						{"pdf",&pdf2},
+						{"killtime",&killtimes}
+						});
+			pruefverz(dir_name(fsf->hqdt),obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/0);
+			if (cfaxcp) delete cfaxcp;
+			confdcl *hcp = new confdcl(fsf->hqdt,obverb);
+			hcp->kauswert(hylcnfCp,obverb,1);
+			fsf->tts=atol(ttss.c_str());
+			fsf->killtime=atol(killtimes.c_str());
+			string *pdf{pdf1.empty()?&pdf2:&pdf1};
+			svec tok;
+			aufiSplit(&tok,*pdf,":",1,obverb>0?obverb-1:0,oblog);
+			fsf->sendqgespfad=this->varsphylavz+vtz+tok[tok.size()-1];
+			if (est) lstat(fsf->sendqgespfad.c_str(),est); 
+			fsf->hylastat=static_cast<FxStat>(atol(fsf->hstate.c_str()));
+			hgelesen=hcp->obgelesen;
+		}
 		if (obsfehlt||!hgelesen) {
 			// wenn also die Datenbankdatei weder im Spool noch bei den Erledigten nachweisbar ist
 			if (est) memset(est,0,sizeof *est);
 			this->xferlog(fsf);
-			////   if (obsfehlt)
-		} else {
-			////  if (cpplies(fsf->hqdt,hconf,cs,0,':')) KLA
-			fsf->hstate=this->hylcnfA[0].wert;
-			fsf->hdials=this->hylcnfA[1].wert;
-			fsf->maxdials=this->hylcnfA[7].wert;
-			fsf->hstatus=this->hylcnfA[2].wert;
-			if (this->hylcnfA[3].wert.empty()) this->hylcnfA[3].wert="0";
-			fsf->hstatuscode=this->hylcnfA[3].wert;
-			fsf->tts=atol(hylcnfA[5].wert.c_str());
-			fsf->killtime=atol(hylcnfA[9].wert.c_str());
-			fsf->number=hylcnfA[6].wert;
-			vector<string> tok;
-			const string pdf=this->hylcnfA[4].wert.empty()?this->hylcnfA[8].wert:this->hylcnfA[4].wert;
-			aufiSplit(&tok,pdf,":",1,obverb>0?obverb-1:0,oblog);
-			fsf->sendqgespfad=this->varsphylavz+vtz+tok[tok.size()-1];
-			if (est) lstat(fsf->sendqgespfad.c_str(),est); 
-			fsf->hylastat=static_cast<FxStat>(atol(hylcnfA[0].wert.c_str()));
-			/*//
-			// 8, status gescheitert, evtl. unzureichend dokumentiert, aber wahr
-			if (*hyla_uverz_nrp) KLA
-			fsf->hylastat=static_cast<FxStat>(atol(hylcnfA[0].wert.c_str()));
-			// if (*hyla_uverz_nrp) 
-			KLZ  else KLA 
-			if (this->hylcnfA[0].wert=="8") KLA
-			fsf->hylastat=gescheitert;
-			// 7, status erfolgreich
-			KLZ else if (this->hylcnfA[0].wert=="7") KLA 
-			fsf->hylastat=gesandt;
-			KLZ else KLA // wird kaum vorkommen
-			fsf->hylastat=woasined;
-			KLZ
-			KLZ // if (*hyla_uverz_nrp) 
-			 */
-		} // if (obsfehlt) else
+		}
 	} // 	if (fsf->hylanr!="0") 
 	hLog(violetts+Txk[T_Ende]+Tx[T_setzhylastat]+", hylastat: "+blau+FxStatS(&fsf->hylastat)+schwarz);
 } // setzhylastat
@@ -6004,7 +6013,7 @@ void hhcl::zeigweitere()
 				ausg<<rot<<Tx[T_Weitere_Spool_Eintraege]<<schwarz;
 				obtitel=1;
 			} // 			if (!obtitel) 
-			fsfcv[i].capiausgeb(&ausg, maxcdials, 0, obverb, oblog, ++faxord);
+			fsfcv[i].capiausgeb(this, &ausg, maxcdials, 0, obverb, oblog, ++faxord);
 		} //     for(size_t i=0;i<fsfcv.size();i++)
 	} // if (obcapi)
 	if (obhyla) {
@@ -6024,7 +6033,7 @@ void hhcl::zeigweitere()
 
 
 // wird aufgerufen in: aenderefax, untersuchespool, capiausgeb, setzhylastat, hylaausgeb
-inline const char* FxStatS(const FxStat *const i) 
+const char* FxStatS(const FxStat *const i) 
 {
 	//  enum FxStat:uchar {init,wartend,gesandt,gescheitert,fehlend,woasined};
 	if (i) {
@@ -6053,8 +6062,7 @@ void fsfcl::archiviere(DB *const My, hhcl *const hhip, const struct stat *const 
 	//  string nob=ltoan((int)!obgescheitert);
 	fLog(violetts+Tx[T_archiviere]+schwarz+Tx[T_obgescheitert]+blau+ltoan((int)obgescheitert)+schwarz/*+" !obgescheitert: "+nob+*/,obverb,oblog);
 	// Voraussetzung: telnr, original, id; veraendert: geloescht
-	RS rins(My); 
-	RS zs(My);
+	RS rins(My,hhip->touta); 
 	string getname,bsname;
 	hhip->getSender(telnr,&getname,&bsname,aktc);
 	vector<instyp> einf;
@@ -6095,12 +6103,12 @@ void fsfcl::archiviere(DB *const My, hhcl *const hhip, const struct stat *const 
 	einf.push_back(/*2*/instyp(My->DBS,"fsize",entryp->st_size>4294967295?0:entryp->st_size)); // int(10)
 	einf.push_back(/*2*/instyp(My->DBS,"pages",pseiten));
 	svec eindfeld; eindfeld<<"submt";eindfeld<<"submid";
-	rins.tbins(hhip->touta,&einf,aktc,/*sammeln=*/0,/*oberb=*/ZDB,/*idp=*/0,/*eindeutig=*/0,eindfeld);  // einfuegen
+	rins.tbins(&einf,aktc,/*sammeln=*/0,/*oberb=*/hhip->ZDB,/*idp=*/0,/*eindeutig=*/0,eindfeld);  // einfuegen
 	if (rins.fnr) {
 		fLog(Tx[T_Fehler_af]+drots+ltoan(rins.fnr)+schwarz+Txk[T_bei]+tuerkis+rins.sql+schwarz+": "+blau+rins.fehler+schwarz,1,1);
 	} //     if (runde==ruz-1)
 	if (!rins.fnr && geloeschtp) { 
-		RS rsloe(My,"DELETE FROM `"+hhip->spooltab+"` WHERE id = \""+id+"\"",aktc,ZDB);
+		RS rsloe(My,"DELETE FROM `"+hhip->spooltab+"` WHERE id = \""+id+"\"",aktc,hhip->ZDB);
 		*geloeschtp=1;
 	} // if (!rins.fnr) 
 } // archiviere
@@ -6182,7 +6190,7 @@ int fsfcl::loeschehyla(hhcl *const hhip, const int obverb, const int oblog)
 // ermittelt die letzten Sendedaten zu sendqgespfad mit fsf.capistat, schreibt die Zahl der Versuche in ctries zurueck und ergaenzt den 
 // Anzeigezeiger ausgp
 // wird aufgerufen in: aenderefax, untersuchespool, zeigweitere
-void fsfcl::capiausgeb(stringstream *ausgp, const string& maxcdials, uchar fuerlog, int obverb, int oblog,ulong faxord)
+void fsfcl::capiausgeb(hhcl *const hhip, stringstream *ausgp, const string& maxcdials, uchar fuerlog, int obverb, int oblog,ulong faxord)
 {
 	fLog(violetts+Tx[T_capiausgeb]+schwarz+"  capistat: "+blau+FxStatS(&capistat)+schwarz+ " maxcdials: "+blau+maxcdials+schwarz,obverb,oblog);
 	if (!fuerlog) *ausgp<<blau<<endl;
@@ -6208,7 +6216,7 @@ void fsfcl::capiausgeb(stringstream *ausgp, const string& maxcdials, uchar fuerl
 		*ausgp<<","<<blau<<setw(3)<<ctries<<"/"<<maxcdials<<schwarz<<(capistat==verarb?umgek:"")<<Tx[T_Anwahlen]<<schwarz;
 		////                      if (versuzahl>12) ausg<<"zu spaet, ";
 		struct tm tm={0};
-		for(unsigned im=0;im<sizeof tmmoegl/sizeof *tmmoegl;im++) {
+		for(unsigned im=0;im<hhip->tmmoelen;im++) {
 			if (strptime(starttime.c_str(), tmmoegl[im], &tm)) break;
 		}
 		//// char buf[100];
@@ -6220,7 +6228,7 @@ void fsfcl::capiausgeb(stringstream *ausgp, const string& maxcdials, uchar fuerl
 		*ausgp<<Tx[T_bzw]<<blau<<"*.txt"<<schwarz;
 		if (ctries.empty()) ctries="0";
 	} // if (capistat!=fehlend) 
-} // void fsfcl::capiausgeb(stringstream *ausgp, int obverb, string *ctriesp, int oblog,ulong faxord)
+} // void fsfcl::capiausgeb(hhcl *const hhip, stringstream *ausgp, int obverb, string *ctriesp, int oblog,ulong faxord)
 
 // wird aufgerufen in: untersuchespool, aenderefax
 void fsfcl::setzcapistat(hhcl *hhip, struct stat *entrysendp)
@@ -6400,7 +6408,7 @@ void hhcl::untersuchespool(uchar mitupd/*=1*/,const size_t aktc/*=3*/) // faxart
 					if (faxord==1) this->pruefcapi(); // in der ersten Runde, in der Capi verwendet werden soll, Capi pruefen
 					fsf.setzcapistat(this, &entrysend);
 					fsf.tts=0; // fuer archiviere
-					fsf.capiausgeb(&ausg,maxcdials, 0, obverb, oblog);
+					fsf.capiausgeb(this,&ausg,maxcdials, 0, obverb, oblog);
 					if (mitupd) {
 						RS rupd(My); 
 						vector<instyp> einf; // fuer alle Datenbankeinfuegungen

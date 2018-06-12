@@ -446,6 +446,17 @@ enum T_
 	T_nicht_in_der_Warteschlange,
 	T_woasined,
 	T_setzhylastat,
+	T_archiviere,
+	T_obgescheitert,
+	T_loeschecapi,
+	T_loeschehyla,
+	T_Loesche_Fax_hylanr,
+	T_erfolgreich_geloescht_fax_mit,
+	T_Fehlermeldung_beim_Loeschversuch_eines_Hyla_Faxes_mit_faxrm,
+	T_capiausgeb,
+	T_Anwahlen,
+	T_kommaDatei,
+	T_bzw,
 	T_MAX //α
 }; // enum T_ //ω
 
@@ -471,6 +482,7 @@ void pruefudoc(DB *My, const string& tudoc, const int obverb, const int oblog, c
 void pruefinctab(DB *My, const string& tinca, const int obverb, const int oblog, const uchar direkt=0);
 string verschiebe(const string& qdatei, const auto/*string,zielmustercl*/& zielvz, const string& cuser=nix, 
                   uint *vfehlerp=0, const uchar wieweiterzaehl=1, int obverb=0,int oblog=0, stringstream *ausgp=0,const uchar auchgleiche=0);
+const char* FxStatS(const FxStat *const i);
 
 
 // Steuerung der Abspeicherung gesendeter Faxe je nach Muster
@@ -562,7 +574,7 @@ class fsfcl : public fxfcl // Faxsendfile
     /*5*/fsfcl(const string sendqgespfad, FxStat capistat): sendqgespfad(sendqgespfad), capistat(capistat) {}
 		/*6*/fsfcl(const string& original, const string& origvu, uchar cnr): original(original), origvu(origvu) {}
     void setzcapistat(hhcl *hhip, struct stat *entrysendp);
-    void capiausgeb(stringstream *ausgp, const string& maxctrials, uchar fuerlog=0, int obverb=0, int oblog=0,ulong faxord=0);
+    void capiausgeb(hhcl *const hhip, stringstream *ausgp, const string& maxctrials, uchar fuerlog=0, int obverb=0, int oblog=0,ulong faxord=0);
     void hylaausgeb(stringstream *ausgp, hhcl *hhip, int obsfehlt, uchar fuerlog=0, int obverb=0, uchar obzaehl=0, int oblog=0);
     int holcapiprot(int obverb);
 		void scheitere(const string& wvz, const string& ngvz, const string& cuser, const string* const ziel=0, const int obverb=0, const int oblog=0);
@@ -595,13 +607,12 @@ class hhcl:public dhcl
 		string findvers; // find-Version (1=linux find, 2=intern mit readdir, 3=intern mit nftw 
 		int ifindv; // integer-Variante der find-Version
 
-		servc *sfaxq=0, *shfaxd=0, *shylafaxd=0, *sfaxgetty=0, *scapis=0;
 		confdcl *cfaxcp=0; // Zeiger auf ausgelesene /etc/capisuite/fax.conf
 		confdcl *hfaxcp{0}; // Zeiger auf ausgelesene /etc/init.d/hylafax.conf
 		const string s1{"mv -n "};
 		//		const string s2="/2200/* ";
 		//schlArr hylcnfA; // fuer q1234 o.ae.
-		uchar hgelesen=0; // Protokolldatei war auslesbar
+		uchar hgelesen{0}; // Protokolldatei war auslesbar
 		static constexpr const char *moeglhvz[2]{"/var/spool/fax","var/spool/hylafax"};
 		string huser{"uucp"}; // "uucp" oder "fax"
 		uchar obfcard=1;    // ob Fritzcard eingesteckt
@@ -609,7 +620,6 @@ class hhcl:public dhcl
 		uchar obmodem=1;    // ob Modem angeschlossen
 		uchar obmdgeprueft=0; // ob schon geprueft, ob Modem verfuegbar
 		uchar obocrgeprueft=0; // ob ocrmypdf installiert ist
-		const string spooltab="spool";
 		const string altspool="altspool"; // Historie der Spooltabelle
 		const string udoctab="udoc";
 		uchar obvi=0;   // ob Konfigurationsdatei editiert werden soll
@@ -650,9 +660,10 @@ class hhcl:public dhcl
 		string hmodem;    // erkanntes und laufendes Modem ttyACM0
 		//    string hmodname;  // ttyACM0
 		string cuser; // Linux-Benutzer fuer Capisuite, Samba
-		const string touta="outa"; // MariaDB-Tabelle fuer gesandte oder gescheiterte Faxe
 		const string tudoc="udoc"; // MariaDB-Tabelle fuer gesandte oder gescheiterte Faxe
 		const string tinca="inca"; // MariaDB-Tabelle fuer empfangene Faxe
+		const string touta="outa"; // MariaDB-Tabelle fuer gesandte oder gescheiterte Faxe; in fsfcl->archiviere benoetigt
+		const string spooltab="spool"; // in fsfcl->archiviere benoetigt
 
 		string zufaxenvz;
 		string wvz; // Warteverzeichnis
@@ -694,8 +705,6 @@ class hhcl:public dhcl
 		schAcl<WPcl> *hfcnfCp=0; // Hylakonfiguration
 		schAcl<WPcl> *hyaltcnfCp=0; // Hylakonfiguration
 		string hempfavz;    // var/spool/(hyla)fax/" DPROG "arch
-		string xferfaxlog; // varsphylavz + "/etc/xferfaxlog"; 
-		string hsendqvz; // /var/spool/hylafax/sendq
 		string hdoneqvz; // /var/spool/hylafax/doneq
 		string harchivevz; // /var/spool/hylafax/archive
 		string modconfdt; // hylafax-Konfigurationsdatei, z.B. /var/spool/hylafax/etc/config.ttyACM0
@@ -704,6 +713,9 @@ class hhcl:public dhcl
 		string countrycode_dt,areacode_dt,faxnumber_dt,longdistanceprefix_dt,internationalprefix_dt,ringsbeforeanswer_dt,localidentifier_dt,maxdials_dt;
     svec vinca;
 		unsigned tage=0; // fuer korrigierecapi und korrigierehyla 
+		string hsendqvz; // /var/spool/hylafax/sendq // in fsf->loeschehyla benoetigt
+		servc*sfaxq=0, *shfaxd=0, *shylafaxd=0, *scapis=0, *sfaxgetty=0;  // benoetigt in loeschehyla
+		string xferfaxlog; // varsphylavz + "/etc/xferfaxlog";  // benoetigt in loeschehyla
 	protected: //α
 		string p1;
 		int p2;
@@ -763,8 +775,6 @@ class hhcl:public dhcl
     void rufpruefsamba();
     void korrigierecapi(const unsigned tage=90,const size_t aktc=1);
     void korrigierehyla(const unsigned tage=90,const size_t aktc=2);
-		void getSender(const string& faxnr, string *getnamep, string *bsnamep,const size_t aktc);
-    string stdfaxnr(const string& faxnr);
     int pruefsoffice(uchar mitloe=0);
     void bereinigevz(const size_t aktc/*=0*/);
 		void dober(const string& wvz, set<string>& fdn,uchar aucherfolg,stringstream *ausgp,const size_t aktc,
@@ -783,6 +793,10 @@ class hhcl:public dhcl
 		void setzhylastat(fsfcl *fsf, uchar *hyla_uverz_nrp, uchar startvznr,int *obsfehltp=0, 
 				struct stat *est=0);
     int xferlog(fsfcl *fsfp/*, string *totpages=0, string *ntries=0, string *totdials=0, string *tottries=0, string *maxtries=0*/);
+    string stdfaxnr(const string& faxnr); // benoetigt in fsfcl->archviere
+		void getSender(const string& faxnr, string *getnamep, string *bsnamep,const size_t aktc); // benoetigt in fsfcl->archiviere
+		void hylasv1(); // in loeschehyla benoetigt
+		void hylasv2(hyinst hyinstart); // // in loeschehyla benoetigt
 	protected: 
 		// void virtlgnzuw(); // wird aufgerufen in: virtrueckfragen, parsecl, lieskonfein, hcl::hcl nach holsystemsprache
 		void virtVorgbAllg();
@@ -802,8 +816,6 @@ class hhcl:public dhcl
 		void virtzeigueberschrift();
 		void pvirtfuehraus();
 		void virtschlussanzeige(); //ω
-		void hylasv1();
-		void hylasv2(hyinst hyinstart);
 		void zeigdienste();
 		void pruefmodem();
     void empfarch(uchar obalte=0);
@@ -819,4 +831,5 @@ class hhcl:public dhcl
 	public: //α
 		hhcl(const int argc, const char *const *const argv);
 		~hhcl();
+		friend class fsfcl;
 }; // class hhcl //ω
