@@ -457,6 +457,75 @@ enum T_
 	T_Anwahlen,
 	T_kommaDatei,
 	T_bzw,
+	T_hylaausgeb,
+	T_suchestr,
+	T_mitstr,
+	T_wartende_Faxe,
+	T_pruefstdfaxnr,
+	T_prueffuncgettel3,
+	T_aendere_fax,
+	T_Welches_Fax_soll_geloescht_werden,
+	T_Welches_Fax_soll_umgeleitet_werden,
+	T_Soll_das_Fax,
+	T_wirklich_geloescht_werden,
+	T_umgeleitet_werden,
+	T_Zahl_der_nicht_geloeschten_Dateien,
+	T_hylanr,
+	T_Capispooldatei,
+	T_Gesamt,
+	T_Kein_Fax_zum_Loeschen_vorhanden,
+	T_empferneut,
+	T_loeschewaise,
+	T_loescheallewartenden,
+	T_Welches_Fax_soll_erneut_empfangen_werden_bitte_Nr_in_der_1_Spalte_eingeben_a_alle_Angezeigten,
+	T_Bearbeite,
+	T_Aus,
+	T_zu_loeschen,
+	T_Sollen_wirklich_alle,
+	T_wartenden_Faxe_geloescht_werden,
+	T_waisen_Faxe_geloescht_werden,
+	T_Keine_waisen_Faxe_zum_Loeschen_da,
+	T_Keine_wartenden_Faxe_zum_Loeschen_da,
+	T_wegfaxen,
+	T_obfboxmitDoppelpunkt,
+	T_obcapimitDoppelpunkt,
+	T_obhylamitDoppelpunkt,
+	T_Unterverzeichnis,
+	T_passt_zu_Muster,
+	T_passt_zu_keinem_Muster,
+	T_war_schon,
+	T_kommt_noch,
+	T_Endung,
+	T_Stamm,
+	T_Anfangsteil,
+	T_Faxnummer_zu,
+	T_gefunden_dp,
+	T_Name_zu,
+	T_FehlerbeimUmbenennen,
+	T_ErstelledurchBenennen,
+	T_ErstelledurchKopieren,
+	T_nichtfaxbar,
+	T_abgebrochen,
+	T_Gesammelt_wurden,
+	T_aus,
+	T_verarbeitete_Nicht_PDF_Dateien,
+	T_lstatfehlgeschlagen,
+	T_beiDatei,
+	T_verarbeitete_PDF_Dateien,
+	T_beiSQLAbfrage,
+	T_ZahldDSmwegzuschickendenFaxenin,
+	T_PDFDatei,
+	T_Fehler_zu_faxende_Datei,
+	T_nicht_gefunden_Eintrag_ggf_loeschen_mit_,
+	T_in_wegfaxen,
+	T_WVZinDatenbank,
+	T_inDbc,
+	T_faxemitH,
+	T_inDBh,
+	T_SpoolDateierstellt,
+	T_SpoolDatei,
+	T_SpoolPfad,
+	T_faxemitC,
 	T_MAX //α
 }; // enum T_ //ω
 
@@ -469,10 +538,10 @@ void dorename(const string& quelle, const string& ziel, const string& cuser=nix,
                   stringstream *ausgp=0);
 class zielmustercl; // fuer die Verteilung der erfolgreich gefaxten Dateien auf verschiedene Dateien
 string kopiere(const string& qdatei, const string& zield, uint *kfehler, const uchar wieweiterzaehl, int obverb=0, int oblog=0);
-string kopiere(const string& qdatei, const zielmustercl& zmp, uint *kfehler, const uchar wieweiterzaehl, int obverb=0, int oblog=0);
+string kopiere(const string& qdatei, const vector<shared_ptr<zielmustercl>>& zmp, uint *kfehler, const uchar wieweiterzaehl, int obverb=0, int oblog=0);
 string zielname(const string& qdatei, const string& zielvz,uchar wieweiterzaehl=0, string* zieldatei=0, uchar* obgleichp=0, 
                 int obverb=0, int oblog=0, stringstream *ausgp=0);
-string zielname(const string& qdatei, const vector<shared_ptr<zielmustercl>> *const zmup,uchar wieweiterzaehl=0, string* zieldatei=0, uchar* obgleichp=0, int obverb=0, 
+string zielname(const string& qdatei, const vector<shared_ptr<zielmustercl>>& zmup,uchar wieweiterzaehl=0, string* zieldatei=0, uchar* obgleichp=0, int obverb=0, 
                 int oblog=0, stringstream *ausgp=0);
 void pruefrules(int obverb, int oblog);
 void useruucp(const string& huser, const int obverb, const int oblog);
@@ -504,9 +573,16 @@ struct zielmustercl
     int obmusterleer() const;
 }; // class zielmustercl
 
-class fxfcl // Faxfile
+struct urfxcl // urspruengliche Dateidaten vor Aufteilung an verschiedene Faxadressaten
 {
-  public:
+    string teil;
+    string ur;
+    unsigned prio; // Prioritaet der Fax-Programme: 0 = capi und 0 = hyla per Konfigurationsdatei, 1= capi und 2= hyla per Faxdateiname
+    urfxcl(const string& teil, const string& ur,unsigned prio): teil(teil), ur(ur), prio(prio) {}
+};
+
+struct fxfcl // Faxfile
+{
     string npdf; // nicht-PDF
     string spdf; // schon-PDF
     string ur;   // urspruenglicher Dateinamen
@@ -519,9 +595,8 @@ class fxfcl // Faxfile
     fxfcl() {}
 };
 
-class fsfcl : public fxfcl // Faxsendfile
+struct fsfcl : public fxfcl // Faxsendfile
 {
-  public:
     string id;   // id in spooltab
     string telnr;    // Telnr. des Adressaten
     string capisd; // capispooldatei
@@ -607,8 +682,7 @@ class hhcl:public dhcl
 		string findvers; // find-Version (1=linux find, 2=intern mit readdir, 3=intern mit nftw 
 		int ifindv; // integer-Variante der find-Version
 
-		confdcl *cfaxcp=0; // Zeiger auf ausgelesene /etc/capisuite/fax.conf
-		confdcl *hfaxcp{0}; // Zeiger auf ausgelesene /etc/init.d/hylafax.conf
+		confdcl *cfaxcp{0}; // Zeiger auf ausgelesene /etc/capisuite/fax.conf
 		const string s1{"mv -n "};
 		//		const string s2="/2200/* ";
 		//schlArr hylcnfA; // fuer q1234 o.ae.
@@ -797,6 +871,22 @@ class hhcl:public dhcl
 		void getSender(const string& faxnr, string *getnamep, string *bsnamep,const size_t aktc); // benoetigt in fsfcl->archiviere
 		void hylasv1(); // in loeschehyla benoetigt
 		void hylasv2(hyinst hyinstart); // // in loeschehyla benoetigt
+		void suchestr();
+		void pruefstdfaxnr(DB *Myp, const string& usr, const string& host, const int obverb, const int oblog);
+		void prueffuncgettel3(DB *const Myp, const string& usr, const string& host, int obverb, int oblog);
+		int aenderefax(const int aktion=0,const size_t aktc=0); // aktion: 0=loeschen, 1=umleiten
+		void empferneut();
+    size_t  loeschewaise();
+		size_t loescheallewartenden();
+		void wegfaxen();
+		int obvorbei(const string& vzname,uchar *auchtag);
+    void WVZinDatenbank(vector<fxfcl> *const fxvp, size_t aktc); // in wegfaxen
+		void inDbc(DB *My, const string& spooltab, const string& altspool, const string& spoolg, const fsfcl *const fsfp, 
+		           const string& telnr, const size_t aktc);
+		void faxemitC(DB *My, const string& spooltab, const string& altspool, fsfcl *fsfp, const string& ff);
+		void faxemitH(DB *My, const string& spooltab, const string& altspool, fsfcl *fsfp, const string& ff);
+		void inDBh(DB *My, const string& spooltab, const string& altspool, const string& hylaid, 
+				const fsfcl *const fsfp,const string *tel, const size_t aktc);
 	protected: 
 		// void virtlgnzuw(); // wird aufgerufen in: virtrueckfragen, parsecl, lieskonfein, hcl::hcl nach holsystemsprache
 		void virtVorgbAllg();

@@ -105,6 +105,7 @@ extern const char *_rot, *_hrot, *_schwarz, *_blau, *_gelb, *_tuerkis, *_hgrau;
 #include <chrono> // fuer sleep_for 
 #include <thread> // fuer sleep_for
 #include <iconv.h> // fuer ic_cl (Konversion von Dos-Dateien in utf-8)
+#include <utime.h>  // fuer utimbuf und utime
 
 #define neufind
 #define altfind
