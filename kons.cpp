@@ -6162,6 +6162,8 @@ optcl::optcl(const string& pname,const void* pptr,const par_t part, const int ku
 
 int hcl::hLog(const string& text,const bool oberr/*=0*/,const short klobverb/*=0*/) const
 {
+////	const bool oberr{0};
+////	const short klobverb{0};
 	return fLog(text,obverb,oblog,oberr,klobverb);
 } // int hcl::hLog(const string& text,bool oberr/*=0*/,short klobverb/*=0*/)
 

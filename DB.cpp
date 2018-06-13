@@ -1314,7 +1314,7 @@ void DB::erweitern(const string& tabs, vector<instyp> einf,const size_t aktc,int
 // in: RS::insert() und RS::update
 int DB::machbinaer(const string& tabs, const size_t aktc,const string& fmeld,int obverb) const
 {
-  fLog(violetts+__FUNCTION__+"()"+schwarz+" tabs. "+blau+tabs+schwarz+" fmeld: "+blau+fmeld+schwarz+" obverb: "+ltoan(obverb),obverb);
+  fLog(violetts+__FUNCTION__+"()"+schwarz+" tabs. "+blau+tabs+schwarz+" fmeld: "+blau+fmeld+schwarz+" obverb: "+ltoan(obverb),obverb,0);
   size_t p1,p2,p3,p4;
   if (!(p1=fmeld.find("'")+1)) return 1;
   if (!(p2=fmeld.find("'",p1)+1)) return 2;

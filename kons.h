@@ -1354,7 +1354,7 @@ class hcl
 		hcl(const int argc, const char *const *const argv,const char* const DPROG,const uchar mitcron);
 		~hcl();
 		void lauf();
-		int hLog(const string& text,const bool oberr=0,const short klobverb=0) const;
+		int hLog(const string& text,const bool oberr=0,const short klobverb=0) const; 
 		void pruefsamba(const vector<const string*>& vzn,const svec& abschni,const svec& suchs,const char* DPROG,const string& cuser);
 		int holvomnetz(const string& datei,const string& vors=defvors,const string& nachs=defnachs);
 		int kompilbase(const string& was,const string& endg);

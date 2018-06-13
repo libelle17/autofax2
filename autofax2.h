@@ -526,6 +526,24 @@ enum T_
 	T_SpoolDatei,
 	T_SpoolPfad,
 	T_faxemitC,
+	T_DieFaxnrausTabelle,
+	T_istleerfaxeesdahernicht,
+	T_DieFaxnrvon,
+	T_ist,
+	T_faxemitCFehler,
+	T_Faxdatei,
+	T_fehlt,
+	T_hat0Bytes,
+	T_Faxbefehl,
+	T_nichtgefundenloeschesieausDB,
+	T_nicht_gefunden_kein_Datenbankeintrag,
+	T_HylafaxBefehl,
+	T_RueckmlgZeile,
+	T_Bei_folgenden_Faxen_musste_das_Erfolgskennzeichen_gemaess_Hylafax_Protkolldatei_auf_Erfolg_gesetzt_werden,
+	T_sammlefertigehyla,
+	T_Dateidatum,
+	T_pages,
+	T_Bei_folgenden_Faxen_musste_das_Erfolgskennzeichen_gemaess_Hylafax_Protkolldatei_auf_Misserfolg_gesetzt_werden,
 	T_MAX //α
 }; // enum T_ //ω
 
@@ -552,6 +570,8 @@ void pruefinctab(DB *My, const string& tinca, const int obverb, const int oblog,
 string verschiebe(const string& qdatei, const auto/*string,zielmustercl*/& zielvz, const string& cuser=nix, 
                   uint *vfehlerp=0, const uchar wieweiterzaehl=1, int obverb=0,int oblog=0, stringstream *ausgp=0,const uchar auchgleiche=0);
 const char* FxStatS(const FxStat *const i);
+void pruefstdfaxnr(DB *Myp, const string& usr, const string& host, const int obverb, const int oblog);
+void prueffuncgettel3(DB *const Myp, const string& usr, const string& host, int obverb, int oblog);
 
 
 // Steuerung der Abspeicherung gesendeter Faxe je nach Muster
@@ -872,8 +892,6 @@ class hhcl:public dhcl
 		void hylasv1(); // in loeschehyla benoetigt
 		void hylasv2(hyinst hyinstart); // // in loeschehyla benoetigt
 		void suchestr();
-		void pruefstdfaxnr(DB *Myp, const string& usr, const string& host, const int obverb, const int oblog);
-		void prueffuncgettel3(DB *const Myp, const string& usr, const string& host, int obverb, int oblog);
 		int aenderefax(const int aktion=0,const size_t aktc=0); // aktion: 0=loeschen, 1=umleiten
 		void empferneut();
     size_t  loeschewaise();
