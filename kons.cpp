@@ -1977,7 +1977,16 @@ const string& absch::suche(const char* const sname)
 	static const string nix;
 	for (size_t i=0;i<av.size();i++) {
 		if (av[i].name==sname) {
-			return *av[i].wertp;
+			if (av[i].wertp) {
+				caus<<av[i].wertp<<endl;
+       caus<<"Stell 31,sname: "<<sname<<endl;
+			 static string ueberg=*av[i].wertp;
+       caus<<"Stell 33"<<endl;
+				return ueberg/**av[i].wertp*/;
+			} else {
+       caus<<"Stell 32"<<endl;
+				return nix;
+			}
 		}
 	} //   for (size_t i=0;i<av.size();i++)
 	return nix;
@@ -6241,25 +6250,39 @@ void hcl::pruefsamba(const vector<const string*>& vzn,const svec& abschni,const 
 		////    if (gestartet==2) smbrestart=0;
 	} // if (dienstzahl<2 || conffehlt) 
 	struct stat sstat={0};
+		caus<<"Stell 9"<<endl;
 	if (!(conffehlt=lstat(smbdt,&sstat))) {
+		caus<<"Stell 10"<<endl;
 		confdcl smbcd(smbdt,obverb);
+		caus<<"Stell 11"<<endl;
 //		smbcd.Abschn_auswert(obverb);
 		uchar gef[vzn.size()]; memset(gef,0,vzn.size()*sizeof(uchar));
+		caus<<"Stell 12"<<endl;
 		for(size_t i=0;i<smbcd.abschv.size();i++) {
+		caus<<"Stell 12"<<endl;
 			if (smbcd.abschv[i].aname!="global") {
-				const string& pfad = smbcd.abschv[i].suche("path");
+		caus<<"Stell 13"<<endl;
+				const string pfad{smbcd.abschv[i].suche("path")};
+		caus<<"Stell 14"<<endl;
 				if (!pfad.empty()) {
+		caus<<"Stell 15"<<endl;
 					for(unsigned k=0;k<vzn.size();k++) {
+		caus<<"Stell 16"<<endl;
 						if (!gef[k]) if (!vzn[k]->empty()) {
+		caus<<"Stell 17"<<endl;
 							if (!vzn[k]->find(pfad)) {
+		caus<<"Stell 18"<<endl;
 								gef[k]=1;
 							}
 						} // if (!gef[k]) if (!vzn[k]->empty()) 
 					} // for(unsigned k=0;k<sizeof vzn/sizeof *vzn;k++) 
 				} // if (!pfad.empty()) 
+		caus<<"Stell 15b"<<endl;
 			} // if (smbcd.abschv.aname!="global") 
 		} // for(size_t i=0;i<smbcd.abschv.size();i++) 
+		caus<<"Stell 19"<<endl;
 		uchar smbrestart=0;
+		caus<<"Stell 20"<<endl;
 		mdatei sapp(smbdt,ios::out|ios::app);
 		if (sapp.is_open()) {
 			string suchstr;
@@ -6380,6 +6403,7 @@ void hcl::pruefsamba(const vector<const string*>& vzn,const svec& abschni,const 
 			} // obzu
 		} // obslaeuft
 	} //   if (!(conffehlt=lstat(smbdt,&sstat)))
+	hLog(violetts+Txk[T_Ende]+Txk[T_pruefsamba]);
 } // pruefsamba
 
 WPcl::WPcl(const string& pname,const void* pptr,par_t part):wpgcl(pname,pptr,part)
@@ -6637,13 +6661,13 @@ int confdcl::lies(const string& vfname, int obverb, const char tz/*='='*/)
 						if (pos!=string::npos && pos>0) { 
 							string pname=zeile.substr(0,pos);
 							rtrim(&pname);
-							// hier evtl. new bzw. shared_ptr noetig
-							string wert=zeile.substr(pos+1);
-							gtrim(&wert);
-							anfzweg(wert);
-							paare.push_back(paarcl(pname,wert,ibemerk));
+//							shared_ptr<string> wertp{new string(zeile.substr(pos+1))};
+							shared_ptr<string> wertp=make_shared<string>(zeile.substr(pos+1));
+							gtrim(wertp.get());
+							anfzweg(*wertp);
+							paare.push_back(paarcl(pname,*wertp,ibemerk));
 							ibemerk.clear();
-							if (mitabsch) abp.av.push_back(aScl(pname,&wert));
+							if (mitabsch) abp.av.push_back(aScl(pname,wertp.get()));
 						} // if (pos!=string::npos && 1==sscanf(zeile->c_str(),scs.c_str(),zeile->c_str())) 
 					} // if (zeile[0]
 				} // if (!zeile->empty()) 

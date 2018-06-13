@@ -4215,6 +4215,7 @@ void hhcl::rufpruefsamba()
 		suchs<<suchstr;
 	} // 	for(unsigned k=0;k<vzn.size();k++)
 	pruefsamba(vzn,abschni,suchs,DPROG,cuser);
+	hLog(violetts+Txk[T_Ende]+Tx[T_rufpruefsamba]);
 } // pruefsamba
 
 
@@ -8754,17 +8755,6 @@ void hhcl::pvirtfuehraus()
 			} // if (loef || loew || loea) else if else if
 		} // 		if (!keineverarbeitung)
 	} // if (kez) else else else
-	hhi.autofkonfschreib();
-	// ggf. beim 2. Aufruf am Tag Update installieren
-	hhi.update(DPROG);
-	//// <<violett<<", pidv.size(): "<<pidv.size()<<schwarz<<endl;
-	//// for(size_t j=0;j<pids.size();j++) KLA //<<gruen<<j<<violett<<", pids[j]: "<<pids[j]<<schwarz<<endl; KLZ
-	// damit das Endeprompt nicht vorprescht
-	// warte auf empfarch, faxealle usw.
-	wartaufpids(&pidv,0,hhi.obverb,hhi.oblog,Tx[T_in_main_pidv_am_Schluss]);
-	hhi.schlussanzeige();
-	Log(violetts+Txk[T_Ende]+schwarz,hhi.obverb,hhi.oblog);
-	return 0;
 } // void hhcl::pvirtfuehraus  //α
 
 // wird aufgerufen in lauf
