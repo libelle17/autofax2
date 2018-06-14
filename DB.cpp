@@ -1836,8 +1836,8 @@ int RS::doAbfrage(const size_t aktc/*=0*/,int obverb/*=0*/,uchar asy/*=0*/,int o
 										if ((p1=SQL.find(suchstr[uru]))!=string::npos) {
 											p1+=suchstr[uru].length();
 											if ((p2=SQL.find_first_of(" (",p1)+1)) {
-												string tbl=sql.substr(p1,p2-p1-1); // wegen Groß- und Kleinschreibung
-												anfzweg(tbl);
+												string tbl{sql.substr(p1,p2-p1-1)}; // wegen Groß- und Kleinschreibung
+												anfzweg(&tbl);
 												if (tbl.find_first_of(",='`")!=string::npos) continue;
 												Tabelle aktt(dbp,tbl,aktc,obverb>0?obverb-1:0,oblog);
 												for(unsigned spnr=0;spnr<aktt.spalt->num_rows;spnr++) { // reale Spalten

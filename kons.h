@@ -614,7 +614,7 @@ inline int isnumeric(const char* str)
 
 string zuzahl(const string& q);
  
-string* anfzweg(string& quel);
+string* anfzweg(string *quel);
 char ers(const char roh);
 
 // Gesamt-Trim
@@ -951,7 +951,7 @@ struct paarcl
 	string name;
 	string wert;
 	string bemerk;
-	paarcl(const string& name, const string& wert, const string& bemerk);
+	paarcl(const string& name, const string *wert, const string& bemerk);
 }; // kpaar
 
 // Konfigurationsdatei-Klasse, Nachfolger von confdat

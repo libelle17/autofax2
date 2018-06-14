@@ -1788,7 +1788,7 @@ void hhcl::konfcapi()
 									//// _out<<"snr: "<<snr<<", lzeile: "<<tuerkis<<lzeile<<schwarz<<", rzeile: "<<blau<<rzeile<<schwarz<<endl;
 									string altwert=rzeile;
 									gtrim(&altwert);
-									anfzweg(altwert); // Anfuehrungszeichen entfernen
+									anfzweg(&altwert); // Anfuehrungszeichen entfernen
 									if (snr==0 || snr==1) (*cfcnfCp)[snr]->setzstr(altwert); // spool_dir und fax_user_dir hier nicht konfigurierbar
 									fLog(string("cfcnfC[")+ltoan(snr)+"].name: "+tuerkis+(*cfcnfCp)[snr]->pname+schwarz+Tx[T_komma_wert]+
 											((*cfcnfCp)[snr]->virtholstr()==altwert?blau:rot)+(*cfcnfCp)[snr]->virtholstr()+schwarz+Tx[T_komma_Altwert]+
@@ -3841,8 +3841,8 @@ int hhcl::pruefhyla()
 											string zeile;
 											while(getline(confc,zeile)) {
 												if (zeile.find("DIR_LIBEXEC")!=string::npos) {
-													string rechts=zeile.substr(zeile.find("=")+1);
-													anfzweg(rechts);
+													string rechts{zeile.substr(zeile.find("=")+1)};
+													anfzweg(&rechts);
 													faxgtpfad=rechts+vtz+"faxgetty";
 													faxqpfad=rechts+vtz+"faxq";
 													hfaxdpfad=rechts+vtz+"hfaxd";
@@ -5238,7 +5238,7 @@ void hhcl::empfhyla(const string& ganz,const size_t aktc, const uchar was,const 
 						if (tok.size()>1) {
 							//// <<gruen<<"tok[1] d: "<<schwarz<<tok[1]<<endl; // Namen z.B. G.Schade
 							tabsdr=tok[1];
-							anfzweg(tabsdr); // Anfuehrungszeichen entfernen
+							anfzweg(&tabsdr); // Anfuehrungszeichen entfernen
 						} //           if (tok.size()>1)
 					} // if (tok.size()) 
 				} // if (trueck.size()) 
@@ -7014,7 +7014,7 @@ void hhcl::bereinigevz(const size_t aktc/*=0*/)
 						svec toc;
 						aufSplit(&toc,rueck[i],sep);
 						string farbe;
-						anfzweg(toc[1]);
+						anfzweg(&toc[1]);
 						if (toc[0]=="SEND" && toc[2]=="\"\"") {
 							hgelu.insert(toc[1]);
 						} else {
@@ -7279,10 +7279,10 @@ int hhcl::xferlog(fsfcl *fsfp/*,string *totpages,string *ntries,string *totdials
 					else if (tok[1]=="UNSENT") aktion=2;
 					if (tok.size()>2) {
 						fsfp->number=tok[2];
-						anfzweg(fsfp->number);// Telefonnummer; Anfuehrungszeichen entfernen
+						anfzweg(&fsfp->number);// Telefonnummer; Anfuehrungszeichen entfernen
 						if (tok.size()>3) {
 							fsfp->hgerg=tok[3];
-							anfzweg(fsfp->hgerg); // Anfuehrungszeichen entfernen
+							anfzweg(&fsfp->hgerg); // Anfuehrungszeichen entfernen
 							switch (aktion) {
 								case 2: 
 									fsfp->hylastat=gescheitert;

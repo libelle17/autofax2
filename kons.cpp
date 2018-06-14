@@ -1708,14 +1708,14 @@ size_t irfind(const string& wo, const string& was)
 } // size_t irfind(const string& wo, const string& was)
 
 // Anfuehrungszeichen weg
-string* anfzweg(string& quel) {
-	if (quel.length()>1) {
-		if (quel[0]==quel[quel.length()-1] && strchr("\"'`",quel[0])) {
-			quel.erase(quel.length()-1,1);
-			quel.erase(0,1);
+string* anfzweg(string *quelp) {
+	if (quelp->length()>1) {
+		if (quelp->at(0)==quelp->at(quelp->length()-1) && strchr("\"'`",quelp->at(0))) {
+			quelp->erase(quelp->length()-1,1);
+			quelp->erase(0,1);
 		}
-	} // 	if (quel.length()>1)
-	return &quel;
+	} // 	if (quelp.length()>1)
+	return quelp;
 } // string* anfzweg(
 
 char ers(const char roh)
@@ -2024,13 +2024,13 @@ void confdcl::Abschn_auswert(int obverb/*=0*/, const char tz/*='='*/)
       } else {
         pos=zeile->find(tz);
         if (pos!=string::npos && pos>0) { 
-          string name,wert;
+          string name,*wertp;
           name=zeile->substr(0,pos);
           gtrim(&name);
-          wert=zeile->substr(pos+1);
-          gtrim(&wert);
-          anfzweg(wert);
-          abp.av.push_back(aScl(name,&wert));
+          wertp=new string(zeile->substr(pos+1));
+          gtrim(wertp);
+          anfzweg(wertp);
+          abp.av.push_back(aScl(name,wertp));
         } //         if (pos!=string::npos && pos>0) 
       } //       if (zeile->at(0)=='[' && zeile->at(zeile->length()-1)==']') 
     } //     if (zeile->length()) 
@@ -6607,7 +6607,7 @@ confdcl::confdcl(const string& fname, int obverb, const char tz/*='='*/):obgeles
 	 lies(fname,obverb,tz);
 } // confdcl::confdcl
 
-paarcl::paarcl(const string& name, const string& wert, const string& bemerk):name(name),wert(wert),bemerk(bemerk)
+paarcl::paarcl(const string& name, const string *wertp, const string& bemerk):name(name),wert(*wertp),bemerk(bemerk)
 {
 }
 
@@ -6659,15 +6659,16 @@ int confdcl::lies(const string& vfname, int obverb, const char tz/*='='*/)
 					} else {
 						pos=zeile.find(tz);
 						if (pos!=string::npos && pos>0) { 
-							string pname=zeile.substr(0,pos);
+							string pname{zeile.substr(0,pos)};
 							rtrim(&pname);
 //							shared_ptr<string> wertp{new string(zeile.substr(pos+1))};
-							shared_ptr<string> wertp=make_shared<string>(zeile.substr(pos+1));
-							gtrim(wertp.get());
-							anfzweg(*wertp);
-							paare.push_back(paarcl(pname,*wertp,ibemerk));
+//							shared_ptr<string> wertp=make_shared<string>(zeile.substr(pos+1));
+							string *wertp{new string(zeile.substr(pos+1))};
+							gtrim(wertp);
+							anfzweg(wertp);
+							paare.push_back(paarcl(pname,wertp,ibemerk));
 							ibemerk.clear();
-							if (mitabsch) abp.av.push_back(aScl(pname,wertp.get()));
+							if (mitabsch) abp.av.push_back(aScl(pname,wertp));
 						} // if (pos!=string::npos && 1==sscanf(zeile->c_str(),scs.c_str(),zeile->c_str())) 
 					} // if (zeile[0]
 				} // if (!zeile->empty()) 
