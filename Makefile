@@ -35,6 +35,7 @@
 # "make verschieb" => wie transfer, mit ../<DPROG>rein als Zielverzeichnis
 # "make vsneu" => wie verschieb, löscht vorher das als Zielverzeichnis (geht nur, wenn das github-Repository vorher gelöscht ist)
 # "make ruf" => ruft das Programm auf
+# "make rufv" => ruft das Programm mit -v auf
 # "make uninstall" => deinstalliert alles, frägt noch manchmal rücke
 # "make allesweg" => deinstalliert alles, beantwortet Rückfragen mit 'y'
 # "make neuproj" => kopiert Dateien für neues Projekt in Verzeichnis fuer neues Projekt
@@ -501,6 +502,10 @@ vsneu: verschieb
 .PHONY: ruf
 ruf:
 	@$(EXPFAD)/$(EXEC)
+
+.PHONY: rufv
+rufv:
+	@$(EXPFAD)/$(EXEC) -v
 
 .PHONY: version
 version: dovers

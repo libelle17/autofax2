@@ -1882,7 +1882,6 @@ linst_cl::linst_cl(int obverb,int oblog)
 		osname.find("Manjaro")!=string::npos?Manjaro:unbek
 	};
 	fLog(blaus+"Distro: "+(distro==Mint?"Mint":distro==Ubuntu?"Ubuntu":distro==Debian?"Debian":distro==Suse?"Suse":distro==Fedora?"Fedora":distro==Fedoraalt?"Fedoraalt":distro==Mageia?"Mageia":distro==Manjaro?"Manjaro":Txk[T_unbek])+schwarz,obverb,oblog);
-	exit(0);
 	// inhaltlich parallel getIPR() in install.sh
 	switch (distro) {
 		case unbek:
@@ -1983,13 +1982,9 @@ const string& absch::suche(const char* const sname)
 	for (size_t i=0;i<av.size();i++) {
 		if (av[i].name==sname) {
 			if (av[i].wertp) {
-				caus<<av[i].wertp<<endl;
-       caus<<"Stell 31,sname: "<<sname<<endl;
 			 static string ueberg=*av[i].wertp;
-       caus<<"Stell 33"<<endl;
 				return ueberg/**av[i].wertp*/;
 			} else {
-       caus<<"Stell 32"<<endl;
 				return nix;
 			}
 		}
@@ -2079,7 +2074,7 @@ template <typename SCL> void confdcl::kauswert(schAcl<SCL> *sA, int obverb,const
 									sA->schl[ii]->ausgewertet=1;
 									//// <<"sA->schl[ii]->pname: "<<sA->schl[ii]->pname<<endl;
 									//// <<blau<<"setze!"<<schwarz<<endl;
-									const int wiefalsch=sA->schl[ii]->setzstr(paare[nr].wert.c_str(),&obzuschreib,/*ausDatei=*/1);
+									const int wiefalsch{sA->schl[ii]->setzstr(paare[nr].wert.c_str(),&obzuschreib,/*ausDatei=*/1)};
 									if (!wiefalsch) {
 										sA->setzbemerkwoher(sA->schl[ii].get(),/*bemerk=*/paare[nr].bemerk,/*woher*/2);
 										++richtige;
@@ -6255,39 +6250,25 @@ void hcl::pruefsamba(const vector<const string*>& vzn,const svec& abschni,const 
 		////    if (gestartet==2) smbrestart=0;
 	} // if (dienstzahl<2 || conffehlt) 
 	struct stat sstat={0};
-		caus<<"Stell 9"<<endl;
 	if (!(conffehlt=lstat(smbdt,&sstat))) {
-		caus<<"Stell 10"<<endl;
 		confdcl smbcd(smbdt,obverb);
-		caus<<"Stell 11"<<endl;
 //		smbcd.Abschn_auswert(obverb);
 		uchar gef[vzn.size()]; memset(gef,0,vzn.size()*sizeof(uchar));
-		caus<<"Stell 12"<<endl;
 		for(size_t i=0;i<smbcd.abschv.size();i++) {
-		caus<<"Stell 12"<<endl;
 			if (smbcd.abschv[i].aname!="global") {
-		caus<<"Stell 13"<<endl;
 				const string pfad{smbcd.abschv[i].suche("path")};
-		caus<<"Stell 14"<<endl;
 				if (!pfad.empty()) {
-		caus<<"Stell 15"<<endl;
 					for(unsigned k=0;k<vzn.size();k++) {
-		caus<<"Stell 16"<<endl;
 						if (!gef[k]) if (!vzn[k]->empty()) {
-		caus<<"Stell 17"<<endl;
 							if (!vzn[k]->find(pfad)) {
-		caus<<"Stell 18"<<endl;
 								gef[k]=1;
 							}
 						} // if (!gef[k]) if (!vzn[k]->empty()) 
 					} // for(unsigned k=0;k<sizeof vzn/sizeof *vzn;k++) 
 				} // if (!pfad.empty()) 
-		caus<<"Stell 15b"<<endl;
 			} // if (smbcd.abschv.aname!="global") 
 		} // for(size_t i=0;i<smbcd.abschv.size();i++) 
-		caus<<"Stell 19"<<endl;
 		uchar smbrestart=0;
-		caus<<"Stell 20"<<endl;
 		mdatei sapp(smbdt,ios::out|ios::app);
 		if (sapp.is_open()) {
 			string suchstr;
