@@ -454,6 +454,7 @@ enum Tkons_
 	T_Fehler_in_find2cl,
 	T_nach_sh_viall_beendet,
 	T_nach__,
+	T_unbek,
 	T_konsMAX
 }; // Tkons_
 

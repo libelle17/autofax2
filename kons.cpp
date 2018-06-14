@@ -658,6 +658,8 @@ const char *kons_T[T_konsMAX+1][SprachZahl]=
 	{"nach 'sh viall' beendet","exited after 'sh viall'"},
 	// 	T_nach__,
 	{"nach: ","after: "},
+	// T_unbek,
+	{"unbekannt","unkonwn"},
 	{"",""}
 }; // const char *Txkonscl::TextC[T_konsMAX+1][SprachZahl]=
 
@@ -1860,6 +1862,7 @@ linst_cl::linst_cl(int obverb,int oblog)
 			}
 		}
 	}
+// enum distroenum{unbek=-1,Mint,Ubuntu,Debian,Suse,Fedora,Fedoraalt,Mageia,Manjaro};
 	distroenum distro{osname.empty()?(
 			obprogda("apt-get",obverb>0?obverb-1:0,oblog)?Ubuntu:
 			obprogda("rpm",obverb>0?obverb-1:0,oblog)?(
@@ -1878,6 +1881,8 @@ linst_cl::linst_cl(int obverb,int oblog)
 		osname.find("Mageia")!=string::npos?Mageia:
 		osname.find("Manjaro")!=string::npos?Manjaro:unbek
 	};
+	fLog(blaus+"Distro: "+(distro==Mint?"Mint":distro==Ubuntu?"Ubuntu":distro==Debian?"Debian":distro==Suse?"Suse":distro==Fedora?"Fedora":distro==Fedoraalt?"Fedoraalt":distro==Mageia?"Mageia":distro==Manjaro?"Manjaro":Txk[T_unbek])+schwarz,obverb,oblog);
+	exit(0);
 	// inhaltlich parallel getIPR() in install.sh
 	switch (distro) {
 		case unbek:
