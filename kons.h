@@ -192,7 +192,7 @@ enum Tkons_
   T_nicht_mit_fopen_zum_Anhaengen_oeffnen,
   T_Bitte_mit,
   T_beenden,
-  T_stern_zeile,
+  // T_stern_zeile,
   T_Rueckmeldung,
   T_Suchbefehl,
   T_Fuehre_aus,

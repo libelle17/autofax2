@@ -2,7 +2,7 @@
 .\" manual page for ²DPROG²
 .\" write to geraldschade@gmx.de if You discover an error or a deficit in the program
 .pc
-.TH man 1 "15.06.18" "Version 0.11616" "\fB²DPROG²\fR man page"
+.TH man 1 "15.06.18" "Version 0.11624" "\fB²DPROG²\fR man page"
 .SH NAME
 \fB²DPROG² \- Fax server functionality\fR: induces automatic fax transmission of files, naming of received faxes and logging of all of them in a database
 .br
@@ -15,7 +15,7 @@
 .SH OPTIONS 
 .SH PRECONDITIONS
 .br
-\fRProgramm: \fB/home/schade/autofax2/autofax2\fR, V: \fB0.11616\fR\fRProgramm: \fB/home/schade/autofax2/autofax2\fR, V.: \fB0.11616\fR, Verwende: \fBFritzbox\fR, \fBCapisuite\fR, \fBHylafax\fR
+\fRProgramm: \fB/root/autofax2/autofax2\fR, V: \fB0.11624\fR\fRProgramm: \fB/root/autofax2/autofax2\fR, V.: \fB0.11624\fR, Verwende: \fBFritzbox\fR, \fBCapisuite\fR, \fBHylafax\fR
 .br
 \fBOptions which are not saved (current value in parentheses): \fR
 .br

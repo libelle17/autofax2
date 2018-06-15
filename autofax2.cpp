@@ -1182,7 +1182,7 @@ void dorename(const string& quelle, const string& ziel, const string& cuser/*=ni
 				if (rename(quelle.c_str(),zielp->c_str())) {
 					if(cuser.empty()) iru++;
 					if(iru==1) {
-						setfaclggf(dir_name(quelle),obverb>1?obverb-1:0,oblog,/*obunter=*/wahr,/*mod=*/7,/*obimmer=*/1,
+						setfaclggf(dir_name(quelle),obverb>0?obverb-1:0,oblog,/*obunter=*/wahr,/*mod=*/7,/*obimmer=*/1,
 								/*faclbak=*/1,/*user=*/nix,/*fake=*/0,ausgp);
 					} else if (!schonda) {
 						perror((Tx[T_Fehler_beim_Verschieben]+quelle+" -> "+ziel).c_str());
@@ -1351,7 +1351,7 @@ const char * const rulesdt="/etc/udev/rules.d/46-FKN_isdn_capi.rules";
 // wird aufgerufen in: hhcl::pruefcapi
 void pruefrules(int obverb, int oblog) 
 {
-	fLog(violetts+Tx[T_pruefrules]+schwarz,obverb?obverb-1:0,oblog);
+	fLog(violetts+Tx[T_pruefrules]+schwarz,obverb>0?obverb-1:0,oblog);
 	struct stat entrybuf={0};
 	if (lstat(rulesdt, &entrybuf)) { 
 		mdatei rules(rulesdt,ios::out);
@@ -1367,7 +1367,7 @@ const string blackdt="/etc/modprobe.d/50-blacklist.conf";
 // wird aufgerufen in: pruefcapi
 void pruefblack(int obverb, int oblog) 
 {
-	fLog(violetts+Tx[T_pruefblack]+schwarz,obverb?obverb-1:0,oblog);
+	fLog(violetts+Tx[T_pruefblack]+schwarz,obverb>0?obverb-1:0,oblog);
 	const char* vgl[]={"blacklist avmfritz", "blacklist mISDNipac"};
 	uchar obda[]={0}, obeinsfehlt=0;
 	mdatei blacki(blackdt,ios::in);
@@ -1596,7 +1596,7 @@ void hhcl::liescapiconf()
 						//// caus<<"cdn["<<j<<"]: "<<cdn[j]<<endl;
 						struct stat statdat={0};
 						if (!lstat(cdn[j].c_str(),&statdat)) {
-							setfaclggf(cdn[j],obverb>1?obverb-1:0,oblog,/*obunter=*/falsch,/*mod=*/6);
+							setfaclggf(cdn[j],obverb>0?obverb-1:0,oblog,/*obunter=*/falsch,/*mod=*/6);
 						} //             if (!lstat(cccnfA[j].wert.c_str(),&statdat))
 					} // if (!cccnfA[j].wert.empty()) 
 				} // for(size_t j=1;j<3;j++) 
@@ -1613,7 +1613,7 @@ void hhcl::liescapiconf()
 					if (!cccnfA[j].wert.empty()) {
 						struct stat statdat={0};
 						if (!lstat(cccnfA[j].wert.c_str(),&statdat)) {
-							setfaclggf(cccnfA[j].wert,obverb>1?obverb-1:0,oblog,/*obunter=*/falsch,/*mod=*/6);
+							setfaclggf(cccnfA[j].wert,obverb>0?obverb-1:0,oblog,/*obunter=*/falsch,/*mod=*/6);
 						} //             if (!lstat(cccnfA[j].wert.c_str(),&statdat))
 					} // if (!cccnfA[j].wert.empty()) 
 				} // for(size_t j=1;j<3;j++) 
@@ -1754,7 +1754,7 @@ void hhcl::konfcapi()
 	const string suchcuser="["+cuser+"]";
 	// es gibt zwei moegliche Gruende zum Neuschreiben der Datei: 1) Parameter diffierieren, 2) noch kein User angelegt
 	uchar cuserda=0, paramdiff=0, neuschreiben=0;
-	setfaclggf(cfaxconfdt,obverb>1?obverb-1:0,oblog,/*obunter=*/falsch,/*mod=*/6);
+	setfaclggf(cfaxconfdt,obverb>0?obverb-1:0,oblog,/*obunter=*/falsch,/*mod=*/6);
 	string zeile;
 	// iru=0 => pruefen, ob Datei geaendert werden muss; iru=1 => aendern
 	uchar tuumben=0;
@@ -1934,7 +1934,7 @@ void hhcl::nextnum()
 	} // if (!lstat(cfaxusersqvz.c_str(),&entrynextnr))
 	if (!nextnr) {
 		pruefverz(cfaxuservz,obverb,oblog,/*obmitfacl=*/2,/*obmitcon=*/0,/*besitzer=*/"",/*benutzer=*/cuser);
-		setfaclggf(spoolcapivz,obverb>1?obverb-1:0,oblog,/*obunter=*/wahr,/*mod=*/7,/*obimmer=*/wahr);
+		setfaclggf(spoolcapivz,obverb>0?obverb-1:0,oblog,/*obunter=*/wahr,/*mod=*/7,/*obimmer=*/wahr);
 		if (findv==1) {
 			cmd=sudc+"echo $(( `find "+spoolcapivz+ " -type f -name '*-fax-*.sff' 2>/dev/null "
 				"| cut -d '-' -f3 | cut -d '.' -f1 | sort -rn | head -n1` + 1 )) > '"+nextdatei+"'";
@@ -1957,7 +1957,7 @@ void hhcl::nextnum()
 			} // 			if (nextstr.is_open())
 		} // 		if (findv==1) else
 	} // 	if (!nextnr)
-	setfaclggf(nextdatei,obverb>1?obverb-1:0,oblog,/*obunter=*/falsch,/*mod=*/6);
+	setfaclggf(nextdatei,obverb>0?obverb-1:0,oblog,/*obunter=*/falsch,/*mod=*/6);
 } // void hhcl::nextnum()
 
 // wird aufgerufen in: pruefcapi(), anhalten()
@@ -2046,7 +2046,7 @@ void hhcl::clieskonf()
 // wird aufgerufen in: pruefcapi
 void hhcl::pruefmodcron()
 {
-	//  fLog(violetts+Tx[T_pruefmodcron]+schwarz,obverb?obverb-1:0,oblog);
+	//  fLog(violetts+Tx[T_pruefmodcron]+schwarz,obverb>0?obverb-1:0,oblog);
 	hLog(violetts+Tx[T_pruefmodcron]+schwarz);
 	const string mp="@reboot /sbin/modprobe ";
 	const string mps[]={mp+"capi",mp+"fcpci"};
@@ -2086,7 +2086,7 @@ int hhcl::pruefcapi()
 			//// #  define IRQF_DISABLED 0x00
 			//// #endif
 			////    capilaeuft=(PIDausName("capisuite")>=0);
-			capilaeuft=this->scapis->machfit(obverb?obverb-1:0,oblog,wahr)&&!ccapiconfdt.empty()&&!cfaxconfdt.empty();
+			capilaeuft=this->scapis->machfit(obverb>0?obverb-1:0,oblog,wahr)&&!ccapiconfdt.empty()&&!cfaxconfdt.empty();
 			hLog(violetts+Tx[T_capilaeuft]+schwarz+ltoan(capilaeuft)+schwarz);
 			if (capilaeuft) {
 				capischonerfolgreichinstalliert=1;
@@ -2113,7 +2113,7 @@ int hhcl::pruefcapi()
 					}
 					for(uchar ivers=0;ivers<3;ivers++) {
 						if (!fcpcida)
-							if (systemrueck("modprobe -v fcpci 2>/dev/null",obverb-1+ivers,oblog,/*rueck=*/0,/*obsudc=*/1)) {
+							if (systemrueck("modprobe -v fcpci 2>/dev/null",obverb>0?obverb-1:0+ivers,oblog,/*rueck=*/0,/*obsudc=*/1)) {
 								const string fcpciko=string("/lib/modules/")+unbuf.release+"/kernel/extras/fcpci.ko";
 								switch (ivers) {
 									case 1:
@@ -2375,7 +2375,8 @@ int hhcl::pruefcapi()
 							//            svec rueck;
 							//            systemrueck("find /usr -name capi20.h 2>/dev/null",obverb,oblog,&rueck); 
 							 */
-							systemrueck("cd "+instvz+" &&{ cd capisuite 2>/dev/null &&{ test -f Makefile && make clean;};}",obverb-1,oblog,/*rueck=*/0,/*obsudc=*/0);
+							systemrueck("cd "+instvz+" &&{ cd capisuite 2>/dev/null &&{ test -f Makefile && make clean;};}",obverb>0?obverb-1:0,oblog,
+									/*rueck=*/0,/*obsudc=*/0);
 							obverb++;
 							svec rueck;
 							string pyvz;
@@ -2489,14 +2490,14 @@ int hhcl::pruefcapi()
 				}
 				if (/*//obcapi && */!schonkonfiguriert && (versuch>0 || this->capizukonf || rzf)) {
 					this->konfcapi();
-					scapis->restart(obverb-1,oblog);
+					scapis->restart(obverb>0?obverb-1:0,oblog);
 					capizukonf=0;
 					schonkonfiguriert=1;
 				} //     if (versuch>0) KLA
 				// das Folgende verhindert zwar den Programmabbruch bei active (exit), das nuetzt aber nichts. In dem Fall fcpci aktualisieren! 23.5.14
 				//    capilaeuft = !systemrueck("systemctl status capisuite | grep ' active (running)' >/dev/null 2>&1",0,obverb,oblog);
 				//     capilaeuft  = !systemrueck("systemctl is-active capisuite",0,obverb,oblog);
-				capilaeuft=!scapis->obsvfeh(obverb-1,oblog);
+				capilaeuft=!scapis->obsvfeh(obverb>0?obverb-1:0,oblog);
 				if (capilaeuft) {
 					break;
 				} else {
@@ -3432,7 +3433,7 @@ void hhcl::setzfaxgtpfad()
 			svec qrueck;
 			const string wo{"/usr/lib/fax /usr/sbin /usr/bin /root/bin /sbin /usr/local/sbin /usr/local/bin"};
 			if (findv==1) {
-				systemrueck(sudc+"find "+wo+" -perm /111 -name faxgetty", obverb-1,oblog,&qrueck);
+				systemrueck(sudc+"find "+wo+" -perm /111 -name faxgetty", obverb>0?obverb-1:0,oblog,&qrueck);
 			} else findfile(&qrueck,findv,obverb,oblog,0,wo,/*muster=*/"faxgetty$",-1,1,Fol_Dat,0,0,0,1);
 			if (qrueck.size()) 
 				faxgtpfad=qrueck[0];
@@ -3483,7 +3484,7 @@ int hhcl::hconfig() const
 				faxsdpfad.clear();
 				const string wo="/usr /root/bin /sbin";
 				if (findv==1) {
-					systemrueck(sudc+"find "+wo+" -perm /111 -name faxsend",obverb-1,oblog,&qrueck);
+					systemrueck(sudc+"find "+wo+" -perm /111 -name faxsend",obverb>0?obverb-1:0,oblog,&qrueck);
 				} else findfile(&qrueck,findv,obverb,oblog,0,wo,/*muster=*/"faxsend$",-1,1,Fol_Dat,0,0,0,1);
 				if (qrueck.size()) 
 					faxsdpfad=qrueck[0];
@@ -3763,7 +3764,7 @@ int hhcl::pruefhyla()
 					// 2) deren Existenz, Betrieb und ggf. Startbarkeit pruefen
 					// wenn die richtigen Dienste laufen, dann nichts weiter ueberpruefen ..
 					//// <<violett<<"pruefhyla 1"<<schwarz<<endl;
-					if ((!sfaxq->obsvfeh(obverb-1,oblog) && !shfaxd->obsvfeh(obverb-1,oblog)) /*|| this->shylafaxd->obslaeuft(obverb-1,oblog)*/) {
+					if ((!sfaxq->obsvfeh(obverb>0?obverb-1:0,oblog) && !shfaxd->obsvfeh(obverb>0?obverb-1:0,oblog)) /*|| this->shylafaxd->obslaeuft(... */) {
 						hLog(Tx[T_Hylafax_laeuft]);
 						hylalaeuftnicht=0;
 						hylafehlt=0;
@@ -3979,7 +3980,7 @@ int hhcl::pruefhyla()
 						int fglaeuftnicht=0;
 						for (uchar iru=0;iru<3;iru++) {
 							//// <<violett<<"pruefhyla 2"<<schwarz<<endl;
-							if ((fglaeuftnicht=sfaxgetty->obsvfeh(obverb,oblog))) {
+							if ((fglaeuftnicht=sfaxgetty->obsvfeh(obverb>0?obverb-1:0,oblog))) {
 								// falls nein, dann schauen, ob startbar
 								if (sfaxgetty->machfit(obverb,oblog)) fglaeuftnicht=0;
 							}
@@ -4701,7 +4702,7 @@ string verschiebe(const string& qdatei, const auto/*string,zielmustercl*/& zielv
 	// wieweiterzaehl: 0: auf *_1_1 nach *_1, 1: auf *_2 nach *_1, 2: gar nicht
 	uchar obgleich=0;
 	uint fehler=0;
-	const string ziel{zielname(qdatei,zielvz,wieweiterzaehl,/*zieldatei=*/0,(auchgleiche?0:&obgleich),obverb-1,oblog,ausgp)};
+	const string ziel{zielname(qdatei,zielvz,wieweiterzaehl,/*zieldatei=*/0,(auchgleiche?0:&obgleich),obverb>0?obverb-1:0,oblog,ausgp)};
 	// wenn wieweiterzaehl==2 und Zieldatei schon vorhanden und nicht 0 Bytes, dann nicht ueberschreiben und Fehler melden
 	while (!ziel.empty()) { // while nur fuer break
 		if (!obgleich && wieweiterzaehl==2) {
@@ -4771,8 +4772,8 @@ int hhcl::holtif(const string& datei,ulong *seitenp,struct tm *tmp,struct stat *
 			} //     if (!lstat(datei.c_str(),elogp)) 
 		} // if (elogp)
 	} // if (tmp)
-	setfaclggf(dir_name(datei),obverb>1?obverb-1:0,oblog,/*obunter=*/falsch,/*mod=*/7);
-	setfaclggf(datei,obverb>1?obverb-1:0,oblog,/*obunter=*/falsch,/*mod=*/4,/*obimmer=*/0,/*faclbak=*/0);
+	setfaclggf(dir_name(datei),obverb>0?obverb-1:0,oblog,/*obunter=*/falsch,/*mod=*/7);
+	setfaclggf(datei,obverb>0?obverb-1:0,oblog,/*obunter=*/falsch,/*mod=*/4,/*obimmer=*/0,/*faclbak=*/0);
 	if (TIFF* tif = TIFFOpen(datei.c_str(), "r")) {
 		erg=0;
 		char *rdesc=0;
@@ -4851,7 +4852,7 @@ int hhcl::zupdf(const string* quellp, const string& ziel, ulong *pseitenp/*=0*/,
 			if (obocr) {
 				if (!pruefocr()) {
 					svec rueck;
-					setfaclggf(ziel,obverb>1?obverb-1:0,oblog,/*obunter=*/falsch,/*mod=*/7,/*obimmer=*/0,/*faclbak=*/0);
+					setfaclggf(ziel,obverb>0?obverb-1:0,oblog,/*obunter=*/falsch,/*mod=*/7,/*obimmer=*/0,/*faclbak=*/0);
 					const string cmd=ocrmp+" -rcsl "+(langu=="d"?"deu":"eng")+" \""+*lqp+"\" \""+ziel+"\" 2>&1";
 					int zerg=systemrueck(cmd,obverb,oblog,&rueck,/*obsudc=*/0,0,wahr,"",0,1);
 					if (zerg==5) zerg=systemrueck(cmd,obverb,oblog,&rueck,/*obsudc=*/1,0,wahr,"",0,1); // kein Schreibrecht im Verzeichnis
@@ -5817,7 +5818,7 @@ void hhcl::faxemitH(DB *My, const string& spooltab, const string& altspool, fsfc
 			//// <<rot<<"Achtung: faxemith: "<<endl<<schwarz<<cmd<<endl;
 			if (!systemrueck(cmd,1,1,&faxerg,/*obsudc=*/0,0,wahr,Tx[T_HylafaxBefehl])) {
 				for(size_t i=0;i<faxerg.size();i++) {
-					fLog(string(Tx[T_RueckmlgZeile])+ltoan(i)+": "+faxerg.at(i),obverb-1,oblog);
+					fLog(string(Tx[T_RueckmlgZeile])+ltoan(i)+": "+faxerg.at(i),obverb>0?obverb-1:0,oblog);
 					if (char *z1=strstr((char*)faxerg.at(i).c_str(),tz1)) {
 						if (char *z2=strstr(z1,tz2)) {
 							const string hylaid(z1+strlen(tz1),z2-z1-strlen(tz1));
@@ -6282,7 +6283,7 @@ void hhcl::wegfaxen()
 						struct utimbuf ubuf{0};
 						ubuf.actime=ubuf.modtime=spdfstat.st_mtime;
 						if (!pruefocr()) {
-							setfaclggf(zfda.at(i),obverb>1?obverb-1:0,oblog,/*obunter=*/falsch,/*mod=*/7,/*obimmer=*/falsch,/*faclbak=*/0);
+							setfaclggf(zfda.at(i),obverb>0?obverb-1:0,oblog,/*obunter=*/falsch,/*mod=*/7,/*obimmer=*/falsch,/*faclbak=*/0);
 							const string cmd=string(ocrmp+" -rcsl ")+(langu=="d"?"deu":"eng")+" \""+zfda.at(i)+"\" \""+zfda.at(i)+"\""
 								" && chmod +r \""+zfda.at(i)+"\" 2>/dev/null";
 							int zerg=systemrueck(cmd,obverb,oblog);
@@ -6652,7 +6653,7 @@ void hhcl::empfarch(uchar obalte/*=0*/)
 		size_t cs=sizeof umst/sizeof*umst;
 	 */
 	const string *csuchvzp=obalte?&cempfavz:&cfaxuserrcvz;
-	struct stat entryvz={0};
+	struct stat entryvz{0};
 	////  cfaxuserrcvz="/var/spool/capisuite/users/schade/received";
 	if (!lstat(csuchvzp->c_str(),&entryvz)) /* /var/spool/capisuite/users/~/received */ {
 		svec qrueck;
@@ -8403,7 +8404,7 @@ void hhcl::korrigierehyla(const unsigned tage/*=90*/,const size_t aktc)
 						const string wo=varsphylavz+"/archive/"+hylanr;
 						if (findv==1) {
 							cmd="find "+wo+" -iname \"doc*\\.pdf\\."+hylanr+"\"";
-							systemrueck(cmd,obverb-1,oblog,&qrueck);
+							systemrueck(cmd,obverb>0?obverb-1:0,oblog,&qrueck);
 						} else findfile(&qrueck,findv,obverb,oblog,0,wo,/*muster=*/"doc.*\\.pdf\\."+hylanr+"$",1,1,Fol_Dat,0,0,1);
 						struct stat entrys={0};
 						if (qrueck.size()) {

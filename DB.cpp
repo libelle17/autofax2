@@ -27,7 +27,7 @@ const char *DB_T[T_dbMAX+1][SprachZahl]={
   // T_Fehler_beim_Verbinden
   {"Fehler beim Verbinden: ","Error connecting: "},
   // T_Erfolg_beim_Initialisieren_der_Verbindung_zu_mysql
-  {"Erfolg beim Initialisieren der Verbindung zu MySQL!","Success initializing the connection to MySQL!"},
+  {"Erfolg beim Initialisieren der Verbindung zu MySQL, aktc: ","Success initializing the connection to MySQL, aktc: "},
 	// T_MySQL_Passwort
 	{"MySQL-Passwort","MySQL password"},
 	// T_wird_benoetigt_fuer_Befehl
@@ -395,7 +395,7 @@ void DB::init(
 		unsigned long client_flag/*=0*/,int obverb/*=0*/,int oblog/*=0*/,unsigned versuchzahl/*=3*/, const uchar ggferstellen/*=1*/)
 {
 	fehnr=0;
-	fLog(Txd[T_DB_wird_initialisiert],obverb>0?obverb-1:0,oblog);
+	fLog(violetts+Txd[T_DB_wird_initialisiert]+schwarz,obverb>0?obverb-1:0,oblog);
 	uchar installiert=0;
 	uchar datadirda=0;
 	const string mysqld="mysqld";
@@ -594,7 +594,7 @@ void DB::init(
 						} //           if (mysql_real_connect(conn[aktc], host.c_str(), user.c_str(), passwd.c_str(), uedb, port, unix_socket, client_flag))  else 
 					} //         for(unsigned versuch=0;versuch<versuchzahl;versuch++) 
 					if (!fehnr && conn[aktc]) {
-						fLog(Txd[T_Erfolg_beim_Initialisieren_der_Verbindung_zu_mysql],obverb>0?obverb-1:0,oblog);
+						fLog(Txd[T_Erfolg_beim_Initialisieren_der_Verbindung_zu_mysql]+blaus+ltoan(aktc)+schwarz,obverb>0?obverb-1:0,oblog);
 					} else {
 						////			printf("Fehler %u beim Verbinden mit MySQL: %s\n", mysql_errno(conn[aktc]), *erg= mysql_error(conn[aktc]));
 						this->ConnError=mysql_error(conn[aktc]);
@@ -613,7 +613,7 @@ void DB::init(
 			if (!dbsv) { 
 				if (!obprogda("postgres",obverb,oblog)) {
 				  caup<<"Programm postgres nicht da"<<endl;
-					systemrueck("V0=/usr/bin/postgres; V1=${V0}_alt; V2=${V0}_uralt; test -d $V0 &&{ test -d $V1 && "+
+					systemrueck("V0=/usr/bin/postgres; V1=${V0}_alt; V2=${V0}_uralt; test -d $V0 &&{ test -d $V1 && "
 					            "mv $V1 $V2; mv $V0 $V1;};:",
 					            obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
 					linstp->doinst("postgresql-server",obverb,oblog);// postgresql-contrib

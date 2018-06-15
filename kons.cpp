@@ -132,7 +132,7 @@ const char *kons_T[T_konsMAX+1][SprachZahl]=
   // T_beenden
   {"' beenden ...","'"},
   // T_stern_zeile
-  {"*zeile: ","*line: "},
+//  {"*zeile: ","*line: "},
   // T_Rueckmeldung
   {"Rueckmeldung: ","Feedback: "},
   // T_Suchbefehl
@@ -2430,12 +2430,12 @@ int systemrueck(const string& cmd, int obverb/*=0*/, int oblog/*=0*/, vector<str
 ////	caus<<rot<<"cmd: "<<violett<<cmd<<schwarz<<endl;
 // verbergen: 0 = nichts, 1= '2>/dev/null' anhaengen + true zurueckliefern, 2='>/dev/null 2>&1' anhaengen + Ergebnis zurueckliefern
 	// die 'if (obverb||oblog)' sind zur Vermeidung von Rekursionen mit Endlosschleifen
-  binaer ob0heissterfolg=wahr;
-  uchar neurueck=0;
-  uchar weiter=0;
-  int erg=-111;
-  string hcmd=cmd;
-  const uchar obfind=(cmd.substr(0,4)=="find");
+  binaer ob0heissterfolg{wahr};
+  uchar neurueck{0};
+  uchar weiter{0};
+  int erg{-111};
+  string hcmd{cmd};
+  const uchar obfind{cmd.substr(0,4)=="find"};
   if (verbergen==1 || (obfind && (obverb<1 || cus.cuid))) {
     if (obverb<=1) 
       hcmd+=" 2>/dev/null;:";
@@ -2477,7 +2477,12 @@ int systemrueck(const string& cmd, int obverb/*=0*/, int oblog/*=0*/, vector<str
 	const string befanz{ersetze(bef.c_str(),spath.c_str(),"...")};
 	const string hsubs{bef.substr(0,getcols()-7-aktues.length())};
 	string meld{aktues+": "+blau+hsubs+schwarz+" ..."};
-	if (ausgp&&obverb>0) *ausgp<<meld<<endl; else { if (obverb||oblog) fLog(meld,obverb>0?-1:0,oblog); }
+	if (ausgp&&obverb>0) {
+		*ausgp<<meld<<endl; 
+		caus<<"ausgp: "<<violett<<ausgp->str()<<schwarz<<endl;
+	} else { 
+		if (obverb||oblog) fLog(meld,obverb>0?-1:0,oblog); 
+	}
 	if (!rueck) if (obergebnisanzeig) {neurueck=1;rueck=new vector<string>;}
 	// #define systemrueckprofiler
 #ifdef systemrueckprofiler
@@ -2603,16 +2608,24 @@ int systemrueck(const string& cmd, int obverb/*=0*/, int oblog/*=0*/, vector<str
     prf.ausgab1000("vor log");
 #endif
 		meld=aktues+": "+blau+befanz+schwarz+Txk[T_komma_Ergebnis]+blau+ergebnis+schwarz;
-		if (ausgp&&obverb>0) *ausgp<<meld<<endl; else { if (obverb||oblog) fLog(meld,obverb>0?obverb:0,oblog); }
+		if (ausgp&&obverb>0) { 
+			*ausgp<<meld<<endl; 
+		} else { 
+			if (obverb||oblog) fLog(meld,obverb>0?obverb:0,oblog); 
+		}
 	} // if (obverb>0 || oblog)
 	if (rueck) {
 		if (obergebnisanzeig && rueck->size()) {
-			if (ausgp&&obverb>0) *ausgp<<smeld<<endl; else { if (obverb||oblog) fLog(smeld,obverb>1||(ob0heissterfolg && erg && obergebnisanzeig>1),oblog); }
+			if (ausgp&&obverb>0) {
+				*ausgp<<smeld<<endl; 
+			} else { 
+				if (obverb||oblog) fLog(smeld,obverb>1||(ob0heissterfolg && erg && obergebnisanzeig>1),oblog); 
+			}
 		} // 	if (obergebnisanzeig && rueck->size())
 		if (obverb==-1) {
 			cout<<blau<<cmd<<schwarz<<":"<<endl;
-			for(unsigned i=0;i<rueck->size();i++) {
-				cout<<rueck->at(i)<<endl;
+			for(auto rzl:*rueck) {
+				cout<<rzl<<endl;
 			}
 		}
 		if (neurueck) {delete rueck;rueck=0;}
@@ -3898,6 +3911,7 @@ int servc::machfit(int obverb/*=0*/,int oblog/*=0*/, binaer nureinmal/*=falsch*/
 	// ueberpruefen, ob in systemctl status service Datei nach ExecStart existiert
 	for(int iru=0;iru<2;iru++) {
 		//// <<violett<<"machfit "<<blau<<sname<<violett<<", iru: "<<gruen<<iru<<schwarz<<endl;
+	caus<<violett<<"machfit,obverb: "<<rot<<obverb<<schwarz<<endl;
 		obsvfeh(obverb,oblog);
 		// wenn restart nicht gebraucht wird oder nichts bringt, also alles ausser activating und nicht gestartet ...
 		if (!svfeh||svfeh==1||svfeh==3||svfeh==4||svfeh==5||svfeh==6) {
@@ -3930,6 +3944,7 @@ uchar servc::spruef(const string& sbez, uchar obfork, const string& parent, cons
 		linst_cl *linstp,int obverb/*=0*/,int oblog/*=0*/, uchar mitstarten/*=1*/)
 {
 	fLog(violetts+Txk[T_spruef_sname]+schwarz+sname,obverb,oblog);
+	caus<<violett<<"spruef,obverb: "<<rot<<obverb<<schwarz<<endl;
 	if (!obsvfeh(obverb>0?obverb-1:0,oblog)) {
 		fLog(("Service ")+blaus+sname+schwarz+Txk[T_lief_schon],obverb,oblog);
 	} else {
@@ -3985,6 +4000,7 @@ uchar servc::spruef(const string& sbez, uchar obfork, const string& parent, cons
 						obverb,oblog);
 				syst.close();
 				restart(obverb>0?obverb-1:0,oblog);
+	caus<<violett<<"spruef 2,obverb: "<<rot<<obverb<<schwarz<<endl;
 				obsvfeh(obverb>0?obverb-1:0,oblog);
 				semodpruef(linstp,obverb,oblog);
 				semanpruef(obverb,oblog);
@@ -4231,6 +4247,7 @@ int servc::startundenable(int obverb/*=0*/,int oblog/*=0*/)
 	start(obverb,oblog);
 	enableggf(obverb,oblog);
 	//// <<violett<<"startundeable, sname: "<<schwarz<<sname<<endl;
+	caus<<violett<<"startunenable,obverb: "<<rot<<obverb<<schwarz<<endl;
 	return !obsvfeh(obverb,oblog);
 } // int servc::start(int obverb,int oblog)
 
@@ -4244,6 +4261,7 @@ void servc::stop(int obverb/*=0*/,int oblog/*=0*/,uchar mitpkill/*=0*/)
 
 void servc::stopggf(int obverb/*=0*/,int oblog/*=0*/,uchar mitpkill/*=0*/)
 {
+	caus<<violett<<"stopggf,obverb: "<<rot<<obverb<<schwarz<<endl;
 	obsvfeh(obverb,oblog);
 	if (!svfeh||svfeh==7) {
 		stop(obverb,oblog,mitpkill);
@@ -4253,6 +4271,7 @@ void servc::stopggf(int obverb/*=0*/,int oblog/*=0*/,uchar mitpkill/*=0*/)
 void servc::stopdis(int obverb/*=0*/,int oblog/*=0*/,uchar mitpkill)
 {
 	fLog(violetts+Txk[T_stopdis_sname]+schwarzs+sname,obverb,oblog);
+	caus<<violett<<"stopdis,obverb: "<<rot<<obverb<<schwarz<<endl;
 	if (!obsvfeh(obverb,oblog)) {
 		stop(obverb,oblog);
 	} // 	if (!obsvfeh(obverb,oblog))
@@ -6212,6 +6231,7 @@ void hcl::pruefsamba(const vector<const string*>& vzn,const svec& abschni,const 
 			pruefverz("/etc/samba",obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/0,/*besitzer=*/string(),/*benutzer=*/string(),/*obmachen=*/0);
 			kopier(smbquelle,smbdt,obverb,oblog);
 		} //   for(uchar iru=0;iru<2;iru++)
+	caus<<violett<<"pruefsamba,obverb: "<<rot<<obverb<<schwarz<<endl;
 		if (smb.obsvfeh(obverb>0?obverb-1:0,oblog)) if (smbd.obsvfeh(obverb>0?obverb-1:0,oblog)) dienstzahl--;
 		if (nmb.obsvfeh(obverb>0?obverb-1:0,oblog)) if (nmbd.obsvfeh(obverb>0?obverb-1:0,oblog)) dienstzahl--;
 		if (dienstzahl==2 ||(smb.svfeh!=6 && smbd.svfeh!=6 && nmb.svfeh!=6 && nmbd.svfeh!=6)) { // wenn keine exec-Datei fehlt
@@ -6632,7 +6652,7 @@ int confdcl::lies(const string& vfname, int obverb, const char tz/*='='*/)
 				zn<<zeile;
 				////			if (obverb) caus<<zni<<". "<<blau<<"Zeile: "<<schwarz<<*zeile<<endl;
 				if (!zeile.empty()) {
-					if (obverb>1) fLog(Txk[T_stern_zeile]+zeile,obverb,0);
+					if (obverb>1) fLog(/*Txk[T_stern_zeile]*/"["+ltoan(zn.size(),10,0,4)+"]: "+(zeile[0]=='['?blau:nix)+zeile+schwarz,obverb,0);
 					if (zeile[0]=='[' && zeile[zeile.length()-1]==']') {
 						mitabsch=1;
 						zeile.erase(zeile.length()-1);
