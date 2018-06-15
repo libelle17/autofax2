@@ -2538,7 +2538,7 @@ int systemrueck(const string& cmd, int obverb/*=0*/, int oblog/*=0*/, vector<str
         } //         for(unsigned i=0;i<rueck->size();i++)
       } //       if (obverb>1 || oblog || obergebnisanzeig) if (rueck->size())
 #ifdef systemrueckprofiler
-      if (oberb||oblog) fLog(rots+"Rueck.size: "+ltoan(rueck->size())+", obergebnisanzeig: "+(obergebnisanzeig?"ja":"nein"),1,oblog);
+      if (obverb||oblog) fLog(rots+"Rueck.size: "+ltoan(rueck->size())+", obergebnisanzeig: "+(obergebnisanzeig?"ja":"nein"),1,oblog);
 			if (ausgp) *ausp<<bef<<endl; else { if (obverb||oblog) fLog(bef,1,oblog); }
 			prf.ausgab1000("vor pclose");
 #endif
@@ -2557,7 +2557,7 @@ int systemrueck(const string& cmd, int obverb/*=0*/, int oblog/*=0*/, vector<str
   } else {
     erg=system(bef.c_str());
   } // if (rueck) else
-  int erg2 __attribute__((unused)){system((string("FLR=")+tmpd+";[ -s $FLR ]&&{ printf '\n"+rot+"';cat $FLR;printf '"+schwarz+"';}").c_str())};
+  int erg2 __attribute__((unused)){system(string("printf ' %.0s' {1.."+ltoan(getcols()-2)+"};printf '\r';").c_str())};
 #ifdef systemrueckprofiler
   prf.ausgab1000("vor weiter");
 #endif
@@ -2611,15 +2611,20 @@ int systemrueck(const string& cmd, int obverb/*=0*/, int oblog/*=0*/, vector<str
 		if (ausgp&&obverb>0) { 
 			*ausgp<<meld<<endl; 
 		} else { 
-			if (obverb||oblog) fLog(meld,obverb>0?obverb:0,oblog); 
+			if (obverb||oblog) {
+				fLog(meld,obverb>0?obverb:0,oblog); 
+			}
 		}
+		int erg3 __attribute__((unused)){system((string("FLR=")+tmpd+";[ -s $FLR ]&&{ printf '\r"+rot+"';cat $FLR;printf '"+schwarz+"';}").c_str())};
 	} // if (obverb>0 || oblog)
 	if (rueck) {
 		if (obergebnisanzeig && rueck->size()) {
 			if (ausgp&&obverb>0) {
 				*ausgp<<smeld<<endl; 
 			} else { 
-				if (obverb||oblog) fLog(smeld,obverb>1||(ob0heissterfolg && erg && obergebnisanzeig>1),oblog); 
+				if (obverb||oblog) {
+					fLog(smeld,obverb>1||(ob0heissterfolg && erg && obergebnisanzeig>1),oblog); 
+				}
 			}
 		} // 	if (obergebnisanzeig && rueck->size())
 		if (obverb==-1) {
