@@ -660,6 +660,12 @@ const char *kons_T[T_konsMAX+1][SprachZahl]=
 	{"nach: ","after: "},
 	// T_unbek,
 	{"unbekannt","unkonwn"},
+	// T_Progvers,
+	{"Progvers von ","progvers of "},
+	// T_verwendet_wird
+	{", verwendet wird: '",", using: '"},
+	// T_Ausgabezeile
+	{", Ausgabezeile: ",", output line: "},
 	{"",""}
 }; // const char *Txkonscl::TextC[T_konsMAX+1][SprachZahl]=
 
@@ -1565,7 +1571,7 @@ char* ltoa_(long value, char* result, int base=10)
 double verszuzahl(const string& vers)
 {
  string vneu;
- uchar obkomma=0;
+ uchar obkomma{0};
  for(size_t i=0;i<vers.size();i++) {
   if (strchr("0123456789",vers[i])) {
 	 vneu+=vers[i];
@@ -1580,18 +1586,35 @@ double verszuzahl(const string& vers)
 } // double verstozahl(string vers)
 
 // Programmversion, falls diese beim Programm mit " --version" abrufbar ist
-double hcl::progvers(const string& prog)
+double hcl::progvers(const string& prog,string *ergptr/*0*/)
 {
-	double vers=0;
+	double vers{0};
 	string pfad;
 	if (obprogda(prog,obverb,oblog,&pfad)) {
 		svec urueck;
 		systemrueck(pfad+" --version 2>&1",obverb,oblog,&urueck,/*obsudc=*/0);
 		if (urueck.size()) {
-			const string bas=base_name(pfad);
-			ulong pos=urueck[0].find(bas);
-			if (pos==string::npos) pos=0; else pos+=bas.length();
-			vers=verszuzahl(urueck[0].c_str()+pos);
+			const string bas{base_name(pfad)};
+			size_t pos{urueck[0].find(bas)};
+			if (pos!=string::npos) {
+				pos+=bas.length();
+			} else {
+				// python3 => Python 3.4.6 
+				pos=urueck[0].find_last_of(" ");
+				if (pos==string::npos) {
+					if (isnumeric(urueck[0]))
+						pos=0; 
+				}
+			} // 			if (pos!=string::npos) else
+			const string ergs{urueck[0].substr(pos)};
+			if (ergptr) *ergptr=ergs;
+			if (pos!=string::npos) vers=verszuzahl(ergs);
+			if (obverb) { 
+				stringstream ausg;
+				ausg<<Txk[T_Progvers]<<blau<<prog<<schwarz<<Txk[T_Ausgabezeile]<<blau<<urueck[0]<<schwarz<<
+					Txk[T_verwendet_wird]<<blau<<ergs<<schwarz<<Txk[T_Ergebnis]<<blau<<vers<<schwarz;
+				hLog(ausg.str());
+			} // 			if (obverb)
 		} // 			if (urueck.size())
 	} // 	if (obprogda(prog,obverb,oblog,&pfad))
 	return vers;
@@ -2008,8 +2031,8 @@ void confdcl::Abschn_auswert(int obverb/*=0*/, const char tz/*='='*/)
 {
   absch abp;
   for(size_t i=0;i<zn.size();i++) {
-    string *zeile=&zn[i];
-    size_t pos=zeile->find('#');
+    string *zeile{&zn[i]};
+    size_t pos{zeile->find('#')};
     if (pos!=string::npos) zeile->erase(pos);
     gtrim(zeile);
     if (zeile->length()) {
@@ -3613,7 +3636,7 @@ int linst_cl::doinst(const string& prog,int obverb/*=0*/,int oblog/*=0*/,const s
 			} // 		  if (!pruefverz(instvz,obverb,oblog))
 			//// <<violett<<"ustring vor Pruefung: "<<rot<<ustring<<schwarz<<endl;
 			//// <<violett<<"ustring vor Pruefung: "<<rot<<string_to_hex(ustring)<<schwarz<<endl;
-			const char* const weg[7]={"libgcc","libselinux.","libselinux-utils","libselinux-python3","libsepol","libsemanage","libstdc++"};
+			const char* const weg[]{"libgcc","libselinux.","libselinux-utils","libselinux-python3","libsepol","libsemanage","libstdc++"};
 			for(size_t wnr=0;wnr<sizeof weg/sizeof *weg;wnr++) {
 				size_t p1;
 				while ((p1=ustring.find(weg[wnr]))!=string::npos && (!p1||ustring[p1-1]==' ')) {

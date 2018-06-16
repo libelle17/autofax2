@@ -810,8 +810,8 @@ char const *DPROG_T[T_MAX+1][SprachZahl]={
 	{"Misserfolg","failure"},
 	// T_Erfolg_af
 	{"Erfolg","success"},
-	// T_Seitenzahl
-	{"Seitenzahl","no. of pages"},
+	// T_Seiten
+	{", Seitenzahl: ",", no. of pages: "},
 	// T_Installiere_ocrmypdf
 	{"Installiere ocrmypdf ...","Installing ocrmypdf ..."},
 	// T_Ihre_Python3_Version_koennte_mit
@@ -3482,7 +3482,7 @@ int hhcl::hconfig() const
 			faxsdpfad="/usr/sbin/faxsend";
 			if (lstat(faxsdpfad.c_str(),&entryfaxsd)) {
 				faxsdpfad.clear();
-				const string wo="/usr /root/bin /sbin";
+				const string wo{"/usr /root/bin /sbin"};
 				if (findv==1) {
 					systemrueck(sudc+"find "+wo+" -perm /111 -name faxsend",obverb>0?obverb-1:0,oblog,&qrueck);
 				} else findfile(&qrueck,findv,obverb,oblog,0,wo,/*muster=*/"faxsend$",-1,1,Fol_Dat,0,0,0,1);
@@ -4935,14 +4935,14 @@ int hhcl::zupdf(const string* quellp, const string& ziel, ulong *pseitenp/*=0*/,
 			// falls libtiff geaendert, die zugehoerige Warnung ausblenden
 			systemrueck("pdfinfo \""+ziel+"\" 2>/dev/null|grep -a Pages|sed 's/[^ ]*[ ]*\\(.*\\)/\\1/'",obverb,oblog,&rueck);
 			if (rueck.size()) {
-				hLog("PDF: "+blaus+ziel+": "+gruen+rueck[0]+schwarz+Tx[T_Seiten]);
+				hLog("PDF: "+blaus+ziel+schwarz+Tx[T_Seiten]+gruen+rueck[0]+schwarz);
 				*pseitenp=atol(rueck[0].c_str());
 			} // 			if (rueck.size())
 		} // 		if (pseitenp)
 		if (loeschen && exten=="tif") {
 			ulong seiten=0;
 			holtif(*quellp, &seiten,0,0,0,0,0,0);
-			hLog("TIF: "+blaus+*quellp+": "+gruen+ltoan(seiten)+schwarz+Tx[T_Seiten]);
+			hLog("TIF: "+blaus+*quellp+schwarz+Tx[T_Seiten]+gruen+ltoan(seiten)+schwarz);
 			if (rueck.size()) {
 				if (pseitenp) {
 					if (*pseitenp==seiten && seiten>0) {
@@ -4976,15 +4976,15 @@ void hhcl::unpaperfuercron(const string& ocrprog)
 void hhcl::pruefunpaper()
 {
 	hLog(violetts+Tx[T_pruefunpaper]+schwarz);
-	double vers=progvers("unpaper");
+	double vers{progvers("unpaper")};
 	if (vers<6.1) {
 		linstp->doinst("libxslt-tools",obverb,oblog,"xsltproc");
 		if (linstp->ipr==dnf||linstp->ipr==yum) {
-		////sudc+"rpm -Uvh http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-stable.noarch.rpm 
-		////             http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-stable.noarch.rpm
-		////systemrueck("rpm -Uvh https://github.com/libelle17/rpmfusion_copy/blob/master/rpmfusion-free-release-stable.noarch.rpm "
-		////" https://github.com/libelle17/rpmfusion_copy/blob/master/rpmfusion-nonfree-release-stable.noarch.rpm",obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
-			const string rpf="rpmfusion_copy";
+			////sudc+"rpm -Uvh http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-stable.noarch.rpm 
+			////             http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-stable.noarch.rpm
+			////systemrueck("rpm -Uvh https://github.com/libelle17/rpmfusion_copy/blob/master/rpmfusion-free-release-stable.noarch.rpm "
+			////" https://github.com/libelle17/rpmfusion_copy/blob/master/rpmfusion-nonfree-release-stable.noarch.rpm",obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
+			const string rpf{"rpmfusion_copy"};
 			holvomnetz(rpf);
 			kompilbase(rpf,s_gz);
 			if (!pruefinstv()) {
@@ -4995,7 +4995,7 @@ void hhcl::pruefunpaper()
 			linstp->doinst("ffmpeg-compat",obverb,oblog);
 		} else {
 			svec qrueck;
-			const string dname="libswresample.so";
+			const string dname{"libswresample.so"};
 			if (findv==1) {
 				systemrueck("find "+linstp->libs+"-xtype f -name "+dname,obverb,oblog,&qrueck,/*obsudc=*/0);
 			} else findfile(&qrueck,findv,obverb,oblog,0,linstp->libs,/*muster=*/dname+"$",33,1,7);
@@ -5008,17 +5008,23 @@ void hhcl::pruefunpaper()
 			}
 		} // 		if (linstp->ipr==dnf||linstp->ipr==yum)
 		/*//if (linstp->ipr==apt||linstp->ipr==dnf||linstp->ipr==yum)*/ 
-		const string upc="unpaper_copy";
+		const string upc{"unpaper_copy"};
 		holvomnetz(upc);
 		if (vers) systemrueck("which unpaper &&"+sudc+"rm $(which unpaper) && hash -r",obverb,oblog,/*rueck=*/0,/*obsudc=*/0);
+		const int altobverb{obverb};
+		if (obverb>0) obverb--;
 		kompiliere(upc,s_gz);
+		obverb=altobverb;
+		systemrueck("ldconfig "+lsys.getlib64(),obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
 		// unpaper: error while loading shared libraries: libavformat.so.56: cannot open shared object file: No such file or directory
-		if (systemrueck("unpaper",obverb,oblog,/*rueck=*/0,/*obsudc=*/0)==127) {
+		if (systemrueck("unpaper --version 2>/dev/null",obverb,oblog,/*rueck=*/0,/*obsudc=*/0)==127) {
 			// /usr/bin/make in Ubuntu und Opensuse, /bin/make in Fedora, somit aus crontab aufrufbar
 			string ivu=instvz+vtz+upc;
 			if (!(systemrueck("cd \""+ivu+"\"&&{ M=Makefile;[ -f $M ]&&{ grep -q 'distclean:' $M&&make distclean||{ grep -q 'clean:' $M&&make clean;};};};"
-							"[ -f configure ]&&./configure;make",obverb,oblog,/*rueck=*/0,/*obsudc=*/0)))
+							"[ -f configure ]&&./configure;make",obverb,oblog,/*rueck=*/0,/*obsudc=*/0))) {
 				systemrueck("cd \""+ivu+"\"&& make install",obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
+				systemrueck("ldconfig "+lsys.getlib64(),obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
+			}
 		} // 		if (systemrueck
 	} // 						if (!urueck.size()||vers<6.1)
 } // void hhcl::pruefunpaper()
@@ -5038,8 +5044,8 @@ int hhcl::pruefocr()
 				systemrueck(tpfad+" --list-langs 2>&1",obverb,oblog,&rueck,/*obsudc=*/0); // gibt das normale Ergebnis als Fehlermeldung aus!
 				for(size_t iru=0;iru<rueck.size();iru++) {
 					if (rueck[iru].find("List of available")!=string::npos) {
-             tda=1;
-						 break;
+						tda=1;
+						break;
 					} // 					if (rueck[iru].find("List of available")!=string::npos)
 				} // 				for(size_t iru=0;iru<rueck.size();iru++)
 				if (tda) break;
@@ -5049,7 +5055,7 @@ int hhcl::pruefocr()
 				systemrueck("ldconfig "+lsys.getlib64(),obverb,oblog,/*rueck=*/0,/*obsudc=*/1);
 			} // 			if (obprogda("tesseract",obverb,oblog,&tpfad))
 		} // 		for(int aru=0;aru<2;aru++)
-	  if (tda) {	
+		if (tda) {	
 			for(size_t i=1;i<rueck.size();i++) {
 				if (rueck[i]=="deu") deuda=1;
 				else if (rueck[i]=="eng") engda=1;
@@ -5059,16 +5065,16 @@ int hhcl::pruefocr()
 			if (!engda) linstp->doinst("tesseract-ocr-traineddata-english",obverb,oblog);
 			if (!osdda) linstp->doinst("tesseract-ocr-traineddata-orientation_and_script_detection",obverb,oblog);
 
-		pruefunpaper();
-		linstp->doggfinst("qpdf");
-		// uchar alt=0;
-		uchar ocrzuinst=1;
-		// zu tun: pruefen statt dessen instvz + "/ocrv/bin/ocrmypdf
-		struct stat ostat={0};
-		virtvz=instvz+"/ocrv";
-		ocrmp=virtvz+"/bin/ocrmypdf";
-		if (!lstat(ocrmp.c_str(),&ostat))
-			//		if (obprogda("ocrmypdf",obverb,oblog)) 
+			pruefunpaper();
+			linstp->doggfinst("qpdf");
+			// uchar alt=0;
+			uchar ocrzuinst=1;
+			// zu tun: pruefen statt dessen instvz + "/ocrv/bin/ocrmypdf
+			struct stat ostat={0};
+			virtvz=instvz+"/ocrv";
+			ocrmp=virtvz+"/bin/ocrmypdf";
+			if (!lstat(ocrmp.c_str(),&ostat))
+				//		if (obprogda("ocrmypdf",obverb,oblog)) 
 			if (progvers(ocrmp)>4.40) 
 				ocrzuinst=0;
 		if (ocrzuinst) {
@@ -5094,17 +5100,21 @@ int hhcl::pruefocr()
 				linstp->doinst("ghostscript",obverb+1,oblog,"gs");
 				string ocrvers; // ocrmypdf-Version, falls die letzte mit Python nicht geht
 				for(int aru=0;aru<2;aru++) {
-					if (systemrueck("python3 -m pip install --upgrade setuptools pip",obverb+1,oblog,/*rueck=*/0,/*obsudc=*/2)) {
-						if (double pyv=progvers("python3")<=3.41) {
-							fLog(rots+Tx[T_Ihre_Python3_Version_koennte_mit]+blau+ltoan(pyv)+rot+
-									Tx[T_veraltet_sein_Wenn_Sie_Ihre_Faxe_OCR_unterziehen_wollen_dann_fuehren_Sie_bitte_ein_Systemupdate_durch_mit]+
-									blau+linstp->upd+schwarz,1,1);
-						} //          if (double pyv=progvers("python3")<=3.41)
-					} // 				if (systemrueck(sudhc+"python3 -m pip install --upgrade setuptools pip",obverb+1,oblog))
+					string pyvers;
+					const double pyv=progvers("python3",&pyvers);
+					if (pyv<3.46) {
+						fLog(rots+Tx[T_Ihre_Python3_Version_koennte_mit]+blau+pyvers+rot+
+								Tx[T_veraltet_sein_Wenn_Sie_Ihre_Faxe_OCR_unterziehen_wollen_dann_fuehren_Sie_bitte_ein_Systemupdate_durch_mit]+
+								blau+linstp->upd+schwarz,1,1);
+					} else if (pyv==3.46) {
+						ocrvers="==4.5.6"; // neuere ocrmypdf erfordern python3 >= 3.5
+					} else {
+						systemrueck("python3 -m pip install --upgrade setuptools pip",obverb+1,oblog,/*rueck=*/0,/*obsudc=*/2);
+					} //          if (double pyv=progvers("python3")<=3.41)
 					//				systemrueck((cus.cuid?sudo:"")+"python3 -m pip install --upgrade ocrmypdf");  // http://www.uhlme.ch/pdf_ocr
 					string vprog;
 					for(int iru=0;iru<2;iru++) {
-						const string virtualenv="virtualenv";
+						const string virtualenv{"virtualenv"};
 						if (obprogda(virtualenv,obverb,oblog,&vprog)) break;
 						systemrueck("pip3 install "+virtualenv,obverb,oblog,/*rueck=*/0,/*obsudc=*/2);
 					} // 				for(int iru=0;iru<2;iru++)
@@ -5114,14 +5124,14 @@ int hhcl::pruefocr()
 						bef=vprog+" \""+virtvz+"\";"
 							". \""+virtvz+"/bin/activate\";"
 							"pip3 install requests;"
-							"pip3 install --upgrade ocrmypdf;"
+							"pip3 install --upgrade ocrmypdf"+ocrvers+";"
 							"deactivate;";
 					} else {
 						bef="python3 -m venv \""+virtvz+"\";"
 							"python3 -m venv --upgrade \""+virtvz+"\";"
 							". \""+virtvz+"/bin/activate\";"
 							"pip3 install --upgrade pip;"
-							"pip3 install ocrmypdf;"
+							"pip3 install ocrmypdf"+ocrvers+";"
 							"deactivate;";
 							////		"grep \""+sudc+"rm -rf \\\""+virtvz+"\\\"\" \""+unindt+"\"||printf \""+sudc+"rm -rf \\\""+virtvz+"\\\"\\n\">>\""+unindt+"\";"
 							////		"grep ocrmypdf \""+unindt+"\"||printf \""+sudc+"pip3 uninstall --yes ocrmypdf\\n\">>\""+unindt+"\";"
@@ -5186,7 +5196,9 @@ int hhcl::pruefocr()
 							pruefunpaper();
 							systemrueck("cd \""+instvz+vtz+proj+"\" &&python3 -m pip install image PyPDF2 ruffus reportlab M2Crypto cryptography cffi ocrmypdf", 
 									      obverb,oblog,/*rueck=*/0,/*obsudc=*/2);
-							linstp->doinst("unpaper",obverb,oblog);
+							caus<<rot<<"vor doinst(unpaper)"<<schwarz<<endl;
+							linstp->doinst("unpaper",obverb>0?obverb-1:obverb,oblog);
+							caus<<rot<<"nach doinst(unpaper)"<<schwarz<<endl;
 						} //    if (!kompilbase(was,endg))
 					} //       if (!linstp->doinst("python3-pip",obverb+1,oblog,"pip3"))
 				} //     if (!linstp->doggfinst("python-devel",obverb+1,oblog))
@@ -5354,15 +5366,31 @@ void hhcl::empferneut()
 	for(size_t j=beg;j<end;) {
 		const string fnr=vinca[j++];
 		fLog(Tx[T_Bearbeite]+blaus+ltoan(j)+") ..."+schwarz,obverb,0);
-		struct stat cstat={0};
+		struct stat cstat{0};
 		if (fnr.find('-')!=string::npos) {
-			string txtd=cempfavz+vtz+(fnr.find("fax-")?"":cuser+'-')+fnr;
+      const string rumpf{(fnr.find("fax-")?"":cuser+'-')+fnr};
+			string txtd{cempfavz+vtz+rumpf};
+			caus<<txtd<<endl;
 			if (!lstat((txtd+".txt").c_str(),&cstat)&&!lstat((txtd+".sff").c_str(),&cstat)) {
 				empfcapi(txtd,0,4,ltoan(j));
 			} else {
 				txtd=cfaxuserrcfalschevz+vtz+fnr;
+				caus<<txtd<<endl;
 				if (!lstat((txtd+".txt").c_str(),&cstat)&&!lstat((txtd+".sff").c_str(),&cstat)) {
 					empfcapi(txtd,0,4,ltoan(j));
+				} else {
+					svec sffe;
+					cmd="find '"+spoolcapivz+"/' -maxdepth 2 -type f -iname '"+rumpf+".sff"+"'";
+					systemrueck(cmd,obverb,oblog,&sffe,/*obsudc=*/0);
+					for (auto fund:sffe) {
+						fund.resize(fund.length()-4);
+						fund+=".txt";
+						if (!lstat(fund.c_str(),&cstat)) {
+							fund.resize(fund.length()-4);
+							empfcapi(fund,0,4,ltoan(j));
+							break;
+						}
+					}
 				}
 			}
 		} else {

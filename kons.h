@@ -455,6 +455,9 @@ enum Tkons_
 	T_nach_sh_viall_beendet,
 	T_nach__,
 	T_unbek,
+	T_Progvers,
+	T_verwendet_wird,
+	T_Ausgabezeile,
 	T_konsMAX
 }; // Tkons_
 
@@ -1361,7 +1364,7 @@ class hcl
 		int kompilbase(const string& was,const string& endg);
 		int kompiliere(const string& was,const string& endg,const string& vorcfg=nix,const string& cfgbismake=s_dampand);
 		int kompilfort(const string& was,const string& vorcfg=nix,const string& cfgbismake=s_dampand,uchar ohneconf=0);
-		double progvers(const string& prog);
+		double progvers(const string& prog,string* ergptr=0);
 		void prueftif(string aktvers);
 		void zeigkonf();
 		void reduzierlibtiff();
