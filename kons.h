@@ -458,6 +458,7 @@ enum Tkons_
 	T_Progvers,
 	T_verwendet_wird,
 	T_Ausgabezeile,
+	T_pruefmehrfach,
 	T_konsMAX
 }; // Tkons_
 
@@ -945,8 +946,8 @@ struct absch
 {
  string aname;
  vector<aScl> av;
- const string& suche(const char* const sname);
- const string& suche(const string& sname);
+ const string *suche(const char* const sname);
+ const string *suche(const string& sname);
  void clear();
 }; // class absch
 

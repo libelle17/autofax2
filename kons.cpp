@@ -666,6 +666,8 @@ const char *kons_T[T_konsMAX+1][SprachZahl]=
 	{", verwendet wird: '",", using: '"},
 	// T_Ausgabezeile
 	{", Ausgabezeile: ",", output line: "},
+	// 	T_pruefmehrfach
+	{"pruefmehrfach()","checkmultiple()"},
 	{"",""}
 }; // const char *Txkonscl::TextC[T_konsMAX+1][SprachZahl]=
 
@@ -1999,23 +2001,22 @@ linst_cl::linst_cl(int obverb,int oblog)
 	obprogda("nice",obverb,oblog,&nicepf);// Pfad zu nice
 } // linst_cl::linst_cl(int obverb,int oblog)
 
-const string& absch::suche(const char* const sname)
+const string *absch::suche(const char* const sname)
 {
 	static const string nix;
 	for (size_t i=0;i<av.size();i++) {
 		if (av[i].name==sname) {
 			if (av[i].wertp) {
-			 static string ueberg=*av[i].wertp;
-				return ueberg/**av[i].wertp*/;
+				return av[i].wertp;
 			} else {
-				return nix;
+				break;
 			}
 		}
 	} //   for (size_t i=0;i<av.size();i++)
-	return nix;
+	return &nix;
 } // const string& absch::suche(const char* const sname)
 
-const string& absch::suche(const string& sname)
+const string *absch::suche(const string& sname)
 {
 	return suche(sname.c_str());
 } // const string& absch::suche(const string& sname)
@@ -2502,7 +2503,7 @@ int systemrueck(const string& cmd, int obverb/*=0*/, int oblog/*=0*/, vector<str
 	string meld{aktues+": "+blau+hsubs+schwarz+" ..."};
 	if (ausgp&&obverb>0) {
 		*ausgp<<meld<<endl; 
-		caus<<"ausgp: "<<violett<<ausgp->str()<<schwarz<<endl;
+		cout<<"ausgp: "<<violett<<ausgp->str()<<schwarz<<endl;
 	} else { 
 		if (obverb||oblog) fLog(meld,obverb>0?-1:0,oblog); 
 	}
@@ -2664,12 +2665,17 @@ int systemrueck(const string& cmd, int obverb/*=0*/, int oblog/*=0*/, vector<str
 // ob das aktuelle Programm mehrfach laeuft; bei obstumm Exit-Code 0
 void pruefmehrfach(const string& wen,int obverb/*=0*/,uchar obstumm/*=0*/)
 {
+	const int altobverb{obverb};
+	obverb=2;
+	fLog(violetts+Txk[T_pruefmehrfach]+schwarz,obverb,0);
 	const long smax{3600}; // maximal tolerierte Sekundenzahl, bevor statt dem eigenen Prozess der andere abgebrochen wird
 	svec rueck;
 	const string iwen{wen.empty()?base_name(meinpfad()):wen};
 	systemrueck("ps -eo comm,etimes,pid|grep -P '^"+iwen+"([[:space:]]|\\z)'",obverb,0,&rueck,/*obsudc=*/0);
 	long sek{0};
+	caus<<"pruefmehrfach vor for"<<endl;
 	for(int aru=0;aru<3;aru++) {
+		caus<<"pruefmehrfach nach for, aru: "<<aru<<endl;
 		if (rueck.size()==1) // ich
 			break;
 		if (aru<2) {
@@ -2737,6 +2743,8 @@ void pruefmehrfach(const string& wen,int obverb/*=0*/,uchar obstumm/*=0*/)
 
 		 process_time = (now - boottime) - (atof(tmp.at(21).c_str()))/HZ;
 	 */
+	fLog(violetts+Txk[T_Ende]+Txk[T_pruefmehrfach]+schwarz,obverb,0);
+		obverb=altobverb;
 } // void pruefmehrfach
 
 // aufgerufen in: setfaclggf, pruefberecht, pruefverz
@@ -3939,7 +3947,6 @@ int servc::machfit(int obverb/*=0*/,int oblog/*=0*/, binaer nureinmal/*=falsch*/
 	// ueberpruefen, ob in systemctl status service Datei nach ExecStart existiert
 	for(int iru=0;iru<2;iru++) {
 		//// <<violett<<"machfit "<<blau<<sname<<violett<<", iru: "<<gruen<<iru<<schwarz<<endl;
-	caus<<violett<<"machfit,obverb: "<<rot<<obverb<<schwarz<<endl;
 		obsvfeh(obverb,oblog);
 		// wenn restart nicht gebraucht wird oder nichts bringt, also alles ausser activating und nicht gestartet ...
 		if (!svfeh||svfeh==1||svfeh==3||svfeh==4||svfeh==5||svfeh==6) {
@@ -3972,7 +3979,6 @@ uchar servc::spruef(const string& sbez, uchar obfork, const string& parent, cons
 		linst_cl *linstp,int obverb/*=0*/,int oblog/*=0*/, uchar mitstarten/*=1*/)
 {
 	fLog(violetts+Txk[T_spruef_sname]+schwarz+sname,obverb,oblog);
-	caus<<violett<<"spruef,obverb: "<<rot<<obverb<<schwarz<<endl;
 	if (!obsvfeh(obverb>0?obverb-1:0,oblog)) {
 		fLog(("Service ")+blaus+sname+schwarz+Txk[T_lief_schon],obverb,oblog);
 	} else {
@@ -4028,7 +4034,6 @@ uchar servc::spruef(const string& sbez, uchar obfork, const string& parent, cons
 						obverb,oblog);
 				syst.close();
 				restart(obverb>0?obverb-1:0,oblog);
-	caus<<violett<<"spruef 2,obverb: "<<rot<<obverb<<schwarz<<endl;
 				obsvfeh(obverb>0?obverb-1:0,oblog);
 				semodpruef(linstp,obverb,oblog);
 				semanpruef(obverb,oblog);
@@ -4275,7 +4280,6 @@ int servc::startundenable(int obverb/*=0*/,int oblog/*=0*/)
 	start(obverb,oblog);
 	enableggf(obverb,oblog);
 	//// <<violett<<"startundeable, sname: "<<schwarz<<sname<<endl;
-	caus<<violett<<"startunenable,obverb: "<<rot<<obverb<<schwarz<<endl;
 	return !obsvfeh(obverb,oblog);
 } // int servc::start(int obverb,int oblog)
 
@@ -4289,7 +4293,6 @@ void servc::stop(int obverb/*=0*/,int oblog/*=0*/,uchar mitpkill/*=0*/)
 
 void servc::stopggf(int obverb/*=0*/,int oblog/*=0*/,uchar mitpkill/*=0*/)
 {
-	caus<<violett<<"stopggf,obverb: "<<rot<<obverb<<schwarz<<endl;
 	obsvfeh(obverb,oblog);
 	if (!svfeh||svfeh==7) {
 		stop(obverb,oblog,mitpkill);
@@ -4299,7 +4302,6 @@ void servc::stopggf(int obverb/*=0*/,int oblog/*=0*/,uchar mitpkill/*=0*/)
 void servc::stopdis(int obverb/*=0*/,int oblog/*=0*/,uchar mitpkill)
 {
 	fLog(violetts+Txk[T_stopdis_sname]+schwarzs+sname,obverb,oblog);
-	caus<<violett<<"stopdis,obverb: "<<rot<<obverb<<schwarz<<endl;
 	if (!obsvfeh(obverb,oblog)) {
 		stop(obverb,oblog);
 	} // 	if (!obsvfeh(obverb,oblog))
@@ -6223,7 +6225,7 @@ int hcl::hLog(const string& text,const bool oberr/*=0*/,const short klobverb/*=0
 	return fLog(text,obverb,oblog,oberr,klobverb);
 } // int hcl::hLog(const string& text,bool oberr/*=0*/,short klobverb/*=0*/)
 
-const char* const hcl::smbdt="/etc/samba/smb.conf";
+const char* const hcl::smbdt{"/etc/samba/smb.conf"};
 // wird aufgerufen in: main
 void hcl::pruefsamba(const vector<const string*>& vzn,const svec& abschni,const svec& suchs, const char* DPROG,const string& cuser)
 {
@@ -6259,7 +6261,6 @@ void hcl::pruefsamba(const vector<const string*>& vzn,const svec& abschni,const 
 			pruefverz("/etc/samba",obverb,oblog,/*obmitfacl=*/1,/*obmitcon=*/0,/*besitzer=*/string(),/*benutzer=*/string(),/*obmachen=*/0);
 			kopier(smbquelle,smbdt,obverb,oblog);
 		} //   for(uchar iru=0;iru<2;iru++)
-	caus<<violett<<"pruefsamba,obverb: "<<rot<<obverb<<schwarz<<endl;
 		if (smb.obsvfeh(obverb>0?obverb-1:0,oblog)) if (smbd.obsvfeh(obverb>0?obverb-1:0,oblog)) dienstzahl--;
 		if (nmb.obsvfeh(obverb>0?obverb-1:0,oblog)) if (nmbd.obsvfeh(obverb>0?obverb-1:0,oblog)) dienstzahl--;
 		if (dienstzahl==2 ||(smb.svfeh!=6 && smbd.svfeh!=6 && nmb.svfeh!=6 && nmbd.svfeh!=6)) { // wenn keine exec-Datei fehlt
@@ -6304,11 +6305,13 @@ void hcl::pruefsamba(const vector<const string*>& vzn,const svec& abschni,const 
 		uchar gef[vzn.size()]; memset(gef,0,vzn.size()*sizeof(uchar));
 		for(size_t i=0;i<smbcd.abschv.size();i++) {
 			if (smbcd.abschv[i].aname!="global") {
-				const string pfad{smbcd.abschv[i].suche("path")};
+				const string pfad{*smbcd.abschv[i].suche("path")};
 				if (!pfad.empty()) {
 					for(unsigned k=0;k<vzn.size();k++) {
 						if (!gef[k]) if (!vzn[k]->empty()) {
+							caus<<"i: "<<i<<", k: "<<k<<", suche: "<<blau<<pfad<<schwarz<<" in "<<blau<<*vzn[k]<<schwarz<<endl;
 							if (!vzn[k]->find(pfad)) {
+							  caus<<blau<<"gefunden: "<<blau<<pfad<<schwarz<<" in "<<blau<<*vzn[k]<<schwarz<<endl;
 								gef[k]=1;
 							}
 						} // if (!gef[k]) if (!vzn[k]->empty()) 

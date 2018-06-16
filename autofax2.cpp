@@ -2910,7 +2910,7 @@ void hhcl::pruefmodem()
 		obhyla=0;
 	}
 	// wenn zum Konfigurationszeitpunkt kein Modem drinstak, aber jetzt, dann rueckfragen
-	if (!schonda /*//obmodem && agcnfA.hole("obmodem")=="0"*/) {
+	if (!schonda && obhyla /*//obmodem && agcnfA.hole("obmodem")=="0"*/) {
 		fLog(Txk[T_rueckzufragen_wegen]+rots+"!schonda"+schwarz+" (Modem)",1,0);
 		rzf=1;
 	}
