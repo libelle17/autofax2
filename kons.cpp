@@ -6309,9 +6309,7 @@ void hcl::pruefsamba(const vector<const string*>& vzn,const svec& abschni,const 
 				if (!pfad.empty()) {
 					for(unsigned k=0;k<vzn.size();k++) {
 						if (!gef[k]) if (!vzn[k]->empty()) {
-							caus<<"i: "<<i<<", k: "<<k<<", suche: "<<blau<<pfad<<schwarz<<" in "<<blau<<*vzn[k]<<schwarz<<endl;
 							if (!vzn[k]->find(pfad)) {
-							  caus<<blau<<"gefunden: "<<blau<<pfad<<schwarz<<" in "<<blau<<*vzn[k]<<schwarz<<endl;
 								gef[k]=1;
 							}
 						} // if (!gef[k]) if (!vzn[k]->empty()) 
