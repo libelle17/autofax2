@@ -3655,7 +3655,7 @@ void hhcl::hliesconf()
 					{"MaxDials",&maxdials_dt}
 					});
 		}
-		confdcl hyaltc(modconfdt,obverb);
+		confdcl hyaltc(modconfdt,obverb,':');
 		hyaltc.kauswert(hyaltcnfCp);
 #endif
 	} //   if (lstat(modconfdt.c_str(),&mstat)) else
@@ -7463,7 +7463,7 @@ void hhcl::setzhylastat(fsfcl *fsf, uchar *hyla_uverz_nrp, uchar startvznr, int 
 						{"pdf",&pdf2},
 						{"killtime",&killtimes}
 						});
-			confdcl hqc(fsf->hqdt,obverb);
+			confdcl hqc(fsf->hqdt,obverb,':');
 			hqc.kauswert(&hylcnfC,obverb,1);
 			fsf->tts=atol(ttss.c_str());
 			fsf->killtime=atol(killtimes.c_str());
@@ -7871,6 +7871,7 @@ void fsfcl::hylaausgeb(stringstream *ausgp, hhcl *hhip, int obsfehlt, uchar fuer
 	} else {
 		*ausgp<<Tx[T_bzw]<<blau<<hqdt<<schwarz;
 	} // 	if (hqdt.empty())
+	fLog(violetts+Txk[T_Ende]+Tx[T_hylaausgeb]+schwarz+"  hylastat: "+blau+FxStatS(&hylastat)+schwarz,obverb,oblog);
 } // void fsfcl::hylaausgeb(stringstream *ausgp, hhcl *hhip, int obsfehlt, int obverb, uchar obzaehl, int oblog)
 
 // aufgerufen in: aenderefax(/*aktion=*/0 ...), untersuchespool, loescheallewartenden;  in bereinigevz leicht modifizierte Verschiebung
@@ -7971,6 +7972,7 @@ void hhcl::untersuchespool(uchar mitupd/*=1*/,const size_t aktc/*=3*/) // faxart
 					setzhylastat(&fsf, &hyla_uverz_nr, 0, &obsfehlt, &entrysend);
 					//// <<gruen<<"fsf.hylastat: "<<schwarz<<(int)fsf.hylastat<<endl;
 					//// <<gruen<<"fsf.hqdt: "<<schwarz<<fsf.hqdt<<endl;
+			caus<<"vor hylaausgeb 2, fsf.hstate: '"<<fsf.hstate<<"'"<<endl;
 					fsf.hylaausgeb(&ausg, this, obsfehlt, 0, obverb, 0, oblog);
 					//          if (!obsfehlt) KLA // Protokolldatei vorhanden 12.10.16 sollte jetzt auch mit xferfax gehen
 					if (mitupd) {
