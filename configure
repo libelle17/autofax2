@@ -18,13 +18,34 @@ kf() {
 # IP_R wird verwendet für: Makefile
 getIPR() {
 	CTAGS=ctags;
+# enum distroenum{unbek=-1,Mint=0,Ubuntu=1,Debian=2,Suse=3,Fedora=4,Fedoraalt=5,Mageia=6,Manjaro=7};
+	DISTROS=$(sed -n '/^NAME=/{s/.*=\(.*\)/\1/;/^".*"$/{s/^"\(.*\)"$/\1/;p}}' /etc/os-release 2>/dev/null)
+	[ -z "$DISTROS" ]&& DISTROS=$(sed -n '/^DISTRIB_ID=/{s/.*=\(.*\)/\1/;/^".*"$/{s/^"\(.*\)"$/\1/;p}}' /etc/lsb-release 2>/dev/null)
+	case "$DISTROS" in
+		*Mint*) DIS=0;;
+		*Ubuntu*) DIS=1;;
+		*Debian*) DIS=2;;
+		*Suse*) DIS=3;;
+		*Fedora*) DIS=4;;
+		*Fedoraalt*) DIS=5;;
+		*Mageia*) DIS=6;;
+		*Manjaro*) DIS=7;;
+		*)   still which zypper && DIS=3 \
+			||{ still which apt-get && DIS=2 \
+			||{ still which dnf && DIS=4 \
+			||{ still which yum && DIS=5 \
+			||{ still which urpmi.update && DIS=6 \
+			||{ still which pacman && DIS=7 \
+		  ;};};};};};;
+	esac
 	sus=0;
 	deb=0;
 	fed=0;
 	mag=0;
 	maj=0;
-	{ still which zypper &&
+	{ [ $DIS = 3 ]&&
 		{ sus=1;
+			printf "Konfiguriere $blau$DPROG$reset fuer ${blau}(Open)Suse$reset-System ...\n" 
 			Z=zypper;
 			g=--gpg-auto-import-keys;
 			IdPR="$Z -n $g in -f ";
@@ -45,8 +66,9 @@ getIPR() {
 			LT=${_LT}-${dev};
 		} 
 	} || 
-	{ still which apt-get &&
+	{  [ $DIS = 0 -o $DIS = 1 -o $DIS = 2 ]&&
 		{ deb=1;
+			printf "Konfiguriere $blau$DPROG$reset fuer ${blau}Debian/Ubuntu/Mint$reset-System ...\n" 
 			IdPR="apt-get --assume-yes --allow-unauthenticated install --reinstall ";
 			IP_R="${SUDC}$IdPR";
 			UPR="${SUDC}apt-get -f install; ${SUDC}apt-get --auto-remove purge ";
@@ -56,22 +78,26 @@ getIPR() {
 			CTAGS=exuberant-ctags;
 		} 
 	} || 
-	{ still which dnf &&
+	{ [ $DIS = 4 ]&&
 		{ 
 			fed=1;
+			printf "Konfiguriere $blau$DPROG$reset fuer ${blau}Fedora$reset-System ...\n" 
 			IdPR="dnf -y install ";
 			UPR="${SUDC}dnf remove ";
 		} 
 	} || 
-	{ still which yum &&
+	{ [ $DIS = 5 ]&&
 		{ 
+			fed=1;
+			printf "Konfiguriere $blau$DPROG$reset fuer ${blau}Fedora$reset-System (alt) ...\n" 
 			IdPR="yum -y install ";
 			UPR="${SUDC}yum remove ";
 		} 
 	} || 
-	{ still which urpmi.update &&
+	{ [ $DIS = 6 ]&&
 		{ 
 			mag=1;
+			printf "Versuche $blau$DPROG$reset fuer ${blau}Mageia$reset-System zu konfigurieren ...\n" 
 			IdPR="urpmi --auto --force ";
 			IP_R="${SUDC}$IdPR";
 			UPR="${SUDC}urpme ";
@@ -81,9 +107,10 @@ getIPR() {
 			COMP="make automake gcc-c++ kernel-devel";
 		} 
 	} || 
-	{ still which pacman &&
+	{ [ $DIS = 7 ]&&
 		{ 
 			maj=1; 
+			printf "Versuche $blau$DPROG$reset fuer ${blau}Manjaro$reset-System zu konfigurieren ...\n" 
 			IdPR="pacman -S ";
 			IP_R="${SUDC}$IdPR";
 			dev=devel;
@@ -107,8 +134,7 @@ getIPR() {
 		LT="${_LT} ${_LT}-${dev}";
 		LT5="";
 	}
-	# rpm kam schon auf ubuntu vor, dpkg auf opensuse eher nicht
-	{ still which dpkg &&
+	{ [ $deb = 1 ]&&
 		{ 
 			SPR="dpkg -s ";
 			LBOOST=libboost-${dev};
@@ -120,7 +146,7 @@ getIPR() {
 			UDPR="${SUDC}apt-get -f install; ${SUDC}dpkg -r --force-depends ";
 		};
 	}||
-	{ still which rpm &&
+	{ [ $fed = 1 -o $sus = 1 ]&&
 		{ 
 			SPR="rpm -q ";
 			LACL=libacl-${dev};
@@ -280,12 +306,12 @@ _LT="libtiff"
 LT5="${_LT}5"
 LM18=libmysqlclient18
 
-getIPR;
-# diese Datei wird wegen obigem in viall gesourct, deshalb dort der Rest zu uebergehen
 rot="\033[1;31m"
 gruen="\033[1;32m"
 blau="\033[1;34m"
 reset="\033[0m"
+getIPR;
+# diese Datei wird wegen obigem in viall gesourct, deshalb dort der Rest zu uebergehen
 if test "$ICH" = configure -o "$ICH" = install.sh -o "$ICH" = ${DPROG}_inst.sh -o "$ICH" = viall; then
 	if test "$1" = inst; then
 		# um aus Makefile hier etwas installieren zu koennen

@@ -644,8 +644,8 @@ const char *kons_T[T_konsMAX+1][SprachZahl]=
 	{"rueckzufragen wegen ","interaction because of "},
 	// T_virtlgnzuw_langu
 	{"virtlgnzuw, langu: ","virtlgnassign, langu: "},
-	// T_Bitte_rufen_Sie_dies_mit_w_auf_um_die_aktuellen_Optionen_zu_sehen
-	{" (bitte rufen Sie dies mit -w auf, um die aktuellen Optionen zu sehen)"," (please call this with -v to see the current options)"},
+	// T_mit_w_werden_die_Einstellungen_noch_ausfuehrlicher_angezeigt
+	{" (mit -w werden die Einstellungen noch ausfuehrlicher angezeigt)"," (with -v the preferences will be shown more detailled)"},
 	// T_keine_Daten_zum_Anzeigen_Bearbeiten
 	{"keine Dateien zum Anzeigen/Bearbeiten","no files to show/edit"},
 	// T_Maximaldauer_ueberschritten,
@@ -2495,11 +2495,11 @@ int systemrueck(const string& cmd, int obverb/*=0*/, int oblog/*=0*/, vector<str
 	char tmpd[]{P_tmpdir "/konsXXXXXX"};
 	const int mksterg{mkstemp(tmpd)};
 	// '... 2>/dev/null' nicht unbedingt aufheben
-	const string bef=(obsudc?sudc+(obsudc==2&&!sudc.empty()?"-H ":""):"")+
+	const string bef{(obsudc?sudc+(obsudc==2&&!sudc.empty()?"-H ":""):"")+
 		(obdirekt?hcmd:"env PATH='"+spath+"' "+"sh -c '"+ersetzAllezu(hcmd,"'","'\\''")+"'"+
-		 (mksterg!=-1&&(hcmd.find(" 2>")==string::npos||obverb>0)?string(" 2>")+tmpd:string()));
+		 (mksterg!=-1&&(hcmd.find(" 2>")==string::npos||obverb>0)?string(" 2>")+tmpd:string()))};
 	const string befanz{ersetze(bef.c_str(),spath.c_str(),"...")};
-	const string hsubs{bef.substr(0,getcols()-7-aktues.length())};
+	const string hsubs{befanz.substr(0,getcols()-7-aktues.length())};
 	string meld{aktues+": "+blau+hsubs+schwarz+" ..."};
 	if (ausgp&&obverb>0) {
 		*ausgp<<meld<<endl; 
@@ -2516,7 +2516,7 @@ int systemrueck(const string& cmd, int obverb/*=0*/, int oblog/*=0*/, vector<str
 ////	caus<<violett<<"bef: "<<blau<<bef<<schwarz<<endl;
 	if (rueck) {
 		//// <<gruen<<bef<<schwarz<<endl;
-    if (FILE* pipe = popen(bef.c_str(), "r")) {
+    if (FILE* pipe{popen(bef.c_str(),"r")}) {
 		/*//
 		int fd=fileno(pipe);
 		int flags=fcntl(fd, F_GETFL, 0);
@@ -2665,17 +2665,13 @@ int systemrueck(const string& cmd, int obverb/*=0*/, int oblog/*=0*/, vector<str
 // ob das aktuelle Programm mehrfach laeuft; bei obstumm Exit-Code 0
 void pruefmehrfach(const string& wen,int obverb/*=0*/,uchar obstumm/*=0*/)
 {
-	const int altobverb{obverb};
-	obverb=2;
 	fLog(violetts+Txk[T_pruefmehrfach]+schwarz,obverb,0);
 	const long smax{3600}; // maximal tolerierte Sekundenzahl, bevor statt dem eigenen Prozess der andere abgebrochen wird
 	svec rueck;
 	const string iwen{wen.empty()?base_name(meinpfad()):wen};
 	systemrueck("ps -eo comm,etimes,pid|grep -P '^"+iwen+"([[:space:]]|\\z)'",obverb,0,&rueck,/*obsudc=*/0);
 	long sek{0};
-	caus<<"pruefmehrfach vor for"<<endl;
 	for(int aru=0;aru<3;aru++) {
-		caus<<"pruefmehrfach nach for, aru: "<<aru<<endl;
 		if (rueck.size()==1) // ich
 			break;
 		if (aru<2) {
@@ -2744,7 +2740,6 @@ void pruefmehrfach(const string& wen,int obverb/*=0*/,uchar obstumm/*=0*/)
 		 process_time = (now - boottime) - (atof(tmp.at(21).c_str()))/HZ;
 	 */
 	fLog(violetts+Txk[T_Ende]+Txk[T_pruefmehrfach]+schwarz,obverb,0);
-		obverb=altobverb;
 } // void pruefmehrfach
 
 // aufgerufen in: setfaclggf, pruefberecht, pruefverz
@@ -5896,8 +5891,14 @@ void hcl::zeigkonf()
 		//// pthread_mutex_unlock(&timemutex);
 		//// strftime(buf, sizeof(buf), "%d.%m.%Y %H.%M.%S", &tm);
 	} //   if (!lstat(akonfdt.c_str(),&kstat))
-	cout<<")"<<(obverb?":":Txk[T_Bitte_rufen_Sie_dies_mit_w_auf_um_die_aktuellen_Optionen_zu_sehen])<<endl;
-	if (obverb) opn.oausgeb(dblau);
+	cout<<")";
+	if (obverb) {
+		cout<<":"<<endl;
+		opn.oausgeb(dblau);
+	} else {
+		cout<<Txk[T_mit_w_werden_die_Einstellungen_noch_ausfuehrlicher_angezeigt]<<endl;
+		opn.zeigschoen();
+	}
 } // void hcl::zeigkonf()
 // augerufen in: anhalten(), zeigkonf()
 
@@ -6791,6 +6792,15 @@ template<typename SCL> void schAcl<SCL>::schAschreib(mdatei *const f,int obverb)
 		}
 	} //   for (size_t i=0;i<zahl;i++)
 } // void schAcl::schAschreib
+
+// kann aufgerufen werden
+template<typename SCL> void schAcl<SCL>::zeigschoen()
+{
+	for(size_t i=0;i<schl.size();i++) {
+		if (!schl[i]->pname.empty())
+		cout<<blau<<setw(20)<<schl[i]->pname<<schwarz<<":"<<schl[i]->virtholstr()<<endl;
+  }
+} // template<typename SCL> void schAcl
 
 // kann aufgerufen werden
 template<typename SCL> void schAcl<SCL>::gibaus(const int nr/*=0*/)

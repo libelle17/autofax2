@@ -447,7 +447,7 @@ enum Tkons_
 	T_gefunden,
 	T_rueckzufragen_wegen,
 	T_virtlgnzuw_langu,
-	T_Bitte_rufen_Sie_dies_mit_w_auf_um_die_aktuellen_Optionen_zu_sehen,
+	T_mit_w_werden_die_Einstellungen_noch_ausfuehrlicher_angezeigt,
 	T_keine_Daten_zum_Anzeigen_Bearbeiten,
 	T_Maximaldauer_ueberschritten,
 	T_Fehler_in_setfaclggf,
@@ -874,11 +874,12 @@ template <typename SCL> class schAcl {
  void setzbemerkwoher(SCL *optp,const string& ibemerk,const uchar vwoher);
  void schAschreib(mdatei *const f,int obverb); // Schluessel-Array-schreib
  int confschreib(const string& fname,ios_base::openmode modus=ios_base::out,const string& mpfad=nix,const uchar faclbak=1,int obverb=0,int oblog=0);
+ void zeigschoen();
  void gibaus(const int nr=0);
+ void oausgeb(const char* const farbe,int obverb=0,int oblog=0);
  void gibomapaus();
  void eintrinit();
  void frisch();
- void oausgeb(const char* const farbe,int obverb=0,int oblog=0);
  ~schAcl();
 }; // class schAcl
 template <> void schAcl<WPcl>::sinit(size_t vzahl, ...);
