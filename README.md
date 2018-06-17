@@ -8,7 +8,8 @@
 <a href="#INSTALLATION_D">INSTALLATION</a><br>
 <a href="#USAGE_D">USAGE</a><br>
 <a href="#OPTIONS_D">OPTIONS</a><br>
-<a href="#PRECONDITIONS_D">PRECONDITIONS</a><br>
+<a href="#FUNCTIONALITY_D">FUNCTIONALITY</a><br>
+<a href="#FUNCTIONALITY_D">FUNCTIONALITY</a><br>
 
 <hr>
 
@@ -54,8 +55,13 @@ autofax2&rsquo; oder &rsquo;man -Lde autofax2&rsquo;)</p>
 </h2>
 
 
-<h2>PRECONDITIONS
-<a name="PRECONDITIONS_D"></a>
+<h2>FUNCTIONALITY
+<a name="FUNCTIONALITY_D"></a>
+</h2>
+
+
+<h2>FUNCTIONALITY
+<a name="FUNCTIONALITY_D"></a>
 </h2>
 
 
@@ -239,7 +245,8 @@ automatically (<b>1</b>)</p>
 <a href="#INSTALLATION_D">INSTALLATION</a><br>
 <a href="#GEBRAUCH_D">GEBRAUCH</a><br>
 <a href="#OPTIONEN_D">OPTIONEN</a><br>
-<a href="#VORAUSSETZUNGEN_D">VORAUSSETZUNGEN</a><br>
+<a href="#FUNKTIONSWEISE_D">FUNKTIONSWEISE</a><br>
+<a href="#FUNKTIONSWEISE_D">FUNKTIONSWEISE</a><br>
 
 <hr>
 
@@ -285,8 +292,13 @@ Faxe und Protokollierung aller Faxe in einer Datenbank <br>
 </h2>
 
 
-<h2>VORAUSSETZUNGEN
-<a name="VORAUSSETZUNGEN_D"></a>
+<h2>FUNKTIONSWEISE
+<a name="FUNKTIONSWEISE_D"></a>
+</h2>
+
+
+<h2>FUNKTIONSWEISE
+<a name="FUNKTIONSWEISE_D"></a>
 </h2>
 
 
