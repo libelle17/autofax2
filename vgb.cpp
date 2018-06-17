@@ -105,7 +105,8 @@ void hhcl::pvirtVorgbSpeziell()
 		".listenausgabeuew where concat(if(instr('12345678',mid(fax,1,1)) and not (length(fax)>8),'08131',''),"
 		"replace(replace(replace(replace(fax,' ',''),'-',''),'/',''),'\\'','')) "
 		"= '&&faxnr&&'";
-	for(unsigned i{0};i<sqlVp.size();i++) {
+	for(unsigned i{0};i<sqlVp.size();) {
+		++i;
 		stringstream soptname;
 		soptname<<"SQL_"<<i;
 		const string istr{ltoan(i)};

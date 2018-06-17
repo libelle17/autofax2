@@ -1,6 +1,6 @@
 <h3>Manual: 1) <a href="#english_E">english</a>, 2) <a href="#deutsch_D">deutsch (unten anschließend)</a></h3>
 
-<h1 align="center">AUTOFAX2 (Version 0.11667) - english<a name="english_D"></a></h1>
+<h1 align="center">AUTOFAX2 (Version 0.11668) - english<a name="english_D"></a></h1>
 
 <a href="#NAME_D">NAME</a><br>
 <a href="#SYNOPSIS_D">SYNOPSIS</a><br>
@@ -60,8 +60,8 @@ autofax2&rsquo; oder &rsquo;man -Lde autofax2&rsquo;)</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">Programm:
-<b>/root/autofax2/autofax2</b>, V: <b>0.11667</b>Programm:
-<b>/root/autofax2/autofax2</b>, V.: <b>0.11667</b>,
+<b>/root/autofax2/autofax2</b>, V: <b>0.11668</b>Programm:
+<b>/root/autofax2/autofax2</b>, V.: <b>0.11668</b>,
 Verwende: <b>Fritzbox</b>, <b>Capisuite</b>, <b>Hylafax <br>
 Options which are not saved (current value in parentheses):
 <br>
@@ -232,7 +232,7 @@ automatically (<b>1</b>)</p>
 </body>
 </html>
 
-<h1 align="center">AUTOFAX2 (Version 0.11667) - deutsch<a name="deutsch_D"></a></h1>
+<h1 align="center">AUTOFAX2 (Version 0.11668) - deutsch<a name="deutsch_D"></a></h1>
 
 <a href="#NAME_D">NAME</a><br>
 <a href="#SYNOPSIS_D">SYNOPSIS</a><br>
@@ -292,8 +292,8 @@ Faxe und Protokollierung aller Faxe in einer Datenbank <br>
 
 
 <p style="margin-left:11%; margin-top: 1em">Programm:
-<b>/root/autofax2/autofax2</b>, V: <b>0.11667</b>Programm:
-<b>/root/autofax2/autofax2</b>, V.: <b>0.11667</b>,
+<b>/root/autofax2/autofax2</b>, V: <b>0.11668</b>Programm:
+<b>/root/autofax2/autofax2</b>, V.: <b>0.11668</b>,
 Verwende: <b>Fritzbox</b>, <b>Capisuite</b>, <b>Hylafax <br>
 Optionen, die nicht gespeichert werden (aktueller Wert in
 Klammern): <br>
