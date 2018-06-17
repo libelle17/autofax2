@@ -427,6 +427,7 @@ $(1).gz: $(EXEC) $(1)
 		printf " rufe auf/calling: '%b$$$$EX |$$$$W1a |$$$$W2 >$$$$TMP%b'\n" $(blau) $(reset);\
 		$$$$EX|$$$$W1|$$$$W2>$$$$TMP; \
 	 nlinit=`echo 'nl="'; echo '"'`; eval "$$$$nlinit"; \
+	 echo von=".SH $$(OPN)"; bis=".SH $$(FKT)"; sed -i.bak "/$$$$von/,/$$$$bis/{/$$$$von/{n;p;r $$$$TMP$$$$nl};/$$$$bis/p;d}" $(1);
 	 von=".SH $$(OPN)"; bis=".SH $$(FKT)"; sed -i.bak "/$$$$von/,/$$$$bis/{/$$$$von/{n;p;r $$$$TMP$$$$nl};/$$$$bis/p;d}" $(1);
 	@sed 's/²gitv²/$(GITV)/g;s/²DPROG²/$(DPROG)/g;s/\\fB/\\fI/g' $(1)|gzip -c >$$@
 $(INST$(patsubst man_%,%,$(1))MAN): $(1).gz
