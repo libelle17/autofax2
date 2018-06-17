@@ -4435,8 +4435,8 @@ void hhcl::virtzeigueberschrift()
 { //ω
 	char buf[20]; 
 	snprintf(buf,sizeof buf,"%.5f",versnr);
-	uebers<<schwarzs+Txk[T_Programm]+blau+mpfad+schwarz+", V.: "+blau+buf+schwarz+", "+Tx[T_Verwende]
-			+blau+(obfbox?"Fritzbox":"")+schwarz
+	uebers<<Tx[T_Verwende]
+			+blaus+(obfbox?"Fritzbox":"")+schwarz
 			+(obfbox&&(obhyla||obcapi)?", ":"")
 			+blau+(obcapi?"Capisuite":"")+schwarz
 			+(obcapi&&obhyla?", ":"")
@@ -8596,7 +8596,6 @@ void hhcl::korrigierehyla(const unsigned tage/*=90*/,const size_t aktc)
 void hhcl::pvirtfuehraus()
 { //ω
 	if (kez||bvz||anhl||lista||listf||listi||listw||!suchstr.empty()) {
-		virtzeigueberschrift();
 		if (kez) {
 			// hier ggf. erstes fork
 			if (obcapi) korrigierecapi(ltage);
@@ -8630,7 +8629,6 @@ void hhcl::pvirtfuehraus()
 			////  vector<string> npdf, spdf;
 			if (obfcard) obcapi=!pruefcapi();
 			if (obmodem) obhyla=!pruefhyla();
-			virtzeigueberschrift();
 			if (loef || loew || loea) {
 				if (loef) aenderefax(/*aktion=*/0,/*aktc=*/0);
 				if (loew) loeschewaise();

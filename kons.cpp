@@ -4962,7 +4962,7 @@ hcl::hcl(const int argc, const char *const *const argv,const char* const DPROG,c
 	pthread_mutex_init(&timemutex, NULL);
 	_mpfad=mpfad=meinpfad();
 	meinname=base_name(mpfad); // argv[0];
-	uebers<<schwarz<<Txk[T_Programm]<<blau<<mpfad<<schwarz<<", V: "<<blau<<fixed<<setprecision(5)<<versnr<<defaultfloat<<schwarz; // fuer virtzeigueberschrift
+	uebers<<schwarz<<Txk[T_Programm]<<blau<<mpfad<<schwarz<<", V: "<<blau<<fixed<<setprecision(5)<<versnr<<defaultfloat<<" "<<schwarz; // fuer virtzeigueberschrift
 	pruefinstv();
 #ifdef _WIN32
 	logvz = "C:\\Dokumente und Einstellungen\\All Users\\Anwendungsdaten";
