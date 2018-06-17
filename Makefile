@@ -246,7 +246,7 @@ endef
 # ssh-add ~/.ssh/id_rsa_git
 # xclip -sel clip < ~/.ssh/id_rsa_git.pub
 # auf http://github.com -> view profile and more -> settings -> SSH and GPG keys -> New SSH key <Titel> <key> einfuegen
-git: # README.md
+git: README.md
 #	@git config --global user.name "Gerald Schade"
 #	@git config --global user.email "gerald.schade@gmx.de"
 	$(call machvers);
